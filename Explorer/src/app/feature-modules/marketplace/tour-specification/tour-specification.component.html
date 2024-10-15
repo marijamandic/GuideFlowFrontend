@@ -1,0 +1,25 @@
+<div>
+    <table>
+        <thead>
+            <tr>
+                <th>UserId</th>
+                <th>TourDifficutly</th>
+                <th>CarRating</th>
+                <th>WalkRating</th>
+                <th>BoatRating</th>
+                <th>BikeRating</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let ts of tourSpecification">
+                <td>{{ts.userId}}</td>
+                <td>{{ts.tourDifficulty}}</td>
+                <td>{{ts.carRating}}</td>
+                <td>{{ts.walkRating}}</td>
+                <td>{{ts.boatRating}}</td>
+                <td>{{ts.bikeRating}}</td>
+
+            </tr>
+        </tbody>
+    </table>
+</div>
