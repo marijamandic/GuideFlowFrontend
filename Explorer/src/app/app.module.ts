@@ -14,10 +14,12 @@ import { TourExecutionModule } from './feature-modules/tour-execution/tour-execu
 import { AuthModule } from './infrastructure/auth/auth.module';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { JwtInterceptor } from './infrastructure/auth/jwt/jwt.interceptor';
+import { ClubComponent } from './administration/club/club.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    ClubComponent
   ],
   imports: [
     BrowserModule,
@@ -31,7 +33,8 @@ import { JwtInterceptor } from './infrastructure/auth/jwt/jwt.interceptor';
     TourAuthoringModule,
     TourExecutionModule,
     AuthModule,
-    HttpClientModule
+    HttpClientModule,
+    AdministrationModule,
   ],
   providers: [
     {
