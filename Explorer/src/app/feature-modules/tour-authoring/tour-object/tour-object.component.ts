@@ -11,17 +11,42 @@ import { PagedResults } from 'src/app/shared/model/paged-results.model';
 export class TourObjectComponent implements OnInit {
 
   tourObjects: TourObject[] = [];
+  shouldRenderTourObjectForm: boolean = false;
+  shouldEdit: boolean = false;
   
   constructor(private service: TourAuthoringService) { }
 
   ngOnInit(): void {
+    this.getTourObjects();
+  }
+
+  getTourObjects(): void {
     this.service.getTourObjects().subscribe({
       next: (result: PagedResults<TourObject>) => {
         this.tourObjects = result.results;
       },
-      error: (err: any) => {
-        console.log(err);
+      error: () => {
       }
     })
+  }
+
+  onAddClicked(): void {
+    this.shouldEdit = false;
+    this.shouldRenderTourObjectForm = true;
+  }
+
+  getCategoryName(category: number): string {
+    switch (category) {
+      case 0:
+        return 'Parking';
+      case 1:
+        return 'Restaurant';
+      case 2:
+        return 'Toilet';
+      case 3:
+        return 'Other';
+      default:
+        return 'Unknown';
+    }
   }
 }

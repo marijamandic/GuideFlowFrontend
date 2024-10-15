@@ -13,6 +13,10 @@ export class TourAuthoringService {
   constructor(private http: HttpClient) { }
 
   getTourObjects(): Observable<PagedResults<TourObject>> {
-    return this.http.get<PagedResults<TourObject>>(environment.apiHost + 'administration/tourObject');
+    return this.http.get<PagedResults<TourObject>>(environment.apiHost + 'administration/tourObject')
+  }
+
+  addTourObject(tourObject: TourObject): Observable<TourObject> {
+    return this.http.post<TourObject>(environment.apiHost + 'administration/tourObject', tourObject)
   }
 }
