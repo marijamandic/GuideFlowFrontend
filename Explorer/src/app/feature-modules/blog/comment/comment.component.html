@@ -1,0 +1,21 @@
+<div class="comment-section">
+    <h2>Comments</h2>
+    
+    <button *ngIf="user && user.role === 'tourist'" class="add-comment-btn">Add Comment</button>
+  
+    <div *ngIf="comments.length === 0" class="no-comments">
+      <p>No comments yet. Be the first to add one!</p>
+    </div>
+  
+    <div *ngFor="let comm of comments" class="comment-card">
+        <div class="comment-body">
+          <p>{{ comm.content }}</p>
+        </div>
+  
+        <div class="comment-actions">
+            <button *ngIf="user && user.role === 'tourist'" class="edit-btn">Edit</button>
+            <button *ngIf="user && user.role === 'tourist'" class="delete-btn">Delete</button>
+        </div>
+    </div>
+  </div>
+  
