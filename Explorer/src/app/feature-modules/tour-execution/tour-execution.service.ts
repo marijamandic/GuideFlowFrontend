@@ -5,19 +5,16 @@ import { Problem } from './model/problem.model';
 import { environment } from 'src/env/environment';
 
 @Injectable({
-  providedIn: 'root',
+	providedIn: 'root'
 })
 export class TourExecutionService {
-  constructor(private http: HttpClient) {}
+	constructor(private http: HttpClient) {}
 
-  createProblem(problem: Problem): Observable<Problem> {
-    console.log(localStorage.getItem('access-token'));
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${localStorage.getItem('access-token')}`,
-      'Content-Type': 'application/json',
-    });
-    return this.http.post<Problem>(`${environment.apiHost}/problems`, problem, {
-      headers,
-    });
-  }
+	createProblem(problem: Problem): Observable<Problem> {
+		const headers = new HttpHeaders({
+			Authorization: `Bearer ${localStorage.getItem('access-token')}`,
+			'Content-Type': 'application/json'
+		});
+		return this.http.post<Problem>(`${environment.apiHost}problems`, problem, { headers });
+	}
 }

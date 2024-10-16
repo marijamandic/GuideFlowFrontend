@@ -1,6 +1,5 @@
 .problem-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 50px;
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 50px;
 }
