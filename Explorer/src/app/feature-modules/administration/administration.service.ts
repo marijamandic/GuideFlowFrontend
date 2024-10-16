@@ -4,6 +4,7 @@ import { Equipment } from './model/equipment.model';
 import { environment } from 'src/env/environment';
 import { Observable } from 'rxjs';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
+import { ClubInvitation } from './model/club-invitation.model';
 
 @Injectable({
   providedIn: 'root'
@@ -28,4 +29,24 @@ export class AdministrationService {
     return this.http.put<Equipment>(environment.apiHost + 'administration/equipment/' + equipment.id, equipment);
   }
 
+  // Club Invitation
+  getClubInvitations(): Observable<ClubInvitation[]> {
+    return this.http.get<ClubInvitation[]>(environment.apiHost + 'invitation/clubInvitation/all');
+  }
+
+  getClubInvitationById(id: number): Observable<ClubInvitation> {
+    return this.http.get<ClubInvitation>(environment.apiHost + `invitation/clubInvitation/${id}`);
+  }
+
+  deleteClubInvitation(id: number): Observable<void> {
+    return this.http.delete<void>(environment.apiHost + `invitation/clubInvitation/${id}`);
+  }
+
+  addClubInvitation(invitation: ClubInvitation): Observable<ClubInvitation> {
+    return this.http.post<ClubInvitation>(environment.apiHost + 'invitation/clubInvitation', invitation);
+  }
+
+  updateClubInvitation(invitation: ClubInvitation): Observable<ClubInvitation> {
+    return this.http.put<ClubInvitation>(environment.apiHost + `invitation/clubInvitation/${invitation.id}`, invitation);
+  }
 }
