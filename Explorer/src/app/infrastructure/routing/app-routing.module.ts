@@ -6,13 +6,15 @@ import { EquipmentComponent } from 'src/app/feature-modules/administration/equip
 import { AuthGuard } from '../auth/auth.guard';
 import { RegistrationComponent } from '../auth/registration/registration.component';
 import { CommentComponent } from 'src/app/feature-modules/blog/comment/comment.component';
+import { PostComponent } from 'src/app/feature-modules/blog/post/post.component';
 
 const routes: Routes = [
   {path: 'home', component: HomeComponent},
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegistrationComponent},
   {path: 'equipment', component: EquipmentComponent, canActivate: [AuthGuard],},
-  {path: 'comment', component: CommentComponent, canActivate: [AuthGuard],}
+  {path: 'comment', component: CommentComponent, canActivate: [AuthGuard],},
+  {path: 'blog', component: PostComponent}
 ];
 
 @NgModule({
