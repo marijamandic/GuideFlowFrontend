@@ -1,0 +1,20 @@
+<div>
+    <table>
+        <thead>
+            <tr>
+                <th>Naziv</th>
+                <th>Opis</th>
+                <th>Cena</th>
+                <th>Tezina</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let tour of tours">
+                <td> {{tour.Name}} </td>
+                <td> {{tour.Description}} </td>
+                <td> {{tour.Price}} </td>
+                <td> {{tour.Level}} </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
