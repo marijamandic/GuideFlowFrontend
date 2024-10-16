@@ -4,6 +4,7 @@ import { Equipment } from './model/equipment.model';
 import { environment } from 'src/env/environment';
 import { Observable } from 'rxjs';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
+import { ClubRequest } from './model/club-request.model';
 
 @Injectable({
   providedIn: 'root'
@@ -28,4 +29,20 @@ export class AdministrationService {
     return this.http.put<Equipment>(environment.apiHost + 'administration/equipment/' + equipment.id, equipment);
   }
 
+  getClubRequest(): Observable<PagedResults<ClubRequest>>{
+    return this.http.get<PagedResults<ClubRequest>>(environment.apiHost + 'request/clubRequest/1')
+  }
+
+  addRequest(clubRequest: ClubRequest): Observable<ClubRequest>{
+    return this.http.post<ClubRequest>(environment.apiHost + 'request/clubRequest', clubRequest)
+  }
+
+  /*updateRequest(clubRequest: ClubRequest): Observable<ClubRequest>{
+    return this.http.post<ClubRequest>(environment.apiHost + 'request/')
+  }*/
+  
+  /*
+  deleteRequest(clubRequest: ClubRequest): Observable<ClubRequest>{
+    return this.http.post<ClubRequest>(environment.apiHost + 'request/')
+  */
 }

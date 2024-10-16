@@ -1,0 +1,29 @@
+<div>
+    <table>
+        <thead>
+            <tr>
+                <th>STATUS REQUESTA</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let cr of clubRequest">
+                <td>{{cr.status}}</td>
+                <td>
+                    <button (click) = "deleteRequest(cr)"  color="accent" mat-icon-button>
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                    <button (click)="onEditClicked(cr)" color="primary" mat-icon-button>
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                </td>
+            </tr>
+
+            <button (click)="onAddClicked()" color="primary" mat-icon-button>
+                <mat-icon>add</mat-icon>
+              </button>
+        </tbody>
+    </table>
+    <div>
+        <xp-club-request-form *ngIf="shouldRenderRequestForm" (clubRequestUpdated)="getClubRequest()" [clubRequest] = "selectedRequest" [shouldEdit] = "shouldEdit"></xp-club-request-form>
+    </div>
+</div>

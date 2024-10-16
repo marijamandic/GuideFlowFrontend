@@ -10,9 +10,18 @@ import { AdministrationService } from '../administration.service';
 export class ClubRequestComponent implements OnInit {
 
   clubRequest: ClubRequest[] = []
+  selectedRequest: ClubRequest;
+  shouldEdit: boolean;
+  shouldRenderRequestForm: boolean = false; 
+
 
   constructor(private service: AdministrationService) { }
-  ngOnInit(): void {
+
+  ngOnInit(): void{
+    this.getClubRequest();
+  }
+
+  getClubRequest(): void {
     this.service.getClubRequest().subscribe({
       next: (result: PagedResults<ClubRequest>) =>{
         this.clubRequest = result.results;
@@ -23,4 +32,23 @@ export class ClubRequestComponent implements OnInit {
     })
   }
 
+
+  onEditClicked(clubRequest: ClubRequest): void{
+    this.shouldEdit = true;
+    this.selectedRequest = clubRequest;
+  }
+
+  onAddClicked(): void {
+    this.shouldRenderRequestForm = true;
+    this.shouldEdit = false;
+  }
+
+  deleteRequest(clubRequest: ClubRequest): void{
+    /*this.service.deleteRequest(clubRequest).subscribe({
+      next: (_) => {
+        this.getRequest();
+      }
+    })
+    */
+  } 
 }
