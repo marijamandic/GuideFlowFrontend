@@ -4,13 +4,17 @@ import { EquipmentFormComponent } from './equipment-form/equipment-form.componen
 import { EquipmentComponent } from './equipment/equipment.component';
 import { MaterialModule } from 'src/app/infrastructure/material/material.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ClubFormComponent } from './club-form/club-form.component';
+import { ClubComponent } from './club/club.component';
 
 
 
 @NgModule({
   declarations: [
     EquipmentFormComponent,
-    EquipmentComponent
+    EquipmentComponent,
+    ClubFormComponent,
+    ClubComponent
   ],
   imports: [
     CommonModule,
@@ -19,7 +23,9 @@ import { ReactiveFormsModule } from '@angular/forms';
   ],
   exports: [
     EquipmentComponent,
-    EquipmentFormComponent
+    EquipmentFormComponent,
+    ClubFormComponent,
+    ClubComponent
   ]
 })
 export class AdministrationModule { }
