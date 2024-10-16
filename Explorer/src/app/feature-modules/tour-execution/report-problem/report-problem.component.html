@@ -1,0 +1,23 @@
+<div>
+  <div>
+    <div>Category</div>
+    <select [(ngModel)]="problem.category">
+      <option *ngFor="let category of categories" [value]="category">
+        {{ category }}
+      </option>
+    </select>
+  </div>
+  <div>
+    <div>Priority</div>
+    <select [(ngModel)]="problem.priority">
+      <option *ngFor="let priority of priorities" [value]="priority">
+        {{ priority }}
+      </option>
+    </select>
+  </div>
+  <div>
+    <div>Description</div>
+    <textarea [(ngModel)]="problem.description"></textarea>
+  </div>
+  <button type="button" (click)="handleClick()">Report</button>
+</div>

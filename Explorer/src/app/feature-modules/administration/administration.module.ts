@@ -4,22 +4,11 @@ import { EquipmentFormComponent } from './equipment-form/equipment-form.componen
 import { EquipmentComponent } from './equipment/equipment.component';
 import { MaterialModule } from 'src/app/infrastructure/material/material.module';
 import { ReactiveFormsModule } from '@angular/forms';
-
-
+import { ProblemComponent } from './problem/problem.component';
 
 @NgModule({
-  declarations: [
-    EquipmentFormComponent,
-    EquipmentComponent
-  ],
-  imports: [
-    CommonModule,
-    MaterialModule,
-    ReactiveFormsModule
-  ],
-  exports: [
-    EquipmentComponent,
-    EquipmentFormComponent
-  ]
+  declarations: [EquipmentFormComponent, EquipmentComponent, ProblemComponent],
+  imports: [CommonModule, MaterialModule, ReactiveFormsModule],
+  exports: [EquipmentComponent, EquipmentFormComponent, ProblemComponent],
 })
-export class AdministrationModule { }
+export class AdministrationModule {}
