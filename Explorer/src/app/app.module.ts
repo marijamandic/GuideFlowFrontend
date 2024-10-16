@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, Component } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './infrastructure/routing/app-routing.module';
@@ -14,6 +14,10 @@ import { TourExecutionModule } from './feature-modules/tour-execution/tour-execu
 import { AuthModule } from './infrastructure/auth/auth.module';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { JwtInterceptor } from './infrastructure/auth/jwt/jwt.interceptor';
+import { Routes } from '@angular/router';
+import { HomeComponent } from './feature-modules/layout/home/home.component';
+import { RatingTheAppComponent } from './feature-modules/layout/rating-the-app/rating-the-app.component';
+
 
 @NgModule({
   declarations: [
@@ -31,7 +35,7 @@ import { JwtInterceptor } from './infrastructure/auth/jwt/jwt.interceptor';
     TourAuthoringModule,
     TourExecutionModule,
     AuthModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   providers: [
     {
