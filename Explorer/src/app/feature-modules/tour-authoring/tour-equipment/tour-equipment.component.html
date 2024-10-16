@@ -1,0 +1,19 @@
+<p>tour-equipment works!</p>
+<table border="1">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Tour ID</th>
+      <th>Equipment ID</th>
+      <th>Quantity</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let eq of tourEquipment">
+      <td>{{ eq.id }}</td>
+      <td>{{ eq.tourId }}</td>
+      <td>{{ eq.equipmentId }}</td>
+      <td>{{ eq.quantity }}</td>
+    </tr>
+  </tbody>
+</table>
