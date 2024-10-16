@@ -1,6 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TourEquipmentComponent } from './tour-equipment/tour-equipment.component';
+import { EquipmentComponent } from '../administration/equipment/equipment.component';
+import { AdministrationModule } from '../administration/administration.module';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -9,7 +12,9 @@ import { TourEquipmentComponent } from './tour-equipment/tour-equipment.componen
     TourEquipmentComponent
   ],
   imports: [
-    CommonModule
+    FormsModule,
+    CommonModule,
+    AdministrationModule
   ], 
   exports:[
     TourEquipmentComponent

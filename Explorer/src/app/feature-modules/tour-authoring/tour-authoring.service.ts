@@ -13,6 +13,7 @@ export class TourAuthoringService {
 
     getTourEquipment(): Observable<PagedResults<TourEquipment>>{
     
+      //ovo treba da se zameni da daje bas equipment za odredjenu turu
       return this.http.get<PagedResults<TourEquipment>>('https://localhost:44333/api/management/tourEquipment');
   }
 }

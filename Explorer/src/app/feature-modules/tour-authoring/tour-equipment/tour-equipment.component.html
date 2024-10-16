@@ -1,19 +1,47 @@
-<p>tour-equipment works!</p>
+<!-- Dropdown za izbor ID-a ture -->
+<label for="tourIdSelect">Select Tour ID: </label>
+<select id="tourIdSelect" >
+  <option *ngFor="let tourId of availableTourIds" [value]="tourId">{{ tourId }}</option>
+</select>
+
 <table border="1">
   <thead>
     <tr>
-      <th>ID</th>
       <th>Tour ID</th>
-      <th>Equipment ID</th>
+      <th>Equipment Name</th> <!-- Promenjeno iz Equipment ID u Equipment Name -->
       <th>Quantity</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let eq of tourEquipment">
-      <td>{{ eq.id }}</td>
       <td>{{ eq.tourId }}</td>
-      <td>{{ eq.equipmentId }}</td>
+      <td>{{ getEquipmentName(eq.equipmentId) }}</td> <!-- Prikazuje naziv opreme umesto ID-a -->
       <td>{{ eq.quantity }}</td>
     </tr>
   </tbody>
 </table>
+
+<h3>Select Equipment for Tour</h3>
+
+<table border="1">
+  <thead>
+    <tr>
+      <th>Select</th>
+      <th>Equipment Name</th>
+      <th>Quantity</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let eq of equipment">
+      <td>
+        <input type="checkbox"  />
+      </td>
+      <td>{{ eq.name }}</td>
+      <td>
+        <input type="number" [(ngModel)]="eq.quantity" min="1" placeholder="Quantity" />
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<button (click)="addSelectedEquipment()">Add Selected Equipment</button>
