@@ -14,7 +14,7 @@
   
         <div class="comment-actions">
             <button *ngIf="user && user.role === 'tourist'" class="edit-btn">Edit</button>
-            <button *ngIf="user && user.role === 'tourist'" class="delete-btn">Delete</button>
+            <button *ngIf="user && user.role === 'tourist'" (click)="deleteComments(comm.id||0)" class="delete-btn">Delete</button>
         </div>
     </div>
   </div>

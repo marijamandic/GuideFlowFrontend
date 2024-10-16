@@ -24,6 +24,17 @@ export class CommentComponent implements OnInit{
     this.getComments();
   }
 
+  deleteComments(id:number):void{
+    this.service.deleteComments(id).subscribe({
+      next:()=>{
+        this.getComments();
+      },
+      error:(err:any)=>{
+        console.log(err);
+      }
+    })
+  }
+
   getComments():void{
     this.service.getComments().subscribe({
       next:(result:PagedResults<Comment>)=>{

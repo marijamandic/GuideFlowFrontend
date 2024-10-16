@@ -15,4 +15,8 @@ export class CommentService {
   getComments():Observable<PagedResults<Comment>>{
     return this.http.get<PagedResults<Comment>>(environment.apiHost+'commentmanaging/comment')
   }
+
+  deleteComments(id:number):Observable<Comment>{
+    return this.http.delete<Comment>(environment.apiHost+'commentmanaging/comment/'+id)
+  }
 }
