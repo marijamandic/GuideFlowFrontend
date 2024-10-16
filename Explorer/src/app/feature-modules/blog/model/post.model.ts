@@ -9,7 +9,7 @@ export interface Post {
 }
 
 export enum Status {
-    Draft = 'Draft',         
-    Published = 'Published', 
-    Closed = 'Closed'        
+    Draft = 0,         
+    Published = 1, 
+    Closed = 2        
 }

@@ -14,4 +14,7 @@ export class PostService {
   getPosts() : Observable<PagedResults<Post>> {
     return this.http.get<PagedResults<Post>>('https://localhost:44333/api/blogManagement/post');
   }
+  addPost(post: Post) : Observable<Post> {
+    return this.http.post<Post>('https://localhost:44333/api/blogManagement/post',post);
+  }
 }

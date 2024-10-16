@@ -1,0 +1,35 @@
+<div class="container">
+    <h2>Create a Blog Post</h2>
+    
+    <form [formGroup]="postForm" (ngSubmit)="onSubmit()">
+      <!-- Title Field -->
+      <div class="form-group">
+        <label for="title">Title</label>
+        <input id="title" formControlName="title" class="form-control" type="text" />
+      </div>
+      
+      <!-- Description Field -->
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea id="description" formControlName="description" class="form-control"></textarea>
+      </div>
+      
+      <!-- Image URL Field -->
+      <div class="form-group">
+        <label for="imageUrl">Image URL</label>
+        <input id="imageUrl" formControlName="imageUrl" class="form-control" type="text" />
+      </div>
+      
+      <!-- Status Field -->
+      <div class="form-group">
+        <label for="status">Status</label>
+        <select id="status" formControlName="status" class="form-control">
+          <option *ngFor="let status of statuses" [value]="status.value">{{ status.name }}</option>
+        </select>
+      </div>
+  
+      <!-- Submit Button -->
+      <button type="submit" class="btn btn-primary" [disabled]="postForm.invalid">Create Post</button>
+    </form>
+  </div>
+  
