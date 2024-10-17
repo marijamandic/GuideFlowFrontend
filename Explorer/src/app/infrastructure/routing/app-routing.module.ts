@@ -13,8 +13,8 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegistrationComponent},
   {path: 'equipment', component: EquipmentComponent, canActivate: [AuthGuard],},
-  {path: 'comment', component: CommentComponent, canActivate: [AuthGuard],},
-  {path: 'blog', component: PostComponent}
+  {path: 'blog', component: PostComponent},
+  {path: 'comment/:id', component: CommentComponent}
 ];
 
 @NgModule({

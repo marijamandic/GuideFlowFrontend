@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
@@ -12,11 +12,20 @@ export class CommentService {
 
   constructor(private http:HttpClient) { }
 
-  getComments():Observable<PagedResults<Comment>>{
-    return this.http.get<PagedResults<Comment>>(environment.apiHost+'commentmanaging/comment')
+  getComments(id: string): Observable<PagedResults<Comment>> {
+    const params = new HttpParams().set('id', id.toString());
+    return this.http.get<PagedResults<Comment>>(environment.apiHost + 'commentmanaging/comment', { params });
   }
 
   deleteComments(id:number):Observable<Comment>{
-    return this.http.delete<Comment>(environment.apiHost+'commentmanaging/comment/'+id)
+    return this.http.delete<Comment>(environment.apiHost+'commentmanaging/comment/'+id);
+  }
+
+  addComment(comment:Comment):Observable<Comment>{
+    return this.http.post<Comment>(environment.apiHost+'commentmanaging/comment/',comment);
+  }
+
+  editComment(comment:Comment):Observable<Comment>{
+    return this.http.put<Comment>(environment.apiHost+'commentmanaging/comment/'+comment.id,comment);
   }
 }
