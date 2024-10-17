@@ -1,8 +1,8 @@
 export interface Tour{
-    Id: number,
-    Name: string,
-    Description: string,
-    Price: number,
-    Level: number,
-    Status: string
+    id: number,
+    name: string,
+    description: string,
+    price: number,
+    level: number,
+    status: string
 }
