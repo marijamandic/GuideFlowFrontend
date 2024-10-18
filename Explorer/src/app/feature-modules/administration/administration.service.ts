@@ -38,8 +38,8 @@ export class AdministrationService {
     return this.http.get<ClubInvitation>(environment.apiHost + `invitation/clubInvitation/${id}`);
   }
 
-  deleteClubInvitation(id: number): Observable<void> {
-    return this.http.delete<void>(environment.apiHost + `invitation/clubInvitation/${id}`);
+  declineClubInvitation(id: number): Observable<ClubInvitation> {
+    return this.http.put<ClubInvitation>(environment.apiHost + `invitation/clubInvitation/${id}/decline`, {});
   }
 
   addClubInvitation(invitation: ClubInvitation): Observable<ClubInvitation> {
@@ -47,6 +47,6 @@ export class AdministrationService {
   }
 
   updateClubInvitation(invitation: ClubInvitation): Observable<ClubInvitation> {
-    return this.http.put<ClubInvitation>(environment.apiHost + `invitation/clubInvitation/${invitation.id}`, invitation);
-  }
+    return this.http.put<ClubInvitation>(`${environment.apiHost}/api/invitation/clubInvitation/${invitation.id}/update`, invitation);
+  }  
 }

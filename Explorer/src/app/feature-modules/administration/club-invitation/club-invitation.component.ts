@@ -20,6 +20,22 @@ export class ClubInvitationComponent implements OnInit {
     this.getClubInvitations();
   }
 
+  getStatusDisplay(status: ClubInvitationStatus): string {
+    switch (status) {
+      case ClubInvitationStatus.PENDING:
+        return 'Pending';
+      case ClubInvitationStatus.ACCEPTED:
+        return 'Accepted';
+      case ClubInvitationStatus.DECLINED:
+        return 'Declined';
+      case ClubInvitationStatus.CANCELLED:
+        return 'Cancelled';
+      default:
+        return 'Unknown Status';
+    }
+  }
+
+
   getClubInvitations(): void {
     this.shouldRenderForm = false;
     this.service.getClubInvitations().subscribe({
@@ -33,26 +49,16 @@ export class ClubInvitationComponent implements OnInit {
     });
   }
 
-  deleteInvitation(id: number): void {
-    this.service.deleteClubInvitation(id).subscribe({
-      next: () => {
-        this.getClubInvitations();
-      },
-      error: (err: any) => {
-        console.error(err);
-      }
+  declineInvitation(id: number): void {
+    console.log(`Declining invitation with ID: ${id}`);
+    this.service.declineClubInvitation(id).subscribe({
+        next: () => {
+            this.getClubInvitations();
+        },
+        error: (err: any) => {
+            console.log(id);
+            console.error(`Error while declining invitation: ${err}`);
+        }
     });
-  }
-
-  onEditClicked(invitation: ClubInvitation): void {
-    this.selectedInvitation = invitation;
-    this.shouldEdit = true;
-    this.shouldRenderForm = true;
-  }
-
-  onAddClicked(): void {
-    this.selectedInvitation = null;
-    this.shouldEdit = false;
-    this.shouldRenderForm = true;
   }
 }
