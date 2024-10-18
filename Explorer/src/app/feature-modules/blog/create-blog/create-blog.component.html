@@ -15,11 +15,13 @@
       </div>
       
       <!-- Image URL Field -->
-      <div class="form-group">
+      <!--<div class="form-group">
         <label for="imageUrl">Image URL</label>
         <input id="imageUrl" formControlName="imageUrl" class="form-control" type="text" />
-      </div>
+      </div>-->
       
+      <input type="file" (change)="onFileSelected($event)">
+
       <!-- Status Field -->
       <div class="form-group">
         <label for="status">Status</label>

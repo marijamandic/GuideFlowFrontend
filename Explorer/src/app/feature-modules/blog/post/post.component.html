@@ -3,7 +3,7 @@
     <p><strong>Description:</strong> {{ p.description }}</p>
     <p><strong>Author ID:</strong> {{ p.userId }}</p>
     <p><strong>Publish Date:</strong> {{ p.publishDate | date:'longDate' }}</p>
-    <img [src]="p.imageUrl" alt="Post image" *ngIf="p.imageUrl" class="post-image"/>
+    <img [src]="getImagePath(p.imageUrl)" alt="Post image" *ngIf="p.imageUrl" class="post-image"/>
     <p><strong>Status:</strong> {{ getStatusName(p.status) }}</p>
     <hr>
 </div>

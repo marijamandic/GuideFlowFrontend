@@ -4,7 +4,8 @@ export interface Post {
     userId: number;   
     description: string;  
     publishDate: Date;    
-    imageUrl: string;   
+    imageUrl: string;
+    imageBase64: string;   
     status: Status;      
 }
 

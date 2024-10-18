@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 })
 export class CreateBlogComponent implements OnInit{
   postForm : FormGroup;
+  imageBase64: string;
   statuses = Object.keys(Status).filter(key => isNaN(Number(key))).map(key => ({
     name: key,                // Prikaz imena statusa
     value: Status[key as keyof typeof Status]  // Integer vrednost
@@ -22,9 +23,20 @@ export class CreateBlogComponent implements OnInit{
       this.postForm = this.fb.group({
         title: ['', Validators.required],
         description: ['', Validators.required],
-        imageUrl: ['', Validators.required],
         status: [Status.Draft, Validators.required],
+        imageBase64: ['']
       });
+  }
+  onFileSelected(event : any){
+    const file : File = event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = () =>{
+      this.imageBase64 = reader.result as string;
+      this.postForm.patchValue({
+        imageBase64: this.imageBase64
+      });
+    }
+    reader.readAsDataURL(file);
   }
   onSubmit(): void {
     if (this.postForm.valid) {

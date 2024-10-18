@@ -3,6 +3,7 @@ import { Post, Status } from '../model/post.model';
 import { PostService } from '../post.service';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
 import { Router } from '@angular/router';
+import { environment } from 'src/env/environment';
 
 @Component({
   selector: 'xp-post',
@@ -25,6 +26,9 @@ export class PostComponent implements OnInit{
   }
   getStatusName(status: Status): string {
     return Status[status];  // Ovo vraća ime enum-a (Draft, Published, Closed)
+  }
+  getImagePath(imageUrl: string){
+    return environment.webRootHost+imageUrl;
   }
 
   navigateToCreatePost(){
