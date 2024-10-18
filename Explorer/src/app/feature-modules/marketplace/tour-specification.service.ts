@@ -12,6 +12,6 @@ export class TourSpecificationService {
   constructor(private http: HttpClient) { }
 
   getTourSpecifications () : Observable<PagedResults<TourSpecification>>{
-    return this.http.get<PagedResults<TourSpecification>>('');
+    return this.http.get<PagedResults<TourSpecification>>('https://localhost:44333/api/tourist/tourspecifications');
   }
 }

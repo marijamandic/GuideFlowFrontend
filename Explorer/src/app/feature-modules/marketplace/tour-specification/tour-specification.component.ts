@@ -11,7 +11,7 @@ import { PagedResults } from 'src/app/shared/model/paged-results.model';
 
 export class TourSpecificationComponent implements OnInit {
   
-  tourSpecification: TourSpecification[] = [];
+ tourSpecification: TourSpecification[] = [];
   constructor(private service : TourSpecificationService) {}
 
   ngOnInit(): void {

@@ -4,21 +4,22 @@
             <tr>
                 <th>UserId</th>
                 <th>TourDifficutly</th>
-                <th>CarRating</th>
                 <th>WalkRating</th>
-                <th>BoatRating</th>
                 <th>BikeRating</th>
+                <th>CarRating</th>
+                <th>BoatRating</th>
+                <th>Tags</th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let ts of tourSpecification">
                 <td>{{ts.userId}}</td>
                 <td>{{ts.tourDifficulty}}</td>
-                <td>{{ts.carRating}}</td>
                 <td>{{ts.walkRating}}</td>
-                <td>{{ts.boatRating}}</td>
                 <td>{{ts.bikeRating}}</td>
-
+                <td>{{ts.carRating}}</td>
+                <td>{{ts.boatRating}}</td>
+                <td>{{ts.tags}}</td>
             </tr>
         </tbody>
     </table>
