@@ -10,9 +10,6 @@ import { ClubInvitation, ClubInvitationStatus } from '../model/club-invitation.m
 export class ClubInvitationComponent implements OnInit {
 
   clubInvitations: ClubInvitation[] = [];
-  selectedInvitation: ClubInvitation | null = null;
-  shouldRenderForm: boolean = false;
-  shouldEdit: boolean = false;
 
   constructor(private service: AdministrationService) { }
 
@@ -35,9 +32,7 @@ export class ClubInvitationComponent implements OnInit {
     }
   }
 
-
   getClubInvitations(): void {
-    this.shouldRenderForm = false;
     this.service.getClubInvitations().subscribe({
       next: (result) => {
         this.clubInvitations = result;
@@ -50,13 +45,11 @@ export class ClubInvitationComponent implements OnInit {
   }
 
   declineInvitation(id: number): void {
-    console.log(`Declining invitation with ID: ${id}`);
     this.service.declineClubInvitation(id).subscribe({
         next: () => {
             this.getClubInvitations();
         },
         error: (err: any) => {
-            console.log(id);
             console.error(`Error while declining invitation: ${err}`);
         }
     });

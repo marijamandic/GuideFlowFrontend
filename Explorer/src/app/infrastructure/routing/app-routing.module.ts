@@ -6,7 +6,7 @@ import { EquipmentComponent } from 'src/app/feature-modules/administration/equip
 import { AuthGuard } from '../auth/auth.guard';
 import { RegistrationComponent } from '../auth/registration/registration.component';
 import { ClubInvitationComponent } from 'src/app/feature-modules/administration/club-invitation/club-invitation.component';
-import { ClubInvitationFormPageComponent } from 'src/app/feature-modules/administration/club-invitation-form-page/club-invitation-form-page.component';
+import { ClubInvitationFormComponent } from 'src/app/feature-modules/administration/club-invitation-form/club-invitation-form.component';
 
 const routes: Routes = [
   {path: 'home', component: HomeComponent},
@@ -14,8 +14,8 @@ const routes: Routes = [
   {path: 'register', component: RegistrationComponent},
   {path: 'equipment', component: EquipmentComponent, canActivate: [AuthGuard],},
   {path: 'club-invitation', component: ClubInvitationComponent, canActivate: [AuthGuard],},
-  {path: 'club-invitation/add', component: ClubInvitationFormPageComponent, canActivate: [AuthGuard], },
-  {path: 'club-invitation/edit/:id', component: ClubInvitationFormPageComponent, canActivate: [AuthGuard], },
+  {path: 'club-invitation/add', component: ClubInvitationFormComponent, canActivate: [AuthGuard], },
+  {path: 'club-invitation/edit/:id', component: ClubInvitationFormComponent, canActivate: [AuthGuard], },
 
 ];
 

@@ -7,9 +7,6 @@ import { MaterialModule } from 'src/app/infrastructure/material/material.module'
 import { ReactiveFormsModule } from '@angular/forms';
 import { ClubInvitationComponent } from './club-invitation/club-invitation.component';
 import { ClubInvitationFormComponent } from './club-invitation-form/club-invitation-form.component';
-import { ClubInvitationFormPageComponent } from './club-invitation-form-page/club-invitation-form-page.component';
-
-
 
 @NgModule({
   declarations: [
@@ -17,7 +14,6 @@ import { ClubInvitationFormPageComponent } from './club-invitation-form-page/clu
     EquipmentComponent,
     ClubInvitationComponent,
     ClubInvitationFormComponent,
-    ClubInvitationFormPageComponent
   ],
   imports: [
     CommonModule,
@@ -30,7 +26,6 @@ import { ClubInvitationFormPageComponent } from './club-invitation-form-page/clu
     EquipmentFormComponent,
     ClubInvitationComponent,
     ClubInvitationFormComponent,
-    ClubInvitationFormPageComponent
   ]
 })
 export class AdministrationModule { }
