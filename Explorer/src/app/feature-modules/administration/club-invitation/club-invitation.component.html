@@ -16,6 +16,9 @@
                 <td>{{ invitation.touristId }}</td> 
                 <td>{{ getStatusDisplay(invitation.status) }}</td>
                 <td>
+                    <button (click)="acceptInvitation(invitation.id || 0)" mat-icon-button color="warn">
+                        <mat-icon>thumb_up</mat-icon> 
+                    </button>   
                     <button (click)="declineInvitation(invitation.id || 0)" mat-icon-button color="warn">
                         <mat-icon>thumb_down</mat-icon> 
                     </button>

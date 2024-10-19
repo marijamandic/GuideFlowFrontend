@@ -14,7 +14,7 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegistrationComponent},
   {path: 'equipment', component: EquipmentComponent, canActivate: [AuthGuard],},
-  {path: 'club', component: ClubComponent, canActivate: [AuthGuard],}
+  {path: 'club', component: ClubComponent, canActivate: [AuthGuard],},
   {path: 'club-invitation', component: ClubInvitationComponent, canActivate: [AuthGuard],},
   {path: 'club-invitation/add', component: ClubInvitationFormComponent, canActivate: [AuthGuard], },
   {path: 'club-invitation/edit/:id', component: ClubInvitationFormComponent, canActivate: [AuthGuard], },

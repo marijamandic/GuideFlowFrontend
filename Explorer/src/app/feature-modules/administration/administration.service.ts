@@ -11,7 +11,6 @@ import { ClubInvitation } from './model/club-invitation.model';
   providedIn: 'root'
 })
 export class AdministrationService {
-
   constructor(private http: HttpClient) { }
 
   getEquipment(): Observable<PagedResults<Equipment>> {
@@ -53,6 +52,10 @@ export class AdministrationService {
 
   declineClubInvitation(id: number): Observable<ClubInvitation> {
     return this.http.put<ClubInvitation>(environment.apiHost + `invitation/clubInvitation/${id}/decline`, {});
+  }
+
+  acceptClubInvitation(id: number): Observable<ClubInvitation> {
+    return this.http.put<ClubInvitation>(environment.apiHost + `invitation/clubInvitation/${id}/accept`, {});
   }
 
   addClubInvitation(invitation: ClubInvitation): Observable<ClubInvitation> {

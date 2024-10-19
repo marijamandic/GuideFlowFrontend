@@ -44,6 +44,17 @@ export class ClubInvitationComponent implements OnInit {
     });
   }
 
+  acceptInvitation(id: number): void {
+    this.service.acceptClubInvitation(id).subscribe({
+        next: () => {
+            this.getClubInvitations();
+        },
+        error: (err: any) => {
+            console.error(`Error while declining invitation: ${err}`);
+        }
+    });
+  }
+
   declineInvitation(id: number): void {
     this.service.declineClubInvitation(id).subscribe({
         next: () => {
