@@ -2,8 +2,8 @@
 	<ul>
 		<li *ngFor="let problem of problems">
 			<div class="problem-card">
-				<div>{{ problem.category }}</div>
-				<div>{{ problem.priority }}</div>
+				<div>{{ getEnumtring(problem.category, category) }}</div>
+				<div>{{ getEnumtring(problem.priority, priority) }}</div>
 				<div>{{ problem.description }}</div>
 				<div>{{ problem.reportedAt }}</div>
 			</div>

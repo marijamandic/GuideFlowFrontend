@@ -2,7 +2,7 @@
 	<div>
 		<div>Category</div>
 		<select formControlName="category">
-			<option *ngFor="let category of categories" [value]="category">
+			<option *ngFor="let category of categories; let i = index" [value]="i">
 				{{ category }}
 			</option>
 		</select>
@@ -10,7 +10,7 @@
 	<div>
 		<div>Priority</div>
 		<select formControlName="priority">
-			<option *ngFor="let priority of priorities" [value]="priority">
+			<option *ngFor="let priority of priorities; let i = index" [value]="i">
 				{{ priority }}
 			</option>
 		</select>

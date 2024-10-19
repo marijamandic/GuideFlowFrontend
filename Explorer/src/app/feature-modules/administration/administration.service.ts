@@ -4,7 +4,7 @@ import { Equipment } from './model/equipment.model';
 import { environment } from 'src/env/environment';
 import { Observable } from 'rxjs';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
-import { Problem } from './model/problem.model';
+import { Problem } from 'src/app/shared/model/problem.model';
 
 @Injectable({
 	providedIn: 'root'
