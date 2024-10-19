@@ -5,12 +5,18 @@ import { LoginComponent } from '../auth/login/login.component';
 import { EquipmentComponent } from 'src/app/feature-modules/administration/equipment/equipment.component';
 import { AuthGuard } from '../auth/auth.guard';
 import { RegistrationComponent } from '../auth/registration/registration.component';
+import { CommentComponent } from 'src/app/feature-modules/blog/comment/comment.component';
+import { PostComponent } from 'src/app/feature-modules/blog/post/post.component';
+import { CreateBlogComponent } from 'src/app/feature-modules/blog/create-blog/create-blog.component';
 
 const routes: Routes = [
   {path: 'home', component: HomeComponent},
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegistrationComponent},
-  {path: 'equipment', component: EquipmentComponent, canActivate: [AuthGuard],}
+  {path: 'equipment', component: EquipmentComponent, canActivate: [AuthGuard],},
+  {path: 'blog', component: PostComponent},
+  {path: 'comment/:id', component: CommentComponent},
+  {path: 'createBlog', component: CreateBlogComponent}
 ];
 
 @NgModule({

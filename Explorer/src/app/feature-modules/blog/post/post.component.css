@@ -1,0 +1,12 @@
+.info-button {
+    background-color: #17a2b8; /* Plava boja info dugmeta */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+
+  .info-button:hover {
+    background-color: #138496; /* Tamnija nijansa plave */
+  }
