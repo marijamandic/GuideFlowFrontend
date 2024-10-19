@@ -7,5 +7,5 @@
     <p><strong>Status:</strong> {{ getStatusName(p.status) }}</p>
     <hr>
 </div>
-<button (click)="navigateToCreatePost()">Create post</button>
+<button *ngIf="user?.role==='author'" (click)="navigateToCreatePost()">Create post</button>
   
