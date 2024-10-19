@@ -4,12 +4,13 @@ export interface Post {
     userId: number;   
     description: string;  
     publishDate: Date;    
-    imageUrl: string;   
+    imageUrl: string;
+    imageBase64: string;   
     status: Status;      
 }
 
 export enum Status {
-    Draft = 'Draft',         
-    Published = 'Published', 
-    Closed = 'Closed'        
+    Draft = 0,         
+    Published = 1, 
+    Closed = 2        
 }

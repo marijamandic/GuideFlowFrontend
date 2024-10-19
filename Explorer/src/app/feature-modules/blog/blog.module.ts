@@ -6,6 +6,8 @@ import { RouterModule } from '@angular/router';
 import { CommentFormComponent } from './comment-form/comment-form.component';
 import { MaterialModule } from 'src/app/infrastructure/material/material.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { CreateBlogComponent } from './create-blog/create-blog.component';
+import { MarkdownModule } from 'ngx-markdown';
 
 
 
@@ -13,17 +15,20 @@ import { ReactiveFormsModule } from '@angular/forms';
   declarations: [
     CommentComponent,
     PostComponent,
+    CreateBlogComponent,
     CommentFormComponent
   ],
   imports: [
     CommonModule,
     RouterModule,
     MaterialModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MarkdownModule.forRoot()
   ],
   exports:[
     CommentComponent,
-    PostComponent
+    PostComponent,
+    CreateBlogComponent
   ]
 })
 export class BlogModule { }
