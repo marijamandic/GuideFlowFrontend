@@ -1,0 +1,19 @@
+<form [formGroup]="invitationForm" (ngSubmit)="onSubmit()">
+  <label for="clubId">Club ID</label>
+  <input id="clubId" formControlName="clubId" type="text" />
+
+  <label for="touristId">Tourist ID</label>
+  <input id="touristId" formControlName="touristId" type="text" />
+
+  <div *ngIf="isEditMode">
+    <label for="status">Status</label>
+    <select id="status" formControlName="status">
+        <option value="Pending">Pending</option>
+        <option value="Accepted">Accepted</option>
+        <option value="Declined">Declined</option>
+        <option value="Cancelled">Cancelled</option>
+    </select>    
+  </div>
+
+  <button type="submit">Save</button>
+</form>

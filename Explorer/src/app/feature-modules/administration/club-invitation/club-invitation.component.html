@@ -1,0 +1,34 @@
+<div>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Club ID</th>
+                <th>Tourist ID</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let invitation of clubInvitations">
+                <td>{{ invitation.id }}</td>   
+                <td>{{ invitation.clubId }}</td>
+                <td>{{ invitation.touristId }}</td> 
+                <td>{{ getStatusDisplay(invitation.status) }}</td>
+                <td>
+                    <button (click)="declineInvitation(invitation.id || 0)" mat-icon-button color="warn">
+                        <mat-icon>thumb_down</mat-icon> 
+                    </button>
+                    <button [routerLink]="['/club-invitation/edit', invitation.id]" mat-icon-button color="primary">
+                        <mat-icon>edit</mat-icon>
+                    </button>                      
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="add-button">
+        <button [routerLink]="['/club-invitation/add']" mat-icon-button>
+            <mat-icon>add</mat-icon>
+        </button>          
+    </div>
+</div>
