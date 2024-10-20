@@ -5,6 +5,7 @@ import { environment } from 'src/env/environment';
 import { Observable } from 'rxjs';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
 import { Club } from './model/club.model';
+import { ClubRequest } from './model/club-request.model';
 import { ClubInvitation } from './model/club-invitation.model';
 
 @Injectable({
@@ -41,6 +42,22 @@ export class AdministrationService {
     return this.http.put<Club>(environment.apiHost + 'manageclub/club/' + club.id,club);
   }
 
+  getClubRequest(): Observable<PagedResults<ClubRequest>>{
+    return this.http.get<PagedResults<ClubRequest>>(environment.apiHost + 'request/clubRequest/1')
+  }
+
+  addRequest(clubRequest: ClubRequest): Observable<ClubRequest>{
+    return this.http.post<ClubRequest>(environment.apiHost + 'request/clubRequest', clubRequest)
+  }
+
+  /*updateRequest(clubRequest: ClubRequest): Observable<ClubRequest>{
+    return this.http.post<ClubRequest>(environment.apiHost + 'request/')
+  }*/
+  
+  /*
+  deleteRequest(clubRequest: ClubRequest): Observable<ClubRequest>{
+    return this.http.post<ClubRequest>(environment.apiHost + 'request/')
+  */
   // Club Invitation
   getClubInvitations(): Observable<ClubInvitation[]> {
     return this.http.get<ClubInvitation[]>(environment.apiHost + 'invitation/clubInvitation/all');

@@ -6,6 +6,7 @@ import { RegistrationComponent } from './infrastructure/auth/registration/regist
 import { EquipmentComponent } from './feature-modules/administration/equipment/equipment.component';
 import { AuthGuard } from './infrastructure/auth/auth.guard';
 import { ClubComponent } from './feature-modules/administration/club/club.component';
+import { ClubRequestComponent } from './feature-modules/administration/club-request/club-request.component';
 
 const routes: Routes = [
   {path: 'home', component: HomeComponent},
@@ -13,6 +14,8 @@ const routes: Routes = [
   {path: 'register', component: RegistrationComponent},
   {path: 'equipment', component: EquipmentComponent, canActivate: [AuthGuard],},
   {path: 'club', component: ClubComponent, canActivate: [AuthGuard],},
+  { path: 'home', component: HomeComponent },
+  { path: 'clubRequest', component: ClubRequestComponent }
 ];
 
 @NgModule({
