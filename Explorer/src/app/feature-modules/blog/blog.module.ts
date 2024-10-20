@@ -8,6 +8,7 @@ import { MaterialModule } from 'src/app/infrastructure/material/material.module'
 import { ReactiveFormsModule } from '@angular/forms';
 import { CreateBlogComponent } from './create-blog/create-blog.component';
 import { MarkdownModule } from 'ngx-markdown';
+import { PostInfoComponent } from './post-info/post-info.component';
 
 
 
@@ -16,7 +17,8 @@ import { MarkdownModule } from 'ngx-markdown';
     CommentComponent,
     PostComponent,
     CreateBlogComponent,
-    CommentFormComponent
+    CommentFormComponent,
+    PostInfoComponent
   ],
   imports: [
     CommonModule,
@@ -28,7 +30,9 @@ import { MarkdownModule } from 'ngx-markdown';
   exports:[
     CommentComponent,
     PostComponent,
-    CreateBlogComponent
+    CreateBlogComponent,
+    CommentFormComponent,
+    PostInfoComponent
   ]
 })
 export class BlogModule { }

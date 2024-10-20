@@ -7,7 +7,7 @@
     <p><strong>Publish Date:</strong> {{ p.publishDate | date:'longDate' }}</p>
     <img [src]="getImagePath(p.imageUrl)" alt="Post image" *ngIf="p.imageUrl" class="post-image"/>
     <p><strong>Status:</strong> {{ getStatusName(p.status) }}</p>
-    <button (click)="navigateToComments(p.id)" class="info-button">See comments for blog</button>
+    <button (click)="navigateToMoreInfo(p.id)" class="info-button">See more info</button>
     <hr>
 </div>
 <button *ngIf="user?.role==='author'" (click)="navigateToCreatePost()">Create post</button>

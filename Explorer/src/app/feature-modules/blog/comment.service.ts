@@ -12,9 +12,12 @@ export class CommentService {
 
   constructor(private http:HttpClient) { }
 
-  getComments(id: string): Observable<PagedResults<Comment>> {
+  getComments(id: string,userRole:string): Observable<PagedResults<Comment>> {
     const params = new HttpParams().set('id', id.toString());
-    return this.http.get<PagedResults<Comment>>(environment.apiHost + 'commentmanaging/comment', { params });
+    if(userRole==="tourist")
+      return this.http.get<PagedResults<Comment>>(environment.apiHost + 'commentmanaging/comment', { params });
+    else
+      return this.http.get<PagedResults<Comment>>(environment.apiHost + 'commentview/comment', { params });
   }
 
   deleteComments(id:number):Observable<Comment>{

@@ -1,10 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input} from '@angular/core';
 import { CommentService } from '../comment.service';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
 import { Comment } from 'src/app/feature-modules/blog/model/comment.model'
 import { User } from 'src/app/infrastructure/auth/model/user.model';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'xp-comment',
@@ -13,17 +12,16 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class CommentComponent implements OnInit{
 
-  postId: string | null = null;
+  @Input() postId!: string;
   user: User | undefined;
   selectedComment: Comment;
   comments:Comment[]=[];
   shouldRenderCommentForm: boolean = false;
   shouldEdit: boolean = false;
 
-  constructor (private service:CommentService,private authService: AuthService,private route: ActivatedRoute){ }
+  constructor (private service:CommentService,private authService: AuthService){ }
 
   ngOnInit(): void {
-    this.postId = this.route.snapshot.paramMap.get('id');
     console.log(this.postId);
     this.authService.user$.subscribe(user => {
       this.user = user;
@@ -45,8 +43,8 @@ export class CommentComponent implements OnInit{
   getComments():void{
     this.shouldRenderCommentForm=false;
     this.shouldEdit=false;
-    if(this.postId!==null){
-      this.service.getComments(this.postId).subscribe({
+    if(this.postId!==null && this.user){
+      this.service.getComments(this.postId,this.user.role).subscribe({
         next:(result:PagedResults<Comment>)=>{
           this.comments=result.results;
         },
