@@ -8,6 +8,8 @@ import { RegistrationComponent } from '../auth/registration/registration.compone
 import { ClubComponent } from 'src/app/feature-modules/administration/club/club.component';
 import { ClubInvitationComponent } from 'src/app/feature-modules/administration/club-invitation/club-invitation.component';
 import { ClubInvitationFormComponent } from 'src/app/feature-modules/administration/club-invitation-form/club-invitation-form.component';
+import { ClubRequestComponent } from 'src/app/feature-modules/administration/club-request/club-request.component';
+import { ClubRequestFormComponent } from 'src/app/feature-modules/administration/club-request-form/club-request-form.component';
 
 const routes: Routes = [
   {path: 'home', component: HomeComponent},
@@ -18,7 +20,8 @@ const routes: Routes = [
   {path: 'club-invitation', component: ClubInvitationComponent, canActivate: [AuthGuard],},
   {path: 'club-invitation/add', component: ClubInvitationFormComponent, canActivate: [AuthGuard], },
   {path: 'club-invitation/edit/:id', component: ClubInvitationFormComponent, canActivate: [AuthGuard], },
-
+  {path: 'club-request', component: ClubRequestComponent, canActivate: [AuthGuard],},
+  {path: 'club-request/add', component: ClubRequestFormComponent, canActivate: [AuthGuard],}
 ];
 
 @NgModule({

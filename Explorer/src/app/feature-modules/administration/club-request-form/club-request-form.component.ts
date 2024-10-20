@@ -4,7 +4,12 @@ import { AdministrationService } from '../administration.service';
 import { ClubRequest } from '../model/club-request.model';
 
 
-
+enum ClubRequestStatus {
+  PENDING = 0,
+  ACCEPTED = 1,
+  DECLINED = 2,
+  CANCELLED = 3
+}
 
 @Component({
   selector: 'xp-club-request-form',
@@ -32,11 +37,14 @@ export class ClubRequestFormComponent implements OnChanges {
     touristId: new FormControl('', [Validators.required])
   })
 
+  
+  
+
   addRequest(): void{
     console.log(this.clubRequestForm.value)
-
+    const status: ClubRequestStatus = Number(this.clubRequestForm.value.status) as ClubRequestStatus;
     const clubRequest: ClubRequest = {
-      status: this.clubRequestForm.value.status || "",
+      status,
       clubId: Number(this.clubRequestForm.value.clubId) || 0,
       touristId: Number(this.clubRequestForm.value.touristId) || 0,
     }
@@ -49,8 +57,9 @@ export class ClubRequestFormComponent implements OnChanges {
   }
 
   updateRequest(): void {
+    const status: ClubRequestStatus = Number(this.clubRequestForm.value.status) as ClubRequestStatus;
     const clubRequest: ClubRequest = {
-      status: this.clubRequestForm.value.status || "",
+      status,
       clubId: Number(this.clubRequestForm.value.clubId) || 0,
       touristId: Number(this.clubRequestForm.value.touristId) || 0,
     }
