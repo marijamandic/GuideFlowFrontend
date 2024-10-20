@@ -3,6 +3,7 @@ import { AdministrationService } from '../administration.service';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
 import { Club } from '../model/club.model';
 import { FormControl, FormGroup,Validators } from '@angular/forms';
+import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 @Component({
   selector: 'xp-club-form',
   templateUrl: './club-form.component.html',
@@ -13,8 +14,9 @@ export class ClubFormComponent implements OnChanges {
   @Output() clubUpdated = new EventEmitter<null>();
   @Input() club: Club;
   @Input() shouldEdit: boolean = false;
+  ownerId: number = 0;
 
-  constructor(private service: AdministrationService) { }
+  constructor(private service: AdministrationService, private authService: AuthService) { }
   
   clubForm = new FormGroup({
     name: new FormControl('',[Validators.required]),
@@ -23,14 +25,18 @@ export class ClubFormComponent implements OnChanges {
 
   });
   ngOnChanges(): void {
+    this.authService.user$.subscribe(user => {
+      this.ownerId = user.id;
+    })
     this.clubForm.reset();
     if(this.shouldEdit){
       this.clubForm.patchValue(this.club);
     }
   }
   addClub(): void{
+    //console.log(this.ownerId);
     const club: Club = {
-      ownerId: 1,
+      ownerId: this.ownerId,
       name: this.clubForm.value.name || "",
       description: this.clubForm.value.description || "",
       imageUrl: this.clubForm.value.imageUrl || "",
@@ -41,7 +47,7 @@ export class ClubFormComponent implements OnChanges {
   }
   updateClub() : void {
     const club : Club = {
-      ownerId: 1,
+      ownerId: this.ownerId,
       name: this.clubForm.value.name || "",
       description: this.clubForm.value.description || "",
       imageUrl: this.clubForm.value.imageUrl || "",

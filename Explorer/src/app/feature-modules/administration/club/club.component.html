@@ -1,6 +1,8 @@
 <div>
     <br>
-    <p><b>Club</b></p>
+    <br>
+    <p class="club_subtitle"><b>Club</b></p>
+    <br>
     <table>
         <thead>
             <tr>
@@ -14,16 +16,18 @@
         </thead>
 
         <tbody>
-            <tr *ngFor="let c of club">
+            <tr *ngFor="let c of club" [ngClass]="{'green-row': c.ownerId == idOfOwner}">
                 <td>{{c.ownerId}}</td>
                 <td>{{c.name}}</td>
                 <td>{{c.description}}</td>
                 <td>{{c.imageUrl}}</td>
                 <td>
-                    <button color="accent" (click)="deleteClub(c.id || 0)" mat-icon-button>
+                    <button *ngIf="c.ownerId == idOfOwner" color="accent" (click)="deleteClub(c.id || 0)" mat-icon-button>
                         <mat-icon>delete</mat-icon>
                     </button>
-                    <button color="primary" (click)="onEditClicked(c)" mat-icon-button>
+                </td>
+                <td>
+                    <button *ngIf="c.ownerId == idOfOwner" color="primary" (click)="onEditClicked(c)" mat-icon-button>
                         <mat-icon>edit</mat-icon>
                     </button>
                 </td>
