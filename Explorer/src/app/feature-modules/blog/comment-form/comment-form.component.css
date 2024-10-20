@@ -1,10 +1,21 @@
-div {
-    width: 400px;
-    display:flex;
-    gap: 20px;
-    flex-direction: column;
+.comment-section {
+    display: flex;
+    justify-content: center; /* Centriranje cele sekcije */
 }
 
-.mat-icon {
-    vertical-align: middle;
+.comment-form {
+    display: flex;
+    justify-content: center; /* Centriranje textarea i dugmeta */
+    align-items: center;      /* Vertikalno poravnanje */
+    gap: 10px;                /* Razmak između textarea i dugmeta */
+    margin-top: 20px;         /* Razmak između forme i komentara */
+}
+
+.comment-form mat-form-field {
+    width: auto;
+    max-width: 300px; /* Ograniči širinu textarea */
+}
+
+.comment-form button {
+    margin-left: 10px; /* Razmak između polja i dugmeta */
 }

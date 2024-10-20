@@ -2,29 +2,32 @@ import { Component, OnInit } from '@angular/core';
 import { Post, Status } from '../model/post.model';
 import { PostService } from '../post.service';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
-import { Router } from '@angular/router';
 import { environment } from 'src/env/environment';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { User } from 'src/app/infrastructure/auth/model/user.model';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'xp-post',
-  templateUrl: './post.component.html',
-  styleUrls: ['./post.component.css']
+  selector: 'xp-post-info',
+  templateUrl: './post-info.component.html',
+  styleUrls: ['./post-info.component.css']
 })
-export class PostComponent implements OnInit{
-  posts : Post[];
+export class PostInfoComponent implements OnInit{
+  postId: string | null = null;
+  post: Post | null = null;
   user : User | undefined;
-  constructor(private postService : PostService ,private authService : AuthService ,private router : Router){}
+  constructor(private postService : PostService ,private authService : AuthService,private route: ActivatedRoute){}
 
   ngOnInit(): void {
+      this.postId = this.route.snapshot.paramMap.get('id');
+      console.log(this.postId);
       this.authService.user$.subscribe(user =>{
         this.user = user;
       })
-      if(this.user){
-        this.postService.getPosts(this.user.role).subscribe({
-          next: (result: PagedResults<Post>)=>{
-            this.posts = result.results;
+      if(this.user && this.postId){
+        this.postService.getPost(Number(this.postId),this.user.role).subscribe({
+          next: (result:Post)=>{
+            this.post = result;
           },
           error: (err : any)=>{
             console.log(err);
@@ -39,13 +42,5 @@ export class PostComponent implements OnInit{
 
   getImagePath(imageUrl: string){
     return environment.webRootHost+imageUrl;
-  }
-
-  navigateToMoreInfo(postId: number) {
-    this.router.navigate(['/blog', postId]);
-  }
-
-  navigateToCreatePost(){
-    this.router.navigate(['createBlog']);
   }
 }

@@ -8,6 +8,7 @@ import { RegistrationComponent } from '../auth/registration/registration.compone
 import { CommentComponent } from 'src/app/feature-modules/blog/comment/comment.component';
 import { PostComponent } from 'src/app/feature-modules/blog/post/post.component';
 import { CreateBlogComponent } from 'src/app/feature-modules/blog/create-blog/create-blog.component';
+import { PostInfoComponent } from 'src/app/feature-modules/blog/post-info/post-info.component';
 
 const routes: Routes = [
   {path: 'home', component: HomeComponent},
@@ -15,7 +16,8 @@ const routes: Routes = [
   {path: 'register', component: RegistrationComponent},
   {path: 'equipment', component: EquipmentComponent, canActivate: [AuthGuard],},
   {path: 'blog', component: PostComponent},
-  {path: 'comment/:id', component: CommentComponent},
+  {path: 'blog/:id', component: PostInfoComponent},
+  {path: 'comment', component: CommentComponent},
   {path: 'createBlog', component: CreateBlogComponent}
 ];
 

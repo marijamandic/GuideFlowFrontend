@@ -1,5 +1,4 @@
-<form [formGroup]="commentForm">
-    <div>
+<form [formGroup]="commentForm" class="comment-form">
         <mat-form-field>
           <mat-label>Content</mat-label>
           <textarea matInput
@@ -10,5 +9,4 @@
         </mat-form-field>
         <button *ngIf="!shouldEdit" color="primary" type="submit" (click)="addComment()" mat-raised-button>Done</button>
         <button *ngIf="shouldEdit" color="primary" type="submit" (click)="editComment()" mat-raised-button>Done</button>
-    </div>
 </form>
