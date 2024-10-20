@@ -1,15 +1,10 @@
-p {
-    font-size: 20px;
-    margin-left: 40%;
-}
-
 table {
     border-collapse: collapse;
     font-size: 0.9em;
     font-family: sans-serif;
     min-width: 300px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-    margin-left: 35%;
+    margin-left: 33%;
 }
 
 thead tr {
@@ -26,10 +21,6 @@ tbody tr {
     border-bottom: 1px solid #dddddd;
 }
 
-tbody tr:nth-of-type(even) {
-    background-color: #f3f3f3;
-}
-
 tbody tr:last-of-type {
     border-bottom: 2px solid #3f51b5;
 }
@@ -37,4 +28,11 @@ tbody tr:last-of-type {
 tbody tr.active-row {
     font-weight: bold;
     color: #3f51b5;
+}
+.green-row {
+    background-color: 	#90EE90; /* Svetlo zelena boja */
+}
+.club_subtitle{
+    font-size: 30px;
+    margin-left: 50%;
 }
