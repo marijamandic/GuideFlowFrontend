@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router'; 
 import { EquipmentFormComponent } from './equipment-form/equipment-form.component';
 import { EquipmentComponent } from './equipment/equipment.component';
 import { MaterialModule } from 'src/app/infrastructure/material/material.module';
@@ -9,6 +10,8 @@ import { ClubComponent } from './club/club.component';
 import { ClubRequestComponent } from './club-request/club-request.component';
 import { ClubRequestFormComponent } from './club-request-form/club-request-form.component';
 
+import { ClubInvitationComponent } from './club-invitation/club-invitation.component';
+import { ClubInvitationFormComponent } from './club-invitation-form/club-invitation-form.component';
 
 @NgModule({
   declarations: [
@@ -17,10 +20,13 @@ import { ClubRequestFormComponent } from './club-request-form/club-request-form.
     ClubFormComponent,
     ClubComponent,
     ClubRequestComponent,
-    ClubRequestFormComponent
+    ClubRequestFormComponent,
+    ClubInvitationComponent,
+    ClubInvitationFormComponent,
   ],
   imports: [
     CommonModule,
+    RouterModule,
     MaterialModule,
     ReactiveFormsModule
   ],
@@ -29,7 +35,9 @@ import { ClubRequestFormComponent } from './club-request-form/club-request-form.
     EquipmentFormComponent,
     ClubFormComponent,
     ClubComponent,
-    ClubRequestComponent
+    ClubRequestComponent,
+    ClubInvitationComponent,
+    ClubInvitationFormComponent,
   ]
 })
 export class AdministrationModule { }
