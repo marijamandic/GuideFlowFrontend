@@ -41,8 +41,9 @@ export class ClubComponent implements OnInit {
           next: (res: any) => {
             this.club.forEach(c => {
                 console.log(res)
-                const clubRequest = res.find((r: any) => r.clubId === c.id)
-                if(clubRequest !== null) c.requested = true
+                const clubRequests = res.filter((r: any) => r.clubId === c.id)
+                const pendingRequest = clubRequests.find((req: any) => req.status === 0);
+                if(pendingRequest !== null) c.requested = true
             })
             console.log(this.club)
           }
@@ -82,6 +83,40 @@ export class ClubComponent implements OnInit {
   }
 
   cancel(club: Club): void {
+    //club.requested = false;
+    this.clubRequestService.getClubRequest(this.loggedTouristId).subscribe({
+      next: (res: any) => {
+        const clubRequests = res.filter((r: any) => r.clubId === club.id);
+  
+        if (clubRequests.length > 0) {
+          let pendingRequests = clubRequests.filter((req: any) => req.status === 0);
+  
+          if (pendingRequests.length > 0) {
+            const requestToCancel = pendingRequests[0];
+            
+            this.clubRequestService.cancelClubRequest(requestToCancel.id).subscribe({
+              next: () => {
+                club.requested = false;
+                console.log(`Pending club request for club ${club.id} has been canceled.`);
+              },
+              error: (err: any) => {
+                console.error("Error canceling pending club request:", err);
+              }
+            });
+          } else {
+            console.log(`No pending club requests found for club ${club.id} to cancel.`);
+          }
+        } else {
+          console.log(`No club requests found for club ${club.id} and tourist ${this.loggedTouristId}.`);
+        }
+      },
+      error: (err: any) => {
+        console.error("Error fetching club requests:", err);
+      }
+    });
 
   }
+
+
+  
 }

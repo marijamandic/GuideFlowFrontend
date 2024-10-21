@@ -81,5 +81,9 @@ export class AdministrationService {
 
   updateClubInvitation(invitation: ClubInvitation): Observable<ClubInvitation> {
     return this.http.put<ClubInvitation>(`${environment.apiHost}/api/invitation/clubInvitation/${invitation.id}/update`, invitation);
-  }  
+  }
+
+  getAllRequests(): Observable<ClubRequest[]>{
+    return this.http.get<ClubRequest[]>(environment.apiHost + 'request/clubRequest/getAllRequests');
+  }
 }
