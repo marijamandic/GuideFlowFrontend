@@ -16,7 +16,7 @@
                 <tr *ngFor="let to of tourObjects">
                     <td>{{to.name}}</td>
                     <td>{{to.description}}</td>
-                    <td><img [src]="'https://localhost:44333' + to.imageUrl" alt="N/A" class="table-image"/></td>
+                    <td><img [src]="getImagePath(to.imageUrl)" alt="N/A" *ngIf="to.imageUrl" class="table-image"/></td>
                     <td>{{ getCategoryName(to.category) }}</td>
                 </tr>
                 <tr><button color="primary" (click)="onAddClicked()" mat-icon-button>

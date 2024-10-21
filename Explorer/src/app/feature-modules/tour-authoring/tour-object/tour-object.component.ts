@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TourObject } from '../model/tourObject.model';
 import { TourAuthoringService } from '../tour-authoring.service';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
+import { environment } from 'src/env/environment';
 
 @Component({
   selector: 'xp-tour-object',
@@ -28,6 +29,10 @@ export class TourObjectComponent implements OnInit {
       error: () => {
       }
     })
+  }
+
+  getImagePath(imageUrl: string){
+    return environment.webRootHost+imageUrl;
   }
 
   onAddClicked(): void {

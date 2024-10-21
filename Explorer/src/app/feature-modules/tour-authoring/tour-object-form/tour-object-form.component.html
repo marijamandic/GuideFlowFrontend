@@ -14,10 +14,11 @@
           cdkAutosizeMaxRows="5"></textarea>
         </mat-form-field>
 
-        <mat-form-field>
-            <mat-label>Image</mat-label>
+        <!-- <mat-form-field>
+            <mat-label>Image URL</mat-label>
             <input matInput formControlName="imageUrl" type="text"/>
-        </mat-form-field>
+        </mat-form-field> -->
+        <input type="file" (change)="onFileSelected($event)">
         
         <div>
             <label for="category">Category</label>

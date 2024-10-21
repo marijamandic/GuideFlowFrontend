@@ -3,5 +3,6 @@ export interface TourObject {
     name: string;
     description: string;
     imageUrl: string;
+    imageBase64: string; 
     category: number;
 }
