@@ -1,0 +1,12 @@
+<div>
+	<ul>
+		<li *ngFor="let problem of problems">
+			<div class="problem-card">
+				<div>{{ getEnumtring(problem.category, category) }}</div>
+				<div>{{ getEnumtring(problem.priority, priority) }}</div>
+				<div>{{ problem.description }}</div>
+				<div>{{ problem.reportedAt }}</div>
+			</div>
+		</li>
+	</ul>
+</div>
