@@ -1,5 +1,77 @@
-p {
-    margin-left: 10px;
-    margin-top: 10px;
-    font-size: 20px;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f8f8;
+    padding: 20px;
+}
+
+h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.tour-cards {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+}
+
+.tour-card {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    width: 300px;
+    flex-shrink: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.tour-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.tour-image {
+    background-color: #e0e0e0;
+    height: 180px;
+}
+
+.tour-info {
+    padding: 15px;
+}
+
+.tour-info h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.tour-info p {
+    font-size: 14px;
+    color: #666666;
+    margin-bottom: 15px;
+}
+
+.tour-rating {
+    display: flex;
+    align-items: center;
+}
+
+.rating-badge {
+    background-color: #84dcc5;
+    color: #ffffff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    margin-right: 10px;
+}
+
+.rating-text {
+    font-size: 14px;
+    color: #666666;
 }

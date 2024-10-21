@@ -8,8 +8,8 @@ import { User } from 'src/app/infrastructure/auth/model/user.model';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
-
   user: User | undefined;
+  isDropdownOpen: boolean = false;
 
   constructor(private authService: AuthService) {}
 
@@ -17,6 +17,10 @@ export class NavbarComponent implements OnInit {
     this.authService.user$.subscribe(user => {
       this.user = user;
     });
+  }
+
+  toggleDropdown(): void {
+    this.isDropdownOpen = !this.isDropdownOpen;
   }
 
   onLogout(): void {
