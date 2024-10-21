@@ -22,7 +22,7 @@ export class ClubFormComponent implements OnChanges {
   clubForm = new FormGroup({
     name: new FormControl('',[Validators.required]),
     description: new FormControl('',[Validators.required]),
-    imageBase64: new FormControl('',[Validators.required]),
+    imageBase64: new FormControl(''),
 
   });
   onFileSelected(event : any){
@@ -46,7 +46,7 @@ export class ClubFormComponent implements OnChanges {
     }
   }
   addClub(): void{
-    console.log(this.clubForm.value.imageBase64);
+    //console.log(this.clubForm.value.imageBase64);
     const club: Club = {
       ownerId: this.ownerId,
       name: this.clubForm.value.name || "",
@@ -54,8 +54,10 @@ export class ClubFormComponent implements OnChanges {
       imageBase64: this.clubForm.value.imageBase64 || "",
       imageUrl: this.clubForm.value.imageBase64 || "",
     };
+    console.log(club);
     this.service.addClub(club).subscribe({
-      next: () => {this.clubUpdated.emit() }
+      next: () => {this.clubUpdated.emit() },
+      error: (err) => {console.log(err)} 
     });
   }
   updateClub() : void {

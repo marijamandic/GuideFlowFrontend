@@ -55,7 +55,7 @@ export class ClubComponent implements OnInit {
     this.shouldRenderClubForm = true;
   }
   getImagePath(imageUrl: string){
-    console.log(imageUrl);
+    //console.log(imageUrl);
     return environment.webRootHost+imageUrl;
   }
 }
