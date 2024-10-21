@@ -13,8 +13,8 @@ export class MarketplaceService {
 
   constructor(private http: HttpClient) { }
 
-  getTourSpecifications () : Observable<PagedResults<TourSpecification>>{
-    return this.http.get<PagedResults<TourSpecification>>(environment.apiHost + 'tourist/tourspecifications');
+  getTourSpecification (userId : number) : Observable<TourSpecification>{
+    return this.http.get<TourSpecification>(environment.apiHost + 'tourist/tourspecifications/' + userId);
   }
 
   addTourSpecification(tourSpecification: TourSpecification): Observable<TourSpecification> {

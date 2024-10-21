@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { TourSpecification } from '../model/tour-specification.model';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
 import { MarketplaceService } from '../marketplace.service';
+import { AuthService } from 'src/app/infrastructure/auth/auth.service';
+import { User } from 'src/app/infrastructure/auth/model/user.model';
 
 @Component({
   selector: 'xp-tour-specification',
@@ -15,31 +17,29 @@ export class TourSpecificationComponent implements OnInit {
  selectedTourSpecification: TourSpecification;
  shouldEdit: boolean;
  shouldRenderEquipmentForm: boolean = false;
+ public userId: number;
 
-  constructor(private service : MarketplaceService) {}
 
-  ngOnInit(): void {
-    // this.service.getTourSpecifications().subscribe({
-    //   next: (result: PagedResults<TourSpecification>) => {
-    //     this.tourSpecification = result.results;
-    //   },
-    //   error: (err: any) => {
-    //     console.log(err)
-    //   }
-    // })
-    this.getTourSpecifications();
+  constructor(private service : MarketplaceService, private authService: AuthService) {
+    this.authService.user$.subscribe((user: User) => {
+      this.userId = user.id;
+    })
   }
 
-  getTourSpecifications() : void {
-    this.service.getTourSpecifications().subscribe({
-      next: (result: PagedResults<TourSpecification>) => {
-        console.log("Tour specifications loaded:", result.results);
-        this.tourSpecification = result.results;
-      },
-      error: () => {
+  ngOnInit(): void {
+    this.getTourSpecification(this.userId);
+  }
 
+  getTourSpecification(userId: number) : void {
+    this.service.getTourSpecification(userId).subscribe({
+      next: (result: TourSpecification) => {
+        console.log("API response:", result);
+        this.tourSpecification = [result];
+      },
+      error: (err: any) => {
+        console.log("Error fetching tour specification:", err);
       }
-    })
+    });
   }
   
   onEditClicked(tourSpecification: TourSpecification) : void{
@@ -56,7 +56,8 @@ export class TourSpecificationComponent implements OnInit {
   deleteTourSpecification(tourSpecification: TourSpecification) : void {
     this.service.deleteTourSpecification(tourSpecification).subscribe({
       next: (_) => {
-        this.getTourSpecifications();
+        //this.getTourSpecification(this.userId)
+        this.tourSpecification = this.tourSpecification.filter(ts => ts.id !== tourSpecification.id);
       }
     })
   }
