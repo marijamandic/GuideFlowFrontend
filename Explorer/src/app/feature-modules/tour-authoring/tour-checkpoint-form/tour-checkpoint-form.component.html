@@ -1,0 +1,30 @@
+<form [formGroup]="checkpointForm" (ngSubmit)="addCheckpoint()">
+    <div>
+        <mat-form-field>
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="name" type="text" required />
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Description</mat-label>
+            <textarea matInput formControlName="description" required></textarea>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Image URL</mat-label>
+            <input matInput formControlName="imageUrl" type="text" required />
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Latitude</mat-label>
+            <input matInput formControlName="latitude" type="number" required />
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Longitude</mat-label>
+            <input matInput formControlName="longitude" type="number" required />
+        </mat-form-field>
+    </div>
+
+    <button mat-raised-button type="submit" color="primary">Submit</button>
+</form>

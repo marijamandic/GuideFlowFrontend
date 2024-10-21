@@ -18,4 +18,12 @@ export class TourCheckpointService {
   addCheckpoint(checkpoint: Checkpoint): Observable<Checkpoint> {
     return this.http.post<Checkpoint>(`${this.baseUrl}`, checkpoint);
   }
+
+  updateCheckpoint(checkpoint: Checkpoint): Observable<Checkpoint> {
+    return this.http.put<Checkpoint>(`${this.baseUrl}/${checkpoint.id}`, checkpoint);
+  }
+
+  deleteCheckpoint(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  }  
 }
