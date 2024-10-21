@@ -15,7 +15,7 @@ constructor (private service : TourAuthoringService, private equipmentService: A
   
 }
 
-tourEquipment: TourEquipment[] = [];
+tourEquipment: Equipment[] = [];
 equipment: any[] = []; 
 selectedEquipment: { equipmentId: number, quantity: number }[] = [];
 
@@ -25,18 +25,20 @@ selectedTourId!: number;  // ID ture koji je izabran iz dropdown-a
   ngOnInit(): void {
     this.loadEquipment();
     this.loadTourEquipment();
+
+    if (this.availableTourIds.length > 0) {
+      this.selectedTourId = this.availableTourIds[0]; // Prvi ID kao default
+    }
+    console.log(this.selectedTourId);
   }
 
   loadTourEquipment(): void{
-        this.service.getTourEquipment().subscribe({
-        next:(result : PagedResults<TourEquipment>) => {
+        this.service.getTourEquipment(this.selectedTourId).subscribe({
+        next:(result : PagedResults<Equipment>) => {
+          console.log('*********metoda load tourEq:************')
           console.log(result);
           this.tourEquipment = result.results;
-
-          // Postavljanje podrazumevanog izbora na prvi ID ture (ili neki drugi način)
-          if (this.availableTourIds.length > 0) {
-            this.selectedTourId = this.availableTourIds[0];
-          }
+          console.log(this.tourEquipment);
 
         },
         error:(err : any) =>{
@@ -46,7 +48,7 @@ selectedTourId!: number;  // ID ture koji je izabran iz dropdown-a
   }
 
   loadEquipment(): void {
-    this.equipmentService.getEquipment().subscribe({
+    this.service.getEquipment().subscribe({
       next: (result: PagedResults<Equipment>) => {
         // Dodaj privremeno polje za quantity svakom Equipment
         this.equipment = result.results.map(e => ({ ...e, quantity: 1 })); // default 1
@@ -56,6 +58,13 @@ selectedTourId!: number;  // ID ture koji je izabran iz dropdown-a
         console.log(err);
       }
     });
+  }
+
+  onTourSelectionChange(): void {
+    console.log(`Tour ID changed to: ${this.selectedTourId}`);
+    this.loadTourEquipment(); // Ponovno učitavanje opreme za izabranu turu
+    console.log('dobavljene ture -----------:');
+    console.log(this.tourEquipment);
   }
 
   // Funkcija koja pronalazi naziv opreme na osnovu equipmentId
