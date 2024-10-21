@@ -13,10 +13,8 @@
           formControlName="description"
           cdkAutosizeMaxRows="5"></textarea>
         </mat-form-field>
-        <mat-form-field>
-            <mat-label>Image Url</mat-label>
-            <input matInput formControlName="imageUrl" type="text"/>
-        </mat-form-field>
+        <label>Image Url</label>
+        <input type="file" (change)="onFileSelected($event)">
         <button *ngIf="!shouldEdit" color="primary" type="submit" (click)="addClub()" mat-raised-button>Done</button>
         <button *ngIf="shouldEdit" color="primary" type="submit" (click)="updateClub()" mat-raised-button>Done</button>
     </div>

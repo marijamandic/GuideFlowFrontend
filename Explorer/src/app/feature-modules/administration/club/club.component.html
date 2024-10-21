@@ -20,7 +20,7 @@
                 <td>{{c.ownerId}}</td>
                 <td>{{c.name}}</td>
                 <td>{{c.description}}</td>
-                <td>{{c.imageUrl}}</td>
+                <td><img [src]="getImagePath(c.imageUrl)" alt="Post image" *ngIf="c.imageUrl"/></td>
                 <td>
                     <button *ngIf="c.ownerId == idOfOwner" color="accent" (click)="deleteClub(c.id || 0)" mat-icon-button>
                         <mat-icon>delete</mat-icon>

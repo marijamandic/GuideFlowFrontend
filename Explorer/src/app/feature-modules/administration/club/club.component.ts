@@ -3,6 +3,7 @@ import { AdministrationService } from '../administration.service';
 import { Club } from '../model/club.model'; 
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
+import { environment } from 'src/env/environment';
 
 @Component({
   selector: 'xp-club',
@@ -52,5 +53,9 @@ export class ClubComponent implements OnInit {
   onAddClicked(): void {
     this.shouldEdit = false;
     this.shouldRenderClubForm = true;
+  }
+  getImagePath(imageUrl: string){
+    console.log(imageUrl);
+    return environment.webRootHost+imageUrl;
   }
 }
