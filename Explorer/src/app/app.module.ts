@@ -18,6 +18,7 @@ import { JwtInterceptor } from './infrastructure/auth/jwt/jwt.interceptor';
 @NgModule({
   declarations: [
     AppComponent
+    
   ],
   imports: [
     BrowserModule,

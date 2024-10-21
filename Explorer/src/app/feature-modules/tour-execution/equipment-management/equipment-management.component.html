@@ -1,0 +1,20 @@
+<div>
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>TouristId</th>
+                <th>EquipmentId</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let em of equipment_management">
+                <td>{{em.id}}</td>
+                <td>{{em.touristId}}</td>
+                <td>{{em.equipmentId}}</td>
+                <td>{{em.status}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
