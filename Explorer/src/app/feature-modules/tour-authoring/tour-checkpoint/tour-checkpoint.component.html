@@ -1,0 +1,13 @@
+<div *ngIf="checkpoints.length === 0">
+    <p>Nema dostupnih checkpoint-a.</p>
+  </div>
+  <div *ngFor="let checkpoint of checkpoints">
+    <div>
+      <h3>{{ checkpoint.name }}</h3>
+      <p>{{ checkpoint.description }}</p>
+      <img [src]="checkpoint.imageUrl" alt="Checkpoint image">
+      <p>Latitude: {{ checkpoint.latitude }}</p>
+      <p>Longitude: {{ checkpoint.longitude }}</p>
+    </div>
+  </div>
+  
