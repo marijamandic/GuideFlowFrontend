@@ -12,6 +12,7 @@
                 <th>Image Url</th>
                 <th>Delete</th>
                 <th>Edit</th>
+                <th>Members</th>
              </tr>
         </thead>
 
@@ -30,6 +31,12 @@
                     <button *ngIf="c.ownerId == idOfOwner" color="primary" (click)="onEditClicked(c)" mat-icon-button>
                         <mat-icon>edit</mat-icon>
                     </button>
+                </td>
+                <td>
+                    <button [routerLink]="['/club-members', c.id]" mat-icon-button color="primary">
+                        <mat-icon>people</mat-icon>
+                    </button>
+                                      
                 </td>
              </tr>
              <tr>

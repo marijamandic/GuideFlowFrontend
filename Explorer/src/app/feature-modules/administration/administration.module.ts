@@ -9,9 +9,9 @@ import { ClubFormComponent } from './club-form/club-form.component';
 import { ClubComponent } from './club/club.component';
 import { ClubRequestComponent } from './club-request/club-request.component';
 import { ClubRequestFormComponent } from './club-request-form/club-request-form.component';
-
 import { ClubInvitationComponent } from './club-invitation/club-invitation.component';
 import { ClubInvitationFormComponent } from './club-invitation-form/club-invitation-form.component';
+import { ClubMemberListComponent } from 'src/app/feature-modules/administration/club-member-list/club-member-list.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +23,7 @@ import { ClubInvitationFormComponent } from './club-invitation-form/club-invitat
     ClubRequestFormComponent,
     ClubInvitationComponent,
     ClubInvitationFormComponent,
+    ClubMemberListComponent
   ],
   imports: [
     CommonModule,
@@ -38,6 +39,7 @@ import { ClubInvitationFormComponent } from './club-invitation-form/club-invitat
     ClubRequestComponent,
     ClubInvitationComponent,
     ClubInvitationFormComponent,
+    ClubMemberListComponent
   ]
 })
 export class AdministrationModule { }
