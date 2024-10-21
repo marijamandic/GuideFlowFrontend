@@ -92,4 +92,8 @@ export class AdministrationService {
   removeClubMember(clubId: number, userId: number): Observable<void> {
     return this.http.delete<void>(`${environment.apiHost}members/clubMember/${clubId}/${userId}`);
   }
+
+  getAllRequests(): Observable<ClubRequest[]>{
+    return this.http.get<ClubRequest[]>(environment.apiHost + 'request/clubRequest/getAllRequests');
+  }
 }

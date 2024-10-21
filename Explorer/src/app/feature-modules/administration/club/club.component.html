@@ -13,6 +13,7 @@
                 <th>Delete</th>
                 <th>Edit</th>
                 <th>Members</th>
+                <th></th>
              </tr>
         </thead>
 
@@ -36,14 +37,22 @@
                     <button [routerLink]="['/club-members', c.id]" mat-icon-button color="primary">
                         <mat-icon>people</mat-icon>
                     </button>
-                                      
+                    <button *ngIf="!c.requested" color="primary" (click)="request(c)" >
+                        Request
+                    </button>
+                    <button *ngIf="c.requested" color="primary" (click)="cancel(c)" >
+                        Cancel
+                    </button>
+                                 
                 </td>
              </tr>
+                
              <tr>
                 <button color="primary" (click)="onAddClicked()" mat-icon-button>
                     <mat-icon>add</mat-icon>
                 </button>
             </tr>
+           
         </tbody>
     </table>
     <br>

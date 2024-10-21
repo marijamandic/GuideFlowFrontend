@@ -5,4 +5,5 @@ export interface Club{
     description: string,
     imageUrl: string,
     imageBase64: string
+    requested?: boolean
 }

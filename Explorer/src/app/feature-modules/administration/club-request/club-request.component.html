@@ -6,24 +6,18 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let cr of clubRequest">
-                <td>{{cr.status}}</td>
+            <tr *ngFor="let cr of clubRequests">
+                
+                <td>{{ getStatusLabel(cr.status) }}</td>
                 <td>
-                    <button (click) = "deleteRequest(cr)"  color="accent" mat-icon-button>
-                      <mat-icon>delete</mat-icon>
+                    <button>
+                      Accept
                     </button>
-                    <button (click)="onEditClicked(cr)" color="primary" mat-icon-button>
-                      <mat-icon>edit</mat-icon>
+                    <button (click)="declineRequest(cr)">
+                      Decline
                     </button>
                 </td>
             </tr>
-
-            <button (click)="onAddClicked()" color="primary" mat-icon-button>
-                <mat-icon>add</mat-icon>
-              </button>
         </tbody>
     </table>
-    <div>
-        <xp-club-request-form *ngIf="shouldRenderRequestForm" (clubRequestUpdated)="getClubRequest()" [clubRequest] = "selectedRequest" [shouldEdit] = "shouldEdit"></xp-club-request-form>
-    </div>
 </div>
