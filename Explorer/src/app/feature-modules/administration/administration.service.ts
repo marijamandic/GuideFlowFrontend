@@ -7,6 +7,7 @@ import { PagedResults } from 'src/app/shared/model/paged-results.model';
 import { Club } from './model/club.model';
 import { ClubRequest } from './model/club-request.model';
 import { ClubInvitation } from './model/club-invitation.model';
+import { ClubMemberList } from './model/club-member-list.model';
 
 @Injectable({
   providedIn: 'root'
@@ -82,4 +83,13 @@ export class AdministrationService {
   updateClubInvitation(invitation: ClubInvitation): Observable<ClubInvitation> {
     return this.http.put<ClubInvitation>(`${environment.apiHost}/api/invitation/clubInvitation/${invitation.id}/update`, invitation);
   }  
+
+  // Club membership
+  getAllClubMembers(clubId: number): Observable<ClubMemberList[]> {
+    return this.http.get<ClubMemberList[]>(`${environment.apiHost}members/clubMember/${clubId}/all`);
+  }
+
+  removeClubMember(clubId: number, userId: number): Observable<void> {
+    return this.http.delete<void>(`${environment.apiHost}members/clubMember/${clubId}/${userId}`);
+  }
 }
