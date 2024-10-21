@@ -3,5 +3,6 @@ export interface Club{
     ownerId: number,
     name: string,
     description: string,
-    imageUrl: string
+    imageUrl: string, 
+    requested?: boolean
 }

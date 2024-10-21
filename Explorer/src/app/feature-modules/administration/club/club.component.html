@@ -12,6 +12,7 @@
                 <th>Image Url</th>
                 <th>Delete</th>
                 <th>Edit</th>
+                <th></th>
              </tr>
         </thead>
 
@@ -31,12 +32,21 @@
                         <mat-icon>edit</mat-icon>
                     </button>
                 </td>
-             </tr>
+                <td>
+                    <button *ngIf="!c.requested" color="primary" (click)="request(c)" >
+                        Request
+                    </button>
+                    <button *ngIf="c.requested" color="primary" (click)="cancel(c)" >
+                        Cancel
+                    </button>
+                </td>
+            </tr>
              <tr>
                 <button color="primary" (click)="onAddClicked()" mat-icon-button>
                     <mat-icon>add</mat-icon>
                 </button>
             </tr>
+           
         </tbody>
     </table>
     <br>

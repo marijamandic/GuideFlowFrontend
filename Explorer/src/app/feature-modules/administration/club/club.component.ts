@@ -3,6 +3,8 @@ import { AdministrationService } from '../administration.service';
 import { Club } from '../model/club.model'; 
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
+import { ClubRequestService } from '../club-request.service';
+import { ClubRequest } from '../model/club-request.model';
 
 @Component({
   selector: 'xp-club',
@@ -16,20 +18,35 @@ export class ClubComponent implements OnInit {
   shouldRenderClubForm: boolean = false;
   shouldEdit: boolean = false;
   idOfOwner: number = 0;
+  loggedTouristId: number = 0;
 
-  constructor(private service: AdministrationService, private authSerivce: AuthService) { }
+  constructor(private service: AdministrationService, private authSerivce: AuthService, private clubRequestService: ClubRequestService) { }
   
   ngOnInit(): void {
     this.getClub();
     this.authSerivce.user$.subscribe(user => {
       this.idOfOwner = user.id;
     })
+    this.authSerivce.user$.subscribe(user => {
+      this.loggedTouristId = user.id;
+    })
+    
   }
   getClub() : void{
     this.shouldRenderClubForm = false;
     this.service.getClubs().subscribe({
       next: (result: PagedResults<Club>) =>{
         this.club = result.results;
+        this.clubRequestService.getClubRequest(this.loggedTouristId).subscribe({
+          next: (res: any) => {
+            this.club.forEach(c => {
+                console.log(res)
+                const clubRequest = res.find((r: any) => r.clubId === c.id)
+                if(clubRequest !== null) c.requested = true
+            })
+            console.log(this.club)
+          }
+        })
       },
       error: (err: any) => {
         console.log(err)
@@ -52,5 +69,19 @@ export class ClubComponent implements OnInit {
   onAddClicked(): void {
     this.shouldEdit = false;
     this.shouldRenderClubForm = true;
+  }
+
+  request(club: Club): void {
+    const clubRequest: ClubRequest = {
+      id: -1,
+      clubId: Number(club.id),
+      status: 0,
+      touristId: this.loggedTouristId
+    }
+    this.clubRequestService.post(clubRequest).subscribe()
+  }
+
+  cancel(club: Club): void {
+
   }
 }
