@@ -22,8 +22,28 @@ export class HomeComponent implements OnInit {
     { name: 'Lorem Ipsum', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ', rating: 8.3, reviews: 'Very good, 180 reviews', imageUrl: 'assets/images/tour9.jpg' }
   ];
 
+  clubs = [
+    { name: 'Lorem Ipsum', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ', rating: 8.5, reviews: 'Very good, 235 reviews', imageUrl: 'assets/images/club1.jpg' },
+    { name: 'Lorem Ipsum', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ', rating: 9.2, reviews: 'Excellent, 150 reviews', imageUrl: 'assets/images/club2.jpg' },
+    { name: 'Lorem Ipsum', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ', rating: 7.5, reviews: 'Good, 100 reviews', imageUrl: 'assets/images/club3.jpg' },
+    { name: 'Lorem Ipsum', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ', rating: 8.1, reviews: 'Very good, 180 reviews', imageUrl: 'assets/images/club4.jpg' },
+    { name: 'Lorem Ipsum', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ', rating: 7.5, reviews: 'Good, 100 reviews', imageUrl: 'assets/images/club5.jpg' },
+    { name: 'Lorem Ipsum', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ', rating: 8.3, reviews: 'Very good, 180 reviews', imageUrl: 'assets/images/club6.jpg' }
+  ];
+
   ngOnInit() {
     this.startImageRotation();
+  }
+
+  ngAfterViewInit() {
+    const tourContainer = document.querySelector('.tour-cards-container') as HTMLElement;
+    const clubContainer = document.querySelector('.club-cards-container') as HTMLElement;
+
+    // Scrolling for the tours container
+    this.setupScrolling(tourContainer);
+
+    // Scrolling for the clubs container
+    this.setupScrolling(clubContainer);
   }
 
   startImageRotation() {
@@ -32,12 +52,11 @@ export class HomeComponent implements OnInit {
     }, 10000);
   }
 
-  ngAfterViewInit() {
-    const container = document.querySelector('.tour-cards-container') as HTMLElement;
-
+  // Helper function to setup scrolling for a container
+  setupScrolling(container: HTMLElement) {
     container.addEventListener('wheel', (e) => {
-      e.preventDefault(); 
-      container.scrollLeft += e.deltaY; 
+        e.preventDefault(); 
+        container.scrollLeft += e.deltaY; 
     });
 
     let isDown = false;
@@ -45,29 +64,28 @@ export class HomeComponent implements OnInit {
     let scrollLeft: number;
 
     container.addEventListener('mousedown', (e) => {
-      isDown = true;
-      container.classList.add('active');
-      startX = e.pageX - container.offsetLeft;
-      scrollLeft = container.scrollLeft;
+        isDown = true;
+        container.classList.add('active');
+        startX = e.pageX - container.offsetLeft;
+        scrollLeft = container.scrollLeft;
     });
 
     container.addEventListener('mouseleave', () => {
-      isDown = false;
-      container.classList.remove('active');
+        isDown = false;
+        container.classList.remove('active');
     });
 
     container.addEventListener('mouseup', () => {
-      isDown = false;
-      container.classList.remove('active');
+        isDown = false;
+        container.classList.remove('active');
     });
 
     container.addEventListener('mousemove', (e) => {
-      if (!isDown) return;
-      e.preventDefault();
-      const x = e.pageX - container.offsetLeft;
-      const walk = (x - startX) * 2; // Scroll-fast
-      container.scrollLeft = scrollLeft - walk;
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - container.offsetLeft;
+        const walk = (x - startX) * 2; 
+        container.scrollLeft = scrollLeft - walk;
     });
   }
-
 }

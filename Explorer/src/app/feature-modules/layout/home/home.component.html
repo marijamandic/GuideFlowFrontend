@@ -40,6 +40,28 @@
             <button class="cta-button">Sign up</button>
         </div>
     </section>
+
+    <!-- POPULAR CLUBS -->
+    <section class="popular-clubs">
+        <h2>Most popular clubs</h2>
+        <div class="club-cards-wrapper">
+            <div class="club-cards-container">
+                <div *ngFor="let club of clubs" class="club-card">
+                    <div class="club-image" [style.backgroundImage]="'url(' + club.imageUrl + ')'"></div>
+                    <div class="club-info">
+                        <h3>{{ club.name }}</h3>
+                        <p>{{ club.description }}</p>
+                        <div class="club-rating">
+                            <span class="rating-badge">{{ club.rating }}</span>
+                            <span class="rating-text">{{ club.reviews }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
 </div>
 
 
