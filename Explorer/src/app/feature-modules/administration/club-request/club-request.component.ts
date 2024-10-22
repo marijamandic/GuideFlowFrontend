@@ -84,10 +84,26 @@ export class ClubRequestComponent implements OnInit {
               console.error('Error declining request:', err);
           }
       });
-  } else {
+    } else {
       console.error('Request ID is undefined, cannot decline request.');
+    }
   }
-}
+
+  acceptRequest(request: ClubRequest): void {
+  
+    if (request.id !== undefined && request.status === ClubRequestStatus.PENDING) {
+      this.clubRequestService.acceptClubRequest(request.id).subscribe({
+          next: (updatedRequest) => {
+              console.log('Request accepted:', updatedRequest);
+          },
+          error: (err: any) => {
+              console.error('Error accepting request:', err);
+          }
+      });
+    } else {
+      console.error('Request ID is undefined, cannot accept request.');
+    }
+  }
 
   
 }

@@ -10,7 +10,7 @@
                 
                 <td>{{ getStatusLabel(cr.status) }}</td>
                 <td>
-                    <button>
+                    <button (click)="acceptRequest(cr)">
                       Accept
                     </button>
                     <button (click)="declineRequest(cr)">

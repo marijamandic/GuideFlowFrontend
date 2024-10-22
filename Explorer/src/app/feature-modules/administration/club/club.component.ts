@@ -43,8 +43,8 @@ export class ClubComponent implements OnInit {
             this.club.forEach(c => {
                 console.log(res)
                 const clubRequests = res.filter((r: any) => r.clubId === c.id)
-                const pendingRequest = clubRequests.find((req: any) => req.status === 0);
-                if(pendingRequest !== null) c.requested = true
+                const pendingRequest = clubRequests.some((req: any) => req.status === 0);
+                c.requested = pendingRequest;
             })
             console.log(this.club)
           }
@@ -84,7 +84,15 @@ export class ClubComponent implements OnInit {
       status: 0,
       touristId: this.loggedTouristId
     }
-    this.clubRequestService.post(clubRequest).subscribe()
+    this.clubRequestService.post(clubRequest).subscribe({
+      next: () => {
+        console.log(`Request to join club ${club.id} has been sent.`);
+        this.getClub();
+      },
+      error: (err) => {
+        console.error('Error sending request:', err);
+      }
+    });
   }
 
   cancel(club: Club): void {
@@ -119,7 +127,7 @@ export class ClubComponent implements OnInit {
         console.error("Error fetching club requests:", err);
       }
     });
-
+    
   }
 
 

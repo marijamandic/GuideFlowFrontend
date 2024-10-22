@@ -37,13 +37,15 @@
                     <button [routerLink]="['/club-members', c.id]" mat-icon-button color="primary">
                         <mat-icon>people</mat-icon>
                     </button>
+                    
+                </td>
+                <td>
                     <button *ngIf="!c.requested" color="primary" (click)="request(c)" >
                         Request
                     </button>
                     <button *ngIf="c.requested" color="primary" (click)="cancel(c)" >
                         Cancel
                     </button>
-                                 
                 </td>
              </tr>
                 

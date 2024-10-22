@@ -33,4 +33,8 @@ export class ClubRequestService {
   declineClubRequest(id: number): Observable<ClubRequest>{
     return this.http.put<ClubRequest>(environment.apiHost + `request/clubRequest/${id}/decline`, {});
   }
+
+  acceptClubRequest(id: number): Observable<ClubRequest>{
+    return this.http.put<ClubRequest>(environment.apiHost + `request/clubRequest/${id}/accept`, {});
+  }
 }
