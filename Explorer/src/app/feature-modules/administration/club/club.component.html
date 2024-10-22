@@ -40,7 +40,7 @@
                     
                 </td>
                 <td>
-                    <button *ngIf="!c.requested" color="primary" (click)="request(c)" >
+                    <button *ngIf="!c.hasAccepted && !c.requested && c.ownerId !== loggedTouristId" color="primary" (click)="request(c)" >
                         Request
                     </button>
                     <button *ngIf="c.requested" color="primary" (click)="cancel(c)" >

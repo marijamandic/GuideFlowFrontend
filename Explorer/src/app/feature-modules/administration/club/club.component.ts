@@ -32,6 +32,7 @@ export class ClubComponent implements OnInit {
       this.loggedTouristId = user.id;
     })
     
+    
   }
   getClub() : void{
     this.shouldRenderClubForm = false;
@@ -44,7 +45,9 @@ export class ClubComponent implements OnInit {
                 console.log(res)
                 const clubRequests = res.filter((r: any) => r.clubId === c.id)
                 const pendingRequest = clubRequests.some((req: any) => req.status === 0);
+                const acceptedRequest = clubRequests.some((req: any) => req.status === 1);
                 c.requested = pendingRequest;
+                c.hasAccepted = acceptedRequest;
             })
             console.log(this.club)
           }
@@ -78,21 +81,22 @@ export class ClubComponent implements OnInit {
   }
 
   request(club: Club): void {
-    const clubRequest: ClubRequest = {
-      id: -1,
-      clubId: Number(club.id),
-      status: 0,
-      touristId: this.loggedTouristId
-    }
-    this.clubRequestService.post(clubRequest).subscribe({
-      next: () => {
-        console.log(`Request to join club ${club.id} has been sent.`);
-        this.getClub();
-      },
-      error: (err) => {
-        console.error('Error sending request:', err);
+      const clubRequest: ClubRequest = {
+        id: -1,
+        clubId: Number(club.id),
+        status: 0,
+        touristId: this.loggedTouristId
       }
-    });
+      this.clubRequestService.post(clubRequest).subscribe({
+        next: () => {
+          console.log(`Request to join club ${club.id} has been sent.`);
+          this.getClub();
+        },
+        error: (err) => {
+          console.error('Error sending request:', err);
+        }
+      });
+
   }
 
   cancel(club: Club): void {
@@ -130,6 +134,7 @@ export class ClubComponent implements OnInit {
     
   }
 
+  
 
   
 }

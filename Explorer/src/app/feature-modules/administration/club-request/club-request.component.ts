@@ -105,5 +105,4 @@ export class ClubRequestComponent implements OnInit {
     }
   }
 
-  
 }

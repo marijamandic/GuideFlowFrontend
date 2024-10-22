@@ -4,6 +4,7 @@ export interface Club{
     name: string,
     description: string,
     imageUrl: string,
-    imageBase64: string
-    requested?: boolean
+    imageBase64: string,
+    requested?: boolean,
+    hasAccepted?: boolean
 }
