@@ -20,6 +20,7 @@ import { EquipmentFormComponent } from './feature-modules/tour-execution/equipme
 
 
 @NgModule({
+  
   declarations: [
     AppComponent
     
@@ -48,5 +49,6 @@ import { EquipmentFormComponent } from './feature-modules/tour-execution/equipme
     },
   ],
   bootstrap: [AppComponent]
+
 })
-export class AppModule { }
+export class AppModule {}
