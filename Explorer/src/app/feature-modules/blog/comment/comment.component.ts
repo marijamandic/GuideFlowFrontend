@@ -16,6 +16,7 @@ export class CommentComponent implements OnInit{
   user: User | undefined;
   selectedComment: Comment;
   comments:Comment[]=[];
+  commentCreators: { [key: number]: string } = {};
   shouldRenderCommentForm: boolean = false;
   shouldEdit: boolean = false;
 
@@ -45,14 +46,31 @@ export class CommentComponent implements OnInit{
     this.shouldEdit=false;
     if(this.postId!==null && this.user){
       this.service.getComments(this.postId,this.user.role).subscribe({
-        next:(result:PagedResults<Comment>)=>{
-          this.comments=result.results;
+        next:(result: PagedResults<Comment>)=>{
+          this.comments = result.results;
+          this.loadCommentCreators();
         },
-        error:(err:any)=>{
+        error: (err: any) => {
           console.log(err);
         }
       })
     }
+  }
+
+  loadCommentCreators(): void {
+    this.comments.forEach(comment => {
+      if (!this.commentCreators[comment.userId]) 
+      {
+        this.service.getCommentCreator(comment.userId).subscribe({
+          next: (result: User) => {
+            this.commentCreators[comment.userId] = result.username;
+          },
+          error: (err: any) => {
+            console.log(err);
+          }
+        });
+      }
+    });
   }
 
   onEditClicked(comment: Comment): void {

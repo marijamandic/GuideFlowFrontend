@@ -8,6 +8,7 @@
   
     <div *ngFor="let comm of comments" class="comment-card">
         <div class="comment-body">
+          <span *ngIf="commentCreators[comm.userId]"><p>{{ commentCreators[comm.userId] }}</p></span>
           <p>{{ comm.content }}</p>
           <span *ngIf="comm.createdAt===comm.lastModified"><p>{{ comm.createdAt | date:'short' }}</p></span>
           <span *ngIf="comm.createdAt!==comm.lastModified"><p>{{ comm.lastModified | date:'short' }}</p></span>

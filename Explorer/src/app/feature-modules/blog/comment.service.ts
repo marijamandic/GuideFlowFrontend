@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
 import { Comment } from './model/comment.model';
+import { User } from 'src/app/infrastructure/auth/model/user.model';
 import { environment } from 'src/env/environment';
 
 @Injectable({
@@ -30,5 +31,9 @@ export class CommentService {
 
   editComment(comment:Comment):Observable<Comment>{
     return this.http.put<Comment>(environment.apiHost+'commentmanaging/comment/'+comment.id,comment);
+  }
+
+  getCommentCreator(id:number):Observable<User>{
+    return this.http.get<User>(environment.apiHost+'commentmanaging/comment/user/'+id);
   }
 }

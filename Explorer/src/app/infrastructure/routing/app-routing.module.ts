@@ -27,7 +27,7 @@ const routes: Routes = [
   {path: 'club-invitation/edit/:id', component: ClubInvitationFormComponent, canActivate: [AuthGuard], },
   {path: 'club-request', component: ClubRequestComponent, canActivate: [AuthGuard],},
   {path: 'club-request/add', component: ClubRequestFormComponent, canActivate: [AuthGuard],},
-  {path: 'club-members/:id', component: ClubMemberListComponent, canActivate: [AuthGuard],}
+  {path: 'club-members/:id', component: ClubMemberListComponent, canActivate: [AuthGuard],},
   {path: 'equipment', component: EquipmentComponent, canActivate: [AuthGuard],},
   {path: 'blog', component: PostComponent},
   {path: 'blog/:id', component: PostInfoComponent},
