@@ -1,4 +1,4 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit, Input, Output, EventEmitter } from '@angular/core';
 import * as L from 'leaflet';
 import { MapService } from './map.service';
 import 'leaflet-routing-machine';
@@ -13,6 +13,10 @@ export class MapComponent implements AfterViewInit {
   private markers: L.Marker[] = [];
   searchAddress: string = '';
   private routeControl: any = null;
+
+  @Input() initialMarkers: L.LatLng[] = [];
+  @Output() markerAdded = new EventEmitter<L.LatLng>();
+  @Output() mapReset = new EventEmitter<void>();
 
   constructor(private mapService: MapService) {}
 
@@ -33,21 +37,24 @@ export class MapComponent implements AfterViewInit {
     );
     tiles.addTo(this.map);
 
-    this.registerOnClick()
+    this.registerOnClick();
+
+    // Dodajemo inicijalne markere ako ih ima
+    this.initialMarkers.forEach((latLng) => {
+      const marker = L.marker(latLng).addTo(this.map);
+      this.addMarker(marker);
+    });
   }
 
-  setRoute(): void {
-    if (this.markers.length === 2) {
-      const startPoint = this.markers[0].getLatLng();
-      const endPoint = this.markers[1].getLatLng();
-
+  setRoute(waypoints: L.LatLng[]): void {
+    if (waypoints.length > 1) {
       if (this.routeControl) {
         this.map.removeControl(this.routeControl);
       }
 
-      // Kreiramo kontrolu za rutu između dve tačke
+      // Kreiramo kontrolu za rutu između proizvoljnih tačaka
       this.routeControl = L.Routing.control({
-        waypoints: [startPoint, endPoint],
+        waypoints: waypoints,
         router: L.routing.mapbox('pk.eyJ1IjoicmF0a292YWMiLCJhIjoiY20ybDJmdGNxMDdkMjJrc2dodncycWhhZiJ9.fkyW7QT3iz7fxVS5u5w1bg', { profile: 'mapbox/walking' })
       }).addTo(this.map);
 
@@ -74,12 +81,9 @@ export class MapComponent implements AfterViewInit {
   search(): void {
     this.mapService.search(this.searchAddress).subscribe({
       next: (result) => {
-        const addressParts = result[0].display_name.split(',').slice(0, 3);
-        const address = addressParts.join(', ');
-
         const marker = L.marker([result[0].lat, result[0].lon])
           .addTo(this.map)
-          .bindPopup('Pozdrav iz ' + address + '.')
+          .bindPopup('Pozdrav iz ' + result[0].display_name + '.')
           .openPopup();
           
         this.addMarker(marker);
@@ -91,27 +95,19 @@ export class MapComponent implements AfterViewInit {
   registerOnClick(): void {
     this.map.on('click', (e: any) => {
       const coord = e.latlng;
-      const lat = coord.lat;
-      const lng = coord.lng;
-
-      const marker = new L.Marker([lat, lng]).addTo(this.map);
+      const marker = new L.Marker([coord.lat, coord.lng]).addTo(this.map);
       this.addMarker(marker);
+      this.markerAdded.emit(coord); // Emitujemo događaj kada se marker doda
     });
   }
 
   addMarker(marker: L.Marker): void {
-    // Dodajemo marker u niz i ograničavamo broj markera na 2
     this.markers.push(marker);
 
-    // Ako ima više od 2 markera, uklanjamo najstariji
-    if (this.markers.length > 2) {
-      const removedMarker = this.markers.shift();
-      this.map.removeLayer(removedMarker!);
-    }
-
-    // Ako su postavljena 2 markera, crtamo rutu između njih
-    if (this.markers.length === 2) {
-      this.setRoute();
+    // Ako su postavljeni više od 2 markera, crtamo rutu između svih
+    if (this.markers.length > 1) {
+      const waypoints = this.markers.map(m => m.getLatLng());
+      this.setRoute(waypoints);
     }
   }
 
@@ -127,5 +123,7 @@ export class MapComponent implements AfterViewInit {
       this.map.removeControl(this.routeControl);
       this.routeControl = null;
     }
+
+    this.mapReset.emit(); // Emitujemo događaj kada se mapa resetuje
   }
 }

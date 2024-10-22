@@ -29,7 +29,11 @@
         <xp-tour-object-form *ngIf="shouldRenderTourObjectForm" [shouldEdit]="shouldEdit" (tourObjectUpdated)="getTourObjects()"></xp-tour-object-form>
     </div>
     <div>
-        <xp-map></xp-map>
+        <xp-map 
+  [initialMarkers]="initialMarkers"
+  (markerAdded)="onMarkerAdded($event)"
+  (mapReset)="onMapReset()">
+</xp-map>
     </div>
     </div>
 </div>

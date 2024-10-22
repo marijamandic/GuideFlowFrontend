@@ -11,6 +11,7 @@ import { environment } from 'src/env/environment';
 })
 export class TourObjectComponent implements OnInit {
 
+  initialMarkers: L.LatLng[] = [];
   tourObjects: TourObject[] = [];
   shouldRenderTourObjectForm: boolean = false;
   shouldEdit: boolean = false;
@@ -19,6 +20,16 @@ export class TourObjectComponent implements OnInit {
 
   ngOnInit(): void {
     this.getTourObjects();
+  }
+
+  onMarkerAdded(latlng: L.LatLng): void {
+    console.log('New marker added at:', latlng);
+    // Logika za dodavanje nove ključne tačke ili objekta
+  }
+
+  onMapReset(): void {
+    console.log('Map reset');
+    // Logika za resetovanje ili ažuriranje stanja komponente
   }
 
   getTourObjects(): void {
