@@ -7,6 +7,7 @@ import { AuthGuard } from '../auth/auth.guard';
 import { RegistrationComponent } from '../auth/registration/registration.component';
 import { ProblemComponent } from 'src/app/feature-modules/administration/problem/problem.component';
 import { ReportProblemComponent } from 'src/app/feature-modules/tour-execution/report-problem/report-problem.component';
+import { TourObjectComponent } from 'src/app/feature-modules/tour-authoring/tour-object/tour-object.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -19,6 +20,7 @@ const routes: Routes = [
   },
   { path: 'problem', component: ProblemComponent },
   { path: 'report-problem', component: ReportProblemComponent },
+  { path: 'tourObjects', component: TourObjectComponent, canActivate: [AuthGuard],}
 ];
 
 @NgModule({
