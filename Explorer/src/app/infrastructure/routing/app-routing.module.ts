@@ -11,6 +11,10 @@ import { ClubInvitationFormComponent } from 'src/app/feature-modules/administrat
 import { ClubRequestComponent } from 'src/app/feature-modules/administration/club-request/club-request.component';
 import { ClubRequestFormComponent } from 'src/app/feature-modules/administration/club-request-form/club-request-form.component';
 import { ClubMemberListComponent } from 'src/app/feature-modules/administration/club-member-list/club-member-list.component';
+import { CommentComponent } from 'src/app/feature-modules/blog/comment/comment.component';
+import { PostComponent } from 'src/app/feature-modules/blog/post/post.component';
+import { CreateBlogComponent } from 'src/app/feature-modules/blog/create-blog/create-blog.component';
+import { PostInfoComponent } from 'src/app/feature-modules/blog/post-info/post-info.component';
 
 const routes: Routes = [
   {path: 'home', component: HomeComponent},
@@ -23,7 +27,12 @@ const routes: Routes = [
   {path: 'club-invitation/edit/:id', component: ClubInvitationFormComponent, canActivate: [AuthGuard], },
   {path: 'club-request', component: ClubRequestComponent, canActivate: [AuthGuard],},
   {path: 'club-request/add', component: ClubRequestFormComponent, canActivate: [AuthGuard],},
-  {path: 'club-members/:id', component: ClubMemberListComponent, canActivate: [AuthGuard],}
+  {path: 'club-members/:id', component: ClubMemberListComponent, canActivate: [AuthGuard],},
+  {path: 'equipment', component: EquipmentComponent, canActivate: [AuthGuard],},
+  {path: 'blog', component: PostComponent},
+  {path: 'blog/:id', component: PostInfoComponent},
+  {path: 'comment', component: CommentComponent},
+  {path: 'createBlog', component: CreateBlogComponent}
 ];
 
 @NgModule({

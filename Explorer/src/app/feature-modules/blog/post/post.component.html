@@ -1,0 +1,14 @@
+<div *ngFor="let p of posts" class="post-container">
+    <h2>{{ p.title }}</h2>
+    <div><strong>Description:</strong>
+        <markdown [data]="p.description"></markdown>
+    </div>
+    <p><strong>Author ID:</strong> {{ p.userId }}</p>
+    <p><strong>Publish Date:</strong> {{ p.publishDate | date:'longDate' }}</p>
+    <img [src]="getImagePath(p.imageUrl)" alt="Post image" *ngIf="p.imageUrl" class="post-image"/>
+    <p><strong>Status:</strong> {{ getStatusName(p.status) }}</p>
+    <button (click)="navigateToMoreInfo(p.id)" class="info-button">See more info</button>
+    <hr>
+</div>
+<button *ngIf="user?.role==='author'" (click)="navigateToCreatePost()">Create post</button>
+  

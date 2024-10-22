@@ -1,0 +1,13 @@
+<div *ngIf="post" class="post-info">
+    <h2 class="post-title">{{ post.title }}</h2>
+    <div class="post-description">
+        <strong>Description:</strong>
+        <markdown [data]="post.description"></markdown>
+    </div>
+    <p class="post-author"><strong>Author ID:</strong> {{ post.userId }}</p>
+    <p class="post-publish-date"><strong>Publish Date:</strong> {{ post.publishDate | date:'longDate' }}</p>
+    <img [src]="getImagePath(post.imageUrl)" alt="Post image" *ngIf="post.imageUrl" class="post-image"/>
+    <p class="post-status"><strong>Status:</strong> {{ getStatusName(post.status) }}</p>
+    <hr class="divider"/>
+    <xp-comment [postId]="postId!"></xp-comment>
+</div>
