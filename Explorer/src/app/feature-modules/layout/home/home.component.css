@@ -73,10 +73,8 @@
 .tour-cards-container {
     display: flex;
     overflow-x: scroll;
-    flex-direction: column;
     gap: 20px;
     padding: 20px 0;
-    overflow: visible; 
     scrollbar-width: none;
     -ms-overflow-style: none; 
 }
