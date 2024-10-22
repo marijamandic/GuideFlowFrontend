@@ -14,4 +14,8 @@ export class TourExecutionService {
   getReviews(): Observable<PagedResults<TourReview>>{
     return this.http.get<PagedResults<TourReview>>('https://localhost:44333/api/tourist/tourReview');
   }
+
+  handleClick(tourReview: TourReview): Observable<TourReview> {
+    return this.http.post<TourReview>('https://localhost:44333/api/tourist/tourReview', tourReview);
+  }
 }
