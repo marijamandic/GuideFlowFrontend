@@ -6,14 +6,15 @@ import { EquipmentComponent } from 'src/app/feature-modules/administration/equip
 import { AuthGuard } from '../auth/auth.guard';
 import { RegistrationComponent } from '../auth/registration/registration.component';
 import { CheckpointListComponent } from 'src/app/feature-modules/tour-authoring/tour-checkpoint/tour-checkpoint.component';
-
+import { TourComponent } from 'src/app/feature-modules/tour-authoring/tour/tour.component';
 
 const routes: Routes = [
   {path: 'home', component: HomeComponent},
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegistrationComponent},
   {path: 'equipment', component: EquipmentComponent, canActivate: [AuthGuard],},
-  {path: 'checkpoints', component: CheckpointListComponent}
+  {path: 'checkpoints', component: CheckpointListComponent},
+  {path: 'tour', component: TourComponent}
 ];
 
 @NgModule({
