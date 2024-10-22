@@ -7,10 +7,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
   images: string[] = [
-    'assets/images/tour1.jpg',
-    'assets/images/tour2.jpg',
-    'assets/images/tour3.jpg'
-  ];
+    'assets/images/tour3.jpg',
+    'assets/images/tour6.jpg',
+    'assets/images/tour8.jpg'  
+  ]; 
   currentImageIndex: number = 0;
 
   tours = [
@@ -35,10 +35,9 @@ export class HomeComponent implements OnInit {
   ngAfterViewInit() {
     const container = document.querySelector('.tour-cards-container') as HTMLElement;
 
-    // Add event listener for mouse wheel scrolling
     container.addEventListener('wheel', (e) => {
-      e.preventDefault(); // Prevent the default vertical scroll behavior
-      container.scrollLeft += e.deltaY; // Scroll horizontally based on vertical scroll
+      e.preventDefault(); 
+      container.scrollLeft += e.deltaY; 
     });
 
     let isDown = false;
