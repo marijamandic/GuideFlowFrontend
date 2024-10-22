@@ -1,18 +1,24 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TourComponent } from './tour/tour.component';
-
+import { TourFormComponent } from './tour-form/tour-form.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MaterialModule } from 'src/app/infrastructure/material/material.module';
 
 
 @NgModule({
   declarations: [
-    TourComponent
+    TourComponent,
+    TourFormComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    ReactiveFormsModule,
+    MaterialModule
   ],
   exports: [
-    TourComponent
+    TourComponent,
+    TourFormComponent
   ]
 })
 export class TourAuthoringModule { }

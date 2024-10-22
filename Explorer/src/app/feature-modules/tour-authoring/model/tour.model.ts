@@ -4,5 +4,6 @@ export interface Tour{
     description: string,
     price: number,
     level: number,
-    status: string
+    status: string,
+    taggs: number[];  
 }
