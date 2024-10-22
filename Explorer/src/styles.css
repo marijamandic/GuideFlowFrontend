@@ -1,14 +1,3 @@
-/* You can add global styles to this file, and also import other style files
-
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-
-.navbar-button {
-    color: black;
-    background-color: transparent;
-} */
-
-/* Promenljive za centralizovane boje, fontove i stilove */
 html, body { height: 100%; }
 
 :root {
@@ -21,7 +10,6 @@ html, body { height: 100%; }
     --text-color: #333;
   }
   
-  /* Globalni stilovi */
   body {
     font-family: var(--font-family);
     background-color: var(--background-color);
@@ -37,60 +25,59 @@ html, body { height: 100%; }
   }
   
   .book-now-section {
-    margin: 40px 0; /* Razmak iznad i ispod sekcije */
+    margin: 40px 0;
 }
 
 .book-now-container {
     display: flex;
-    flex-direction: column; /* Vertikalno raspoređivanje */
-    background-color: var(--secondary-color); /* Pozadina kontejnera */
-    border-radius: 10px; /* Zaobljeni uglovi */
-    padding: 20px; /* Unutrašnji razmak */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Senka */
-    text-align: center; /* Centriranje teksta unutar kontejnera */
+    flex-direction: column;
+    background-color: var(--secondary-color);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
 }
 
 .book-now-image {
-    width: 100%; /* Slika će zauzeti celu širinu kontejnera */
-    border-radius: 10px; /* Zaobljeni uglovi slike */
-    margin-bottom: 15px; /* Razmak ispod slike */
+    width: 100%;
+    border-radius: 10px;
+    margin-bottom: 15px;
 }
 
 .nav-links a {
-    text-decoration: none; /* Uklanjanje podvlačenja sa linkova */
-    color: var(--primary-color); /* Boja linkova */
-    font-weight: bold; /* Podebljavanje linkova */
-    padding: 8px 12px; /* Dodavanje unutrašnjeg razmaka za bolje klikanje */
-    transition: background-color 0.3s ease, transform 0.3s ease; /* Efekat tranzicije */
+    text-decoration: none;
+    color: var(--primary-color);
+    font-weight: bold;
+    padding: 8px 12px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .nav-links a:hover {
-    color: var(--hover-color); /* Menjanje boje teksta pri hoveru */
-    transform: scale(1.05); /* Lagano povećanje */
+    color: var(--hover-color);
+    transform: scale(1.05);
 }
 
 .book-now-nav {
-    margin-bottom: 15px; /* Razmak ispod navigacije */
+    margin-bottom: 15px;
 }
 
 .book-now-nav ul {
-    list-style: none; /* Uklanjanje oznaka sa liste */
-    padding: 0; /* Uklanjanje padding-a */
-    display: flex; /* Horizontalno raspoređivanje */
-    justify-content: center; /* Centriranje linkova */
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
 }
 
 .book-now-nav li {
-    margin: 0 10px; /* Razmak između linkova */
+    margin: 0 10px; 
 }
 
 .book-now-nav a {
-    text-decoration: none; /* Uklanjanje podvlačenja sa linkova */
-    color: var(--primary-color); /* Boja linkova */
-    font-weight: bold; /* Podebljavanje linkova */
+    text-decoration: none;
+    color: var(--primary-color);
+    font-weight: bold;
 }
   
-  /* Stil za dugme */
   .button {
     display: inline-block;
     background-color: var(--primary-color);
@@ -102,12 +89,12 @@ html, body { height: 100%; }
     margin: 20px auto;
     display: block;
     width: fit-content;
-    outline: none; /* Uklanja crni okvir oko dugmeta */
-    border: none;  /* Osigurava da nema border-a */
+    outline: none;
+    border: none;
   }
 
   .button:focus {
-    outline: none; /* Uklanja outline na focus */
+    outline: none;
   }
   
   .button:hover {
@@ -115,18 +102,17 @@ html, body { height: 100%; }
     transform: scale(1.05);
   }
   
-  /* Kontejneri za kartice */
   .cards {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start; /* Vertikalno poravnanje na vrhu */
+    align-items: flex-start;
     flex-wrap: wrap;
     gap: 20px;
   }
   
   .card {
     display: flex;
-    flex-direction: column; /* Vertikalno raspoređivanje sadržaja */
+    flex-direction: column;
     background-color: var(--secondary-color);
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -137,9 +123,9 @@ html, body { height: 100%; }
   }
 
 .card-image {
-    width: 100%; /* Slika će popuniti širinu kartice */
-    height: auto; /* Održava proporcije slike */
-    border-radius: 10px 10px 0 0; /* Zaobljeni uglovi na vrhu */
+    width: 100%;
+    height: auto;
+    border-radius: 10px 10px 0 0;
 }
 
   .card:hover {
@@ -156,27 +142,27 @@ html, body { height: 100%; }
   
   .features-container {
     display: flex;
-    justify-content: space-around; /* Horizontalno poravnanje elemenata */
-    align-items: center; /* Vertikalno centriranje elemenata */
-    background-color: var(--secondary-color); /* Pozadina kontejnera */
-    border-radius: 10px; /* Zaobljeni uglovi */
-    padding: 20px; /* Unutrašnji razmak */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Senka */
+    justify-content: space-around;
+    align-items: center;
+    background-color: var(--secondary-color);
+    border-radius: 10px; 
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .feature-item {
-    text-align: center; /* Centriranje teksta unutar elementa */
-    flex: 1; /* Omogućava ravnomerno raspoređivanje */
-    margin: 0 10px; /* Razmak između elemenata */
+    text-align: center;
+    flex: 1;
+    margin: 0 10px;
 }
 
 .features-section {
-    margin: 40px 0; /* Razmak iznad i ispod sekcije */
+    margin: 40px 0;
 }
 
 .feature-icon {
-    font-size: 40px; /* Veličina ikone */
-    margin-bottom: 10px; /* Razmak ispod ikone */
+    font-size: 40px;
+    margin-bottom: 10px;
 }
 
 
@@ -188,11 +174,11 @@ html, body { height: 100%; }
   }
   
   .full-width-container {
-    background-color: var(--secondary-color); /* Pozadina kontejnera */
-    padding: 20px; /* Unutrašnji razmak */
-    text-align: center; /* Centriranje teksta */
-    width: 100%; /* Širina kontejnera */
-    margin: 20px 0; /* Razmak iznad i ispod kontejnera */
-    border-radius: 10px; /* Zaobljeni uglovi */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Senka */
+    background-color: var(--secondary-color);
+    padding: 20px;
+    text-align: center;
+    width: 100%;
+    margin: 20px 0;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
