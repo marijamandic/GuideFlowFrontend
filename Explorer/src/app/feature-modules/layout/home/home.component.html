@@ -1,15 +1,17 @@
 <div class="carousel">
     <div class="carousel-container">
         <img [src]="images[currentImageIndex]" alt="Tour Image" class="carousel-image" />
-        <div class="overlay">
-            <h1 class="motivational-message">Discover new paths,</h1>
-            <h1 class="motivational-message">one adventure at a time</h1>
-            <button class="cta-button" routerLink="/tours">Book a tour</button>
-        </div>
     </div>
 </div>
 
 <div class="main-column">
+    <!-- MESSAGE -->
+    <div class="overlay">
+        <h1 class="motivational-message">Discover new paths,</h1>
+        <h1 class="motivational-message">one adventure at a time</h1>
+        <button class="cta-button" routerLink="/tours">Book a tour</button>
+    </div>
+
     <!-- POPULAR TOURS -->
     <section class="popular-tours">
         <h2>Most popular tours</h2>
@@ -39,6 +41,7 @@
         </div>
     </section>
 </div>
+
 
 
 

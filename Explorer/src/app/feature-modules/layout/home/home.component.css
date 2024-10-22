@@ -32,7 +32,6 @@ p{
     align-items: center; 
 }
 
-
 .carousel {
     position: relative;
     width: 100%;
@@ -58,16 +57,17 @@ p{
 }
 
 .overlay {
-    max-width: 1200px;
     position: absolute;
-    margin: 5%;
-    top: 40%;
-    left: 23%;
-    transform: translate(-50%, -50%);
-    text-align: left;
-    color: white;;
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    text-align: center;
+    color: white;
     z-index: 2;
+    width: 100%; 
+    padding: 20px; 
 }
+
 
 .motivational-message {
     font-weight: regular;
