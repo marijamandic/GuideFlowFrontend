@@ -10,6 +10,7 @@ import { ReportProblemComponent } from 'src/app/feature-modules/tour-execution/r
 import { TourObjectComponent } from 'src/app/feature-modules/tour-authoring/tour-object/tour-object.component';
 import { CheckpointListComponent } from 'src/app/feature-modules/tour-authoring/tour-checkpoint/tour-checkpoint.component';
 import { TourComponent } from 'src/app/feature-modules/tour-authoring/tour/tour.component';
+import { TourEquipmentComponent } from 'src/app/feature-modules/tour-authoring/tour-equipment/tour-equipment.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -24,7 +25,8 @@ const routes: Routes = [
   { path: 'report-problem', component: ReportProblemComponent },
   { path: 'tourObjects', component: TourObjectComponent, canActivate: [AuthGuard],},
   { path: 'checkpoints', component: CheckpointListComponent},
-  { path: 'tour', component: TourComponent}
+  { path: 'tour', component: TourComponent},
+  { path: 'tourEquipment', component:TourEquipmentComponent}
 ];
 
 @NgModule({

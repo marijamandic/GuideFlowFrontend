@@ -8,6 +8,7 @@
             <button *ngIf="user && user.role === 'administrator'"color="primary" mat-raised-button [routerLink]="['equipment']">Manage equipment</button>
             <button *ngIf="user && user.role === 'author'"color="primary" mat-raised-button [routerLink]="['tourObjects']">Manage tour objects</button>
             <button color="primary" mat-raised-button [routerLink]="['home']">Manage tour</button>
+            <button *ngIf="user && user.role === 'author'"color="primary" mat-raised-button [routerLink]="['tourEquipment']">Manage tour equipment</button>
         </div>
     </div>
 </mat-toolbar>

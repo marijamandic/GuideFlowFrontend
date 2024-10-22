@@ -8,6 +8,10 @@ import { CheckpointListComponent } from './tour-checkpoint/tour-checkpoint.compo
 import { CheckpointFormComponent } from './tour-checkpoint-form/tour-checkpoint-form.component'; // Dodaj CheckpointFormComponent
 import { TourComponent } from './tour/tour.component';
 import { TourFormComponent } from './tour-form/tour-form.component';
+import { TourEquipmentComponent } from './tour-equipment/tour-equipment.component';
+import { EquipmentComponent } from '../administration/equipment/equipment.component';
+import { AdministrationModule } from '../administration/administration.module';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -18,19 +22,23 @@ import { TourFormComponent } from './tour-form/tour-form.component';
     CheckpointListComponent,
     CheckpointFormComponent,
     TourComponent,
-    TourFormComponent
+    TourFormComponent,
+    TourEquipmentComponent
   ],
   imports: [
     CommonModule,
     MaterialModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    AdministrationModule,
+    FormsModule
   ],
   exports: [
     TourObjectComponent,
     CheckpointListComponent,
     TourComponent,
     TourFormComponent,
-    TourObjectFormComponent
+    TourObjectFormComponent,
+    TourEquipmentComponent
   ]
 })
 export class TourAuthoringModule {}
