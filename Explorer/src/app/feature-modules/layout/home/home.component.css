@@ -1,3 +1,28 @@
+h1{
+    font-size: 48px;
+    padding: 3px;
+  }
+
+h2 {
+    font-size: 28px;
+    font-weight: bold;
+    margin: 0px;
+}
+
+h3{
+    font-size: 18px;
+    padding-top: 3px;
+    margin: 0;
+    font-weight: 500;
+}
+
+p{
+    font-size: 14px;
+    font-weight: lighter;
+    margin: 0;
+    padding: 0;
+}
+
 .carousel {
     position: relative;
     width: 100%;
@@ -10,7 +35,7 @@
 .carousel-container {
     position: relative;
     width: 100%;
-    height:1000px;
+    height: 800px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -20,11 +45,11 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    
 }
 
 .overlay {
     position: absolute;
+    margin: 5%;
     top: 40%;
     left: 23%;
     transform: translate(-50%, -50%);
@@ -34,16 +59,14 @@
 }
 
 .motivational-message {
-    font-size: 60px;
     font-weight: regular;
     color: white;
-    padding: 7px;
-    text-shadow:rgba(17, 12, 46, 0.15) 0px 48px 100px 0px; ;
 }
 
 .cta-button {
     background-color: var(--primary-color);
     font-size: 16px;
+    font-weight: bold;
     color: white;
     padding: 12px 30px;
     border-radius: 25px;
@@ -58,16 +81,13 @@
 
 
 /* ###--- Tour section ---### */
-
-
 .popular-tours {
-    margin: 40px 0;
-    text-align: center;
+    margin: 20px 40px;
+    text-align: left;
 }
 
 .tour-cards-wrapper {
     overflow: hidden;
-    padding: 0 20px;
 }
 
 .tour-cards-container {
@@ -86,19 +106,18 @@
 .tour-card {
     background-color: var(--secondary-color);
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     width: 280px;
     flex: 0 0 auto;
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
     text-align: left;
 }
 
 .tour-card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    transition: 0.5s ease;
 }
 
 .tour-image {
@@ -111,21 +130,26 @@
     border-top-right-radius: 10px;
 }
 
-.tour-info {
-    padding: 5px 15px;
-}
-
-.tour-info h3 {
-    font-size: 20px;
-    font-weight: bold;
-    margin: 0;
+.tour-info{
+    margin-top: 0px;
+    margin-left: 15px;
+    margin-right: 15px;
+    margin-bottom: 15px;
     color: var(--text-color);
 }
 
+.tour-info h3 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; 
+}
+
 .tour-info p {
-    font-size: 16px;
-    color: #666666;
-    margin-bottom: 10px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; 
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .tour-rating {
@@ -141,9 +165,13 @@
     border-radius: 5px;
     font-size: 12px;
     margin-right: 10px;
+    width: 20px;
+    height: 20px;
+    text-align: center;
 }
 
 .rating-text {
     font-size: 12px;
     color: #666666;
+    text-align: center;
 }
