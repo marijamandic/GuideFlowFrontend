@@ -20,7 +20,7 @@ html, body { height: 100%; }
   
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-family);
-    color: var(--primary-color);
+    color: var(--accent-color);
     margin-bottom: 10px;
   }
   
@@ -42,19 +42,6 @@ html, body { height: 100%; }
     width: 100%;
     border-radius: 10px;
     margin-bottom: 15px;
-}
-
-.nav-links a {
-    text-decoration: none;
-    color: var(--primary-color);
-    font-weight: bold;
-    padding: 8px 12px;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-.nav-links a:hover {
-    color: var(--hover-color);
-    transform: scale(1.05);
 }
 
 .book-now-nav {

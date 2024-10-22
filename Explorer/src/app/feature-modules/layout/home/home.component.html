@@ -1,11 +1,20 @@
-<!--
+<div class="carousel">
+    <div class="carousel-container">
+        <img [src]="images[currentImageIndex]" alt="Tour Image" class="carousel-image" />
+        <div class="overlay">
+            <h1 class="motivational-message">Discover new paths,</h1>
+            <h1 class="motivational-message">one adventure at a time</h1>
+            <button class="cta-button">Book Now</button>
+        </div>
+    </div>
+</div>
+
 <section class="popular-tours">
     <h2>Most popular tours</h2>
-    <div class="tour-cards-container">
-        <button class="control-button prev-btn" (click)="scrollLeft()">❮</button>
-        <div class="tour-cards">
+    <div class="tour-cards-wrapper">
+        <div class="tour-cards-container">
             <div *ngFor="let tour of tours" class="tour-card">
-                <div class="tour-image"></div>
+                <div class="tour-image" [style.backgroundImage]="'url(' + tour.imageUrl + ')'"></div>
                 <div class="tour-info">
                     <h3>{{ tour.name }}</h3>
                     <p>{{ tour.description }}</p>
@@ -16,7 +25,9 @@
                 </div>
             </div>
         </div>
-        <button class="control-button next-btn" (click)="scrollRight()">❯</button>
     </div>
 </section>
--->
+
+
+
+
