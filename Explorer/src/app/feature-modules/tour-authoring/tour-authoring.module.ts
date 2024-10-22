@@ -12,6 +12,7 @@ import { TourEquipmentComponent } from './tour-equipment/tour-equipment.componen
 import { EquipmentComponent } from '../administration/equipment/equipment.component';
 import { AdministrationModule } from '../administration/administration.module';
 import { FormsModule } from '@angular/forms';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 
 
@@ -30,7 +31,8 @@ import { FormsModule } from '@angular/forms';
     MaterialModule,
     ReactiveFormsModule,
     AdministrationModule,
-    FormsModule
+    FormsModule,
+    SharedModule
   ],
   exports: [
     TourObjectComponent,
