@@ -1,9 +1,9 @@
 export interface ProfileInfo{
-    id: number,
+    id?: number,
     userId: number,
     firstName: string, 
     lastName: string,
-    profilePhoto: string,
+    profilePicture: string,
     biography: string, 
     moto: string
 }

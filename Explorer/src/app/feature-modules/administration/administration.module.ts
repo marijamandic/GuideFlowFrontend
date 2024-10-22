@@ -5,12 +5,14 @@ import { EquipmentComponent } from './equipment/equipment.component';
 import { ProfileInfoComponent } from './profile-info/profile-info.component'; // Import the component
 import { MaterialModule } from 'src/app/infrastructure/material/material.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ProfileInfoFormComponent } from './profile-info-form/profile-info-form.component';
 
 @NgModule({
   declarations: [
     EquipmentFormComponent,
     EquipmentComponent,
-    ProfileInfoComponent
+    ProfileInfoComponent,
+    ProfileInfoFormComponent
   ],
   imports: [
     CommonModule,

@@ -29,9 +29,15 @@ export class AdministrationService {
     return this.http.put<Equipment>(environment.apiHost + 'administration/equipment/' + equipment.id, equipment);
   }
 
-  getProfileInfo(): Observable<PagedResults<ProfileInfo>> {
-    return this.http.get<PagedResults<ProfileInfo>>(environment.apiHost + 'administration/profileInfo');
+  getProfileInfoByUserId(userId: number): Observable<ProfileInfo> {
+    return this.http.get<ProfileInfo>(environment.apiHost + 'administration/profileInfo/' + userId);
   }  
   
-
+  updateProfileInfo(profileInfo: ProfileInfo): Observable<ProfileInfo> {
+    return this.http.put<ProfileInfo>(
+      `${environment.apiHost}administration/profileInfo/${profileInfo.id}/${profileInfo.userId}`,
+      profileInfo
+    );
+  }  
+  
 }
