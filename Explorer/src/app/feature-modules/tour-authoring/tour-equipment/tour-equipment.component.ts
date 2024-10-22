@@ -15,44 +15,86 @@ constructor (private service : TourAuthoringService, private equipmentService: A
   
 }
 
+tourEquipmentRelations :TourEquipment[] = [];
 tourEquipment: Equipment[] = [];
 equipment: any[] = []; 
-selectedEquipment: { equipmentId: number, quantity: number }[] = [];
-
+selectedEquipment: TourEquipment[] = [];
+tourEq: TourEquipment;
 availableTourIds: number[] = [1,2,3,4,5]; // Lista ID-eva dostupnih tura
 selectedTourId!: number;  // ID ture koji je izabran iz dropdown-a
-
+deleteId! : number;// id for deleting
   ngOnInit(): void {
-    this.loadEquipment();
-    this.loadTourEquipment();
+   
 
     if (this.availableTourIds.length > 0) {
       this.selectedTourId = this.availableTourIds[0]; // Prvi ID kao default
+    }else{
+      this.selectedTourId = 1;
     }
-    console.log(this.selectedTourId);
+    this.loadEquipment();
+    this.loadTourEquipment();
+    this.loadRelations();
+   
   }
 
-  loadTourEquipment(): void{
-        this.service.getTourEquipment(this.selectedTourId).subscribe({
-        next:(result : PagedResults<Equipment>) => {
-          console.log('*********metoda load tourEq:************')
-          console.log(result);
-          this.tourEquipment = result.results;
-          console.log(this.tourEquipment);
+  loadTourEquipment(): void {
+    this.service.getTourEquipment(this.selectedTourId).subscribe({
+      next: (result: any[]) => {
+        console.log('*********metoda load tourEq:************');
+        console.log(result);
+        if(!result){
+          this.tourEquipment = [];
+        }
+        //this.loadRelations();
+        // Pretvorite dobijeni rezultat u Equipment[] format
+        this.tourEquipment = result.map(e => ({
+          id: e.id,            // Pretpostavimo da Equipment ima polje id
+          name: e.name,        // Pretpostavimo da Equipment ima polje name
+          description: e.description // Pretpostavimo da Equipment ima polje description
+        }));
+  
+        console.log('Tour Equipment loaded:', this.tourEquipment);
+      },
+      error: (err: any) => {
+        console.error('Error fetching tour equipment:', err);
+      }
+    });
+  }
 
-        },
-        error:(err : any) =>{
-          console.log(err);
-    }
-  })  
+  loadRelations():void{
+   
+    this.service.getAllByTour(this.selectedTourId).subscribe({
+      next:(result: any[])=>{
+        this.tourEquipmentRelations = result.map(e => ({
+          id: e.id,
+          equipmentId: e.equipmentId,            // Pretpostavimo da Equipment ima polje id
+          tourId: e.tourId,        // Pretpostavimo da Equipment ima polje name
+          quantity: e.quantity // Pretpostavimo da Equipment ima polje description
+        }));
+
+        console.log(this.tourEquipmentRelations);
+
+        //this.tourEquipmentRelations = this.tourEquipmentRelations.filter(r => r.tourId === this.selectedTourId);
+        console.log('loaded relations:');
+        console.log(result);
+        console.log(this.tourEquipmentRelations);
+      },
+      error: (err: any) => {
+        console.log(err);
+      }
+    })
   }
 
   loadEquipment(): void {
     this.service.getEquipment().subscribe({
       next: (result: PagedResults<Equipment>) => {
         // Dodaj privremeno polje za quantity svakom Equipment
-        this.equipment = result.results.map(e => ({ ...e, quantity: 1 })); // default 1
+        this.equipment = result.results
+        .filter(e => !this.tourEquipment.some(te => te.id === e.id))
+        .map(e => ({ ...e, quantity: 1 })); // default 1
+
         console.log(result);
+        
       },
       error: (err: any) => {
         console.log(err);
@@ -65,6 +107,8 @@ selectedTourId!: number;  // ID ture koji je izabran iz dropdown-a
     this.loadTourEquipment(); // Ponovno učitavanje opreme za izabranu turu
     console.log('dobavljene ture -----------:');
     console.log(this.tourEquipment);
+    this.loadEquipment();
+    this.loadRelations();
   }
 
   // Funkcija koja pronalazi naziv opreme na osnovu equipmentId
@@ -73,20 +117,75 @@ selectedTourId!: number;  // ID ture koji je izabran iz dropdown-a
     return foundEquipment ? foundEquipment.name : 'Unknown'; // Vraća ime opreme ili 'Unknown'
   }
 
-   // Funkcija koja dodaje ili uklanja selektovanu opremu
-   toggleEquipmentSelection(equipmentId: number, quantity: number, isChecked: boolean): void {
-    if (isChecked) {
-      this.selectedEquipment.push({ equipmentId, quantity });
-    } else {
-      this.selectedEquipment = this.selectedEquipment.filter(eq => eq.equipmentId !== equipmentId);
-    }
-  }
+   
 
 
   // Funkcija za potvrdu i dodavanje opreme za turu
   addSelectedEquipment(): void {
-    // Ovde možeš implementirati logiku za slanje podataka na server
-    console.log('Oprema dodata za turu: ', this.selectedEquipment);
+    if( this.selectedEquipment.length === 0){
+      alert('Please select equipment first');
+    }
+    this.selectedEquipment.forEach((equipment) => {
+      this.service.addTourEquipment(equipment.equipmentId, equipment.tourId, equipment.quantity).subscribe({
+          next: (response) => {
+            this.loadTourEquipment();
+            this.loadEquipment();
+            this.loadRelations();
+              console.log(`Oprema dodata za turu: ${equipment.equipmentId}`, response);
+          },
+          error: (err) => {
+              console.error(`Error adding equipment with ID ${equipment.equipmentId}:`, err);
+          }
+      });
+      
+    });
+   
   }
+
+  deleteTourEquipment(id: number): void {
+    console.log(this.tourEquipmentRelations);
+   this.tourEquipmentRelations.forEach((relation)=>{
+    if(relation.equipmentId === id){
+      this.service.deleteTourEquipment(relation.id).subscribe({
+        next: (response) => {
+            this.loadTourEquipment();
+           this.loadEquipment();
+            console.log(`Obrisana oprema: ${id}`, response);
+        },
+        error: (err) => {
+            console.error(`Error deleting relation ${id}:`, err);
+        }
+      })
+    }
+   }
+    
+   )
+
+    console.log('ID koji se prosledi za delete:', id);
+   
+
+}
+
+  
+  
+  isEquipmentInTour(equipmentId: number): boolean {
+    return this.tourEquipment.some(te => te.id === equipmentId);
+  }
+
+  toggleEquipmentSelection(equipmentId: number, tourId: number, event: Event): void {
+    const target = event.target as HTMLInputElement;
+  
+    if (target && target.checked !== undefined) {
+      const quantity = this.equipment.find(eq => eq.id === equipmentId)?.quantity || 1; // Dodajemo podrazumevanu količinu
+      const id = this.equipment.find(eq => eq.id === equipmentId)?.equipmentId || 1;
+      if (target.checked) {
+        this.tourEq = {id, equipmentId, tourId, quantity }
+        this.selectedEquipment.push(this.tourEq);
+      } else {
+        this.selectedEquipment = this.selectedEquipment.filter(eq => eq.equipmentId !== equipmentId);
+      }
+    }
+  }
+  
 
 }

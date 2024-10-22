@@ -13,20 +13,27 @@ export class TourAuthoringService {
 
   constructor(private http: HttpClient) { }
 
-    getTourEquipment(tourId: number): Observable<PagedResults<Equipment>>{
-    
-      //ovo treba da se zameni da daje bas equipment za odredjenu turu
-      return this.http.get<PagedResults<Equipment>>(`https://localhost:44333/api/administration/tourEquipment/${tourId}`);
+    getTourEquipment(tourId: number): Observable<any[]>{
+
+      return this.http.get<any[]>(`https://localhost:44333/api/administration/tourEquipment/${tourId}`);
   }
 
-    getAll():Observable<PagedResults<TourEquipment>>{
+    getAllByTour(id: number):Observable<any[]>{
 
-      return this.http.get<PagedResults<TourEquipment>>('https://localhost:44333/api/administration/tourEquipment');
+      return this.http.get<any[]>(`https://localhost:44333/api/administration/tourEquipment/tour/${id}`);
     }
   
     getEquipment(): Observable<PagedResults<Equipment>>{
     
-    //ovo treba da se zameni da daje bas equipment za odredjenu turu
+    //ovo treba da se zameni da daje samo equipment koji nema u tourEquipment
     return this.http.get<PagedResults<Equipment>>('https://localhost:44333/api/management/equipment');
 }
+
+    addTourEquipment(equipmentId : number, tourId: number, quantity:number):Observable<TourEquipment>{
+      return this.http.post<TourEquipment>('https://localhost:44333/api/administration/tourEquipment', {equipmentId,tourId,quantity});
+    }
+
+    deleteTourEquipment(tourEqId: number):Observable<TourEquipment>{
+      return this.http.delete<TourEquipment>(`https://localhost:44333/api/administration/tourEquipment/${tourEqId}`);
+    }
 }
