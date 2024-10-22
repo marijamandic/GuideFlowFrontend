@@ -16,30 +16,28 @@ import { JwtInterceptor } from './infrastructure/auth/jwt/jwt.interceptor';
 import { CommentComponent } from './feature-modules/blog/comment/comment.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    LayoutModule,
-    BrowserAnimationsModule,
-    MaterialModule,
-    AdministrationModule,
-    BlogModule,
-    MarketplaceModule,
-    TourAuthoringModule,
-    TourExecutionModule,
-    AuthModule,
-    HttpClientModule,
-  ],
-  providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: JwtInterceptor,
-      multi: true,
-    },
-  ],
-  bootstrap: [AppComponent]
+	declarations: [AppComponent],
+	imports: [
+		BrowserModule,
+		AppRoutingModule,
+		LayoutModule,
+		BrowserAnimationsModule,
+		MaterialModule,
+		AdministrationModule,
+		BlogModule,
+		MarketplaceModule,
+		TourAuthoringModule,
+		TourExecutionModule,
+		AuthModule,
+		HttpClientModule
+	],
+	providers: [
+		{
+			provide: HTTP_INTERCEPTORS,
+			useClass: JwtInterceptor,
+			multi: true
+		}
+	],
+	bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

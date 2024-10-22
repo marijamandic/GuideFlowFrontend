@@ -5,6 +5,8 @@ import { LoginComponent } from '../auth/login/login.component';
 import { EquipmentComponent } from 'src/app/feature-modules/administration/equipment/equipment.component';
 import { AuthGuard } from '../auth/auth.guard';
 import { RegistrationComponent } from '../auth/registration/registration.component';
+import { ProblemComponent } from 'src/app/feature-modules/administration/problem/problem.component';
+import { ReportProblemComponent } from 'src/app/feature-modules/tour-execution/report-problem/report-problem.component';
 import { ClubComponent } from 'src/app/feature-modules/administration/club/club.component';
 import { ClubInvitationComponent } from 'src/app/feature-modules/administration/club-invitation/club-invitation.component';
 import { ClubInvitationFormComponent } from 'src/app/feature-modules/administration/club-invitation-form/club-invitation-form.component';
@@ -17,10 +19,16 @@ import { CreateBlogComponent } from 'src/app/feature-modules/blog/create-blog/cr
 import { PostInfoComponent } from 'src/app/feature-modules/blog/post-info/post-info.component';
 
 const routes: Routes = [
-  {path: 'home', component: HomeComponent},
-  {path: 'login', component: LoginComponent},
-  {path: 'register', component: RegistrationComponent},
-  {path: 'equipment', component: EquipmentComponent, canActivate: [AuthGuard],},
+  { path: 'home', component: HomeComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegistrationComponent },
+  {
+    path: 'equipment',
+    component: EquipmentComponent,
+    canActivate: [AuthGuard],
+  },
+  { path: 'problem', component: ProblemComponent },
+  { path: 'report-problem', component: ReportProblemComponent },
   {path: 'club', component: ClubComponent, canActivate: [AuthGuard],},
   {path: 'club-invitation', component: ClubInvitationComponent, canActivate: [AuthGuard],},
   {path: 'club-invitation/add', component: ClubInvitationFormComponent, canActivate: [AuthGuard], },
@@ -37,6 +45,6 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
