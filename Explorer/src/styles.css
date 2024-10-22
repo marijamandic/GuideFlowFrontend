@@ -1,4 +1,4 @@
-/* You can add global styles to this file, and also import other style files */
+/* You can add global styles to this file, and also import other style files
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
@@ -6,4 +6,193 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .navbar-button {
     color: black;
     background-color: transparent;
+} */
+
+/* Promenljive za centralizovane boje, fontove i stilove */
+html, body { height: 100%; }
+
+:root {
+    --primary-color: #84dcc6;
+    --secondary-color: #f2f2f2;
+    --accent-color: #4d4d4d;
+    --hover-color: #5cd1b4;
+    --font-family: 'Gotham', 'Verdana', sans-serif;
+    --background-color: #ffffff;
+    --text-color: #333;
+  }
+  
+  /* Globalni stilovi */
+  body {
+    font-family: var(--font-family);
+    background-color: var(--background-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-family);
+    color: var(--primary-color);
+    margin-bottom: 10px;
+  }
+  
+  .book-now-section {
+    margin: 40px 0; /* Razmak iznad i ispod sekcije */
+}
+
+.book-now-container {
+    display: flex;
+    flex-direction: column; /* Vertikalno raspoređivanje */
+    background-color: var(--secondary-color); /* Pozadina kontejnera */
+    border-radius: 10px; /* Zaobljeni uglovi */
+    padding: 20px; /* Unutrašnji razmak */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Senka */
+    text-align: center; /* Centriranje teksta unutar kontejnera */
+}
+
+.book-now-image {
+    width: 100%; /* Slika će zauzeti celu širinu kontejnera */
+    border-radius: 10px; /* Zaobljeni uglovi slike */
+    margin-bottom: 15px; /* Razmak ispod slike */
+}
+
+.nav-links a {
+    text-decoration: none; /* Uklanjanje podvlačenja sa linkova */
+    color: var(--primary-color); /* Boja linkova */
+    font-weight: bold; /* Podebljavanje linkova */
+    padding: 8px 12px; /* Dodavanje unutrašnjeg razmaka za bolje klikanje */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Efekat tranzicije */
+}
+
+.nav-links a:hover {
+    color: var(--hover-color); /* Menjanje boje teksta pri hoveru */
+    transform: scale(1.05); /* Lagano povećanje */
+}
+
+.book-now-nav {
+    margin-bottom: 15px; /* Razmak ispod navigacije */
+}
+
+.book-now-nav ul {
+    list-style: none; /* Uklanjanje oznaka sa liste */
+    padding: 0; /* Uklanjanje padding-a */
+    display: flex; /* Horizontalno raspoređivanje */
+    justify-content: center; /* Centriranje linkova */
+}
+
+.book-now-nav li {
+    margin: 0 10px; /* Razmak između linkova */
+}
+
+.book-now-nav a {
+    text-decoration: none; /* Uklanjanje podvlačenja sa linkova */
+    color: var(--primary-color); /* Boja linkova */
+    font-weight: bold; /* Podebljavanje linkova */
+}
+  
+  /* Stil za dugme */
+  .button {
+    display: inline-block;
+    background-color: var(--primary-color);
+    color: white;
+    padding: 12px 25px;
+    border-radius: 30px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    text-align: center;
+    margin: 20px auto;
+    display: block;
+    width: fit-content;
+    outline: none; /* Uklanja crni okvir oko dugmeta */
+    border: none;  /* Osigurava da nema border-a */
+  }
+
+  .button:focus {
+    outline: none; /* Uklanja outline na focus */
+  }
+  
+  .button:hover {
+    background-color: var(--hover-color);
+    transform: scale(1.05);
+  }
+  
+  /* Kontejneri za kartice */
+  .cards {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; /* Vertikalno poravnanje na vrhu */
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .card {
+    display: flex;
+    flex-direction: column; /* Vertikalno raspoređivanje sadržaja */
+    background-color: var(--secondary-color);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    padding: 20px;
+    max-width: 300px;
+    min-width: 220px;
+  }
+
+.card-image {
+    width: 100%; /* Slika će popuniti širinu kartice */
+    height: auto; /* Održava proporcije slike */
+    border-radius: 10px 10px 0 0; /* Zaobljeni uglovi na vrhu */
+}
+
+  .card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  }
+  
+  .title {
+    font-size: 32px;
+    font-weight: bold;
+    color: var(--text-color);
+    margin-bottom: 10px;
+  }
+  
+  .features-container {
+    display: flex;
+    justify-content: space-around; /* Horizontalno poravnanje elemenata */
+    align-items: center; /* Vertikalno centriranje elemenata */
+    background-color: var(--secondary-color); /* Pozadina kontejnera */
+    border-radius: 10px; /* Zaobljeni uglovi */
+    padding: 20px; /* Unutrašnji razmak */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Senka */
+}
+
+.feature-item {
+    text-align: center; /* Centriranje teksta unutar elementa */
+    flex: 1; /* Omogućava ravnomerno raspoređivanje */
+    margin: 0 10px; /* Razmak između elemenata */
+}
+
+.features-section {
+    margin: 40px 0; /* Razmak iznad i ispod sekcije */
+}
+
+.feature-icon {
+    font-size: 40px; /* Veličina ikone */
+    margin-bottom: 10px; /* Razmak ispod ikone */
+}
+
+
+ .subtitle {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--text-color);
+    margin-bottom: 10px;
+  }
+  
+  .full-width-container {
+    background-color: var(--secondary-color); /* Pozadina kontejnera */
+    padding: 20px; /* Unutrašnji razmak */
+    text-align: center; /* Centriranje teksta */
+    width: 100%; /* Širina kontejnera */
+    margin: 20px 0; /* Razmak iznad i ispod kontejnera */
+    border-radius: 10px; /* Zaobljeni uglovi */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Senka */
 }
