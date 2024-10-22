@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Post, Status } from '../model/post.model';
 import { PostService } from '../post.service';
 import { Router } from '@angular/router';
+import { User } from 'src/app/infrastructure/auth/model/user.model';
+import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 
 @Component({
   selector: 'xp-create-blog',
@@ -16,8 +18,9 @@ export class CreateBlogComponent implements OnInit{
     name: key,                // Prikaz imena statusa
     value: Status[key as keyof typeof Status]  // Integer vrednost
   }));
+  user : User | undefined;
 
-  constructor(private postService : PostService , private fb : FormBuilder , private router : Router){}
+  constructor(private postService : PostService , private fb : FormBuilder , private router : Router , private authSevice : AuthService){}
 
   ngOnInit(): void {
       this.postForm = this.fb.group({
@@ -26,6 +29,9 @@ export class CreateBlogComponent implements OnInit{
         status: [Status.Draft, Validators.required],
         imageBase64: ['']
       });
+      this.authSevice.user$.subscribe(user => {
+        this.user = user;
+      })
   }
   onFileSelected(event : any){
     const file : File = event.target.files[0];
@@ -41,9 +47,10 @@ export class CreateBlogComponent implements OnInit{
   onSubmit(): void {
     if (this.postForm.valid) {
       const post = this.postForm.value;
-      post.userId = 1;  // Assuming the user is logged in and has an ID of 1
+      post.userId = this.user?.id;  // Assuming the user is logged in and has an ID of 1
       post.publishDate = new Date().toISOString();
-      console.log(post)
+      post.status = Number(post.status)
+      console.log(post.status)
       this.postService.addPost(post).subscribe({
         next: (response : Post) => {
           console.log('Post created successfully', response);

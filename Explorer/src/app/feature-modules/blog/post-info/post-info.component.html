@@ -1,4 +1,7 @@
 <div *ngIf="post" class="post-info">
+    <div class="container-close" (click)="closePost()">
+        <button *ngIf="user?.id==post.userId" class="close-post">Close</button>
+    </div>
     <h2 class="post-title">{{ post.title }}</h2>
     <div class="post-description">
         <strong>Description:</strong>

@@ -29,4 +29,7 @@ export class PostService {
   addPost(post: Post) : Observable<Post> {
     return this.http.post<Post>(environment.apiHost+'blogManagement/post',post);
   }
+  updatePost(post: Post,id:number) : Observable<Post> {
+    return this.http.put<Post>(environment.apiHost+'blogManagement/post/'+id,post);
+  }
 }

@@ -5,7 +5,7 @@ import { PagedResults } from 'src/app/shared/model/paged-results.model';
 import { environment } from 'src/env/environment';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { User } from 'src/app/infrastructure/auth/model/user.model';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'xp-post-info',
@@ -16,7 +16,7 @@ export class PostInfoComponent implements OnInit{
   postId: string | null = null;
   post: Post | null = null;
   user : User | undefined;
-  constructor(private postService : PostService ,private authService : AuthService,private route: ActivatedRoute){}
+  constructor(private postService : PostService ,private authService : AuthService,private route: ActivatedRoute ,private router: Router){}
 
   ngOnInit(): void {
       this.postId = this.route.snapshot.paramMap.get('id');
@@ -42,5 +42,17 @@ export class PostInfoComponent implements OnInit{
 
   getImagePath(imageUrl: string){
     return environment.webRootHost+imageUrl;
+  }
+  closePost(){
+    if(this.post && this.postId){
+      this.post.status = Status.Closed;
+
+      this.postService.updatePost(this.post , Number(this.postId)).subscribe({
+        next: () => { this.router.navigate(["blog"]);},
+        error: (err: any) => {
+          console.error('Failed to update post status', err);
+        }
+      })
+    }
   }
 }

@@ -14,6 +14,7 @@ import { User } from 'src/app/infrastructure/auth/model/user.model';
 })
 export class PostComponent implements OnInit{
   posts : Post[];
+  postsToShow : Post[];
   user : User | undefined;
   constructor(private postService : PostService ,private authService : AuthService ,private router : Router){}
 
@@ -25,6 +26,7 @@ export class PostComponent implements OnInit{
         this.postService.getPosts(this.user.role).subscribe({
           next: (result: PagedResults<Post>)=>{
             this.posts = result.results;
+            this.postsToShow = this.posts.filter( post => post.status !== Status.Closed);
           },
           error: (err : any)=>{
             console.log(err);
