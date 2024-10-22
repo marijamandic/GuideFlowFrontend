@@ -8,6 +8,8 @@ import { RegistrationComponent } from '../auth/registration/registration.compone
 import { ProblemComponent } from 'src/app/feature-modules/administration/problem/problem.component';
 import { ReportProblemComponent } from 'src/app/feature-modules/tour-execution/report-problem/report-problem.component';
 import { TourObjectComponent } from 'src/app/feature-modules/tour-authoring/tour-object/tour-object.component';
+import { CheckpointListComponent } from 'src/app/feature-modules/tour-authoring/tour-checkpoint/tour-checkpoint.component';
+import { TourComponent } from 'src/app/feature-modules/tour-authoring/tour/tour.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -20,7 +22,9 @@ const routes: Routes = [
   },
   { path: 'problem', component: ProblemComponent },
   { path: 'report-problem', component: ReportProblemComponent },
-  { path: 'tourObjects', component: TourObjectComponent, canActivate: [AuthGuard],}
+  { path: 'tourObjects', component: TourObjectComponent, canActivate: [AuthGuard],},
+  { path: 'checkpoints', component: CheckpointListComponent},
+  { path: 'tour', component: TourComponent}
 ];
 
 @NgModule({
