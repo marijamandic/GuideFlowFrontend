@@ -9,24 +9,40 @@
     </div>
 </div>
 
-<section class="popular-tours">
-    <h2>Most popular tours</h2>
-    <div class="tour-cards-wrapper">
-        <div class="tour-cards-container">
-            <div *ngFor="let tour of tours" class="tour-card">
-                <div class="tour-image" [style.backgroundImage]="'url(' + tour.imageUrl + ')'"></div>
-                <div class="tour-info">
-                    <h3>{{ tour.name }}</h3>
-                    <p>{{ tour.description }}</p>
-                    <div class="tour-rating">
-                        <span class="rating-badge">{{ tour.rating }}</span>
-                        <span class="rating-text">{{ tour.reviews }}</span>
+<div class="main-column">
+    <!-- POPULAR TOURS -->
+    <section class="popular-tours">
+        <h2>Most popular tours</h2>
+        <div class="tour-cards-wrapper">
+            <div class="tour-cards-container">
+                <div *ngFor="let tour of tours" class="tour-card">
+                    <div class="tour-image" [style.backgroundImage]="'url(' + tour.imageUrl + ')'"></div>
+                    <div class="tour-info">
+                        <h3>{{ tour.name }}</h3>
+                        <p>{{ tour.description }}</p>
+                        <div class="tour-rating">
+                            <span class="rating-badge">{{ tour.rating }}</span>
+                            <span class="rating-text">{{ tour.reviews }}</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
+
+    <!-- GUIDE CTA -->
+    <section class="guide-signup">
+        <div class="guide-signup-overlay">
+            <h2>Are you a guide?</h2>
+            <p>Create your own tour today!</p>
+            <button class="cta-button">Sign up</button>
+        </div>
+    </section>
+</div>
+
+
+
+
 
 
 

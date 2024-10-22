@@ -14,12 +14,12 @@ export class HomeComponent implements OnInit {
   currentImageIndex: number = 0;
 
   tours = [
-    { name: 'Lorem Ipsum', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ', rating: 8.5, reviews: 'Very good, 235 reviews', imageUrl: 'assets/images/tour1.jpg' },
-    { name: 'Lorem Ipsum', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ', rating: 9.2, reviews: 'Excellent, 150 reviews', imageUrl: 'assets/images/tour2.jpg' },
-    { name: 'Lorem Ipsum', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ', rating: 7.5, reviews: 'Good, 100 reviews', imageUrl: 'assets/images/tour3.jpg' },
-    { name: 'Lorem Ipsum', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ', rating: 8.1, reviews: 'Very good, 180 reviews', imageUrl: 'assets/images/tour1.jpg' },
-    { name: 'Lorem Ipsum', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ', rating: 7.5, reviews: 'Good, 100 reviews', imageUrl: 'assets/images/tour2.jpg' },
-    { name: 'Lorem Ipsum', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ', rating: 8.3, reviews: 'Very good, 180 reviews', imageUrl: 'assets/images/tour3.jpg' }
+    { name: 'Lorem Ipsum', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ', rating: 8.5, reviews: 'Very good, 235 reviews', imageUrl: 'assets/images/tour4.jpg' },
+    { name: 'Lorem Ipsum', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ', rating: 9.2, reviews: 'Excellent, 150 reviews', imageUrl: 'assets/images/tour5.jpg' },
+    { name: 'Lorem Ipsum', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ', rating: 7.5, reviews: 'Good, 100 reviews', imageUrl: 'assets/images/tour6.jpg' },
+    { name: 'Lorem Ipsum', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ', rating: 8.1, reviews: 'Very good, 180 reviews', imageUrl: 'assets/images/tour7.jpg' },
+    { name: 'Lorem Ipsum', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ', rating: 7.5, reviews: 'Good, 100 reviews', imageUrl: 'assets/images/tour8.jpg' },
+    { name: 'Lorem Ipsum', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ', rating: 8.3, reviews: 'Very good, 180 reviews', imageUrl: 'assets/images/tour9.jpg' }
   ];
 
   ngOnInit() {
