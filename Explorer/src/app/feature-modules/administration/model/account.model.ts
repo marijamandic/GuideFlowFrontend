@@ -1,7 +1,7 @@
 export interface Account{
     userId: number,
     username: string,
-    mail: string,
+    email: string,
     role: UserRole,
     isActive: boolean
 }

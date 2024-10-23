@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Account } from '../model/account.model'
+import { Account, UserRole } from '../model/account.model'
 import { AdministrationService } from '../administration.service';
 
 @Component({
@@ -9,15 +9,31 @@ import { AdministrationService } from '../administration.service';
 })
 export class AccountComponent implements OnInit {
 
-  accounts: Account[] = []
+accounts: Account[] = []
+  
+public UserRole = UserRole;
   
   constructor(private service: AdministrationService) {}
 
   ngOnInit(): void {
-    this.service.getAccounts().subscribe({
+    this.getAccounts()
+  }
+
+  ToggleAcountActivty(account : Account) : void {
+
+    this.service.toggleAcountActivity(account).subscribe({
+      error: (err: any) => {
+        console.log(err)
+      }
+    })
+
+    account.isActive = account.isActive ? false : true
+  }
+
+  getAccounts() : void {
+     this.service.getAccounts().subscribe({
       next: (result: Array<Account>) => {
       this.accounts = result
-        console.log(result)
       },
       error: (err: any) => {
         console.log(err)

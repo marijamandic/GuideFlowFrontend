@@ -30,6 +30,10 @@ export class AdministrationService {
   }
 
   getAccounts(): Observable<Array<Account>> {
-    return this.http.get<Array<Account>>(environment.apiHost + 'administration/user');
+    return this.http.get<Array<Account>>(environment.apiHost + 'administration/account');
+  }
+
+  toggleAcountActivity(account : Account): Observable<Account> {
+    return this.http.patch<Account>(environment.apiHost + "administration/account", account);
   }
 }
