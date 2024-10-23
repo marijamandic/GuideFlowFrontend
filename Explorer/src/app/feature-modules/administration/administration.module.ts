@@ -1,3 +1,4 @@
+import { AppRating } from './../layout/model/AppRating.model';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router'; 
@@ -13,6 +14,9 @@ import { ClubRequestFormComponent } from './club-request-form/club-request-form.
 import { ClubInvitationComponent } from './club-invitation/club-invitation.component';
 import { ClubInvitationFormComponent } from './club-invitation-form/club-invitation-form.component';
 import { ClubMemberListComponent } from 'src/app/feature-modules/administration/club-member-list/club-member-list.component';
+import { AllAppRatingsComponent } from './all-app-ratings/all-app-ratings.component';
+import { LayoutModule } from '../layout/layout.module';
+
 
 @NgModule({
   declarations: [
@@ -25,13 +29,15 @@ import { ClubMemberListComponent } from 'src/app/feature-modules/administration/
     ClubInvitationComponent,
     ClubInvitationFormComponent,
     ClubMemberListComponent,
-    ProblemComponent
+    ProblemComponent,
+    AllAppRatingsComponent
   ],
   imports: [
     CommonModule,
     RouterModule,
     MaterialModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    LayoutModule
   ],
   exports: [
     EquipmentComponent,
@@ -42,7 +48,8 @@ import { ClubMemberListComponent } from 'src/app/feature-modules/administration/
     ClubInvitationComponent,
     ClubInvitationFormComponent,
     ClubMemberListComponent,
-    ProblemComponent
+    ProblemComponent,
+    AllAppRatingsComponent
   ]
 })
 export class AdministrationModule {}
