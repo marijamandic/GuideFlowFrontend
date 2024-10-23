@@ -48,8 +48,16 @@
       </div>
     </form>
   </div>
+  <div>
+    <label for="tourSelect">Select Tour:</label>
+    <select id="tourSelect" [(ngModel)]="selectedTour">
+      <option value="tour1">Tour 1</option>
+      <option value="tour2">Tour 2</option>
+    </select>
+  </div>
+  
   <button (click)="loadCheckpointsMap()">Load Checkpoints</button>
-
+  
   <div class="map-container" style="margin-top: 30px;">
     <xp-map (coordinatesSelected)="onCoordinatesSelected($event)"
     [checkpoints]="checkpointCoordinates"></xp-map>

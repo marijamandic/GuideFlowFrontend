@@ -17,6 +17,7 @@ export class CheckpointListComponent implements OnInit {
   @Output() coordinatesSelected = new EventEmitter<{ latitude: number; longitude: number }>();
   @Output() checkpointsLoaded = new EventEmitter<{ latitude: number; longitude: number; }[]>();
   isAddingCheckpoint = false;
+  selectedTour: string = 'tour1'; 
   newCheckpoint = { id: 0, name: '', description: '', imageUrl: '', latitude: 0, longitude: 0 };
 
   toggleAddCheckpointForm() {
@@ -72,8 +73,30 @@ export class CheckpointListComponent implements OnInit {
     this.loadCheckpoints();
   }
   loadCheckpointsMap() {
-    this.checkpointCoordinates = this.checkpoints.map(cp => ({ latitude: cp.latitude, longitude: cp.longitude }));
-    this.checkpointsLoaded.emit(this.checkpointCoordinates); // Emitovanje koordinata
+    if (this.selectedTour == 'tour1') {
+      this.checkpointService.getCheckpointsByTour(1).subscribe({
+        next: (data) => {
+          this.checkpoints = data; 
+          this.checkpointCoordinates = this.checkpoints.map(cp => ({ latitude: cp.latitude, longitude: cp.longitude }));
+          console.log(this.checkpoints)
+          this.checkpointsLoaded.emit(this.checkpointCoordinates); // Emitovanje koordinata
+        },
+        error: (err) => {
+          console.error('Greška prilikom učitavanja checkpoint-a:', err);
+        }
+        });
+    } else {
+      this.checkpointService.getCheckpointsByTour(2).subscribe({
+        next: (data) => {
+          this.checkpoints = data; 
+          this.checkpointCoordinates = this.checkpoints.map(cp => ({ latitude: cp.latitude, longitude: cp.longitude }));
+          this.checkpointsLoaded.emit(this.checkpointCoordinates); // Emitovanje koordinata
+        },
+        error: (err) => {
+          console.error('Greška prilikom učitavanja checkpoint-a:', err);
+        }
+        });
+    }
   }
   
   loadCheckpoints(page: number = 1, pageSize: number = 10): void {

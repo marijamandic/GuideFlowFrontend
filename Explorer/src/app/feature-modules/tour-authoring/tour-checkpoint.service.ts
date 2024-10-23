@@ -25,5 +25,9 @@ export class TourCheckpointService {
 
   deleteCheckpoint(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  } 
+  
+  getCheckpointsByTour(tourId: number): Observable<Checkpoint[]> {
+    return this.http.get<Checkpoint[]>(`${this.baseUrl}/tour/${tourId}`);
   }  
 }
