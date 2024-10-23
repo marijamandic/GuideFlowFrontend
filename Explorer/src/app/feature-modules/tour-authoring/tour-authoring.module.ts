@@ -1,12 +1,44 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { TourObjectComponent } from './tour-object/tour-object.component';
+import { MaterialModule } from 'src/app/infrastructure/material/material.module';
+import { TourObjectFormComponent } from './tour-object-form/tour-object-form.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { CheckpointListComponent } from './tour-checkpoint/tour-checkpoint.component';
+import { CheckpointFormComponent } from './tour-checkpoint-form/tour-checkpoint-form.component'; // Dodaj CheckpointFormComponent
+import { TourComponent } from './tour/tour.component';
+import { TourFormComponent } from './tour-form/tour-form.component';
+import { TourEquipmentComponent } from './tour-equipment/tour-equipment.component';
+import { EquipmentComponent } from '../administration/equipment/equipment.component';
+import { AdministrationModule } from '../administration/administration.module';
+import { FormsModule } from '@angular/forms';
 
 
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    TourObjectComponent,
+    TourObjectFormComponent,
+    CheckpointListComponent,
+    CheckpointFormComponent,
+    TourComponent,
+    TourFormComponent,
+    TourEquipmentComponent
+  ],
   imports: [
-    CommonModule
+    CommonModule,
+    MaterialModule,
+    ReactiveFormsModule,
+    AdministrationModule,
+    FormsModule
+  ],
+  exports: [
+    TourObjectComponent,
+    CheckpointListComponent,
+    TourComponent,
+    TourFormComponent,
+    TourObjectFormComponent,
+    TourEquipmentComponent
   ]
 })
-export class TourAuthoringModule { }
+export class TourAuthoringModule {}

@@ -7,6 +7,10 @@ import { AuthGuard } from '../auth/auth.guard';
 import { RegistrationComponent } from '../auth/registration/registration.component';
 import { ProblemComponent } from 'src/app/feature-modules/administration/problem/problem.component';
 import { ReportProblemComponent } from 'src/app/feature-modules/tour-execution/report-problem/report-problem.component';
+import { TourObjectComponent } from 'src/app/feature-modules/tour-authoring/tour-object/tour-object.component';
+import { CheckpointListComponent } from 'src/app/feature-modules/tour-authoring/tour-checkpoint/tour-checkpoint.component';
+import { TourComponent } from 'src/app/feature-modules/tour-authoring/tour/tour.component';
+import { TourEquipmentComponent } from 'src/app/feature-modules/tour-authoring/tour-equipment/tour-equipment.component';
 import { ClubComponent } from 'src/app/feature-modules/administration/club/club.component';
 import { ClubInvitationComponent } from 'src/app/feature-modules/administration/club-invitation/club-invitation.component';
 import { ClubInvitationFormComponent } from 'src/app/feature-modules/administration/club-invitation-form/club-invitation-form.component';
@@ -41,6 +45,10 @@ const routes: Routes = [
   {path: 'blog/:id', component: PostInfoComponent},
   {path: 'comment', component: CommentComponent},
   {path: 'createBlog', component: CreateBlogComponent}
+  { path: 'tourObjects', component: TourObjectComponent, canActivate: [AuthGuard],},
+  { path: 'checkpoints', component: CheckpointListComponent},
+  { path: 'tour', component: TourComponent},
+  { path: 'tourEquipment', component:TourEquipmentComponent}
 ];
 
 @NgModule({

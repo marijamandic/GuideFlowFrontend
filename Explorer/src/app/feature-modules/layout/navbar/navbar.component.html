@@ -10,7 +10,10 @@
             <button *ngIf="user && user.role === 'tourist'" color="primary" mat-raised-button [routerLink]="['club']">Manage club</button>
             <button *ngIf="user && user.role === 'tourist'" color="primary" mat-raised-button [routerLink]="['club-invitation']">Manage club invitations</button>
             <button *ngIf="user && user.role === 'tourist'" color="primary" mat-raised-button [routerLink]="['club-request']">Requests</button>
-
+            <button *ngIf="user && user.role === 'author'"color="primary" mat-raised-button [routerLink]="['tourObjects']">Manage tour objects</button>
+            <button *ngIf="user && user.role === 'author'"color="primary" mat-raised-button [routerLink]="['tourEquipment']">Manage tour equipment</button>
+            <button *ngIf="user && user.role === 'author'"color="primary" mat-raised-button [routerLink]="['tour']">Manage tour</button>
+            <button *ngIf="user && user.role === 'author'"color="primary" mat-raised-button [routerLink]="['checkpoints']">Manage tour checkpoints</button>
         </div>
     </div>
 </mat-toolbar>
