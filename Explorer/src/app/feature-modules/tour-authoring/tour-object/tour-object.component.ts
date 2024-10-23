@@ -15,21 +15,37 @@ export class TourObjectComponent implements OnInit {
   tourObjects: TourObject[] = [];
   shouldRenderTourObjectForm: boolean = false;
   shouldEdit: boolean = false;
+  latitude: number | null = null;
+  longitude: number | null = null;
+  selectedTourObject: any = null;
   
   constructor(private service: TourAuthoringService) { }
 
   ngOnInit(): void {
     this.getTourObjects();
   }
-
+  onCoordinatesSelected(coordinates: { latitude: number; longitude: number }): void {
+    console.log('Coordinates selected:', coordinates);
+    this.latitude = coordinates.latitude;
+    this.longitude = coordinates.longitude;
+  }
   onMarkerAdded(latlng: L.LatLng): void {
     console.log('New marker added at:', latlng);
-    // Logika za dodavanje nove ključne tačke ili objekta
   }
+
+  onEditClicked(tourObject: any): void {
+    this.selectedTourObject = tourObject;
+    console.log(this.selectedTourObject)
+    this.latitude = tourObject.latitude;
+    this.longitude = tourObject.longitude;
+    this.shouldEdit = true; // Oznaka da je forma u modu uređivanja
+    this.shouldRenderTourObjectForm = true; // Prikaz forme za uređivanje
+  }
+  
+
 
   onMapReset(): void {
     console.log('Map reset');
-    // Logika za resetovanje ili ažuriranje stanja komponente
   }
 
   getTourObjects(): void {
