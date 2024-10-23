@@ -1,52 +1,50 @@
 .container {
-    display: flex; 
-    justify-content: space-between; 
-    align-items: flex-start; 
-  }
-  
-  table {
-    width: 30%;
-    border-collapse: collapse; 
-    margin: 20px 0; 
-  }
-  
-  th, td {
-    padding: 12px; 
-    text-align: left; 
-    border: 1px solid #ddd; 
-  }
-  
-  th {
-    background-color: #4CAF50; 
-    color: white; 
-  }
-  
-  tr:nth-child(even) {
-    background-color: #f2f2f2; 
-  }
-  
-  tr:hover {
-    background-color: #ddd; 
-  }
-  
-  .form-container {
-    margin-top: 20px; 
-    margin-right: 500px;
-    width: 25%; 
-  }
-  button {
-    margin-right: 5px; 
-    margin-bottom: 10px;
-    padding: 5px 10px; 
-    background-color: #4CAF50; 
-    color: white; 
-    border: none; 
-    border-radius: 4px;
-    cursor: pointer; 
-    width: 80px;
-  }
-  
-  button:hover {
-    background-color: #45a049; 
-  }
-  
+  display: block; /* Promenio sa flex na block da elementi budu vertikalno poredjani */
+}
+
+table {
+  width: 100%; /* Širina tabele prilagođena za većinu ekrana */
+  border-collapse: collapse; 
+  margin: 20px 0; 
+}
+
+th, td {
+  padding: 12px; 
+  text-align: left; 
+  border: 1px solid #ddd; 
+}
+
+th {
+  background-color: #4CAF50; 
+  color: white; 
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2; 
+}
+
+tr:hover {
+  background-color: #ddd; 
+}
+
+button {
+  margin-right: 5px; 
+  margin-bottom: 10px;
+  padding: 5px 10px; 
+  background-color: #4CAF50; 
+  color: white; 
+  border: none; 
+  border-radius: 4px;
+  cursor: pointer; 
+  width: 150px; /* Povećao širinu dugmeta kako bi bilo istaknutije */
+}
+
+button:hover {
+  background-color: #45a049; 
+}
+
+/* Dugme ispod tabele */
+.add-button-container {
+  text-align: center; /* Centriranje dugmeta ispod tabele */
+  margin-top: 20px;
+}

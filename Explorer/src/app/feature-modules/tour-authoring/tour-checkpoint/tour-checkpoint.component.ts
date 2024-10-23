@@ -13,8 +13,50 @@ export class CheckpointListComponent implements OnInit {
   editingCheckpoint: Checkpoint | null = null; 
   checkpointForm: FormGroup; 
   @Output() coordinatesSelected = new EventEmitter<{ latitude: number; longitude: number }>();
+  isAddingCheckpoint = false;
+  newCheckpoint = { id: 0, name: '', description: '', imageUrl: '', latitude: 0, longitude: 0 };
 
+  toggleAddCheckpointForm() {
+    this.isAddingCheckpoint = !this.isAddingCheckpoint;
+  }
 
+  
+
+  addCheckpoint(): void {
+      const formValues = this.newCheckpoint;
+
+      if (!this.newCheckpoint || this.newCheckpoint.id === 0) {
+        // Ako checkpoint ne postoji, kreiraj novi
+        const newCheckpoint: Checkpoint = { ...formValues };
+        console.log('Creating new checkpoint:', newCheckpoint);
+
+        this.checkpointService.addCheckpoint(formValues).subscribe({
+          next: () => {
+            console.log('New checkpoint added.');
+          },
+          error: (err) => console.error('Error adding checkpoint:', err)
+        });
+  
+      } else {
+        const updatedCheckpoint: Checkpoint = {
+          ...formValues,
+          id: this.newCheckpoint.id 
+        };
+        console.log('Updating existing checkpoint:', this.newCheckpoint);
+
+        this.checkpointService.updateCheckpoint(formValues).subscribe({
+          next: () => {
+            console.log('Checkpoint updated.');
+          },
+          error: (err) => console.error('Error updating checkpoint:', err)
+        });
+    }
+  }
+  resetNewCheckpointForm() {
+    this.newCheckpoint = { id: 0, name: '', description: '', imageUrl: '', latitude: 0, longitude: 0 };
+    this.isAddingCheckpoint = false;
+  }
+  
   constructor(private checkpointService: TourCheckpointService, private fb: FormBuilder) {
     this.checkpointForm = this.fb.group({
       name: ['', Validators.required],
@@ -42,6 +84,13 @@ export class CheckpointListComponent implements OnInit {
   }
 
   editCheckpoint(checkpoint: Checkpoint): void {
+    this.toggleAddCheckpointForm()
+    this.newCheckpoint.description = checkpoint.description
+    this.newCheckpoint.name = checkpoint.name
+    this.newCheckpoint.imageUrl = checkpoint.imageUrl || ''
+    this.newCheckpoint.latitude = checkpoint.latitude
+    this.newCheckpoint.longitude = checkpoint.longitude
+    this.newCheckpoint.id = checkpoint.id || 0
     this.editingCheckpoint = checkpoint; 
     this.loadFormData(checkpoint); 
   }
@@ -56,18 +105,26 @@ export class CheckpointListComponent implements OnInit {
     });
   }
 
-  onCoordinatesSelected(coordinates: { latitude: number; longitude: number }): void {
-    if (this.editingCheckpoint) {
-      this.editingCheckpoint.latitude = coordinates.latitude;
-      this.editingCheckpoint.longitude = coordinates.longitude;
-  
-      // Emitovanje podataka o koordinatama ka formi
-      this.coordinatesSelected.emit({ latitude: coordinates.latitude, longitude: coordinates.longitude });
-      
-      // Ako treba, ažuriraj postojeći checkpoint
-      this.editCheckpoint(this.editingCheckpoint);
-    }
+  // U tvojoj roditeljskoj komponenti
+onCoordinatesSelected(coordinates: { latitude: number; longitude: number }): void {
+  this.newCheckpoint.latitude = coordinates.latitude
+  this.newCheckpoint.longitude = coordinates.longitude
+  // Ažuriramo editingCheckpoint sa novim koordinatama
+  if (this.editingCheckpoint) {
+    this.editingCheckpoint.latitude = coordinates.latitude;
+    this.editingCheckpoint.longitude = coordinates.longitude;
+  } else {
+    // Ako nema trenutno izabranog checkpointa, kreiramo novi
+    this.editingCheckpoint = {
+      name: '',
+      description: '',
+      imageUrl: '',
+      latitude: coordinates.latitude,
+      longitude: coordinates.longitude
+    };
   }
+}
+
   
 
 
