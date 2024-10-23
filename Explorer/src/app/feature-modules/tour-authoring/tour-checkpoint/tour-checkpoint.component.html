@@ -48,16 +48,20 @@
       </div>
     </form>
   </div>
+  <button (click)="loadCheckpointsMap()">Load Checkpoints</button>
 
   <div class="map-container" style="margin-top: 30px;">
-    <xp-map (coordinatesSelected)="onCoordinatesSelected($event)"></xp-map>
+    <xp-map (coordinatesSelected)="onCoordinatesSelected($event)"
+    [checkpoints]="checkpointCoordinates"></xp-map>
   </div>
   
   <div class="form-container" style="margin-top: 30px;">
     <xp-tour-checkpoint-form
-      [checkpoint]="editingCheckpoint"
-      (coordinatesSelected)="onCoordinatesSelected($event)"
-      (updatedCheckpoint)="loadCheckpoints()">
+        [checkpoint]="editingCheckpoint"
+        (coordinatesSelected)="onCoordinatesSelected($event)"
+        (updatedCheckpoint)="loadCheckpoints()"
+        (checkpointsLoaded)="checkpointsLoaded">
     </xp-tour-checkpoint-form>
+
   </div>
 </div>

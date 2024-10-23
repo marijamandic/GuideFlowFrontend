@@ -15,6 +15,7 @@ export class MapComponent implements AfterViewInit {
   private routeControl: any = null;
 
   @Input() initialMarkers: L.LatLng[] = [];
+  @Input() checkpoints: { latitude: number; longitude: number }[] = []; // Input za koordinate
   @Output() markerAdded = new EventEmitter<L.LatLng>();
   @Output() mapReset = new EventEmitter<void>();
   @Output() coordinatesSelected = new EventEmitter<{ latitude: number; longitude: number }>();
@@ -45,6 +46,13 @@ export class MapComponent implements AfterViewInit {
       const marker = L.marker(latLng).addTo(this.map);
       this.addMarker(marker);
     });
+
+    // Add checkpoint markers
+    this.checkpoints.forEach((checkpoint) => {
+      const latLng = new L.LatLng(checkpoint.latitude, checkpoint.longitude);
+      const marker = L.marker(latLng).addTo(this.map);
+      this.addMarker(marker);
+    });
   }
 
   setRoute(waypoints: L.LatLng[]): void {
@@ -64,6 +72,18 @@ export class MapComponent implements AfterViewInit {
         alert('Total distance is ' + (summary.totalDistance / 1000).toFixed(2) + ' km and total time is ' + Math.round(summary.totalTime / 60) + ' minutes');
       });
     }
+  }
+
+  ngOnChanges(): void {
+    this.addCheckpointMarkers(); // Pozovi ovu metodu kad se koordinate promene
+  }
+  private addCheckpointMarkers(): void {
+    // Logika za dodavanje markera na mapu, koristeći this.checkpoints
+    this.checkpoints.forEach(checkpoint => {
+      const latLng = new L.LatLng(checkpoint.latitude, checkpoint.longitude);
+      const marker = L.marker(latLng).addTo(this.map);
+      this.addMarker(marker);
+    });
   }
 
   ngAfterViewInit(): void {

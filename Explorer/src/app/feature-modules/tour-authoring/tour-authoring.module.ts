@@ -24,7 +24,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
     CheckpointFormComponent,
     TourComponent,
     TourFormComponent,
-    TourEquipmentComponent
+    TourEquipmentComponent,
   ],
   imports: [
     CommonModule,

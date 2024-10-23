@@ -2,6 +2,7 @@ import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'; 
 import { TourCheckpointService } from '../tour-checkpoint.service';
 import { Checkpoint } from '../model/tourCheckpoint.model';
+import { MapComponent } from 'src/app/shared/map/map.component';
 
 @Component({
   selector: 'xp-checkpoint-list',
@@ -12,15 +13,15 @@ export class CheckpointListComponent implements OnInit {
   checkpoints: Checkpoint[] = [];
   editingCheckpoint: Checkpoint | null = null; 
   checkpointForm: FormGroup; 
+  checkpointCoordinates: { latitude: number, longitude: number }[] = [];
   @Output() coordinatesSelected = new EventEmitter<{ latitude: number; longitude: number }>();
+  @Output() checkpointsLoaded = new EventEmitter<{ latitude: number; longitude: number; }[]>();
   isAddingCheckpoint = false;
   newCheckpoint = { id: 0, name: '', description: '', imageUrl: '', latitude: 0, longitude: 0 };
 
   toggleAddCheckpointForm() {
     this.isAddingCheckpoint = !this.isAddingCheckpoint;
   }
-
-  
 
   addCheckpoint(): void {
       const formValues = this.newCheckpoint;
@@ -70,12 +71,15 @@ export class CheckpointListComponent implements OnInit {
   ngOnInit(): void {
     this.loadCheckpoints();
   }
-
+  loadCheckpointsMap() {
+    this.checkpointCoordinates = this.checkpoints.map(cp => ({ latitude: cp.latitude, longitude: cp.longitude }));
+    this.checkpointsLoaded.emit(this.checkpointCoordinates); // Emitovanje koordinata
+  }
+  
   loadCheckpoints(page: number = 1, pageSize: number = 10): void {
     this.checkpointService.getCheckpoints(page, pageSize).subscribe({
       next: (data) => {
         this.checkpoints = data.results; 
-        console.log(this.checkpoints);
       },
       error: (err) => {
         console.error('Greška prilikom učitavanja checkpoint-a:', err);
