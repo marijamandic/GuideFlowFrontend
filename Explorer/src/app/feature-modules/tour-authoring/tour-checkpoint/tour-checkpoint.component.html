@@ -1,0 +1,36 @@
+<div class="container">
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Image</th>
+          <th>Latitude</th>
+          <th>Longitude</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="checkpoints.length === 0">
+          <td colspan="6">Nema dostupnih checkpoint-a.</td>
+        </tr>
+        <tr *ngFor="let checkpoint of checkpoints">
+          <td>{{ checkpoint.name }}</td>
+          <td>{{ checkpoint.description }}</td>
+          <td>
+            <img [src]="checkpoint.imageUrl" alt="Checkpoint image" style="max-width: 100px;">
+          </td>
+          <td>{{ checkpoint.latitude }}</td>
+          <td>{{ checkpoint.longitude }}</td>
+          <td>
+            <button style="background-color: rgb(15, 170, 15);" (click)="editCheckpoint(checkpoint); loadFormData(checkpoint)">Edit</button>
+            <button style="background-color: red;" (click)="deleteCheckpoint(checkpoint)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="form-container">
+      <xp-tour-checkpoint-form [checkpoint]="editingCheckpoint" (updatedCheckpoint)="loadCheckpoints()"></xp-tour-checkpoint-form>
+    </div>
+  </div>
+  

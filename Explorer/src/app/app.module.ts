@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './infrastructure/routing/app-routing.module';
 import { AppComponent } from './app.component';
 import { LayoutModule } from './feature-modules/layout/layout.module';
@@ -14,30 +13,40 @@ import { TourExecutionModule } from './feature-modules/tour-execution/tour-execu
 import { AuthModule } from './infrastructure/auth/auth.module';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { JwtInterceptor } from './infrastructure/auth/jwt/jwt.interceptor';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+
 
 @NgModule({
-	declarations: [AppComponent],
-	imports: [
-		BrowserModule,
-		AppRoutingModule,
-		LayoutModule,
-		BrowserAnimationsModule,
-		MaterialModule,
-		AdministrationModule,
-		BlogModule,
-		MarketplaceModule,
-		TourAuthoringModule,
-		TourExecutionModule,
-		AuthModule,
-		HttpClientModule
-	],
-	providers: [
-		{
-			provide: HTTP_INTERCEPTORS,
-			useClass: JwtInterceptor,
-			multi: true
-		}
-	],
-	bootstrap: [AppComponent]
+  
+  declarations: [
+    AppComponent
+    
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    LayoutModule,
+    BrowserAnimationsModule,
+    MaterialModule,
+    AdministrationModule,
+    BlogModule,
+    MarketplaceModule,
+    TourAuthoringModule,
+    TourExecutionModule,
+    AuthModule,
+    HttpClientModule,
+    MatFormFieldModule,
+    MatInputModule,
+  ],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: JwtInterceptor,
+      multi: true,
+    },
+  ],
+  bootstrap: [AppComponent]
+
 })
 export class AppModule {}
