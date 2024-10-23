@@ -35,7 +35,7 @@ export class TourObjectFormComponent {
     console.log('Latitude:', this.latitude, 'Longitude:', this.longitude);
     console.log('ID:', this.id);
     if (this.latitude !== null && this.longitude !== null) {
-      this.isEditing = false;
+      this.isEditing = true;
       this.tourObjectForm.patchValue({
           latitude: this.latitude,
           longitude: this.longitude,

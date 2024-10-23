@@ -97,7 +97,7 @@ export class CheckpointListComponent implements OnInit {
         }
         });
     } else {
-      this.checkpointService.getCheckpointsByTour(2).subscribe({
+      this.checkpointService.getCheckpointsByTour(0).subscribe({
         next: (data) => {
           this.checkpoints = data; 
           this.checkpointCoordinates = this.checkpoints.map(cp => ({ latitude: cp.latitude, longitude: cp.longitude }));
