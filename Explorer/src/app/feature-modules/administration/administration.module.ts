@@ -30,7 +30,8 @@ import { LayoutModule } from '../layout/layout.module';
     ClubInvitationFormComponent,
     ClubMemberListComponent,
     ProblemComponent,
-    AllAppRatingsComponent
+    AllAppRatingsComponent,
+    ProblemComponent
   ],
   imports: [
     CommonModule,
