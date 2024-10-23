@@ -24,6 +24,17 @@ export class CheckpointListComponent implements OnInit {
     this.isAddingCheckpoint = !this.isAddingCheckpoint;
   }
 
+  onFileSelected(event: any) {
+    const file: File = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        this.newCheckpoint.imageUrl = reader.result as string; // Postavlja Base64 URL slike
+      };
+    }
+  }
+  
   addCheckpoint(): void {
       const formValues = this.newCheckpoint;
 
