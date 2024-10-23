@@ -17,6 +17,7 @@ export class MapComponent implements AfterViewInit {
   @Input() initialMarkers: L.LatLng[] = [];
   @Output() markerAdded = new EventEmitter<L.LatLng>();
   @Output() mapReset = new EventEmitter<void>();
+  @Output() coordinatesSelected = new EventEmitter<{ latitude: number; longitude: number }>();
 
   constructor(private mapService: MapService) {}
 
@@ -52,13 +53,11 @@ export class MapComponent implements AfterViewInit {
         this.map.removeControl(this.routeControl);
       }
 
-      // Kreiramo kontrolu za rutu između proizvoljnih tačaka
       this.routeControl = L.Routing.control({
         waypoints: waypoints,
         router: L.routing.mapbox('pk.eyJ1IjoicmF0a292YWMiLCJhIjoiY20ybDJmdGNxMDdkMjJrc2dodncycWhhZiJ9.fkyW7QT3iz7fxVS5u5w1bg', { profile: 'mapbox/walking' })
       }).addTo(this.map);
 
-      // Prikazujemo obaveštenje o udaljenosti i vremenu
       this.routeControl.on('routesfound', (e: { routes: any; }) => {
         const routes = e.routes;
         const summary = routes[0].summary;
@@ -104,6 +103,16 @@ export class MapComponent implements AfterViewInit {
   addMarker(marker: L.Marker): void {
     this.markers.push(marker);
 
+    // Emitujemo događaj kada korisnik klikne marker
+    marker.on('click', () => {
+      console.log("EEEE")
+      const latLng = marker.getLatLng();
+      this.coordinatesSelected.emit({ latitude: latLng.lat, longitude: latLng.lng });
+      console.log(this.coordinatesSelected)
+    });
+    const latLng = marker.getLatLng();
+    this.coordinatesSelected.emit({ latitude: latLng.lat, longitude: latLng.lng });
+
     // Ako su postavljeni više od 2 markera, crtamo rutu između svih
     if (this.markers.length > 1) {
       const waypoints = this.markers.map(m => m.getLatLng());
@@ -112,18 +121,16 @@ export class MapComponent implements AfterViewInit {
   }
 
   resetMap(): void {
-    // Uklanjamo sve markere
     this.markers.forEach(marker => {
       this.map.removeLayer(marker);
     });
     this.markers = [];
 
-    // Uklanjamo rutu ako postoji
     if (this.routeControl) {
       this.map.removeControl(this.routeControl);
       this.routeControl = null;
     }
 
-    this.mapReset.emit(); // Emitujemo događaj kada se mapa resetuje
+    this.mapReset.emit();
   }
 }

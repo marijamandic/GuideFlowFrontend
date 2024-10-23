@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'; 
 import { TourCheckpointService } from '../tour-checkpoint.service';
 import { Checkpoint } from '../model/tourCheckpoint.model';
@@ -12,6 +12,8 @@ export class CheckpointListComponent implements OnInit {
   checkpoints: Checkpoint[] = [];
   editingCheckpoint: Checkpoint | null = null; 
   checkpointForm: FormGroup; 
+  @Output() coordinatesSelected = new EventEmitter<{ latitude: number; longitude: number }>();
+
 
   constructor(private checkpointService: TourCheckpointService, private fb: FormBuilder) {
     this.checkpointForm = this.fb.group({
@@ -53,6 +55,22 @@ export class CheckpointListComponent implements OnInit {
       longitude: checkpoint.longitude
     });
   }
+
+  onCoordinatesSelected(coordinates: { latitude: number; longitude: number }): void {
+    if (this.editingCheckpoint) {
+      this.editingCheckpoint.latitude = coordinates.latitude;
+      this.editingCheckpoint.longitude = coordinates.longitude;
+  
+      // Emitovanje podataka o koordinatama ka formi
+      this.coordinatesSelected.emit({ latitude: coordinates.latitude, longitude: coordinates.longitude });
+      
+      // Ako treba, ažuriraj postojeći checkpoint
+      this.editCheckpoint(this.editingCheckpoint);
+    }
+  }
+  
+
+
 
   deleteCheckpoint(checkpoint: Checkpoint): void {
     if (checkpoint.id !== undefined) {

@@ -10,11 +10,14 @@ import { TourCheckpointService } from '../tour-checkpoint.service';
 })
 export class CheckpointFormComponent implements OnChanges {
   
-  @Input() checkpoint: Checkpoint | null = null;
-  @Output() updatedCheckpoint = new EventEmitter<null>();
+  @Input() checkpoint: Checkpoint | null = null;  // Input za trenutno uređivani checkpoint
+  @Input() coordinates: { latitude: number; longitude: number } | null = null;  // Input za koordinate
+  @Output() updatedCheckpoint = new EventEmitter<void>();  // Event koji se emituje kad se checkpoint ažurira
+  @Output() coordinatesSelected = new EventEmitter<{ latitude: number; longitude: number }>();  // Event za slanje koordinata
   checkpointForm: FormGroup;
 
   constructor(private fb: FormBuilder, private service: TourCheckpointService) {
+    // Kreiranje forme sa validacijama
     this.checkpointForm = this.fb.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
@@ -24,8 +27,10 @@ export class CheckpointFormComponent implements OnChanges {
     });
   }
 
+  // Kada se promene podaci iz parent komponente, ažuriraj formu
   ngOnChanges(): void {
     if (this.checkpoint) {
+      // Postavljanje vrednosti iz checkpoint-a u formu
       this.checkpointForm.patchValue({
         name: this.checkpoint.name || '',
         description: this.checkpoint.description || '',
@@ -34,28 +39,37 @@ export class CheckpointFormComponent implements OnChanges {
         longitude: this.checkpoint.longitude || 0
       });
     }
+
+    // Ako su prosleđene koordinate, ažuriraj formu sa tim koordinatama
+    if (this.coordinates) {
+      this.checkpointForm.patchValue({
+        latitude: this.coordinates.latitude,
+        longitude: this.coordinates.longitude
+      });
+    }
   }
 
+  // Funkcija za dodavanje ili ažuriranje checkpoint-a
   addCheckpoint(): void {
     if (this.checkpointForm.valid) {
       const formValues = this.checkpointForm.value;
-  
+
       if (!this.checkpoint || this.checkpoint.id === undefined) {
-        // Kreiraj novi checkpoint iz forme
+        // Ako checkpoint ne postoji, kreiraj novi
         const newCheckpoint: Checkpoint = { ...formValues };
         console.log('Creating new checkpoint:', newCheckpoint);
 
         this.service.addCheckpoint(newCheckpoint).subscribe({
           next: () => {
             console.log('New checkpoint added.');
-            this.updatedCheckpoint.emit()
-            this.resetForm(); // Resetuje formu nakon dodavanja
+            this.updatedCheckpoint.emit();  // Emituje se event da je checkpoint kreiran
+            this.resetForm();  // Resetovanje forme
           },
           error: (err) => console.error('Error adding checkpoint:', err)
         });
   
       } else {
-        // Ažuriraj postojeći checkpoint
+        // Ako checkpoint postoji, ažuriraj ga
         const updatedCheckpoint: Checkpoint = {
           ...formValues,
           id: this.checkpoint.id 
@@ -65,8 +79,8 @@ export class CheckpointFormComponent implements OnChanges {
         this.service.updateCheckpoint(updatedCheckpoint).subscribe({
           next: () => {
             console.log('Checkpoint updated.');
-            this.updatedCheckpoint.emit()
-            this.resetForm(); // Resetuje formu nakon ažuriranja
+            this.updatedCheckpoint.emit();  // Emituje se event da je checkpoint ažuriran
+            this.resetForm();  // Resetovanje forme
           },
           error: (err) => console.error('Error updating checkpoint:', err)
         });
@@ -74,9 +88,17 @@ export class CheckpointFormComponent implements OnChanges {
     }
   }
 
-  // Resetovanje forme nakon uspešne operacije
+  // Funkcija za resetovanje forme
   resetForm(): void {
     this.checkpointForm.reset();
-    this.checkpoint = null; // Resetuje trenutni checkpoint
+    this.checkpoint = null;  // Resetuje trenutno uređivani checkpoint
+  }
+
+  // Funkcija koja ažurira koordinate u formi na osnovu emitovanih podataka
+  onCoordinatesSelected(coordinates: { latitude: number; longitude: number }): void {
+    this.checkpointForm.patchValue({
+      latitude: coordinates.latitude,
+      longitude: coordinates.longitude
+    });
   }
 }
