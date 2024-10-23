@@ -7,6 +7,8 @@
             <button color="primary" mat-raised-button [routerLink]="['home']">Home</button>
             <button color="primary" mat-raised-button [routerLink]="['profileInfo']">ProfileInfo</button>
             <button *ngIf="user && user.role === 'administrator'"color="primary" mat-raised-button [routerLink]="['equipment']">Manage equipment</button>
+            <button *ngIf="user && user.role === 'tourist'" color="primary" mat-raised-button [routerLink]="['equipmentManagement']">Equipment Management</button>
+        
         </div>
     </div>
 </mat-toolbar>
