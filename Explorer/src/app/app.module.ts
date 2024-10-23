@@ -13,31 +13,41 @@ import { TourExecutionModule } from './feature-modules/tour-execution/tour-execu
 import { AuthModule } from './infrastructure/auth/auth.module';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { JwtInterceptor } from './infrastructure/auth/jwt/jwt.interceptor';
-import { CommentComponent } from './feature-modules/blog/comment/comment.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { EquipmentFormComponent } from './feature-modules/tour-execution/equipment-form/equipment-form.component';
+
 
 @NgModule({
-	declarations: [AppComponent],
-	imports: [
-		BrowserModule,
-		AppRoutingModule,
-		LayoutModule,
-		BrowserAnimationsModule,
-		MaterialModule,
-		AdministrationModule,
-		BlogModule,
-		MarketplaceModule,
-		TourAuthoringModule,
-		TourExecutionModule,
-		AuthModule,
-		HttpClientModule
-	],
-	providers: [
-		{
-			provide: HTTP_INTERCEPTORS,
-			useClass: JwtInterceptor,
-			multi: true
-		}
-	],
-	bootstrap: [AppComponent]
+  
+  declarations: [
+    AppComponent
+    
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    LayoutModule,
+    BrowserAnimationsModule,
+    MaterialModule,
+    AdministrationModule,
+    BlogModule,
+    MarketplaceModule,
+    TourAuthoringModule,
+    TourExecutionModule,
+    AuthModule,
+    HttpClientModule,
+    MatFormFieldModule,
+    MatInputModule,
+  ],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: JwtInterceptor,
+      multi: true,
+    },
+  ],
+  bootstrap: [AppComponent]
+
 })
 export class AppModule {}
