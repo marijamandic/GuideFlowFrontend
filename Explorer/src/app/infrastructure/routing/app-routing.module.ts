@@ -9,20 +9,20 @@ import { ProblemComponent } from 'src/app/feature-modules/administration/problem
 import { ReportProblemComponent } from 'src/app/feature-modules/tour-execution/report-problem/report-problem.component';
 
 const routes: Routes = [
-  { path: 'home', component: HomeComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegistrationComponent },
-  {
-    path: 'equipment',
-    component: EquipmentComponent,
-    canActivate: [AuthGuard],
-  },
-  { path: 'problem', component: ProblemComponent },
-  { path: 'report-problem', component: ReportProblemComponent },
+	{ path: 'home', component: HomeComponent },
+	{ path: 'login', component: LoginComponent },
+	{ path: 'register', component: RegistrationComponent },
+	{
+		path: 'equipment',
+		component: EquipmentComponent,
+		canActivate: [AuthGuard]
+	},
+	{ path: 'problem', component: ProblemComponent },
+	{ path: 'report-problem', component: ReportProblemComponent }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
+	imports: [RouterModule.forRoot(routes)],
+	exports: [RouterModule]
 })
 export class AppRoutingModule {}
