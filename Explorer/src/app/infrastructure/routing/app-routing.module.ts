@@ -22,6 +22,8 @@ import { CommentComponent } from 'src/app/feature-modules/blog/comment/comment.c
 import { PostComponent } from 'src/app/feature-modules/blog/post/post.component';
 import { CreateBlogComponent } from 'src/app/feature-modules/blog/create-blog/create-blog.component';
 import { PostInfoComponent } from 'src/app/feature-modules/blog/post-info/post-info.component';
+import { RatingTheAppComponent } from 'src/app/feature-modules/layout/rating-the-app/rating-the-app.component';
+import { AllAppRatingsComponent } from 'src/app/feature-modules/administration/all-app-ratings/all-app-ratings.component';
 
 const routes: Routes = [
   {path: 'home', component: HomeComponent},
@@ -46,7 +48,9 @@ const routes: Routes = [
   { path: 'tourObjects', component: TourObjectComponent, canActivate: [AuthGuard],},
   { path: 'checkpoints', component: CheckpointListComponent},
   { path: 'tour', component: TourComponent},
-  { path: 'tourEquipment', component:TourEquipmentComponent}
+  { path: 'tourEquipment', component:TourEquipmentComponent},
+  {path: 'ratingTheApp', component: RatingTheAppComponent },
+  {path: 'allAppRatings', component: AllAppRatingsComponent}
 ];
 
 @NgModule({
