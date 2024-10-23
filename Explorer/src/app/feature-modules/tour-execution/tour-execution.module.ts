@@ -10,12 +10,16 @@ import { ReportProblemComponent } from './report-problem/report-problem.componen
 
 
 
+import { TourReviewComponent } from './tour-review/tour-review.component';
+import { TourReviewFormComponent } from './tour-review-form/tour-review-form.component';
 
 @NgModule({
   declarations: [
     EquipmentManagementComponent,
     EquipmentFormComponent,
-    ReportProblemComponent
+    ReportProblemComponent,
+	TourReviewComponent,
+	TourReviewFormComponent
   ],
   imports: [
     CommonModule,
@@ -28,7 +32,8 @@ import { ReportProblemComponent } from './report-problem/report-problem.componen
   exports:
   [
     EquipmentManagementComponent,
-    ReportProblemComponent
-  ]
+    ReportProblemComponent,
+	TourReviewComponent
+  ],
 })
 export class TourExecutionModule {}

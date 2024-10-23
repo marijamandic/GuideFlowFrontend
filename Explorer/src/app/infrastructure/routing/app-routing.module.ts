@@ -26,35 +26,35 @@ import { RatingTheAppComponent } from 'src/app/feature-modules/layout/rating-the
 import { AllAppRatingsComponent } from 'src/app/feature-modules/administration/all-app-ratings/all-app-ratings.component';
 
 const routes: Routes = [
-  {path: 'home', component: HomeComponent},
-  {path: 'login', component: LoginComponent},
-  {path: 'register', component: RegistrationComponent},
-  { path: 'equipment', component: EquipmentComponent, canActivate: [AuthGuard], },
-  { path: 'equipmentManagement', component: EquipmentManagementComponent },
-  { path: 'problem', component: ProblemComponent },
-  { path: 'report-problem', component: ReportProblemComponent },
-  {path: 'club', component: ClubComponent, canActivate: [AuthGuard],},
-  {path: 'club-invitation', component: ClubInvitationComponent, canActivate: [AuthGuard],},
-  {path: 'club-invitation/add', component: ClubInvitationFormComponent, canActivate: [AuthGuard], },
-  {path: 'club-invitation/edit/:id', component: ClubInvitationFormComponent, canActivate: [AuthGuard], },
-  {path: 'club-request', component: ClubRequestComponent, canActivate: [AuthGuard],},
-  {path: 'club-request/add', component: ClubRequestFormComponent, canActivate: [AuthGuard],},
-  {path: 'club-members/:id', component: ClubMemberListComponent, canActivate: [AuthGuard],},
-  {path: 'equipment', component: EquipmentComponent, canActivate: [AuthGuard],},
-  {path: 'blog', component: PostComponent},
-  {path: 'blog/:id', component: PostInfoComponent},
-  {path: 'comment', component: CommentComponent},
-  {path: 'createBlog', component: CreateBlogComponent},
-  { path: 'tourObjects', component: TourObjectComponent, canActivate: [AuthGuard],},
-  { path: 'checkpoints', component: CheckpointListComponent},
-  { path: 'tour', component: TourComponent},
-  { path: 'tourEquipment', component:TourEquipmentComponent},
-  {path: 'ratingTheApp', component: RatingTheAppComponent },
-  {path: 'allAppRatings', component: AllAppRatingsComponent}
+	{ path: 'home', component: HomeComponent },
+	{ path: 'login', component: LoginComponent },
+	{ path: 'register', component: RegistrationComponent },
+	{ path: 'equipment', component: EquipmentComponent, canActivate: [AuthGuard] },
+	{ path: 'equipmentManagement', component: EquipmentManagementComponent },
+	{ path: 'problem', component: ProblemComponent },
+	{ path: 'report-problem', component: ReportProblemComponent },
+	{ path: 'club', component: ClubComponent, canActivate: [AuthGuard] },
+	{ path: 'club-invitation', component: ClubInvitationComponent, canActivate: [AuthGuard] },
+	{ path: 'club-invitation/add', component: ClubInvitationFormComponent, canActivate: [AuthGuard] },
+	{ path: 'club-invitation/edit/:id', component: ClubInvitationFormComponent, canActivate: [AuthGuard] },
+	{ path: 'club-request', component: ClubRequestComponent, canActivate: [AuthGuard] },
+	{ path: 'club-request/add', component: ClubRequestFormComponent, canActivate: [AuthGuard] },
+	{ path: 'club-members/:id', component: ClubMemberListComponent, canActivate: [AuthGuard] },
+	{ path: 'equipment', component: EquipmentComponent, canActivate: [AuthGuard] },
+	{ path: 'blog', component: PostComponent },
+	{ path: 'blog/:id', component: PostInfoComponent },
+	{ path: 'comment', component: CommentComponent },
+	{ path: 'createBlog', component: CreateBlogComponent },
+	{ path: 'tourObjects', component: TourObjectComponent, canActivate: [AuthGuard] },
+	{ path: 'checkpoints', component: CheckpointListComponent },
+	{ path: 'tour', component: TourComponent },
+	{ path: 'tourEquipment', component: TourEquipmentComponent },
+	{ path: 'ratingTheApp', component: RatingTheAppComponent },
+	{ path: 'allAppRatings', component: AllAppRatingsComponent }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
+	imports: [RouterModule.forRoot(routes)],
+	exports: [RouterModule]
 })
 export class AppRoutingModule {}

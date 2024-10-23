@@ -20,37 +20,31 @@ import { Routes } from '@angular/router';
 import { HomeComponent } from './feature-modules/layout/home/home.component';
 import { RatingTheAppComponent } from './feature-modules/layout/rating-the-app/rating-the-app.component';
 
-
 @NgModule({
-  
-  declarations: [
-    AppComponent
-    
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    LayoutModule,
-    BrowserAnimationsModule,
-    MaterialModule,
-    AdministrationModule,
-    BlogModule,
-    MarketplaceModule,
-    TourAuthoringModule,
-    TourExecutionModule,
-    AuthModule,
-    HttpClientModule,
-    MatFormFieldModule,
-    MatInputModule,
-  ],
-  providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: JwtInterceptor,
-      multi: true,
-    },
-  ],
-  bootstrap: [AppComponent]
-
+	declarations: [AppComponent],
+	imports: [
+		BrowserModule,
+		AppRoutingModule,
+		LayoutModule,
+		BrowserAnimationsModule,
+		MaterialModule,
+		AdministrationModule,
+		BlogModule,
+		MarketplaceModule,
+		TourAuthoringModule,
+		TourExecutionModule,
+		AuthModule,
+		HttpClientModule,
+		MatFormFieldModule,
+		MatInputModule
+	],
+	providers: [
+		{
+			provide: HTTP_INTERCEPTORS,
+			useClass: JwtInterceptor,
+			multi: true
+		}
+	],
+	bootstrap: [AppComponent]
 })
 export class AppModule {}
