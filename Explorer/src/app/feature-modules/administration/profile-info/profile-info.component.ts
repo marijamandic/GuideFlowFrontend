@@ -4,6 +4,7 @@ import { AdministrationService } from '../administration.service';
 import { PagedResults } from 'src/app/shared/model/paged-results.model'
 import { User } from 'src/app/infrastructure/auth/model/user.model';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
+import { environment } from 'src/env/environment';
 
 @Component({
   selector: 'xp-profile-info',
@@ -63,4 +64,8 @@ export class ProfileInfoComponent implements OnInit{
       }
     })
   }*/ 
+
+    getImagePath(imageUrl: string){
+      return environment.webRootHost+imageUrl;
+    }
 }

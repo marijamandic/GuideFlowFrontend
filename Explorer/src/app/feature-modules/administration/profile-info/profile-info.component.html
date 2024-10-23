@@ -17,7 +17,7 @@
             <tr *ngFor="let pi of profileInfo"> 
                 <td>{{pi.firstName}}</td>
                 <td>{{pi.lastName}}</td>
-                <td>{{pi.profilePicture}}</td>
+                <td><img [src]="getImagePath(pi.imageUrl)" alt="Post image" *ngIf="pi.imageUrl" class="post-image"/></td>
                 <td>{{pi.biography}}</td>
                 <td>{{pi.moto}}</td> 
                 <td>

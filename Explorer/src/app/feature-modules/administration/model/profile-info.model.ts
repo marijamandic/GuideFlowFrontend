@@ -3,7 +3,8 @@ export interface ProfileInfo{
     userId: number,
     firstName: string, 
     lastName: string,
-    profilePicture: string,
+    imageUrl: string,
+    imageBase64: string, 
     biography: string, 
     moto: string
 }

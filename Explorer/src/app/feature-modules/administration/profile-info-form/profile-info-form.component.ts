@@ -19,6 +19,8 @@ export class ProfileInfoFormComponent {
   @Input() shouldRenderProfileInfoForm: boolean;
 
   public userId: number;
+  imageUrl: string;
+  imageBase64: string;
   
   constructor(private service : AdministrationService, private authService: AuthService) {
     this.authService.user$.subscribe((user : User) => {
@@ -31,21 +33,23 @@ export class ProfileInfoFormComponent {
       this.profileInfoForm.patchValue({
         firstName: this.profileInfo.firstName,
         lastName: this.profileInfo.lastName,
-        profilePicture: this.profileInfo.profilePicture,
+        imageUrl: this.profileInfo.imageUrl,
+        imageBase64: this.profileInfo.imageBase64,  
         biography: this.profileInfo.biography,
         moto: this.profileInfo.moto
       });
     }
   }
   
-  
   profileInfoForm=new FormGroup(
     {
       firstName: new FormControl('', [Validators.required]),
       lastName: new FormControl('', [Validators.required]),
-      profilePicture: new FormControl('', [Validators.required]),
+      //profilePicture: new FormControl('', [Validators.required]),
       biography: new FormControl('', [Validators.required]),
       moto: new FormControl('', [Validators.required]),
+      imageBase64: new FormControl(''),
+      imageUrl: new FormControl('')
   }
   )
 
@@ -61,7 +65,9 @@ export class ProfileInfoFormComponent {
       userId: this.userId || 0,
       firstName: this.profileInfoForm.value.firstName || "",
       lastName: this.profileInfoForm.value.lastName || "",
-      profilePicture: this.profileInfoForm.value.profilePicture || "",
+      //profilePicture: this.profileInfoForm.value.profilePicture || "",
+      imageUrl: this.profileInfoForm.value.imageUrl || "",
+      imageBase64: this.profileInfoForm.value.imageBase64 || "",
       biography: this.profileInfoForm.value.biography || "",
       moto: this.profileInfoForm.value.moto || ""
     };
@@ -76,6 +82,20 @@ export class ProfileInfoFormComponent {
         this.profileInfoUpdated.emit();
       }
     });
+    console.log("izlazim")
   }
   
+  onFileSelected(event : any){
+    const file : File = event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = () =>{
+      this.imageBase64 = reader.result as string;
+      this.profileInfoForm.patchValue({
+        imageBase64: this.imageBase64
+      });
+    }
+    reader.readAsDataURL(file);
+  }
+  
+
 }
