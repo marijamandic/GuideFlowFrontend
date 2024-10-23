@@ -44,7 +44,7 @@ const routes: Routes = [
   {path: 'blog', component: PostComponent},
   {path: 'blog/:id', component: PostInfoComponent},
   {path: 'comment', component: CommentComponent},
-  {path: 'createBlog', component: CreateBlogComponent}
+  {path: 'createBlog', component: CreateBlogComponent},
   { path: 'tourObjects', component: TourObjectComponent, canActivate: [AuthGuard],},
   { path: 'checkpoints', component: CheckpointListComponent},
   { path: 'tour', component: TourComponent},
