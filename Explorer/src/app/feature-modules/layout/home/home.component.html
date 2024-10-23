@@ -1,6 +1,6 @@
 <div class="carousel">
     <div class="carousel-container">
-        <img [src]="images[currentImageIndex]" alt="Tour Image" class="carousel-image" />
+        <img *ngFor="let image of images; let i = index" [src]="images[currentImageIndex]" alt="Tour Image" class="carousel-image" [class.active]="i === currentImageIndex" />
     </div>
 </div>
 
@@ -15,7 +15,7 @@
     <!-- POPULAR TOURS -->
     <section class="popular-tours">
         <h2>Most popular tours</h2>
-        <div class="tour-cards-wrapper">
+        <div class="tour-cards-wrapper" >
             <div class="tour-cards-container">
                 <div *ngFor="let tour of tours" class="tour-card">
                     <div class="tour-image" [style.backgroundImage]="'url(' + tour.imageUrl + ')'"></div>

@@ -12,6 +12,7 @@ export class HomeComponent implements OnInit {
     'assets/images/tour8.jpg'  
   ]; 
   currentImageIndex: number = 0;
+  isTransitioning = false;
 
   tours = [
     { name: 'Lorem Ipsum', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ', rating: 8.5, reviews: 'Very good, 235 reviews', imageUrl: 'assets/images/tour4.jpg' },
@@ -48,8 +49,14 @@ export class HomeComponent implements OnInit {
 
   startImageRotation() {
     setInterval(() => {
-      this.currentImageIndex = (this.currentImageIndex + 1) % this.images.length;
-    }, 10000);
+      if (!this.isTransitioning) {
+        this.isTransitioning = true;
+        setTimeout(() => {
+          this.currentImageIndex = (this.currentImageIndex + 1) % this.images.length;
+          this.isTransitioning = false;
+        }, 1000); 
+      }
+    }, 7000);
   }
 
   // Helper function to setup scrolling for a container
