@@ -7,6 +7,16 @@
             <button color="primary" mat-raised-button [routerLink]="['home']">Home</button>
             <button color="primary" mat-raised-button [routerLink]="['profileInfo']">ProfileInfo</button>
             <button *ngIf="user && user.role === 'administrator'"color="primary" mat-raised-button [routerLink]="['equipment']">Manage equipment</button>
+            <button *ngIf="user && (user.role === 'tourist' || user.role === 'author')" color="primary" mat-raised-button [routerLink]="['blog']">See blog posts</button>
+            <button *ngIf="user && user.role === 'tourist'" color="primary" mat-raised-button [routerLink]="['club']">Manage club</button>
+            <button *ngIf="user && user.role === 'tourist'" color="primary" mat-raised-button [routerLink]="['club-invitation']">Manage club invitations</button>
+            <button *ngIf="user && user.role === 'tourist'" color="primary" mat-raised-button [routerLink]="['club-request']">Requests</button>
+            <button *ngIf="user && user.role === 'author'"color="primary" mat-raised-button [routerLink]="['tourObjects']">Manage tour objects</button>
+            <button *ngIf="user && user.role === 'author'"color="primary" mat-raised-button [routerLink]="['tourEquipment']">Manage tour equipment</button>
+            <button *ngIf="user && user.role === 'author'"color="primary" mat-raised-button [routerLink]="['tour']">Manage tour</button>
+            <button *ngIf="user && user.role === 'author'"color="primary" mat-raised-button [routerLink]="['checkpoints']">Manage tour checkpoints</button>
+            <button *ngIf="user && user.role === 'tourist'" color="primary" mat-raised-button [routerLink]="['equipmentManagement']">Equipment Management</button>
+            <button *ngIf="user && user.role === 'administrator'"color="primary" mat-raised-button [routerLink]="['account']">Manage Accounts</button>
         </div>
     </div>
 </mat-toolbar>

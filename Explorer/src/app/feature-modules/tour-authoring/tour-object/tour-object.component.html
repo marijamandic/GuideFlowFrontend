@@ -1,0 +1,32 @@
+<div id="tourObjects">
+    <p>Tour Object</p>
+    <hr>
+    <div id="tourObjects-details">
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Naziv</th>
+                    <th>Opis</th>
+                    <th>Slika</th>
+                    <th>Kategorija</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let to of tourObjects">
+                    <td>{{to.name}}</td>
+                    <td>{{to.description}}</td>
+                    <td><img [src]="getImagePath(to.imageUrl)" alt="N/A" *ngIf="to.imageUrl" class="table-image"/></td>
+                    <td>{{ getCategoryName(to.category) }}</td>
+                </tr>
+                <tr><button color="primary" (click)="onAddClicked()" mat-icon-button>
+                    <mat-icon>add</mat-icon>
+                </button></tr>
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <xp-tour-object-form *ngIf="shouldRenderTourObjectForm" [shouldEdit]="shouldEdit" (tourObjectUpdated)="getTourObjects()"></xp-tour-object-form>
+    </div>
+    </div>
+</div>
