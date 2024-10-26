@@ -25,6 +25,7 @@ import { PostInfoComponent } from 'src/app/feature-modules/blog/post-info/post-i
 import { RatingTheAppComponent } from 'src/app/feature-modules/layout/rating-the-app/rating-the-app.component';
 import { AllAppRatingsComponent } from 'src/app/feature-modules/administration/all-app-ratings/all-app-ratings.component';
 import { TourSpecificationComponent } from 'src/app/feature-modules/marketplace/tour-specification/tour-specification.component';
+import { AccountComponent } from 'src/app/feature-modules/administration/account/account.component';
 
 const routes: Routes = [
 	{ path: 'home', component: HomeComponent },
@@ -52,8 +53,9 @@ const routes: Routes = [
 	{ path: 'tourEquipment', component: TourEquipmentComponent },
 	{ path: 'ratingTheApp', component: RatingTheAppComponent },
 	{ path: 'allAppRatings', component: AllAppRatingsComponent },
-  {path: 'specification', component: TourSpecificationComponent}
-];
+  	{path: 'specification', component: TourSpecificationComponent},
+	{path: 'account', component: AccountComponent, canActivate: [AuthGuard]}
+]
 
 @NgModule({
 	imports: [RouterModule.forRoot(routes)],

@@ -16,6 +16,8 @@ import { ClubInvitationFormComponent } from './club-invitation-form/club-invitat
 import { ClubMemberListComponent } from 'src/app/feature-modules/administration/club-member-list/club-member-list.component';
 import { AllAppRatingsComponent } from './all-app-ratings/all-app-ratings.component';
 import { LayoutModule } from '../layout/layout.module';
+import { AccountComponent } from './account/account.component';
+
 
 
 @NgModule({
@@ -31,7 +33,8 @@ import { LayoutModule } from '../layout/layout.module';
     ClubMemberListComponent,
     ProblemComponent,
     AllAppRatingsComponent,
-    ProblemComponent
+    ProblemComponent,
+    AccountComponent
   ],
   imports: [
     CommonModule,
@@ -50,7 +53,8 @@ import { LayoutModule } from '../layout/layout.module';
     ClubInvitationFormComponent,
     ClubMemberListComponent,
     ProblemComponent,
-    AllAppRatingsComponent
+    AllAppRatingsComponent,
+    AccountComponent
   ]
 })
 export class AdministrationModule {}
