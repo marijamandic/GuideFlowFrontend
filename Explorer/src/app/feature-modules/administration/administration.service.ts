@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Equipment } from './model/equipment.model';
+import { ProfileInfo } from './model/profile-info.model'
 import { environment } from 'src/env/environment';
 import { Observable } from 'rxjs';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
@@ -114,4 +115,7 @@ export class AdministrationService {
     return this.http.patch<Account>(environment.apiHost + "administration/account", account);
   }
 
+  getProfileInfo(): Observable<PagedResults<ProfileInfo>> {
+    return this.http.get<PagedResults<ProfileInfo>>(environment.apiHost + 'administration/profileInfo');
+  }  
 }

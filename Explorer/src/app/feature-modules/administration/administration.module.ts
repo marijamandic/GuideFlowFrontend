@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router'; 
 import { EquipmentFormComponent } from './equipment-form/equipment-form.component';
 import { EquipmentComponent } from './equipment/equipment.component';
+import { ProfileInfoComponent } from './profile-info/profile-info.component'; // Import the component
 import { MaterialModule } from 'src/app/infrastructure/material/material.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ProblemComponent } from './problem/problem.component';
@@ -18,12 +19,11 @@ import { AllAppRatingsComponent } from './all-app-ratings/all-app-ratings.compon
 import { LayoutModule } from '../layout/layout.module';
 import { AccountComponent } from './account/account.component';
 
-
-
 @NgModule({
   declarations: [
     EquipmentFormComponent,
     EquipmentComponent,
+    ProfileInfoComponent,
     ClubFormComponent,
     ClubComponent,
     ClubRequestComponent,
@@ -46,6 +46,7 @@ import { AccountComponent } from './account/account.component';
   exports: [
     EquipmentComponent,
     EquipmentFormComponent,
+    ProfileInfoComponent,
     ClubFormComponent,
     ClubComponent,
     ClubRequestComponent,
