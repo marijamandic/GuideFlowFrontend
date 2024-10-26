@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Equipment } from './model/equipment.model';
+import { ProfileInfo } from './model/profile-info.model'
 import { environment } from 'src/env/environment';
 import { Observable } from 'rxjs';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
@@ -9,7 +10,7 @@ import { Club } from './model/club.model';
 import { ClubRequest } from './model/club-request.model';
 import { ClubInvitation } from './model/club-invitation.model';
 import { ClubMemberList } from './model/club-member-list.model';
-
+import { Account } from './model/account.model';
 
 @Injectable({
 	providedIn: 'root'
@@ -106,4 +107,15 @@ export class AdministrationService {
   getAllRequests(): Observable<ClubRequest[]>{
     return this.http.get<ClubRequest[]>(environment.apiHost + 'request/clubRequest/getAllRequests');
   }
+  getAccounts(): Observable<Array<Account>> {
+    return this.http.get<Array<Account>>(environment.apiHost + 'administration/account');
+  }
+
+  toggleAcountActivity(account : Account): Observable<Account> {
+    return this.http.patch<Account>(environment.apiHost + "administration/account", account);
+  }
+
+  getProfileInfo(): Observable<PagedResults<ProfileInfo>> {
+    return this.http.get<PagedResults<ProfileInfo>>(environment.apiHost + 'administration/profileInfo');
+  }  
 }
