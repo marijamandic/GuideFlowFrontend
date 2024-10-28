@@ -1,4 +1,22 @@
 html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.leaflet-routing-container {
+    max-height: 200px;
+    overflow-y: auto;
+    opacity: 0.8;
+  }
+  
+  .leaflet-routing-alternatives-container {
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 5px;
+    padding: 5px;
+  }
+  
+  .leaflet-routing-alt {
+    font-size: 12px;
+    margin-bottom: 5px;
+  }
 
 :root {
     --primary-color: #84dcc6;

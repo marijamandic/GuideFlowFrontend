@@ -6,18 +6,14 @@
         </mat-form-field>
 
         <mat-form-field>
-          <mat-label>Description</mat-label>
-          <textarea matInput
-          cdkTextareaAutosize
-          cdkAutosizeMinRows="1"
-          formControlName="description"
-          cdkAutosizeMaxRows="5"></textarea>
+            <mat-label>Description</mat-label>
+            <textarea matInput
+                cdkTextareaAutosize
+                cdkAutosizeMinRows="1"
+                formControlName="description"
+                cdkAutosizeMaxRows="5"></textarea>
         </mat-form-field>
 
-        <!-- <mat-form-field>
-            <mat-label>Image URL</mat-label>
-            <input matInput formControlName="imageUrl" type="text"/>
-        </mat-form-field> -->
         <input type="file" (change)="onFileSelected($event)">
         
         <div>
@@ -28,6 +24,18 @@
                 </option>
             </select>
         </div>
-    <button color="primary" type="submit" (click)="addTourObject()" mat-raised-button>Done</button>
+
+        <!-- Polja za latitude i longitude -->
+        <mat-form-field>
+            <mat-label>Latitude</mat-label>
+            <input matInput formControlName="latitude" type="number" step="any"/>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Longitude</mat-label>
+            <input matInput formControlName="longitude" type="number" step="any"/>
+        </mat-form-field>
+
+        <button color="primary" type="submit" (click)="addTourObject()" mat-raised-button>Done</button>
     </div>
 </form>

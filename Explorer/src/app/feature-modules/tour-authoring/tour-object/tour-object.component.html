@@ -16,17 +16,47 @@
                 <tr *ngFor="let to of tourObjects">
                     <td>{{to.name}}</td>
                     <td>{{to.description}}</td>
-                    <td><img [src]="getImagePath(to.imageUrl)" alt="N/A" *ngIf="to.imageUrl" class="table-image"/></td>
+                    <td>
+                        <img [src]="getImagePath(to.imageUrl)" alt="N/A" *ngIf="to.imageUrl" class="table-image"/>
+                    </td>
                     <td>{{ getCategoryName(to.category) }}</td>
+                    <td>
+                        <button color="primary" (click)="onEditClicked(to)" mat-icon-button>
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                    </td>
                 </tr>
-                <tr><button color="primary" (click)="onAddClicked()" mat-icon-button>
-                    <mat-icon>add</mat-icon>
-                </button></tr>
-            </tbody>
+                <tr>
+                    <button color="primary" (click)="onAddClicked()" mat-icon-button>
+                        <mat-icon>add</mat-icon>
+                    </button>
+                </tr>
+            </tbody>            
         </table>
     </div>
     <div>
-        <xp-tour-object-form *ngIf="shouldRenderTourObjectForm" [shouldEdit]="shouldEdit" (tourObjectUpdated)="getTourObjects()"></xp-tour-object-form>
+        <div>
+            <xp-tour-object-form 
+                [latitude]="latitude"
+                [longitude]="longitude"
+                [name]="selectedTourObject?.name"
+                [description]="selectedTourObject?.description"
+                [imageUrl]="selectedTourObject?.imageUrl"
+                [category]="selectedTourObject?.category" 
+                [id]="selectedTourObject?.id"
+                *ngIf="shouldRenderTourObjectForm"
+                [shouldEdit]="shouldEdit" 
+                (tourObjectUpdated)="getTourObjects()">
+            </xp-tour-object-form>
+        </div>
+            </div>
+    <div>
+        <xp-map 
+  [initialMarkers]="initialMarkers"
+  (markerAdded)="onMarkerAdded($event)"
+  (mapReset)="onMapReset()"
+  (coordinatesSelected)="onCoordinatesSelected($event)">
+</xp-map>
     </div>
     </div>
 </div>
