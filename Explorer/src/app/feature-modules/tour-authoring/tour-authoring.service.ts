@@ -22,7 +22,13 @@ export class TourAuthoringService {
   addTourObject(tourObject: TourObject): Observable<TourObject> {
     return this.http.post<TourObject>(environment.apiHost + 'administration/tourObject', tourObject)
   }
-    getTourEquipment(tourId: number): Observable<any[]>{
+
+  updateTourObject(tourObject: TourObject, id: number): Observable<TourObject> {
+    return this.http.put<TourObject>(`${environment.apiHost}administration/tourObject/${id}`, tourObject);
+  }
+
+
+  getTourEquipment(tourId: number): Observable<any[]>{
 
       return this.http.get<any[]>(`https://localhost:44333/api/administration/tourEquipment/${tourId}`);
   }

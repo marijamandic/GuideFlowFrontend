@@ -5,4 +5,6 @@ export interface TourObject {
     imageUrl: string;
     imageBase64: string; 
     category: number;
+    latitude: number;
+    longitude: number;
 }
