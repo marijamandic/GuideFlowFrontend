@@ -55,7 +55,12 @@ const routes: Routes = [
   { path: 'ratingTheApp', component: RatingTheAppComponent },
   { path: 'allAppRatings', component: AllAppRatingsComponent },
   { path: 'specification', component: TourSpecificationComponent },
-  { path: 'account', component: AccountComponent, canActivate: [AuthGuard] }
+  { path: 'account', component: AccountComponent, canActivate: [AuthGuard] },
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  {path: 'home', component: HomeComponent},
+  {path: 'login', component: LoginComponent},
+  {path: 'register', component: RegistrationComponent},
+  {path: 'equipment', component: EquipmentComponent, canActivate: [AuthGuard],}
 ];
 
 @NgModule({

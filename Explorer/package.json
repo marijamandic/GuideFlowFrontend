@@ -23,6 +23,7 @@
     "@auth0/angular-jwt": "^5.1.2",
     "@material/form-field": "^15.0.0-canary.bc9ae6c9c.0",
     "ngx-markdown": "^18.1.0",
+    "@fortawesome/fontawesome-free": "^6.6.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.13.0"

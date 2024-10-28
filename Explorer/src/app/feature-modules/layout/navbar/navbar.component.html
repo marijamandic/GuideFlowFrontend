@@ -1,22 +1,39 @@
-<mat-toolbar color="primary">
-    <div>
-        <p>Explorer</p>
-        <div id="buttons">
-            <button *ngIf="user && user.username === ''" color="accent" mat-raised-button [routerLink]="['login']">Login</button>
-            <button *ngIf="user && user.username !== ''" color="accent" mat-raised-button (click)="onLogout()">Logout</button>
-            <button color="primary" mat-raised-button [routerLink]="['home']">Home</button>
-            <button color="primary" mat-raised-button [routerLink]="['profileInfo']">ProfileInfo</button>
-            <button *ngIf="user && user.role === 'administrator'"color="primary" mat-raised-button [routerLink]="['equipment']">Manage equipment</button>
-            <button *ngIf="user && (user.role === 'tourist' || user.role === 'author')" color="primary" mat-raised-button [routerLink]="['blog']">See blog posts</button>
-            <button *ngIf="user && user.role === 'tourist'" color="primary" mat-raised-button [routerLink]="['club']">Manage club</button>
-            <button *ngIf="user && user.role === 'tourist'" color="primary" mat-raised-button [routerLink]="['club-invitation']">Manage club invitations</button>
-            <button *ngIf="user && user.role === 'tourist'" color="primary" mat-raised-button [routerLink]="['club-request']">Requests</button>
-            <button *ngIf="user && user.role === 'author'"color="primary" mat-raised-button [routerLink]="['tourObjects']">Manage tour objects</button>
-            <button *ngIf="user && user.role === 'author'"color="primary" mat-raised-button [routerLink]="['tourEquipment']">Manage tour equipment</button>
-            <button *ngIf="user && user.role === 'author'"color="primary" mat-raised-button [routerLink]="['tour']">Manage tour</button>
-            <button *ngIf="user && user.role === 'author'"color="primary" mat-raised-button [routerLink]="['checkpoints']">Manage tour checkpoints</button>
-            <button *ngIf="user && user.role === 'tourist'" color="primary" mat-raised-button [routerLink]="['equipmentManagement']">Equipment Management</button>
-            <button *ngIf="user && user.role === 'administrator'"color="primary" mat-raised-button [routerLink]="['account']">Manage Accounts</button>
+<!-- <mat-toolbar color="transparent" class="navbar">
+    <img src="assets/logo.png" alt="Logo" class="logo" />
+    <div id="buttons">
+        <button [routerLink]="['/home']">Home</button>
+        
+        <button *ngIf="user && user.role === 'administrator'" mat-button [routerLink]="['/manage']">Manage Equipment</button>
+    </div>
+</mat-toolbar> -->
+
+
+<mat-toolbar class="navbar">
+    <div class="navbar-content">
+        <div class="logo">
+            <img src="assets/images/GuideFlow.png" alt="Logo" class="logo-img" />
+        </div>
+        <div class="nav-links">
+            <a routerLink="/home">Home</a>
+            <a routerLink="/tours">Tours</a>
+            <a routerLink="/club">Clubs</a>
+            <a routerLink="/blog">Blog</a>
+        </div>
+        <div class="profile-menu">
+            <mat-icon class="profile-icon" (click)="toggleDropdown()">account_circle</mat-icon>
+            <div class="dropdown-content" *ngIf="isDropdownOpen">
+                <a *ngIf="user && user.username === ''" [routerLink]="['/login']">Login</a>
+                <a *ngIf="user && user.username !== ''" (click)="onLogout()">Logout</a>
+                <a [routerLink]="['/settings']">Settings</a>
+                <a *ngIf="user && user.role === 'administrator'"color="primary" mat-raised-button [routerLink]="['equipment']">Manage equipment</a>
+            </div>
+        </div>
+        <div class="menu-icon">
+            <mat-icon>menu</mat-icon>
         </div>
     </div>
 </mat-toolbar>
+
+
+
+
