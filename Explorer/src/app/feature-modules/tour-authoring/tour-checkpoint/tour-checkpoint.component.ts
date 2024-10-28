@@ -36,35 +36,41 @@ export class CheckpointListComponent implements OnInit {
   }
   
   addCheckpoint(): void {
-      const formValues = this.newCheckpoint;
-
-      if (!this.newCheckpoint || this.newCheckpoint.id === 0) {
-        // Ako checkpoint ne postoji, kreiraj novi
-        const newCheckpoint: Checkpoint = { ...formValues };
-        console.log('Creating new checkpoint:', newCheckpoint);
-
-        this.checkpointService.addCheckpoint(formValues).subscribe({
-          next: () => {
-            console.log('New checkpoint added.');
-          },
-          error: (err) => console.error('Error adding checkpoint:', err)
-        });
-  
-      } else {
-        const updatedCheckpoint: Checkpoint = {
-          ...formValues,
-          id: this.newCheckpoint.id 
-        };
-        console.log('Updating existing checkpoint:', this.newCheckpoint);
-
-        this.checkpointService.updateCheckpoint(formValues).subscribe({
-          next: () => {
-            console.log('Checkpoint updated.');
-          },
-          error: (err) => console.error('Error updating checkpoint:', err)
-        });
+    if (!this.newCheckpoint || this.newCheckpoint.id === 0) {
+      this.createNewCheckpoint();
+    } else {
+      this.updateExistingCheckpoint();
     }
   }
+  
+  private createNewCheckpoint(): void {
+    const newCheckpoint: Checkpoint = { ...this.newCheckpoint };
+    console.log('Creating new checkpoint:', newCheckpoint);
+  
+    this.checkpointService.addCheckpoint(newCheckpoint).subscribe({
+      next: () => {
+        console.log('New checkpoint added.');
+        this.loadCheckpoints();
+        this.resetNewCheckpointForm();
+      },
+      error: (err) => console.error('Error adding checkpoint:', err)
+    });
+  }
+  
+  private updateExistingCheckpoint(): void {
+    const updatedCheckpoint: Checkpoint = { ...this.newCheckpoint };
+    console.log('Updating existing checkpoint:', updatedCheckpoint);
+  
+    this.checkpointService.updateCheckpoint(updatedCheckpoint).subscribe({
+      next: () => {
+        console.log('Checkpoint updated.');
+        this.loadCheckpoints();
+        this.resetNewCheckpointForm();
+      },
+      error: (err) => console.error('Error updating checkpoint:', err)
+    });
+  }
+  
   resetNewCheckpointForm() {
     this.newCheckpoint = { id: 0, name: '', description: '', imageUrl: '', latitude: 0, longitude: 0 };
     this.isAddingCheckpoint = false;
@@ -143,7 +149,6 @@ export class CheckpointListComponent implements OnInit {
     });
   }
 
-  // U tvojoj roditeljskoj komponenti
 onCoordinatesSelected(coordinates: { latitude: number; longitude: number }): void {
   this.newCheckpoint.latitude = coordinates.latitude
   this.newCheckpoint.longitude = coordinates.longitude
