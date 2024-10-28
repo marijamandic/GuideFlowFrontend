@@ -36,7 +36,7 @@ const routes: Routes = [
   { path: 'profileInfo', component: ProfileInfoComponent },
   { path: 'equipmentManagement', component: EquipmentManagementComponent },
   { path: 'problem', component: ProblemComponent },
-  { path: 'report-problem', component: ReportProblemComponent },
+  { path: 'report', component: ReportProblemComponent },
   { path: 'club', component: ClubComponent, canActivate: [AuthGuard] },
   { path: 'club-invitation', component: ClubInvitationComponent, canActivate: [AuthGuard] },
   { path: 'club-invitation/add', component: ClubInvitationFormComponent, canActivate: [AuthGuard] },
