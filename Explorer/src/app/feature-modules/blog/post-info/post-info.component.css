@@ -1,0 +1,48 @@
+.container-close{
+    display: flex;
+    align-items: flex-end;
+}
+.close-post{
+    background-color: red;
+    border-radius: 10px;
+}
+.post-info {
+    overflow: hidden; /* Sprečava da sadržaj prelazi van komponente */
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin: 20px auto; /* Centriranje */
+    text-align: center; /* Centriranje teksta */
+    max-width: 600px; /* Maksimalna širina */
+}
+
+.post-title {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.post-description,
+.post-author,
+.post-publish-date,
+.post-status {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 8px;
+}
+
+.post-image {
+    max-width: 100%; /* Održavanje proporcija */
+    height: auto;
+    border-radius: 8px;
+    margin-top: 10px;
+    max-height: 200px; /* Manja slika */
+}
+
+.divider {
+    margin: 20px 0;
+    border: none;
+    border-top: 1px solid #ddd;
+}

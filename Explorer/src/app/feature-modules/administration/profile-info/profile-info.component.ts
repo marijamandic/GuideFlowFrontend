@@ -52,18 +52,6 @@ export class ProfileInfoComponent implements OnInit{
   onProfileInfoUpdated(): void {
     this.shouldRenderProfileInfoForm = false; // Zatvori formu nakon ažuriranja
   }
-  
-
- /* ngOnInit(): void {
-    this.authService.getProfileInfo().subscribe({
-      next: (result: PagedResults<ProfileInfo>) => {
-        this.profileInfo = result.results;
-      },
-      error: (err: any) => {
-        console.log(err);
-      }
-    })
-  }*/ 
 
     getImagePath(imageUrl: string){
       return environment.webRootHost+imageUrl;

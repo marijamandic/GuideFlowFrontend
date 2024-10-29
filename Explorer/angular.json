@@ -30,6 +30,8 @@
             ],
             "styles": [
               "@angular/material/prebuilt-themes/indigo-pink.css",
+              "./node_modules/leaflet/dist/leaflet.css",
+              "./node_modules/leaflet-routing-machine/dist/leaflet-routing-machine.css",
               "src/styles.css"
             ],
             "scripts": []
@@ -102,25 +104,6 @@
     }
   },
   "cli": {
-    "analytics": false;
-    
-  },
-  "analytics": "0a6cfae0-7791-492f-8332-292f086974bd",
-  "analytics": "aded08c7-58be-44e3-9671-22fe9a55b49f",
-  "analytics": "b1b84c8c-4e19-458d-aa3e-6be6e1c815f7",
-  "analytics": "45f97a86-46ee-4d6d-9d72-cce7bfc9c586",
-  "analytics": "70c88662-b92b-41be-9eda-a8fc63291620",
-  "analytics": "2ec3464d-6313-4e96-a33b-1bf308f59b8a",
-  "analytics": "ce171112-0e73-477f-b7e3-725dc94381e9",
-  "analytics": "a996f57f-2465-4e88-a423-edfa1cecaba6",
-  "analytics": "78e7ba61-17a5-4e6c-bdba-2ccd40a0e874",
-  "analytics": "871652e2-ce14-42b8-8602-a4b3b936457d",
-  "analytics": "94e28317-c7be-47d5-b312-ebd077377d64",
-  "analytics": "0a7e17a2-6691-461f-a974-abc3a503efd8",
-  "analytics": "ddd300e9-e41f-4705-96d8-f2c51b865267",
-  "analytics": "2c996939-c809-4edc-a6ab-b5180a1f0aa5",
-  "analytics": "b2245df0-9dc2-4ed8-84f6-d403754586d4",
-  "analytics": "ddc9789d-3b6d-477e-8ad2-81809482b1d0",
-  "analytics": "2cc3dba1-7128-4058-9014-96cf935762ff",
-  "analytics": "d97d4017-99a4-4ee9-926f-50811e1adc24"
+    "analytics": false
+  }
 }

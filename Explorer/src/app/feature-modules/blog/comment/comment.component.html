@@ -1,0 +1,28 @@
+<div>
+  <div class="comment-section">
+    <h2>Comments:</h2>
+
+    <div *ngIf="comments.length === 0" class="no-comments">
+      <p>No comments yet. Be the first to add one!</p>
+    </div>
+  
+    <div *ngFor="let comm of comments" class="comment-card">
+        <div class="comment-body">
+          <span *ngIf="commentCreators[comm.userId]"><p>{{ commentCreators[comm.userId] }}</p></span>
+          <p>{{ comm.content }}</p>
+          <span *ngIf="comm.createdAt===comm.lastModified"><p>{{ comm.createdAt | date:'short' }}</p></span>
+          <span *ngIf="comm.createdAt!==comm.lastModified"><p>{{ comm.lastModified | date:'short' }}</p></span>
+        </div>
+  
+        <div class="comment-actions">
+            <button *ngIf="user && user.role === 'tourist' && user.id===comm.userId" (click)="onEditClicked(comm)" class="edit-btn">Edit</button>
+            <button *ngIf="user && user.role === 'tourist' && user.id===comm.userId" (click)="deleteComments(comm.id||0)" class="delete-btn">Delete</button>
+        </div>
+    </div>
+    <button *ngIf="user && user.role === 'tourist'" class="add-comment-btn" (click)="onAddClicked()">Add Comment</button>
+  </div>
+<div>
+  <xp-comment-form *ngIf="shouldRenderCommentForm && postId" [shouldEdit]="shouldEdit" [comment]="selectedComment" [postId]="postId!" (commentUpdated)="getComments()"></xp-comment-form>
+</div>
+</div>
+  

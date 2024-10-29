@@ -6,25 +6,34 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
+import { ReportProblemComponent } from './report-problem/report-problem.component';
 
 
 
+import { TourReviewComponent } from './tour-review/tour-review.component';
+import { TourReviewFormComponent } from './tour-review-form/tour-review-form.component';
 
 @NgModule({
   declarations: [
     EquipmentManagementComponent,
-    EquipmentFormComponent
+    EquipmentFormComponent,
+    ReportProblemComponent,
+	TourReviewComponent,
+	TourReviewFormComponent
   ],
   imports: [
     CommonModule,
     MatFormFieldModule,
     MatInputModule,
     ReactiveFormsModule,
-    MatIconModule
+    MatIconModule,
+    CommonModule
   ],
   exports:
   [
-     EquipmentManagementComponent
-  ]
+    EquipmentManagementComponent,
+    ReportProblemComponent,
+	TourReviewComponent
+  ],
 })
-export class TourExecutionModule { }
+export class TourExecutionModule {}

@@ -1,0 +1,20 @@
+<p>all-app-ratings works!</p>
+<table>
+    <thead>
+      <tr>
+        <th>KorisnikovId</th>
+        <th>Komentar</th>
+        <th>Vreme</th>
+        <th>Ocena</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let rating of allAppRatings">
+        <th>{{ rating.userId }}</th>
+        <th>{{ rating.comment }}</th>
+        <th>{{ rating.ratingTime }}</th>
+        <th>{{ rating.ratingValue }}</th>
+      </tr>
+    </tbody>
+  </table>
+  

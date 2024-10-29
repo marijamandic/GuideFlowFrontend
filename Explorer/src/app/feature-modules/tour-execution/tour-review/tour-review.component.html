@@ -1,0 +1,25 @@
+<div>
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Rating</th>
+                <th>Comment</th>
+                <th>Date Created</th>
+                <th>Tour Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor = "let trev of tourReview">
+                <td>{{ trev.id }}</td>
+                <td>{{ trev.rating }}</td>
+                <td>{{ trev.comment }}</td>
+                <td>{{ trev.creationDate}}</td>
+                <td>{{ trev.tourDate}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <xp-tour-review-form (tourReviewUpdated)="handleReviewCreated()">
+        
+    </xp-tour-review-form>
+</div>
