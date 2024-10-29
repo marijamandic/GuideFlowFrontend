@@ -4,7 +4,6 @@ import { EquipmentComponent } from './equipment/equipment.component';
 import { ProfileInfoComponent } from '../feature-modules/administration/profile-info/profile-info.component';
 import { HomeComponent } from '../layout/home/home.component';
 
-
 @NgModule({
   declarations: [
     EquipmentComponent,
