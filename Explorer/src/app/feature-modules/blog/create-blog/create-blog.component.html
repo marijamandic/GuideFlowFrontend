@@ -1,37 +1,43 @@
-<div class="container">
-    <h2>Create a Blog Post</h2>
-    
-    <form [formGroup]="postForm" (ngSubmit)="onSubmit()">
-      <!-- Title Field -->
-      <div class="form-group">
-        <label for="title">Title</label>
-        <input id="title" formControlName="title" class="form-control" type="text" />
-      </div>
-      
-      <!-- Description Field -->
-      <div class="form-group">
-        <label for="description">Description</label>
-        <textarea id="description" formControlName="description" class="form-control"></textarea>
-      </div>
-      
-      <!-- Image URL Field -->
-      <!--<div class="form-group">
-        <label for="imageUrl">Image URL</label>
-        <input id="imageUrl" formControlName="imageUrl" class="form-control" type="text" />
-      </div>-->
-      
-      <input type="file" (change)="onFileSelected($event)">
-
-      <!-- Status Field -->
-      <div class="form-group">
-        <label for="status">Status</label>
-        <select id="status" formControlName="status" class="form-control">
-          <option *ngFor="let status of statuses" [value]="status.value">{{ status.name }}</option>
-        </select>
-      </div>
+<div class="main-column">
   
-      <!-- Submit Button -->
-      <button type="submit" class="btn btn-primary" [disabled]="postForm.invalid">Create Post</button>
-    </form>
-  </div>
-  
+  <form [formGroup]="postForm" (ngSubmit)="onSubmit()" class="blog-form">
+      <table>
+          <tr>
+            <td><h2>Create a Blog Post</h2></td>
+          </tr>
+          <tr>
+            <td><label for="title">Title</label></td>
+          </tr>
+          <tr>
+              <td><input id="title" formControlName="title" class="form-control" type="text" /></td>
+          </tr>
+          <tr>
+            <td><label for="description">Description</label></td>
+          </tr>
+          <tr>
+              <td><textarea id="description" formControlName="description" class="form-control"></textarea></td>
+          </tr>
+          <tr>
+            <td><label for="fileUpload">Image Upload</label></td>
+          </tr>
+          <tr>
+              <td><input type="file" id="fileUpload" (change)="onFileSelected($event)" class="form-control"></td>
+          </tr>
+          <tr>
+            <td><label for="status">Status</label></td>
+          </tr>
+          <tr>
+              <td>
+                  <select id="status" formControlName="status" class="form-control">
+                      <option *ngFor="let status of statuses" [value]="status.value">{{ status.name }}</option>
+                  </select>
+              </td>
+          </tr>
+          <tr>
+              <td colspan="2" style="text-align: center;">
+                  <button type="submit" class="cta-button" [disabled]="postForm.invalid">Create Post</button>
+              </td>
+          </tr>
+      </table>
+  </form>
+</div>

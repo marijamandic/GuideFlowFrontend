@@ -1,6 +1,51 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+
+h1{
+  font-size: 48px;
+  padding: 3px;
+}
+
+h2 {
+  font-size: 28px;
+  font-weight: bold;
+  margin: 0px;
+}
+
+h3{
+  font-size: 18px;
+  padding-top: 3px;
+  margin: 0;
+  font-weight: 500;
+}
+
+p{
+  font-size: 14px;
+  font-weight: lighter;
+  margin: 0;
+  padding: 0;
+}
+
+.cta-button {
+  background-color: var(--primary-color);
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  padding: 12px 30px;
+  border-radius: 25px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s ease;
+}
+
+.cta-button:hover {
+  background-color: var(--hover-color);
+  transform: scale(1.1);
+  transition: 0.5s ease;
+}
+
+
 .leaflet-routing-container {
     max-height: 200px;
     overflow-y: auto;
