@@ -1,0 +1,26 @@
+<div>
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>UserId</th>
+                <th>FirstName</th>
+                <th>LastName</th>
+                <th>ProfilePhoto</th>
+                <th>Biography</th>
+                <th>Moto</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let pi of profileInfo"> 
+                <td>{{pi.id}}</td>
+                <td>{{pi.userId}}</td>
+                <td>{{pi.firstName}}</td>
+                <td>{{pi.lastName}}</td>
+                <td>{{pi.profilePhoto}}</td>
+                <td>{{pi.biography}}</td>
+                <td>{{pi.moto}}</td> 
+            </tr>
+        </tbody>
+    </table>
+</div>

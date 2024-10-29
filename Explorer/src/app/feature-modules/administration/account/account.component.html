@@ -1,0 +1,26 @@
+<div *ngFor="let acc of accounts" id="card" [ngClass]="{ 'inactive': !acc.isActive }">
+    <table >
+        <thead>
+            <tr>
+                <th colspan="2">{{ acc.username }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Role:</td>
+                <td>{{ UserRole[acc.role ]}}</td>
+            </tr>
+            <tr>
+                <td>Email:</td>
+                <td>{{ acc.email }}</td>
+            </tr>
+            <tr>
+                <td>Active:</td>
+                <td>{{ acc.isActive ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <button color="primary" mat-raised-button (click)="ToggleAcountActivty(acc)">Toggle Activity</button>
+            </tr>
+        </tbody>
+    </table>
+</div>
