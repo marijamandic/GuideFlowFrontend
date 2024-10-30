@@ -32,6 +32,7 @@ html, body {
   padding: 20px;
   gap: 20px;
   align-items: flex-start;
+  position: relative;
   transition: transform 0.3s ease;
 }
 
@@ -51,6 +52,7 @@ html, body {
   flex: 1;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .post-header {
@@ -113,4 +115,59 @@ html, body {
   background-color: var(--hover-color);
   transform: scale(1.1);
   transition: 0.5s ease;
+}
+
+/* Vote and Interaction Buttons */
+.vote-container, .interaction-container {
+  display: inline-flex;
+  align-items: center;
+  border: none;
+  border-radius: 30px; 
+  padding: 5px 10px;
+  background-color: var(--primary-color); 
+  margin-right: 15px;
+}
+
+.vote-button, .interaction-button {
+  font-size: 1.2em;
+  color: white; 
+  background: none;
+  border: none;
+  border-radius: 30px; 
+  cursor: pointer;
+  padding: 5px;
+}
+
+.vote-button:hover, .interaction-button:hover {
+  box-shadow: white 0px 7px 29px 0px;
+}
+
+.vote-button:focus, .interaction-button:focus {
+  outline: none;
+}
+
+.vote-button.fa-arrow-up:hover {
+  color: #ff4500;
+}
+
+.vote-button.fa-arrow-down:hover {
+  color: #7193ff;
+}
+
+.vote-count, .interaction-count {
+  margin: 0 10px;
+  font-size: 1.1em;
+  color: white;
+  font-weight: bold;
+}
+
+.bottom-interaction-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  margin-top: auto;
+  position: absolute;
+  bottom: -105px;
+  left: -10px;
 }

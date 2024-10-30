@@ -50,4 +50,12 @@ export class PostComponent implements OnInit{
   navigateToCreatePost(){
     this.router.navigate(['createBlog']);
   }
+
+  upvote(postId: number){
+
+  }
+
+  downvote(postId: number){
+
+  }
 }
