@@ -1,5 +1,5 @@
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;}
 
 
 h1{
@@ -65,11 +65,11 @@ p{
 
 :root {
     --primary-color: #84dcc6;
-    --secondary-color: #f2f2f2;
+    --secondary-color: #ffffff;
     --accent-color: #4d4d4d;
     --hover-color: #5cd1b4;
     --font-family: 'Gotham', 'Verdana', sans-serif;
-    --background-color: #ffffff;
+    --background-color: #f2f2f2;
     --text-color: #333;
   }
   

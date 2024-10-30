@@ -1,53 +1,116 @@
-.info-button {
-  background-color: #17a2b8; 
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  cursor: pointer;
-  border-radius: 5px;
-  margin-top: auto;
+html, body {
+  height: 100%;
+  margin: 0;
 }
 
-.info-button:hover {
-  background-color: #138496; 
+.main-column {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  min-height: 90vh;
 }
 
 .post-flex {
-  margin: 20px;
+  flex: 1; 
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 20px;
-  justify-content:center; 
+  align-items: center;
+  width: 100%;
 }
 
 .post-container {
-  flex: 1 1 calc(25% - 20px); 
-  max-width: 300px;
-  height: auto;
-  padding: 20px;
-  border: 1px solid black;
-  border-radius: 10px;
-  background-color: blanchedalmond;
   display: flex;
-  flex-direction: column;
-  justify-content: space-between; 
+  width: 100%;
+  max-width: 1200px; 
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  gap: 20px;
+  align-items: flex-start;
+  transition: transform 0.3s ease;
+}
+
+.post-container:hover {
+  transform: scale(1.02);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 .post-image {
-  width: 100%;
+  width: 300px;
   height: 200px;
+  border-radius: 8px;
   object-fit: cover;
+}
+
+.post-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.post-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.post-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--accent-color);
+  margin: 0;
+}
+
+.rating-badge {
+  background-color: var(--primary-color);
+  color: white;
+  font-size: 14px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.description {
+  color: var(--text-color);
+  font-size: 14px;
+  margin: 10px 0;
+}
+
+.details {
+  font-size: 12px;
+  color: #666666;
   margin-bottom: 10px;
 }
 
-@media (max-width: 768px) {
-  .post-container {
-    flex: 1 1 calc(50% - 20px);
-  }
+.status {
+  font-size: 12px;
+  color: #28a745;
+  font-weight: bold;
+  margin-top: 10px;
 }
 
-@media (max-width: 480px) {
-  .post-container {
-    flex: 1 1 100%;
-  }
+.cta-button {
+  align-self: center;
+  margin-top: auto;
+  background-color: var(--primary-color);
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  padding: 12px 30px;
+  border-radius: 25px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s ease;
+}
+
+.cta-button:hover {
+  background-color: var(--hover-color);
+  transform: scale(1.1);
+  transition: 0.5s ease;
 }

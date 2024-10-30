@@ -43,7 +43,7 @@ export class PostComponent implements OnInit{
     return environment.webRootHost+imageUrl;
   }
 
-  navigateToMoreInfo(postId: number) {
+  navigateToPostDetails(postId: number) {
     this.router.navigate(['/blog', postId]);
   }
 
