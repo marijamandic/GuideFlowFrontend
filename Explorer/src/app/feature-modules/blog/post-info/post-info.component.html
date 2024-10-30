@@ -1,16 +1,61 @@
-<div *ngIf="post" class="post-info">
-    <div class="container-close" (click)="closePost()">
-        <button *ngIf="user?.id==post.userId" class="close-post">Close</button>
+<div class="main-column">
+    <div *ngIf="post" class="post-info">
+        <!-- Post Header -->
+        <div class="post-header">
+            <h2 class="post-title">{{ post.title }}</h2>
+            <div class="post-meta">
+                <span>{{ post.userId }}</span> &bull;
+                <span>{{ post.publishDate | date: 'longDate' }}</span>
+            </div>
+        </div>
+    
+        <!-- Image Section -->
+        <img *ngIf="post.imageUrl" [src]="getImagePath(post.imageUrl)" alt="Post image" class="post-image" />
+    
+        <!-- Post Content -->
+        <div class="post-content">
+            <div class="post-description">
+                <markdown [data]="post.description"></markdown>
+            </div>
+        </div>
     </div>
-    <h2 class="post-title">{{ post.title }}</h2>
-    <div class="post-description">
-        <strong>Description:</strong>
-        <markdown [data]="post.description"></markdown>
+    
+    <!-- Comments Section -->
+    <div class="comments-section">   
+        <!-- Comment Form Section -->
+        <xp-comment-form 
+            *ngIf="user && postId" 
+            [postId]="postId" 
+            [shouldEdit]="false"
+            (commentUpdated)="loadComments()">
+        </xp-comment-form>
+
+        <div *ngIf="comments.length === 0" class="no-comments">
+            <p>No comments yet. Be the first to add one!</p>
+        </div>
+    
+        <div *ngFor="let comment of comments" class="comment-card">
+            <!-- Top Row: Author on the left, Date on the right -->
+            <div class="comment-header">
+                <span class="comment-author">{{ comment.userId }}</span>
+                <span class="comment-date">{{ comment.createdAt | date:'short' }}</span>
+            </div>
+    
+            <!-- Comment Content -->
+            <div class="comment-body">
+                <p>{{ comment.content }}</p>
+            </div>
+    
+            <!-- Actions Row: Edit/Delete buttons aligned to the right -->
+            <div class="comment-actions">
+                <button *ngIf="user && user.id === comment.userId" class="edit-btn">Edit</button>
+                <button *ngIf="user && user.id === comment.userId && comment.id" class="delete-btn" (click)="deleteComment(comment.id)">Delete</button>
+            </div>
+        </div>
     </div>
-    <p class="post-author"><strong>Author ID:</strong> {{ post.userId }}</p>
-    <p class="post-publish-date"><strong>Publish Date:</strong> {{ post.publishDate | date:'longDate' }}</p>
-    <img [src]="getImagePath(post.imageUrl)" alt="Post image" *ngIf="post.imageUrl" class="post-image"/>
-    <p class="post-status"><strong>Status:</strong> {{ getStatusName(post.status) }}</p>
-    <hr class="divider"/>
-    <xp-comment [postId]="postId!"></xp-comment>
+    
+
 </div>
+
+
+  

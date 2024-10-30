@@ -1,12 +1,9 @@
-<form [formGroup]="commentForm" class="comment-form">
-        <mat-form-field>
-          <mat-label>Content</mat-label>
-          <textarea matInput
-          cdkTextareaAutosize
-          cdkAutosizeMinRows="1"
-          formControlName="content"
-          cdkAutosizeMaxRows="5"></textarea>
-        </mat-form-field>
-        <button *ngIf="!shouldEdit" color="primary" type="submit" (click)="addComment()" mat-raised-button>Done</button>
-        <button *ngIf="shouldEdit" color="primary" type="submit" (click)="editComment()" mat-raised-button>Done</button>
-</form>
+<div class="comment-form-container">
+  <textarea class="comment-textarea" placeholder="Write your comment"></textarea>
+  <div class="form-actions">
+      <button class="cta-button" *ngIf="shouldEdit" (click)="cancelEdit()">Cancel</button>
+      <button class="cta-button" (click)="shouldEdit ? editComment() : addComment()">
+          {{ shouldEdit ? 'Update' : 'Comment' }}
+      </button>
+  </div>
+</div>

@@ -63,4 +63,11 @@ export class CommentFormComponent implements OnChanges{
       next: () => { this.commentUpdated.emit();}
     });
   }
+
+  cancelEdit(): void {
+    this.commentForm.reset();
+    this.shouldEdit = false;
+    this.commentUpdated.emit(); // Emit event to refresh or reset view as needed
+  }
+  
 }

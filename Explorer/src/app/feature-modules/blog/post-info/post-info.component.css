@@ -1,48 +1,172 @@
-.container-close{
+.main-column {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
     display: flex;
-    align-items: flex-end;
+    flex-direction: column;
+    align-items: center; 
+    min-height: 90vh;
 }
-.close-post{
-    background-color: red;
+
+.post-info {
+    display: flex;
+    flex-direction: column;
+    max-width: 1200px; 
+    padding-bottom: 50px;
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    overflow: hidden; 
+    padding: 30px;
+}
+
+.post-image {
+    width: 100%;
+    height: 40vh; 
+    object-fit: cover;
+    margin: 0;
     border-radius: 10px;
 }
-.post-info {
-    overflow: hidden; /* Sprečava da sadržaj prelazi van komponente */
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #fff;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    margin: 20px auto; /* Centriranje */
-    text-align: center; /* Centriranje teksta */
-    max-width: 600px; /* Maksimalna širina */
+
+.post-content {
+    padding-top: 10px; 
+}
+
+.post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
 }
 
 .post-title {
-    font-size: 28px;
-    color: #333;
-    margin-bottom: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--accent-color);
+    margin: 0;
 }
 
-.post-description,
-.post-author,
-.post-publish-date,
-.post-status {
+.post-author-id {
+    font-size: 14px;
+    color: #555;
+    text-align: right;
+}
+
+.post-description {
+    color: var(--text-color);
     font-size: 16px;
+    margin: 15px 0;
+}
+
+.post-details {
+    font-size: 14px;
+    color: #555;
+}
+
+
+.comments-section {
+    width: 100%;
+    max-width: 1200px;
+    margin-top: 15px;
+    background-color: transparent;
+}
+
+.comment-card {
+    background-color: #fff;
+    padding: 15px;
+    margin: 15px auto;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+}
+
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
     color: #555;
     margin-bottom: 8px;
 }
 
-.post-image {
-    max-width: 100%; /* Održavanje proporcija */
-    height: auto;
-    border-radius: 8px;
-    margin-top: 10px;
-    max-height: 200px; /* Manja slika */
+.comment-author {
+    font-weight: bold;
 }
 
-.divider {
-    margin: 20px 0;
+.comment-date {
+    color: #777;
+}
+
+.comment-body {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.comment-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.edit-btn,
+.delete-btn {
+    padding: 8px 12px;
+    font-size: 14px;
+    color: white;
     border: none;
-    border-top: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.edit-btn {
+    background-color: #28a745;
+}
+
+.delete-btn {
+    background-color: #dc3545;
+}
+
+.edit-btn:hover {
+    background-color: #218838;
+}
+
+.delete-btn:hover {
+    background-color: #c82333;
+}
+
+.close-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #ffffff; 
+    padding: 20px;
+    border-radius: 15px;
+    width: 100%;
+    max-width: 1000px;
+    margin: 15px auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.done-message {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.close-button {
+    font-size: 14px;
+    color: white;
+    background-color: #ff4d4d; 
+    border: none;
+    border-radius: 5px;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.close-button:hover {
+    background-color: #e60000; 
 }
