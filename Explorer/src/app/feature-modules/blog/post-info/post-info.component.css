@@ -1,6 +1,6 @@
 .container-close{
     display: flex;
-    align-items: end;
+    align-items: flex-end;
 }
 .close-post{
     background-color: red;

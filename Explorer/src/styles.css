@@ -1,4 +1,5 @@
 html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .leaflet-routing-container {
     max-height: 200px;
@@ -16,8 +17,6 @@ html, body { height: 100%; }
     font-size: 12px;
     margin-bottom: 5px;
   }
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 :root {
     --primary-color: #84dcc6;
     --secondary-color: #f2f2f2;

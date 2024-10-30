@@ -57,10 +57,6 @@ const routes: Routes = [
   { path: 'specification', component: TourSpecificationComponent },
   { path: 'account', component: AccountComponent, canActivate: [AuthGuard] },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
-  {path: 'home', component: HomeComponent},
-  {path: 'login', component: LoginComponent},
-  {path: 'register', component: RegistrationComponent},
-  {path: 'equipment', component: EquipmentComponent, canActivate: [AuthGuard],}
 ];
 
 @NgModule({

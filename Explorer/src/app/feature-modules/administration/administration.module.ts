@@ -7,6 +7,7 @@ import { EquipmentComponent } from './equipment/equipment.component';
 import { ProfileInfoComponent } from './profile-info/profile-info.component'; // Import the component
 import { MaterialModule } from 'src/app/infrastructure/material/material.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ProfileInfoFormComponent } from './profile-info-form/profile-info-form.component';
 import { ProblemComponent } from './problem/problem.component';
 import { ClubFormComponent } from './club-form/club-form.component';
 import { ClubComponent } from './club/club.component';
@@ -24,6 +25,7 @@ import { AccountComponent } from './account/account.component';
     EquipmentFormComponent,
     EquipmentComponent,
     ProfileInfoComponent,
+    ProfileInfoFormComponent,
     ClubFormComponent,
     ClubComponent,
     ClubRequestComponent,

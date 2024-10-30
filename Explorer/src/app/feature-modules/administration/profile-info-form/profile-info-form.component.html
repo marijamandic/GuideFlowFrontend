@@ -1,0 +1,26 @@
+<form [formGroup]="profileInfoForm">
+    <div>
+        <mat-form-field>
+            <mat-label>First Name</mat-label>
+            <input matInput formControlName="firstName" type="text">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Last Name</mat-label>
+            <input matInput formControlName="lastName" type="text"> 
+        </mat-form-field>
+        <input type="file" (change)="onFileSelected($event)">
+        <mat-form-field>
+            <mat-label>Biography</mat-label>
+            <textarea matInput
+            cdkTextareaAutosize
+            formControlName="biography"
+            cdkAutosizeMinRows="1"
+            cdkAutosizeMaxRows="5"></textarea>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Moto</mat-label>
+            <input matInput formControlName="moto" type="text"> 
+        </mat-form-field>
+        <button color="primary" type="submit" (click)="updateProfileInfo()" mat-raised-button>Update</button>
+    </div>
+</form>
