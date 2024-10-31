@@ -12,5 +12,7 @@ export interface Post {
 export enum Status {
     Draft = 0,         
     Published = 1, 
-    Closed = 2        
+    Closed = 2,
+    Active = 3,
+    Famous = 4        
 }

@@ -16,6 +16,8 @@ export class PostComponent implements OnInit{
   posts : Post[];
   postsToShow : Post[];
   user : User | undefined;
+  selectedStatus: Status | '' = ''; // Holds the selected status for filtering
+  statusOptions = [Status.Active, Status.Famous]; // Filter options for dropdown
   constructor(private postService : PostService ,private authService : AuthService ,private router : Router){}
 
   ngOnInit(): void {
@@ -34,6 +36,16 @@ export class PostComponent implements OnInit{
         })
       }
   }
+
+  filterPostsByStatus(event: Event) {
+    const selectedValue = (event.target as HTMLSelectElement)?.value; // Type cast and optional chaining
+    this.selectedStatus = selectedValue ? Number(selectedValue) : ''; // Convert to number if not empty
+  
+    this.postsToShow = this.selectedStatus !== ''
+      ? this.posts.filter(post => post.status === this.selectedStatus)
+      : this.posts;
+  }
+
 
   getStatusName(status: Status): string {
     return Status[status];  // Ovo vraća ime enum-a (Draft, Published, Closed)

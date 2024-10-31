@@ -1,41 +1,51 @@
-<div class="main-column">
-  <!-- Wrapper for posts -->
-  <div class="post-flex">
-    <div *ngFor="let p of postsToShow" class="post-container" (click)="navigateToPostDetails(p.id)">
-      
+<div class="main-container">
+  <div class="main-column">
+    <div class="right-sidebar">
+      <label for="statusFilter" class="filter-label">Filter by Status:</label>
+      <select id="statusFilter" (change)="filterPostsByStatus($event)">
+        <option value="">All</option>
+        <option [value]="status" *ngFor="let status of statusOptions">{{ getStatusName(status) }}</option>
+      </select>
+    </div>
+    
+    <div class="filter-spacing"></div>
+    <!-- Wrapper for posts -->
+    <div class="post-flex">
+      <div *ngFor="let p of postsToShow" class="post-container" (click)="navigateToPostDetails(p.id)">
+        
 
-      <div class="post-content">
-        <!-- Title and Rating Badge at the Top -->
-        <div class="post-header">
-          <h2 class="post-title">{{ p.title }}</h2>
+        <div class="post-content">
+          <!-- Title and Rating Badge at the Top -->
+          <div class="post-header">
+            <h2 class="post-title">{{ p.title }}</h2>
+            
+          </div>
+          
+          <p class="details">Published on {{ p.publishDate | date:'longDate' }}</p>
+          <p class="description">{{ p.description | slice:0:100 }}...</p>
+          
+          <div class="bottom-interaction-bar">
+            <div class="vote-container">
+              <button class="vote-button fa fa-arrow-up" (click)="upvote(p.id)"></button>
+              <span class="vote-count">420</span>
+              <button class="vote-button fa fa-arrow-down" (click)="downvote(p.id)"></button>
+            </div>
+            <div class="interaction-container">
+              <button class="interaction-button fa fa-comment"></button>
+              <span class="interaction-count">812</span>
+            </div>
+          </div>
+          
+          <!-- Status at the bottom of the content -->
+          <!--<p class="status">{{ getStatusName(p.status) }}</p>-->
           
         </div>
-        
-        <p class="details">Published on {{ p.publishDate | date:'longDate' }}</p>
-        <p class="description">{{ p.description | slice:0:100 }}...</p>
-        
-        <div class="bottom-interaction-bar">
-          <div class="vote-container">
-            <button class="vote-button fa fa-arrow-up" (click)="upvote(p.id)"></button>
-            <span class="vote-count">420</span>
-            <button class="vote-button fa fa-arrow-down" (click)="downvote(p.id)"></button>
-          </div>
-          <div class="interaction-container">
-            <button class="interaction-button fa fa-comment"></button>
-            <span class="interaction-count">812</span>
-          </div>
-        </div>
-        
-        <!-- Status at the bottom of the content -->
-        <!--<p class="status">{{ getStatusName(p.status) }}</p>-->
-        
+        <img [src]="getImagePath(p.imageUrl)" alt="Post image" *ngIf="p.imageUrl" class="post-image" />
       </div>
-      <img [src]="getImagePath(p.imageUrl)" alt="Post image" *ngIf="p.imageUrl" class="post-image" />
     </div>
+    <!-- Create post button for authors at the bottom -->
+    <button class="cta-button" *ngIf="user?.role === 'author'" (click)="navigateToCreatePost()">
+      Create post
+    </button>
   </div>
-
-  <!-- Create post button for authors at the bottom -->
-  <button class="cta-button" *ngIf="user?.role === 'author'" (click)="navigateToCreatePost()">
-    Create post
-  </button>
 </div>
