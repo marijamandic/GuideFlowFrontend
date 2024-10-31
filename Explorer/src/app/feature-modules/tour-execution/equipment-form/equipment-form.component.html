@@ -1,0 +1,27 @@
+<div class="modal" id="successModal">
+    <div class="modal-content">
+        <span class="close" (click)="closeModal()">&times;</span>
+        <p id="modalMessage">Equipment added successfully!</p>
+    </div>
+</div>
+
+
+<form [formGroup] ="equipmentForm">
+    <div>
+        <mat-form-field>
+            <mat-label>Equipment Id</mat-label>
+            <input matInput cdkTextareaAutosize cdkAutosizeMinRows="1" formControlName="EquipmentId"cdkAutosizeMaxRows="5">
+            <input matInput type="text">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Tourist Id</mat-label>
+            <input matInput cdkTextareaAutosize cdkAutosizeMinRows="1" formControlName = "TouristId" cdkAutosizeMaxRows="5">
+            <input matInput type="text"> 
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Status</mat-label>
+            <input matInput cdkTextareaAutosize cdkAutosizeMinRows="1" formControlName = "Status" cdkAutosizeMaxRows="5">
+        </mat-form-field>
+        <button mat-raised-button type="submit" color="primary" [disabled]="equipmentForm.invalid" (click)="addEquipment()">Done</button>
+    </div>
+</form>

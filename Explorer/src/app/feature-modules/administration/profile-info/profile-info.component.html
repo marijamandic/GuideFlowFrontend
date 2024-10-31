@@ -1,0 +1,46 @@
+<div id="profileInfo">
+    <p>ProfileInfo</p>
+    <hr>
+    <div id="profileInfo-details">
+    <div>
+    <table>
+        <thead>
+            <tr>
+                <th>FirstName</th>
+                <th>LastName</th>
+                <th>ProfilePicture</th>
+                <th>Biography</th>
+                <th>Moto</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let pi of profileInfo"> 
+                <td>{{pi.firstName}}</td>
+                <td>{{pi.lastName}}</td>
+                <td><img [src]="getImagePath(pi.imageUrl)" alt="Post image" *ngIf="pi.imageUrl" class="post-image"/></td>
+                <td>{{pi.biography}}</td>
+                <td>{{pi.moto}}</td> 
+                <td>
+                    <button color="accent" mat-icon-button> <!--(click)="deleteProfileInfo(pi.id || 0)"> -->
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                    <button color="primary" (click)="onEditClicked(pi)" mat-icon-button> <!--  > -->
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div>
+    <div>
+        <xp-profile-info-form *ngIf="shouldRenderProfileInfoForm" 
+                              [shouldEdit]="shouldEdit" 
+                              [profileInfo]="selectedProfileInfo" 
+                              (profileInfoUpdated)="onProfileInfoUpdated(); getProfileInfoById(userId)"></xp-profile-info-form>
+    </div>    
+    
+   <!-- <xp-profile-info-form *ngIf="shouldRenderProfileInfoForm" [shouldEdit]="shouldEdit" [profileInfo]="selectedProfileInfo" (profileInfoUpdated)="getProfileInfoById(userId)"></xp-profile-info-form> -->
+</div>
+</div>
+</div>

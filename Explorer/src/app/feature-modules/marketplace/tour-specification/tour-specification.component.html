@@ -1,0 +1,52 @@
+<div style="display: flex; align-items: flex-start;">
+    <div style="margin-right: 20px;">
+      <table>
+        <thead>
+          <tr>
+            <th>TourDifficulty</th>
+            <th>WalkRating</th>
+            <th>BikeRating</th>
+            <th>CarRating</th>
+            <th>BoatRating</th>
+            <th>Tags</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let ts of tourSpecification">
+            <td>{{ts.tourDifficulty}}</td>
+            <td>{{ts.walkRating}}</td>
+            <td>{{ts.bikeRating}}</td>
+            <td>{{ts.carRating}}</td>
+            <td>{{ts.boatRating}}</td>
+            <td>{{ts.tags}}</td>
+            <td>
+              <button (click)="deleteTourSpecification(ts)" color="accent" mat-icon-button>
+                <mat-icon>delete</mat-icon>
+              </button>
+              <button (click)="onEditClicked(ts)" color="primary" mat-icon-button>
+                <mat-icon>edit</mat-icon>
+              </button>
+            </td>
+          </tr>
+          <!-- <tr><button color="primary" (click)="onAddClicked()" mat-icon-button>
+            <mat-icon>add</mat-icon>
+        </button></tr> -->
+          <tr *ngIf="tourSpecification.length === 0">
+            <td colspan="8">
+                <button color="primary" (click)="onAddClicked()" mat-icon-button>
+                    <mat-icon>add</mat-icon>
+                </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <xp-tour-specification-form
+        *ngIf="shouldRenderEquipmentForm" [shouldEdit]="shouldEdit" [tourSpecification]="selectedTourSpecification"
+        (tourSpecificationUpdated)="getTourSpecification(userId)"> 
+      </xp-tour-specification-form>
+    </div>
+  </div>
+  

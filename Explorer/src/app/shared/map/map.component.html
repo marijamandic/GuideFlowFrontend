@@ -1,0 +1,8 @@
+<div class="map-frame">
+  <div id="map"></div>
+</div>
+<div class="search-container">
+  <input type="text" [(ngModel)]="searchAddress" placeholder="Unesite adresu" />
+  <button (click)="search()" color="primary">Pretraži</button>
+  <button (click)="resetMap()" color="warn">Resetuj</button>
+</div>

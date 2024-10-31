@@ -1,0 +1,20 @@
+<p>tour-review-form works!</p>
+<form [formGroup]="tourReviewForm">
+    <div>
+		<div>Rating</div>
+		<textarea formControlName="rating"></textarea>
+	</div>
+    <div>
+		<div>Comment</div>
+		<textarea formControlName="comment"></textarea>
+	</div>
+    <div>
+		<div>CreationDate</div>
+		<input type="date" formControlName="creationDate"/>
+	</div>
+    <div>
+		<div>TourDate</div>
+		<input type="date" formControlName="tourDate"/>
+	</div>
+	<button type="button" (click)="handleClick()">Submit</button>
+</form>

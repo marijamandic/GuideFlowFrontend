@@ -1,0 +1,22 @@
+<form [formGroup]="clubRequestForm">
+    <div>
+        <mat-form-field>
+          <mat-label>Status</mat-label>
+          <input matInput formControlName="status" type="text">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Club</mat-label>
+          <input matInput formControlName="clubId" type="number">
+        </mat-form-field>
+      
+        <mat-form-field>
+          <mat-label>Tourist</mat-label>
+          <input matInput formControlName="touristId" type="number">
+        </mat-form-field>
+        <button *ngIf="!shouldEdit" mat-raised-button type="submit" color="primary" (click)="addRequest()"></button>
+
+      </div>
+      
+      
+</form>

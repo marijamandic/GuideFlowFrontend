@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable} from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -15,6 +15,7 @@ import { Registration } from './model/registration.model';
 })
 export class AuthService {
   user$ = new BehaviorSubject<User>({username: "", id: 0, role: "" });
+  //@Output() idOfUser: number = 0;
 
   constructor(private http: HttpClient,
     private tokenStorage: TokenStorage,
@@ -43,6 +44,7 @@ export class AuthService {
   }
 
   logout(): void {
+    console.log("Logging out.")
     this.router.navigate(['/home']).then(_ => {
       this.tokenStorage.clear();
       this.user$.next({username: "", id: 0, role: "" });
@@ -68,6 +70,8 @@ export class AuthService {
         'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
       ],
     };
+    //this.idOfUser = +jwtHelperService.decodeToken(accessToken).id;
+    //console.log(this.idOfUser);
     this.user$.next(user);
   }
 }

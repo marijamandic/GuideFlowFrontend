@@ -1,0 +1,34 @@
+<div>
+    <table>
+        <thead>
+            <tr>
+                <th>Naziv</th>
+                <th>Opis</th>
+                <th>Cena</th>
+                <th>Tezina</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let tour of tours">
+                <td> {{ tour.name }} </td>
+                <td> {{ tour.description }} </td>
+                <td> {{ tour.price }} </td>
+                <td> {{ tour.level }} </td>
+                <td>
+                    <button color="accent" (click)="deleteTour(tour.id || 0)" mat-icon-button>
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                    <button color="primary" (click)="onEditClicked(tour)" mat-icon-button>
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                </td>
+            </tr>
+            <tr><button color="primary" (click)="onAddClicked()" mat-icon-button>
+                <mat-icon>add</mat-icon>
+            </button></tr>
+        </tbody>
+    </table>
+    <div>
+        <xp-tour-form *ngIf="shouldRenderTourForm" [shouldEdit]="shouldEdit" [tour]="selectedTour" (tourUpdated)="getTours()"></xp-tour-form>
+    </div>
+</div>
