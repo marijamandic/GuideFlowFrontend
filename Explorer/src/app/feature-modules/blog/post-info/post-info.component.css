@@ -119,20 +119,13 @@
     cursor: pointer;
 }
 
-.edit-btn {
-    background-color: #28a745;
-}
-
-.delete-btn {
-    background-color: #dc3545;
-}
-
-.edit-btn:hover {
-    background-color: #218838;
+.delete {
+    background-color: #a04750;
+    width: 130px;
 }
 
 .delete-btn:hover {
-    background-color: #c82333;
+    background-color: #612b31;
 }
 
 .close-card {

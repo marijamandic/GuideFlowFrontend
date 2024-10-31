@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Post, Status } from '../model/post.model';
 import { PostService } from '../post.service';
 import { CommentService } from '../comment.service';
-import { Comment } from '../model/comment.model'; // Assuming Comment model is in the same folder
+import { Comment } from '../model/comment.model'; 
 import { environment } from 'src/env/environment';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { User } from 'src/app/infrastructure/auth/model/user.model';
@@ -17,7 +17,8 @@ export class PostInfoComponent implements OnInit {
   postId: string | null = null;
   post: Post | null = null;
   user: User | undefined;
-  comments: Comment[] = [];
+  comments: (Comment & { username?: string })[] = [];
+  commentCount: number = 0;
 
   constructor(
     private postService: PostService,
@@ -53,10 +54,19 @@ export class PostInfoComponent implements OnInit {
   }
 
   loadComments(): void {
-    if (this.user && this.postId) {
-      this.commentService.getComments(this.postId, this.user.role).subscribe({
+    if (this.postId) {
+      this.commentService.getComments(this.postId, 'tourist').subscribe({
         next: (result) => {
           this.comments = result.results;
+          this.commentCount = this.comments.length;
+          this.comments.forEach(comment => {
+            this.commentService.getCommentCreator(comment.userId).subscribe({
+              next: (user) => {
+                (comment as any).username = user.username; // Add username dynamically
+              },
+              error: (err) => console.error('Error fetching username:', err)
+            });
+          });
         },
         error: (err: any) => {
           console.log(err);
@@ -64,11 +74,13 @@ export class PostInfoComponent implements OnInit {
       });
     }
   }
+  
+  
 
   deleteComment(commentId: number): void {
     this.commentService.deleteComments(commentId).subscribe({
       next: () => {
-        this.loadComments(); // Refresh the comments after deletion
+        this.loadComments();
       },
       error: (err: any) => {
         console.log('Failed to delete comment:', err);

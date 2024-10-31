@@ -46,6 +46,7 @@ export class CommentFormComponent implements OnChanges{
     this.service.addComment(comment).subscribe({
       next: () => {
         this.commentUpdated.emit();
+        this.commentForm.reset();
       }
     });
   }

@@ -26,7 +26,7 @@
                 </div>
                 <div class="interaction-container">
                   <button class="interaction-button fa fa-comment"></button>
-                  <span class="interaction-count">812</span>
+                  <span class="interaction-count">{{ commentCount }}</span>
                 </div>
               </div>
         </div>
@@ -47,21 +47,17 @@
         </div>
     
         <div *ngFor="let comment of comments" class="comment-card">
-            <!-- Top Row: Author on the left, Date on the right -->
             <div class="comment-header">
-                <span class="comment-author">{{ comment.userId }}</span>
+                <span class="comment-author">{{ comment.username || 'Anonymous' }}</span>
                 <span class="comment-date">{{ comment.createdAt | date:'short' }}</span>
             </div>
     
-            <!-- Comment Content -->
             <div class="comment-body">
                 <p>{{ comment.content }}</p>
             </div>
     
-            <!-- Actions Row: Edit/Delete buttons aligned to the right -->
             <div class="comment-actions">
-                <button *ngIf="user && user.id === comment.userId" class="edit-btn">Edit</button>
-                <button *ngIf="user && user.id === comment.userId && comment.id" class="delete-btn" (click)="deleteComment(comment.id)">Delete</button>
+                <button *ngIf="user && user.id === comment.userId && comment.id" class="cta-button delete" (click)="deleteComment(comment.id)">Delete</button>
             </div>
         </div>
     </div>
