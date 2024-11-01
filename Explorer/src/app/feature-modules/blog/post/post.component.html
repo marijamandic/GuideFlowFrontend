@@ -1,19 +1,18 @@
 <div class="main-column">
-  <!-- Wrapper for posts -->
   <div class="post-flex">
     <div *ngFor="let p of postsToShow" class="post-container" (click)="navigateToPostDetails(p.id)">
-      
-
       <div class="post-content">
-        <!-- Title and Rating Badge at the Top -->
         <div class="post-header">
-          <h2 class="post-title">{{ p.title }}</h2>
-          
+          <p class="user-details">{{ p.username }} • {{ p.publishDate | date:'medium' }}</p>
         </div>
+
+        <h2 class="post-title">{{ p.title }}</h2>
         
-        <p class="details">Published on {{ p.publishDate | date:'longDate' }}</p>
-        <p class="description">{{ p.description | slice:0:100 }}...</p>
-        
+        <!-- Limited Description -->
+        <div class="limited-description">
+          <p class="description">{{ p.description }}</p>
+        </div>
+
         <div class="bottom-interaction-bar">
           <div class="vote-container">
             <button class="vote-button fa fa-arrow-up" (click)="upvote(p.id)"></button>
@@ -25,11 +24,9 @@
             <span class="interaction-count">{{ getCommentCount(p.id) }}</span>
           </div>
         </div>
-        
-        <!-- Status at the bottom of the content -->
-        <!--<p class="status">{{ getStatusName(p.status) }}</p>-->
-        
       </div>
+      
+      <!-- Image on the Right Side -->
       <img [src]="getImagePath(p.imageUrl)" alt="Post image" *ngIf="p.imageUrl" class="post-image" />
     </div>
   </div>

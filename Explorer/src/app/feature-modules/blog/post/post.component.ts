@@ -44,6 +44,12 @@ export class PostComponent implements OnInit {
     });
   }
   
+  loadUsername(post: Post): void {
+    this.postService.getUsername(post.userId).subscribe({
+      next: (username) => post.username = username,
+      error: (err) => console.error('Error loading username:', err)
+    });
+  }
 
   loadCommentCounts(): void {
     if (!this.user || !this.user.role) {
