@@ -16,7 +16,7 @@
   }
   
   .blog-form table {
-    width: 100%;
+    width: 95%;
   }
 
   .blog-form label{
@@ -45,6 +45,10 @@
     background-color: #66c5af;
   }
   
+  .form-button{
+    margin: 10px;
+  }
+
   .image-status-row {
     display: flex;
     gap: 10px;
