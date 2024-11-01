@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
 import { Post } from './model/post.model';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { environment } from 'src/env/environment';
 
 @Injectable({
@@ -34,9 +34,10 @@ export class PostService {
     return this.http.put<Post>(environment.apiHost+'blogManagement/post/'+id,post);
   }
 
-  // post.service.ts
   getUsername(userId: number): Observable<string> {
-    return this.http.get<string>(`${environment.apiHost}blogManagement/post/username/${userId}`);
+    return this.http.get<{ username: string }>(`${environment.apiHost}user/username/${userId}`)
+        .pipe(map(response => response.username)); // Extract the username from the response object
   }
+
 
 }

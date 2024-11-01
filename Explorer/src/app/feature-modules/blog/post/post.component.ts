@@ -28,29 +28,34 @@ export class PostComponent implements OnInit {
 
   ngOnInit(): void {
     this.authService.user$.subscribe(user => {
-      this.user = user;
-      if (this.user) { 
-        this.postService.getPosts(this.user.role).subscribe({
-          next: (result: PagedResults<Post>) => {
-            this.posts = result.results;
-            this.postsToShow = this.posts.filter(post => post.status !== Status.Closed);
-            this.loadCommentCounts();
-          },
-          error: (err: any) => {
-            console.log(err);
-          }
-        });
-      }
-    });
-  }
-  
-  loadUsername(post: Post): void {
-    this.postService.getUsername(post.userId).subscribe({
-      next: (username) => post.username = username,
-      error: (err) => console.error('Error loading username:', err)
+        this.user = user;
+        if (this.user) { 
+            this.postService.getPosts(this.user.role).subscribe({
+                next: (result: PagedResults<Post>) => {
+                    this.posts = result.results;
+                    this.postsToShow = this.posts.filter(post => post.status !== Status.Closed);
+                    this.postsToShow.forEach(post => this.loadUsername(post)); // Load username for each post
+                    this.loadCommentCounts();
+                },
+                error: (err: any) => console.log(err)
+            });
+        }
     });
   }
 
+
+  
+  loadUsername(post: Post): void {
+    console.log('Fetching username for post with userId:', post.userId);
+    this.postService.getUsername(post.userId).subscribe({
+        next: (username) => {
+            console.log('Received username:', username);
+            post.username = username;
+        },
+        error: (err) => console.error('Error loading username:', err)
+    });
+  }
+ 
   loadCommentCounts(): void {
     if (!this.user || !this.user.role) {
       console.warn("User information is not available yet.");
