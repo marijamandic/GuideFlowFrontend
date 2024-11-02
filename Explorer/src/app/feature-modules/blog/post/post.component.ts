@@ -15,7 +15,8 @@ import { CommentService } from '../comment.service';
 })
 export class PostComponent implements OnInit {
   posts: Post[];
-  postsToShow: Post[];
+  draftsToShow: Post[] = [];
+  publishedPostsToShow: Post[] = [];
   user: User | undefined;
   commentCounts: { [postId: number]: number } = {};
 
@@ -28,31 +29,31 @@ export class PostComponent implements OnInit {
 
   ngOnInit(): void {
     this.authService.user$.subscribe(user => {
-        this.user = user;
-        if (this.user) { 
-            this.postService.getPosts(this.user.role).subscribe({
-                next: (result: PagedResults<Post>) => {
-                    this.posts = result.results;
-                    this.postsToShow = this.posts.filter(post => post.status !== Status.Closed);
-                    this.postsToShow.forEach(post => this.loadUsername(post)); // Load username for each post
-                    this.loadCommentCounts();
-                },
-                error: (err: any) => console.log(err)
-            });
-        }
+      this.user = user;
+      if (this.user) {
+        this.postService.getPosts(this.user.role).subscribe({
+          next: (result: PagedResults<Post>) => {
+            this.posts = result.results;
+            this.draftsToShow = this.posts.filter(post => post.status === Status.Draft && post.userId === this.user?.id);
+            this.publishedPostsToShow = this.posts.filter(post => post.status !== Status.Draft && post.status !== Status.Closed);
+            this.draftsToShow.forEach(post => this.loadUsername(post));
+            this.publishedPostsToShow.forEach(post => this.loadUsername(post));
+            this.loadCommentCounts();
+          },
+          error: (err: any) => console.log(err)
+        });
+      }
     });
   }
-
-
   
   loadUsername(post: Post): void {
     console.log('Fetching username for post with userId:', post.userId);
     this.postService.getUsername(post.userId).subscribe({
-        next: (username) => {
-            console.log('Received username:', username);
-            post.username = username;
-        },
-        error: (err) => console.error('Error loading username:', err)
+      next: (username) => {
+        console.log('Received username:', username);
+        post.username = username;
+      },
+      error: (err) => console.error('Error loading username:', err)
     });
   }
  
@@ -62,12 +63,23 @@ export class PostComponent implements OnInit {
       return;
     }
   
-    this.postsToShow.forEach(post => {
+    // Load comment counts for draft posts
+    this.draftsToShow.forEach(post => {
       this.commentService.getComments(post.id.toString(), 'tourist').subscribe({
         next: (result) => {
           this.commentCounts[post.id] = result.results.length;
         },
-        error: (err) => console.error('Error loading comment count:', err)
+        error: (err) => console.error('Error loading comment count for draft post:', err)
+      });
+    });
+  
+    // Load comment counts for published posts
+    this.publishedPostsToShow.forEach(post => {
+      this.commentService.getComments(post.id.toString(), 'tourist').subscribe({
+        next: (result) => {
+          this.commentCounts[post.id] = result.results.length;
+        },
+        error: (err) => console.error('Error loading comment count for published post:', err)
       });
     });
   }
@@ -83,6 +95,10 @@ export class PostComponent implements OnInit {
 
   navigateToPostDetails(postId: number) {
     this.router.navigate(['/blog', postId]);
+  }
+
+  navigateToEditPost(postId: number){
+    this.router.navigate(['/edit-post', postId]);
   }
 
   navigateToCreatePost() {
