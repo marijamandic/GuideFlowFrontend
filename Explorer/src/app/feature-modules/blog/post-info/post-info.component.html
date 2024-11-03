@@ -1,13 +1,13 @@
 <div class="main-column">
     <div *ngIf="post" class="post-info">
-        <!-- Post Header -->
-        <div class="post-header">
-            <h2 class="post-title">{{ post.title }}</h2>
-            <div class="post-meta">
-                <span>{{ post.userId }}</span> &bull;
-                <span>{{ post.publishDate | date: 'longDate' }}</span>
-            </div>
+        <!-- Post Meta (Author and Date) -->
+        <div class="post-meta">
+            <span class="author-name">{{ authorName }}</span> •
+            <span>{{ post.publishDate | date: 'medium' }}</span>
         </div>
+        
+        <!-- Post Title -->
+        <h2 class="post-title">{{ post.title }}</h2>
     
         <!-- Image Section -->
         <img *ngIf="post.imageUrl" [src]="getImagePath(post.imageUrl)" alt="Post image" class="post-image" />
@@ -52,18 +52,18 @@
 
     <div *ngFor="let comment of comments" class="comment-card">
         <div class="comment-header">
-            <span class="comment-author">{{ comment.username || 'Anonymous' }}</span>
-            <span class="comment-date">{{ comment.createdAt | date:'short' }}</span>
+            <span class="comment-author">{{ comment.username || 'Anonymous' }}</span> •
+            <span class="comment-date">{{ comment.createdAt | date:'medium' }}</span>
         </div>
-
+    
         <div class="comment-body">
             <p>{{ comment.content }}</p>
         </div>
-
+    
         <div class="comment-actions">
             <button *ngIf="user && user.id === comment.userId && comment.id" class="cta-button delete" (click)="deleteComment(comment.id)">Delete</button>
         </div>
-    </div>
+    </div>    
 </div>
 
 

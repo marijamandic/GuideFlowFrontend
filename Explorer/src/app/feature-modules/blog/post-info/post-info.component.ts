@@ -18,6 +18,7 @@ export class PostInfoComponent implements OnInit {
   postId: string | null = null;
   post: Post | null = null;
   user: User | undefined;
+  authorName: string | undefined;
   comments: (Comment & { username?: string })[] = [];
   commentCount: number = 0;
   commentForm: FormGroup;
@@ -55,6 +56,9 @@ export class PostInfoComponent implements OnInit {
       this.postService.getPost(Number(this.postId), this.user.role).subscribe({
         next: (result: Post) => {
           this.post = result;
+          if (this.post?.userId) {
+            this.loadUsername(this.post.userId); 
+          }
         },
         error: (err: any) => {
           console.log(err);
@@ -81,6 +85,7 @@ export class PostInfoComponent implements OnInit {
       this.commentService.getComments(this.postId).subscribe({
         next: (comments: Comment[]) => {
           this.comments = comments;
+          this.loadCommentUsernames();
         },
         error: (err: any) => {
           console.error('Error loading comments:', err);
@@ -88,6 +93,26 @@ export class PostInfoComponent implements OnInit {
       });
     }
   }  
+
+  loadUsername(userId: number): void {
+    this.postService.getUsername(userId).subscribe({
+      next: (username) => {
+        this.authorName = username;
+      },
+      error: (err) => console.error('Error loading username:', err)
+    });
+  }
+
+  loadCommentUsernames(): void {
+    this.comments.forEach(comment => {
+      this.commentService.getCommentCreator(comment.userId).subscribe({
+        next: (user: User) => {
+          comment.username = user.username; 
+        },
+        error: (err) => console.error('Error loading comment creator:', err)
+      });
+    });
+  }
 
   addComment(): void {
     const content = this.commentForm.value.content || '';
@@ -101,13 +126,14 @@ export class PostInfoComponent implements OnInit {
       };
       this.commentService.addComment(comment).subscribe({
         next: () => {
-          this.loadComments();
-          this.commentForm.reset();
+          this.loadComments();  
+          this.commentForm.reset(); 
         },
         error: (err) => console.error('Error adding comment:', err)
       });
     }
   }
+  
 
   updateComment(): void {
     if (this.editingComment) {

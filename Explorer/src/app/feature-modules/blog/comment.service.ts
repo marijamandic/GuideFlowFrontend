@@ -29,7 +29,7 @@ export class CommentService {
 
   addComment(comment: Comment): Observable<Comment> {
     return this.http.post<Comment>(`${environment.apiHost}commentmanaging/comment/`, comment);
-  }
+  }  
 
   editComment(comment: Comment): Observable<Comment> {
     return this.http.put<Comment>(`${environment.apiHost}commentmanaging/comment/${comment.id}`, comment);

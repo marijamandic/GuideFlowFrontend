@@ -4,7 +4,7 @@
     <div *ngFor="let p of draftsToShow" class="post-container draft-post" (click)="navigateToEditPost(p.id)">
       <div class="post-content">
         <div class="post-header">
-          <p class="user-details"><b>{{ p.username }}</b> • {{ p.publishDate | date:'medium' }}</p>
+          <p class="user-details">{{ p.username }} • {{ p.publishDate | date:'medium' }}</p>
         </div>
         <h2 class="post-title">{{ p.title }}</h2>
         <div class="limited-description">
