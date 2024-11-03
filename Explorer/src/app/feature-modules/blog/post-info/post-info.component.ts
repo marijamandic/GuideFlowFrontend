@@ -46,6 +46,7 @@ export class PostInfoComponent implements OnInit {
     if (this.postId) {
       this.loadPost();
       this.loadComments();
+      this.loadCommentCount();
     }
   }
 
@@ -62,23 +63,27 @@ export class PostInfoComponent implements OnInit {
     }
   }
 
+  loadCommentCount(): void {
+    if (this.postId) {
+      this.commentService.getCommentCount(this.postId).subscribe({
+        next: (count: number) => {
+          this.commentCount = count;
+        },
+        error: (err: any) => {
+          console.error('Error loading comment count:', err);
+        }
+      });
+    }
+  }
+
   loadComments(): void {
     if (this.postId) {
       this.commentService.getComments(this.postId, 'tourist').subscribe({
         next: (result) => {
-          this.comments = result.results;
-          this.commentCount = this.comments.length;
-          this.comments.forEach(comment => {
-            this.commentService.getCommentCreator(comment.userId).subscribe({
-              next: (user) => {
-                (comment as any).username = user.username;
-              },
-              error: (err) => console.error('Error fetching username:', err)
-            });
-          });
+          this.comments = result.results; // Adjust as needed based on actual response structure
         },
         error: (err: any) => {
-          console.log(err);
+          console.error('Error loading comments:', err);
         }
       });
     }
