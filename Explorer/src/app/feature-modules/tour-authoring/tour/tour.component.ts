@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Tour } from '../model/tour.model';
+import { Currency, Level, Tour, TourStatus } from '../model/tour.model';
 import { TourService } from '../tour.service';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
 
@@ -11,7 +11,7 @@ import { PagedResults } from 'src/app/shared/model/paged-results.model';
 export class TourComponent implements OnInit {
   
   tour: Tour[] = [];
-  selectedTour: Tour;
+  selectedTour: Tour = this.initializeTour();
   shouldRenderTourForm: boolean = false;
   shouldEdit: boolean = false;
   
@@ -22,7 +22,26 @@ export class TourComponent implements OnInit {
 
   ngOnInit(): void {
       this.getTours();
+      
   }
+
+  initializeTour(): Tour {
+    return {
+      id: 0,
+      name: '',
+      description: '',
+      price: { cost: 0, currency: Currency.EUR },
+      level: Level.Easy,
+      status: TourStatus.Draft,
+      lengthInKm: 0,
+      averageGrade: 0.0,
+      taggs: [],
+      checkpoints: [],
+      transportDurations: [],
+      reviews: []
+    };
+  }
+
 
   getTours(): void{
     this.service.getTour().subscribe({
@@ -49,7 +68,22 @@ export class TourComponent implements OnInit {
   }
 
   onAddClicked(): void {
+    this.selectedTour = this.initializeTour();
     this.shouldEdit = false;
     this.shouldRenderTourForm = true;
   }
+  CurrencyMap = {
+    0: 'RSD',
+    1: 'EUR',
+    2: 'USD'
+};
+
+LevelMap = {
+    0: 'Easy',
+    1: 'Advanced',
+    2: 'Expert'
+};
 }
+
+  
+
