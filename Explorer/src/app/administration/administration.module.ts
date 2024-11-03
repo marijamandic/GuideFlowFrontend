@@ -7,7 +7,6 @@ import { HomeComponent } from '../layout/home/home.component';
 @NgModule({
   declarations: [
     EquipmentComponent,
-    ProfileInfoComponent,
     HomeComponent
   ],
   imports: [
