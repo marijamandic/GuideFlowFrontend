@@ -13,6 +13,7 @@ import { EquipmentComponent } from '../administration/equipment/equipment.compon
 import { AdministrationModule } from '../administration/administration.module';
 import { FormsModule } from '@angular/forms';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { PublicPointRequestsComponent } from './public-point-requests/public-point-requests.component';
 
 
 
@@ -25,6 +26,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
     TourComponent,
     TourFormComponent,
     TourEquipmentComponent,
+    PublicPointRequestsComponent,
   ],
   imports: [
     CommonModule,
@@ -40,7 +42,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
     TourComponent,
     TourFormComponent,
     TourObjectFormComponent,
-    TourEquipmentComponent
+    TourEquipmentComponent,
+    PublicPointRequestsComponent,
   ]
 })
 export class TourAuthoringModule {}

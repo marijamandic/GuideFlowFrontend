@@ -36,6 +36,11 @@
             <input matInput formControlName="longitude" type="number" step="any"/>
         </mat-form-field>
 
+        <label>
+            <input type="checkbox" (change)="onIsCheckedChange($event)" /> Is this tour object public?
+        </label>
+
+
         <button color="primary" type="submit" (click)="addTourObject()" mat-raised-button>Done</button>
     </div>
 </form>

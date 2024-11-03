@@ -5,4 +5,5 @@ export interface Checkpoint {
     latitude: number;
     longitude: number;
     imageUrl?: string;
+    secret: string;
 }

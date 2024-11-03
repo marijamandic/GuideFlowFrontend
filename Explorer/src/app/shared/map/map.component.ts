@@ -78,6 +78,7 @@ export class MapComponent implements AfterViewInit {
     this.addCheckpointMarkers(); // Pozovi ovu metodu kad se koordinate promene
   }
   private addCheckpointMarkers(): void {
+    this.resetMap();
     // Logika za dodavanje markera na mapu, koristeći this.checkpoints
     this.checkpoints.forEach(checkpoint => {
       const latLng = new L.LatLng(checkpoint.latitude, checkpoint.longitude);
