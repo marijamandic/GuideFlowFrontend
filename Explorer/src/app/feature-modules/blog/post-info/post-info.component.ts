@@ -78,16 +78,16 @@ export class PostInfoComponent implements OnInit {
 
   loadComments(): void {
     if (this.postId) {
-      this.commentService.getComments(this.postId, 'tourist').subscribe({
-        next: (result) => {
-          this.comments = result.results; // Adjust as needed based on actual response structure
+      this.commentService.getComments(this.postId).subscribe({
+        next: (comments: Comment[]) => {
+          this.comments = comments;
         },
         error: (err: any) => {
           console.error('Error loading comments:', err);
         }
       });
     }
-  }
+  }  
 
   addComment(): void {
     const content = this.commentForm.value.content || '';
