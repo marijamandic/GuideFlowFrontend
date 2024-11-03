@@ -44,6 +44,10 @@
         <input type="file" (change)="onFileSelected($event)" accept="image/*">
         <input type="number" placeholder="Latitude" [(ngModel)]="newCheckpoint.latitude" name="latitude" required>
         <input type="number" placeholder="Longitude" [(ngModel)]="newCheckpoint.longitude" name="longitude" required>
+        <input type="text" placeholder="Secret" [(ngModel)]="newCheckpoint.secret" name="secret" required>
+        <label>
+          <input type="checkbox" (change)="onIsCheckedChange($event)" /> Is this tour object public?
+        </label>
         <button type="submit" style="background-color: green; color: white;">Add</button>
       </div>
     </form>

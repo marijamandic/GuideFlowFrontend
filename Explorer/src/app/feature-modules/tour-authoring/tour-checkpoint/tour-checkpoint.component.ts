@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TourCheckpointService } from '../tour-checkpoint.service';
 import { Checkpoint } from '../model/tourCheckpoint.model';
 import { MapComponent } from 'src/app/shared/map/map.component';
+import { ApprovalStatus, PointType, PublicPoint } from '../model/publicPoint.model';
+import { PublicPointService } from '../tour-public-point.service';
 
 @Component({
   selector: 'xp-checkpoint-list',
@@ -18,7 +20,8 @@ export class CheckpointListComponent implements OnInit {
   @Output() checkpointsLoaded = new EventEmitter<{ latitude: number; longitude: number; }[]>();
   isAddingCheckpoint = false;
   selectedTour: string = 'tour1'; 
-  newCheckpoint = { id: 0, name: '', description: '', imageUrl: '', latitude: 0, longitude: 0 };
+  newCheckpoint = { id: 0, name: '', description: '', imageUrl: '', latitude: 0, longitude: 0, secret: ''};
+  isChecked: boolean = false; 
 
   toggleAddCheckpointForm() {
     this.isAddingCheckpoint = !this.isAddingCheckpoint;
@@ -34,13 +37,24 @@ export class CheckpointListComponent implements OnInit {
       };
     }
   }
+
+  onIsCheckedChange(event: Event) {
+    const checkbox = event.target as HTMLInputElement;
+    this.isChecked = checkbox.checked; 
+  }
   
   addCheckpoint(): void {
-    if (!this.newCheckpoint || this.newCheckpoint.id === 0) {
-      this.createNewCheckpoint();
+    if(this.isChecked) {
+      console.log("JAvna")
+      this.createPublicObject()
     } else {
-      this.updateExistingCheckpoint();
+      if (!this.newCheckpoint || this.newCheckpoint.id === 0) {
+        this.createNewCheckpoint();
+      } else {
+        this.updateExistingCheckpoint();
+      }
     }
+    
   }
   
   private createNewCheckpoint(): void {
@@ -72,17 +86,18 @@ export class CheckpointListComponent implements OnInit {
   }
   
   resetNewCheckpointForm() {
-    this.newCheckpoint = { id: 0, name: '', description: '', imageUrl: '', latitude: 0, longitude: 0 };
+    this.newCheckpoint = { id: 0, name: '', description: '', imageUrl: '', latitude: 0, longitude: 0, secret: '' };
     this.isAddingCheckpoint = false;
   }
   
-  constructor(private checkpointService: TourCheckpointService, private fb: FormBuilder) {
+  constructor(private checkpointService: TourCheckpointService, private fb: FormBuilder, private publicPointService: PublicPointService) {
     this.checkpointForm = this.fb.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
       imageUrl: ['', Validators.required],
       latitude: [0, Validators.required],
-      longitude: [0, Validators.required]
+      longitude: [0, Validators.required],
+      secret: ['', Validators.required]
     });
   }
 
@@ -135,6 +150,7 @@ export class CheckpointListComponent implements OnInit {
     this.newCheckpoint.latitude = checkpoint.latitude
     this.newCheckpoint.longitude = checkpoint.longitude
     this.newCheckpoint.id = checkpoint.id || 0
+    this.newCheckpoint.secret = checkpoint.secret || ''
     this.editingCheckpoint = checkpoint; 
     this.loadFormData(checkpoint); 
   }
@@ -163,11 +179,34 @@ onCoordinatesSelected(coordinates: { latitude: number; longitude: number }): voi
       description: '',
       imageUrl: '',
       latitude: coordinates.latitude,
-      longitude: coordinates.longitude
+      longitude: coordinates.longitude,
+      secret: ''
     };
   }
 }
 
+createPublicObject(): void {
+  const publicObject: PublicPoint = {
+      id: 0, 
+      name: this.newCheckpoint.name || "",
+      description: this.newCheckpoint.description || "",
+      latitude: this.newCheckpoint.latitude || 0,
+      longitude: this.newCheckpoint.longitude || 0,
+      imageUrl: this.newCheckpoint.imageUrl || "",
+      approvalStatus: ApprovalStatus.Pending, 
+      type: PointType.Checkpoint
+  };
+
+  this.publicPointService.addPublicPoint(publicObject).subscribe({
+      next: (_) => {
+          this.checkpointsLoaded.emit();
+          console.log('Public object successfully created');
+      },
+      error: (err) => {
+          console.error('Error creating public object:', err);
+      }
+  });
+}
   
 
 
