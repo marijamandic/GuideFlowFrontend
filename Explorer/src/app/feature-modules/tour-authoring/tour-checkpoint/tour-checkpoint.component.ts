@@ -33,7 +33,7 @@ export class CheckpointListComponent implements OnInit {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => {
-        this.newCheckpoint.imageUrl = reader.result as string; // Postavlja Base64 URL slike
+        this.newCheckpoint.imageUrl = reader.result as string;
       };
     }
   }
@@ -45,7 +45,6 @@ export class CheckpointListComponent implements OnInit {
   
   addCheckpoint(): void {
     if(this.isChecked) {
-      console.log("JAvna")
       this.createPublicObject()
     } else {
       if (!this.newCheckpoint || this.newCheckpoint.id === 0) {
@@ -73,11 +72,9 @@ export class CheckpointListComponent implements OnInit {
   
   private updateExistingCheckpoint(): void {
     const updatedCheckpoint: Checkpoint = { ...this.newCheckpoint };
-    console.log('Updating existing checkpoint:', updatedCheckpoint);
   
     this.checkpointService.updateCheckpoint(updatedCheckpoint).subscribe({
       next: () => {
-        console.log('Checkpoint updated.');
         this.loadCheckpoints();
         this.resetNewCheckpointForm();
       },
@@ -104,14 +101,14 @@ export class CheckpointListComponent implements OnInit {
   ngOnInit(): void {
     this.loadCheckpoints();
   }
+
   loadCheckpointsMap() {
     if (this.selectedTour == 'tour1') {
       this.checkpointService.getCheckpointsByTour(1).subscribe({
         next: (data) => {
           this.checkpoints = data; 
           this.checkpointCoordinates = this.checkpoints.map(cp => ({ latitude: cp.latitude, longitude: cp.longitude }));
-          console.log(this.checkpoints)
-          this.checkpointsLoaded.emit(this.checkpointCoordinates); // Emitovanje koordinata
+          this.checkpointsLoaded.emit(this.checkpointCoordinates);
         },
         error: (err) => {
           console.error('Greška prilikom učitavanja checkpoint-a:', err);
@@ -122,7 +119,7 @@ export class CheckpointListComponent implements OnInit {
         next: (data) => {
           this.checkpoints = data; 
           this.checkpointCoordinates = this.checkpoints.map(cp => ({ latitude: cp.latitude, longitude: cp.longitude }));
-          this.checkpointsLoaded.emit(this.checkpointCoordinates); // Emitovanje koordinata
+          this.checkpointsLoaded.emit(this.checkpointCoordinates);
         },
         error: (err) => {
           console.error('Greška prilikom učitavanja checkpoint-a:', err);
@@ -165,52 +162,48 @@ export class CheckpointListComponent implements OnInit {
     });
   }
 
-onCoordinatesSelected(coordinates: { latitude: number; longitude: number }): void {
-  this.newCheckpoint.latitude = coordinates.latitude
-  this.newCheckpoint.longitude = coordinates.longitude
-  // Ažuriramo editingCheckpoint sa novim koordinatama
-  if (this.editingCheckpoint) {
-    this.editingCheckpoint.latitude = coordinates.latitude;
-    this.editingCheckpoint.longitude = coordinates.longitude;
-  } else {
-    // Ako nema trenutno izabranog checkpointa, kreiramo novi
-    this.editingCheckpoint = {
-      name: '',
-      description: '',
-      imageUrl: '',
-      latitude: coordinates.latitude,
-      longitude: coordinates.longitude,
-      secret: ''
-    };
+  onCoordinatesSelected(coordinates: { latitude: number; longitude: number }): void {
+    this.newCheckpoint.latitude = coordinates.latitude
+    this.newCheckpoint.longitude = coordinates.longitude
+
+    if (this.editingCheckpoint) {
+      this.editingCheckpoint.latitude = coordinates.latitude;
+      this.editingCheckpoint.longitude = coordinates.longitude;
+    } else {
+      this.editingCheckpoint = {
+        name: '',
+        description: '',
+        imageUrl: '',
+        latitude: coordinates.latitude,
+        longitude: coordinates.longitude,
+        secret: ''
+      };
+    }
   }
-}
 
-createPublicObject(): void {
-  const publicObject: PublicPoint = {
-      id: 0, 
-      name: this.newCheckpoint.name || "",
-      description: this.newCheckpoint.description || "",
-      latitude: this.newCheckpoint.latitude || 0,
-      longitude: this.newCheckpoint.longitude || 0,
-      imageUrl: this.newCheckpoint.imageUrl || "",
-      approvalStatus: ApprovalStatus.Pending, 
-      type: PointType.Checkpoint
-  };
+  createPublicObject(): void {
+    const publicObject: PublicPoint = {
+        id: 0, 
+        name: this.newCheckpoint.name || "",
+        description: this.newCheckpoint.description || "",
+        latitude: this.newCheckpoint.latitude || 0,
+        longitude: this.newCheckpoint.longitude || 0,
+        imageUrl: this.newCheckpoint.imageUrl || "",
+        approvalStatus: ApprovalStatus.Pending, 
+        type: PointType.Checkpoint
+    };
 
-  this.publicPointService.addPublicPoint(publicObject).subscribe({
-      next: (_) => {
-          this.checkpointsLoaded.emit();
-          console.log('Public object successfully created');
-      },
-      error: (err) => {
-          console.error('Error creating public object:', err);
-      }
-  });
-}
+    this.publicPointService.addPublicPoint(publicObject).subscribe({
+        next: (_) => {
+            this.checkpointsLoaded.emit();
+            console.log('Public object successfully created');
+        },
+        error: (err) => {
+            console.error('Error creating public object:', err);
+        }
+    });
+  }
   
-
-
-
   deleteCheckpoint(checkpoint: Checkpoint): void {
     if (checkpoint.id !== undefined) {
       this.checkpointService.deleteCheckpoint(checkpoint.id).subscribe({
