@@ -32,16 +32,19 @@ export class PostComponent implements OnInit {
       this.user = user;
       if (this.user) {
         this.postService.getPosts(this.user.role).subscribe({
-          next: (result: PagedResults<Post>) => {
-            this.posts = result.results;
+          next: (result: Post[]) => {
+            this.posts = result;
+            console.log(result);
             this.draftsToShow = this.posts.filter(post => post.status === Status.Draft && post.userId === this.user?.id);
             this.publishedPostsToShow = this.posts.filter(post => post.status !== Status.Draft && post.status !== Status.Closed);
             this.draftsToShow.forEach(post => this.loadUsername(post));
             this.publishedPostsToShow.forEach(post => this.loadUsername(post));
             this.loadCommentCounts();
+            
           },
-          error: (err: any) => console.log(err)
+          error: (err: any) => console.error('Error fetching posts:', err)
         });
+        
       }
     });
   }
@@ -102,7 +105,7 @@ export class PostComponent implements OnInit {
   }
 
   navigateToCreatePost() {
-    this.router.navigate(['createBlog']);
+    this.router.navigate(['create-blog']);
   }
 
   upvote(postId: number) {}

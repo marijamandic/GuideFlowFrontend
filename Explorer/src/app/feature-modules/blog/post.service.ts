@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
 import { Post } from './model/post.model';
-import { map, Observable } from 'rxjs';
+import { catchError, map, Observable, throwError } from 'rxjs';
 import { environment } from 'src/env/environment';
 
 @Injectable({
@@ -12,12 +12,16 @@ export class PostService {
 
   constructor(private http : HttpClient) { }
 
-  getPosts(userRole:string) : Observable<PagedResults<Post>> {
-    if(userRole==="author")
-      return this.http.get<PagedResults<Post>>(environment.apiHost+'blogManagement/post');
-    else
-      return this.http.get<PagedResults<Post>>(environment.apiHost+'postview/post');
+  getPosts(userRole: string): Observable<Post[]> {
+    const endpoint = userRole === 'author' ? 'blogManagement/post' : 'postview/post';
+    return this.http.get<Post[]>(`${environment.apiHost}${endpoint}`).pipe(
+      catchError((error) => {
+        console.error('Error fetching posts:', error);
+        return throwError(error);
+      })
+    );
   }
+  
 
   getPost(id:number,userRole:string) : Observable<Post> {
     if(userRole==="author")

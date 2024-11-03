@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Post, Status } from '../model/post.model';
 import { PostService } from '../post.service';
 import { CommentService } from '../comment.service';
@@ -19,14 +20,22 @@ export class PostInfoComponent implements OnInit {
   user: User | undefined;
   comments: (Comment & { username?: string })[] = [];
   commentCount: number = 0;
+  commentForm: FormGroup;
+  isEditing = false;
+  editingComment: Comment | null = null;
 
   constructor(
     private postService: PostService,
     private commentService: CommentService,
     private authService: AuthService,
     private route: ActivatedRoute,
-    private router: Router
-  ) {}
+    private router: Router,
+    private fb: FormBuilder
+  ) {
+    this.commentForm = this.fb.group({
+      content: ['', Validators.required]
+    });
+  }
 
   ngOnInit(): void {
     this.postId = this.route.snapshot.paramMap.get('id');
@@ -62,7 +71,7 @@ export class PostInfoComponent implements OnInit {
           this.comments.forEach(comment => {
             this.commentService.getCommentCreator(comment.userId).subscribe({
               next: (user) => {
-                (comment as any).username = user.username; // Add username dynamically
+                (comment as any).username = user.username;
               },
               error: (err) => console.error('Error fetching username:', err)
             });
@@ -74,45 +83,57 @@ export class PostInfoComponent implements OnInit {
       });
     }
   }
-  
-  
+
+  addComment(): void {
+    const content = this.commentForm.value.content || '';
+    if (this.user && this.postId && content) {
+      const comment: Comment = {
+        content: content,
+        userId: this.user.id,
+        postId: Number(this.postId),
+        createdAt: new Date(),
+        lastModified: new Date()
+      };
+      this.commentService.addComment(comment).subscribe({
+        next: () => {
+          this.loadComments();
+          this.commentForm.reset();
+        },
+        error: (err) => console.error('Error adding comment:', err)
+      });
+    }
+  }
+
+  updateComment(): void {
+    if (this.editingComment) {
+      this.editingComment.content = this.commentForm.value.content || '';
+      this.editingComment.lastModified = new Date();
+      this.commentService.editComment(this.editingComment).subscribe({
+        next: () => {
+          this.loadComments();
+          this.cancelEdit();
+        },
+        error: (err) => console.error('Error updating comment:', err)
+      });
+    }
+  }
 
   deleteComment(commentId: number): void {
     this.commentService.deleteComments(commentId).subscribe({
       next: () => {
         this.loadComments();
       },
-      error: (err: any) => {
-        console.log('Failed to delete comment:', err);
-      }
+      error: (err) => console.log('Failed to delete comment:', err)
     });
   }
-  
 
-  getStatusName(status: Status): string {
-    return Status[status];
-  }
-
-  get postStatus(): Status | undefined {
-    return this.post ? this.post.status : undefined;
+  cancelEdit(): void {
+    this.isEditing = false;
+    this.editingComment = null;
+    this.commentForm.reset();
   }
 
   getImagePath(imageUrl: string): string {
     return `${environment.webRootHost}${imageUrl}`;
-  }
-
-  closePost(): void {
-    if (this.post && this.postId) {
-      this.post.status = Status.Closed;
-
-      this.postService.updatePost(this.post, Number(this.postId)).subscribe({
-        next: () => {
-          this.router.navigate(["blog"]);
-        },
-        error: (err: any) => {
-          console.error('Failed to update post status', err);
-        }
-      });
-    }
   }
 }
