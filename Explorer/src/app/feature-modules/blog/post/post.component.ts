@@ -40,7 +40,6 @@ export class PostComponent implements OnInit {
             this.draftsToShow.forEach(post => this.loadUsername(post));
             this.publishedPostsToShow.forEach(post => this.loadUsername(post));
             this.loadCommentCounts();
-            
           },
           error: (err: any) => console.error('Error fetching posts:', err)
         });
@@ -66,23 +65,13 @@ export class PostComponent implements OnInit {
       return;
     }
   
-    // Load comment counts for draft posts
-    this.draftsToShow.forEach(post => {
-      this.commentService.getComments(post.id.toString(), 'tourist').subscribe({
-        next: (result) => {
-          this.commentCounts[post.id] = result.results.length;
+    // Load comment counts for all posts
+    [...this.draftsToShow, ...this.publishedPostsToShow].forEach(post => {
+      this.commentService.getCommentCount(post.id.toString()).subscribe({
+        next: (count) => {
+          this.commentCounts[post.id] = count;
         },
-        error: (err) => console.error('Error loading comment count for draft post:', err)
-      });
-    });
-  
-    // Load comment counts for published posts
-    this.publishedPostsToShow.forEach(post => {
-      this.commentService.getComments(post.id.toString(), 'tourist').subscribe({
-        next: (result) => {
-          this.commentCounts[post.id] = result.results.length;
-        },
-        error: (err) => console.error('Error loading comment count for published post:', err)
+        error: (err) => console.error(`Error loading comment count for post ${post.id}:`, err)
       });
     });
   }

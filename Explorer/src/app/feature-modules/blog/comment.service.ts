@@ -13,6 +13,11 @@ export class CommentService {
 
   constructor(private http:HttpClient) { }
 
+  getCommentCount(postId: string): Observable<number> {
+    const params = new HttpParams().set('postId', postId);
+    return this.http.get<number>(`${environment.apiHost}commentmanaging/comment/count`, { params });
+  }  
+
   getComments(id: string,userRole:string): Observable<PagedResults<Comment>> {
     const params = new HttpParams().set('id', id.toString());
     if(userRole==="tourist")
