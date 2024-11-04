@@ -11,11 +11,14 @@ import 'leaflet-routing-machine';
 export class MapComponent implements AfterViewInit {
   private map: any;
   private markers: L.Marker[] = [];
+  private singleMarker: L.Marker | null = null;
   searchAddress: string = '';
   private routeControl: any = null;
 
   @Input() initialMarkers: L.LatLng[] = [];
   @Input() checkpoints: { latitude: number; longitude: number }[] = []; // Input za koordinate
+  @Input() allowMultipleMarkers: boolean = true;
+
   @Output() markerAdded = new EventEmitter<L.LatLng>();
   @Output() mapReset = new EventEmitter<void>();
   @Output() coordinatesSelected = new EventEmitter<{ latitude: number; longitude: number }>();
@@ -115,17 +118,29 @@ export class MapComponent implements AfterViewInit {
     this.map.on('click', (e: any) => {
       const coord = e.latlng;
       const marker = new L.Marker([coord.lat, coord.lng]).addTo(this.map);
+      
+      if (!this.allowMultipleMarkers && this.singleMarker) {
+        // If only one marker is allowed, remove the existing marker
+        this.map.removeLayer(this.singleMarker);
+        this.singleMarker = marker.addTo(this.map);
+      } else if (this.allowMultipleMarkers) {
+        marker.addTo(this.map);
+      }
+      
       this.addMarker(marker);
       this.markerAdded.emit(coord); // Emitujemo događaj kada se marker doda
     });
   }
 
   addMarker(marker: L.Marker): void {
-    this.markers.push(marker);
+    if (this.allowMultipleMarkers) {
+      this.markers.push(marker);
+    } else {
+      this.singleMarker = marker;
+    }
 
     // Emitujemo događaj kada korisnik klikne marker
     marker.on('click', () => {
-      console.log("EEEE")
       const latLng = marker.getLatLng();
       this.coordinatesSelected.emit({ latitude: latLng.lat, longitude: latLng.lng });
       console.log(this.coordinatesSelected)
@@ -134,17 +149,20 @@ export class MapComponent implements AfterViewInit {
     this.coordinatesSelected.emit({ latitude: latLng.lat, longitude: latLng.lng });
 
     // Ako su postavljeni više od 2 markera, crtamo rutu između svih
-    if (this.markers.length > 1) {
+    if (this.allowMultipleMarkers && this.markers.length > 1) {
       const waypoints = this.markers.map(m => m.getLatLng());
       this.setRoute(waypoints);
     }
   }
 
   resetMap(): void {
-    this.markers.forEach(marker => {
-      this.map.removeLayer(marker);
-    });
+    this.markers.forEach(marker => this.map.removeLayer(marker));
     this.markers = [];
+
+    if (this.singleMarker) {
+      this.map.removeLayer(this.singleMarker);
+      this.singleMarker = null;
+    }
 
     if (this.routeControl) {
       this.map.removeControl(this.routeControl);

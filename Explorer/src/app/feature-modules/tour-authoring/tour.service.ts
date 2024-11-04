@@ -28,4 +28,8 @@ export class TourService {
   updateTour(tour: Tour): Observable<Tour> {
     return this.http.put<Tour>(environment.apiHost + 'author/tours/' + tour.id, tour);
   }
+
+  searchTours(latitude: number, longitude: number, distance: number): Observable<PagedResults<Tour>> {
+    return this.http.get<PagedResults<Tour>>(`${environment.apiHost}author/tours/search?lat=${latitude}&lng=${longitude}&distance=${distance}`);
+  }
 }

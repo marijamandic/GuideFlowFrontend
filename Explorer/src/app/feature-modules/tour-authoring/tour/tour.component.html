@@ -31,4 +31,35 @@
     <div>
         <xp-tour-form *ngIf="shouldRenderTourForm" [shouldEdit]="shouldEdit" [tour]="selectedTour" (tourUpdated)="getTours()"></xp-tour-form>
     </div>
+
+    <div>
+        <xp-map [allowMultipleMarkers]="false"
+            [initialMarkers]="initialMarkers"
+            (markerAdded)="onMarkerAdded($event)"
+            (mapReset)="onMapReset()"
+            (coordinatesSelected)="onCoordinatesSelected($event)">
+        </xp-map>
+        <div class="search-container">
+            <input type="text" [(ngModel)]="searchDistance" placeholder="Unesite distancu od tačke" />
+            <button (click)="searchTours()" color="primary">Pretraži ture</button>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Naziv</th>
+                    <th>Opis</th>
+                    <th>Cena</th>
+                    <th>Tezina</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let tour of filteredTours">
+                    <td> {{ tour.name }} </td>
+                    <td> {{ tour.description }} </td>
+                    <td> {{ tour.price }} </td>
+                    <td> {{ tour.level }} </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
