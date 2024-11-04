@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Post, Status } from '../model/post.model';
 import { PostService } from '../post.service';
 import { CommentService } from '../comment.service';
@@ -17,16 +18,27 @@ export class PostInfoComponent implements OnInit {
   postId: string | null = null;
   post: Post | null = null;
   user: User | undefined;
+  authorName: string | undefined;
   comments: (Comment & { username?: string })[] = [];
   commentCount: number = 0;
+  commentForm: FormGroup;
+  isCommenting: boolean = false;
+  isEditing = false;
+  editingComment: Comment | null = null;
+  openMenuId: number | null = null;
 
   constructor(
     private postService: PostService,
     private commentService: CommentService,
     private authService: AuthService,
     private route: ActivatedRoute,
-    private router: Router
-  ) {}
+    private router: Router,
+    private fb: FormBuilder
+  ) {
+    this.commentForm = this.fb.group({
+      content: ['', Validators.required]
+    });
+  }
 
   ngOnInit(): void {
     this.postId = this.route.snapshot.paramMap.get('id');
@@ -37,6 +49,7 @@ export class PostInfoComponent implements OnInit {
     if (this.postId) {
       this.loadPost();
       this.loadComments();
+      this.loadCommentCount();
     }
   }
 
@@ -45,9 +58,25 @@ export class PostInfoComponent implements OnInit {
       this.postService.getPost(Number(this.postId), this.user.role).subscribe({
         next: (result: Post) => {
           this.post = result;
+          if (this.post?.userId) {
+            this.loadUsername(this.post.userId); 
+          }
         },
         error: (err: any) => {
           console.log(err);
+        }
+      });
+    }
+  }
+
+  loadCommentCount(): void {
+    if (this.postId) {
+      this.commentService.getCommentCount(this.postId).subscribe({
+        next: (count: number) => {
+          this.commentCount = count;
+        },
+        error: (err: any) => {
+          console.error('Error loading comment count:', err);
         }
       });
     }
@@ -55,64 +84,124 @@ export class PostInfoComponent implements OnInit {
 
   loadComments(): void {
     if (this.postId) {
-      this.commentService.getComments(this.postId, 'tourist').subscribe({
-        next: (result) => {
-          this.comments = result.results;
-          this.commentCount = this.comments.length;
-          this.comments.forEach(comment => {
-            this.commentService.getCommentCreator(comment.userId).subscribe({
-              next: (user) => {
-                (comment as any).username = user.username; // Add username dynamically
-              },
-              error: (err) => console.error('Error fetching username:', err)
-            });
-          });
+      this.commentService.getComments(this.postId).subscribe({
+        next: (comments: Comment[]) => {
+          this.comments = comments;
+          this.loadCommentUsernames();
         },
         error: (err: any) => {
-          console.log(err);
+          console.error('Error loading comments:', err);
         }
+      });
+    }
+  }  
+
+  loadUsername(userId: number): void {
+    this.postService.getUsername(userId).subscribe({
+      next: (username) => {
+        this.authorName = username;
+      },
+      error: (err) => console.error('Error loading username:', err)
+    });
+  }
+
+  loadCommentUsernames(): void {
+    this.comments.forEach(comment => {
+      this.commentService.getCommentCreator(comment.userId).subscribe({
+        next: (user: User) => {
+          comment.username = user.username; 
+        },
+        error: (err) => console.error('Error loading comment creator:', err)
+      });
+    });
+  }
+
+  toggleCommentForm(): void {
+    this.isCommenting = !this.isCommenting;
+    if (!this.isCommenting) {
+      this.commentForm.reset();
+    }
+  }
+
+  cancelComment(): void {
+    this.isCommenting = false;
+    this.commentForm.reset();
+  }
+
+  addComment(): void {
+    const content = this.commentForm.value.content || '';
+    if (this.user && this.postId && content) {
+      const comment: Comment = {
+        content: content,
+        userId: this.user.id,
+        postId: Number(this.postId),
+        createdAt: new Date(),
+        lastModified: new Date()
+      };
+      this.commentService.addComment(comment).subscribe({
+        next: () => {
+          console.log("Comment added.");
+          this.loadComments();  
+          this.commentForm.reset(); 
+          this.toggleCommentForm();
+          this.loadCommentCount();
+        },
+        error: (err) => console.error('Error adding comment:', err)
       });
     }
   }
   
-  
-
-  deleteComment(commentId: number): void {
-    this.commentService.deleteComments(commentId).subscribe({
-      next: () => {
-        this.loadComments();
-      },
-      error: (err: any) => {
-        console.log('Failed to delete comment:', err);
-      }
-    });
-  }
-  
-
-  getStatusName(status: Status): string {
-    return Status[status];
+  updateComment(): void {
+    if (this.editingComment) {
+      this.editingComment.content = this.commentForm.value.content || '';
+      this.editingComment.lastModified = new Date();
+      this.commentService.editComment(this.editingComment).subscribe({
+        next: () => {
+          this.loadComments();
+          this.cancelEdit();
+        },
+        error: (err) => console.error('Error updating comment:', err)
+      });
+    }
   }
 
-  get postStatus(): Status | undefined {
-    return this.post ? this.post.status : undefined;
+  cancelEdit(): void {
+    this.isEditing = false;
+    this.editingComment = null;
+    this.commentForm.reset();
   }
 
   getImagePath(imageUrl: string): string {
     return `${environment.webRootHost}${imageUrl}`;
   }
 
-  closePost(): void {
-    if (this.post && this.postId) {
-      this.post.status = Status.Closed;
-
-      this.postService.updatePost(this.post, Number(this.postId)).subscribe({
-        next: () => {
-          this.router.navigate(["blog"]);
-        },
-        error: (err: any) => {
-          console.error('Failed to update post status', err);
-        }
-      });
+  toggleMenu(commentId?: number): void {
+    if (commentId === undefined) {
+      console.warn('Comment ID is undefined.');
+      return;  
     }
+    
+    this.openMenuId = this.openMenuId === commentId ? null : commentId;
+    console.log("Toggled menu for comment ID:", commentId);
+    console.log("Current openMenuId:", this.openMenuId);
+  }
+  
+
+  startEditingComment(comment: Comment): void {
+    this.isEditing = true;
+    this.editingComment = { ...comment };
+    this.commentForm.patchValue({ content: comment.content });
+    this.openMenuId = null;  // Close menu after selecting "Edit"
+  }
+
+  deleteComment(commentId: number): void {
+    this.commentService.deleteComments(commentId).subscribe({
+      next: () => {
+        this.loadComments();
+      },
+      error: (err) => console.error('Failed to delete comment:', err)
+    });
+    this.openMenuId = null;  
   }
 }
+

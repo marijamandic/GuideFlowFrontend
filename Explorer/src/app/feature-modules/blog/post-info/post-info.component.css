@@ -43,7 +43,16 @@
     font-size: 24px;
     font-weight: bold;
     color: var(--accent-color);
-    margin: 0;
+    margin-top: 0;
+}
+
+.post-meta {
+    font-size: 0.9em;
+    color: #555;
+}
+
+.author-name{
+    font-weight: bold;
 }
 
 .post-author-id {
@@ -79,14 +88,19 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     display: flex;
     flex-direction: column;
+    position: relative;
 }
 
 .comment-header {
     display: flex;
-    justify-content: space-between;
-    font-size: 14px;
-    color: #555;
-    margin-bottom: 8px;
+    align-items: center;
+    gap: 5px; 
+    font-size: 0.9em; 
+    color: #555; 
+}
+
+.comment-date {
+    color: #888;
 }
 
 .comment-author {
@@ -218,3 +232,98 @@
     left: 0px;
   }
   
+  .comment-input-container.card {
+    max-width: 100%;
+    padding: 15px;
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+
+  .card:hover{
+    transform: scale(1);
+  }
+  
+  .collapsed-comment-input {
+    cursor: pointer;
+    max-width: 95%;
+  }
+  
+  .collapsed-comment-input input {
+    width: 100%;
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+  }
+  
+  .expanded-comment-input {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .expanded-comment-input textarea {
+    max-width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    resize: vertical;
+  }
+  
+  .comment-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  .cancel-button {
+    background-color: #ddd;
+    color: #555;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .comment-button {
+    background-color: #0066cc;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .kebab-menu-button {
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
+    color: #888;
+    margin-left: auto;
+}
+
+.comment-menu {
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    top: 45px;
+    right: 10px;
+    display: flex;
+    flex-direction: column;
+    z-index: 10;
+}
+
+.comment-menu button {
+    background: none;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+}
+
+.comment-menu button:hover {
+    background-color: #f0f0f0;
+}
+

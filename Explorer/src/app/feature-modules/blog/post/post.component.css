@@ -17,9 +17,10 @@ html, body {
   flex: 1; 
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 10px; 
   align-items: center;
   width: 100%;
+  margin-bottom: 10px;
 }
 
 .post-container {
@@ -39,6 +40,7 @@ html, body {
 .post-container:hover {
   transform: scale(1.02);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  transition: 0.5s;
 }
 
 .post-image {
@@ -184,4 +186,27 @@ html, body {
   height: 40px;
   background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, white 100%);
 }
+
+/* Draft Image with Grayscale Filter */
+.draft-image {
+  filter: grayscale(100%);
+  position: relative;
+}
+
+/* Positioning the DRAFT label in the top-left corner */
+.draft-label {
+  position: absolute;
+  top: 100px;
+  left: 740px;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: bold;
+  z-index: 1;
+}
+
+
+
 

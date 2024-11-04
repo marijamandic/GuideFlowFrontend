@@ -27,9 +27,20 @@
     width: 100%;
     padding: 10px;
     border: 1px solid #cccccc;
+    font-family: var(--font-family);
     border-radius: 4px;
     font-size: 16px;
-  }
+    resize: vertical; 
+    overflow-wrap: break-word; 
+    word-wrap: break-word;
+    white-space: pre-wrap; 
+    box-sizing: border-box; 
+}
+
+#description.form-control {
+    height: 600px; 
+}
+
   
   .form-control:focus {
     border-color: #84dcc6;  
@@ -37,7 +48,7 @@
   }
   
   .cta-button:disabled {
-    background-color: #2b4f46;
+    background-color: #9b9b9b;
     cursor: not-allowed;
   }
   

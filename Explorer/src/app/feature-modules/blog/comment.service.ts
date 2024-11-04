@@ -11,29 +11,31 @@ import { environment } from 'src/env/environment';
 })
 export class CommentService {
 
-  constructor(private http:HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-  getComments(id: string,userRole:string): Observable<PagedResults<Comment>> {
-    const params = new HttpParams().set('id', id.toString());
-    if(userRole==="tourist")
-      return this.http.get<PagedResults<Comment>>(environment.apiHost + 'commentmanaging/comment', { params });
-    else
-      return this.http.get<PagedResults<Comment>>(environment.apiHost + 'commentview/comment', { params });
+  getCommentCount(postId: string): Observable<number> {
+    const params = new HttpParams().set('postId', postId);
+    return this.http.get<number>(`${environment.apiHost}commentmanaging/comment/count`, { params });
   }
 
-  deleteComments(id:number):Observable<Comment>{
-    return this.http.delete<Comment>(environment.apiHost+'commentmanaging/comment/'+id);
+  getComments(postId: string): Observable<Comment[]> {
+    const params = new HttpParams().set('postId', postId);
+    return this.http.get<Comment[]>(`${environment.apiHost}commentmanaging/comment/all`, { params });
   }
 
-  addComment(comment:Comment):Observable<Comment>{
-    return this.http.post<Comment>(environment.apiHost+'commentmanaging/comment/',comment);
+  deleteComments(id: number): Observable<Comment> {
+    return this.http.delete<Comment>(`${environment.apiHost}commentmanaging/comment/${id}`);
   }
 
-  editComment(comment:Comment):Observable<Comment>{
-    return this.http.put<Comment>(environment.apiHost+'commentmanaging/comment/'+comment.id,comment);
+  addComment(comment: Comment): Observable<Comment> {
+    return this.http.post<Comment>(`${environment.apiHost}commentmanaging/comment/`, comment);
+  }  
+
+  editComment(comment: Comment): Observable<Comment> {
+    return this.http.put<Comment>(`${environment.apiHost}commentmanaging/comment/${comment.id}`, comment);
   }
 
-  getCommentCreator(id:number):Observable<User>{
-    return this.http.get<User>(environment.apiHost+'commentmanaging/comment/user/'+id);
+  getCommentCreator(id: number): Observable<User> {
+    return this.http.get<User>(`${environment.apiHost}commentmanaging/comment/user/${id}`);
   }
 }

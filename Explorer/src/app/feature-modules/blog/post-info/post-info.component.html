@@ -1,13 +1,13 @@
 <div class="main-column">
     <div *ngIf="post" class="post-info">
-        <!-- Post Header -->
-        <div class="post-header">
-            <h2 class="post-title">{{ post.title }}</h2>
-            <div class="post-meta">
-                <span>{{ post.userId }}</span> &bull;
-                <span>{{ post.publishDate | date: 'longDate' }}</span>
-            </div>
+        <!-- Post Meta (Author and Date) -->
+        <div class="post-meta">
+            <span class="author-name">{{ authorName }}</span> •
+            <span>{{ post.publishDate | date: 'medium' }}</span>
         </div>
+        
+        <!-- Post Title -->
+        <h2 class="post-title">{{ post.title }}</h2>
     
         <!-- Image Section -->
         <img *ngIf="post.imageUrl" [src]="getImagePath(post.imageUrl)" alt="Post image" class="post-image" />
@@ -32,36 +32,52 @@
         </div>
     </div>
     
-    <!-- Comments Section -->
-    <div class="comments-section">   
+    <div class="comments-section">
         <!-- Comment Form Section -->
-        <xp-comment-form 
-            *ngIf="user && postId" 
-            [postId]="postId" 
-            [shouldEdit]="false"
-            (commentUpdated)="loadComments()">
-        </xp-comment-form>
-
-        <div *ngIf="comments.length === 0" class="no-comments">
-            <p>No comments yet. Be the first to add one!</p>
+        <div *ngIf="user && user.role !== 'author'" class="comment-input-container card">
+          <div *ngIf="!isCommenting" (click)="toggleCommentForm()" class="collapsed-comment-input">
+            <input type="text" placeholder="Add a comment" readonly />
+          </div>
+        
+          <div *ngIf="isCommenting" [formGroup]="commentForm" class="expanded-comment-input">
+            <textarea
+              formControlName="content"
+              placeholder="Write your comment"
+              rows="3"
+            ></textarea>
+            <div class="comment-actions">
+              <button (click)="cancelComment()" class="cta-button-cancel">Cancel</button>
+              <button (click)="addComment()" [disabled]="!commentForm.valid" class="cta-button">Comment</button>
+            </div>
+          </div>
         </div>
-    
+        
+        <!-- Display Comments -->
+        <div *ngIf="comments.length === 0" class="no-comments">
+          <p>No comments yet. Be the first to add one!</p>
+        </div>
+      
         <div *ngFor="let comment of comments" class="comment-card">
             <div class="comment-header">
-                <span class="comment-author">{{ comment.username || 'Anonymous' }}</span>
-                <span class="comment-date">{{ comment.createdAt | date:'short' }}</span>
+              <span class="comment-author">{{ comment.username || 'Anonymous' }}</span> •
+              <span class="comment-date">{{ comment.createdAt | date:'medium' }}</span>
+              <!-- Kebab icon for dropdown menu -->
+              <button *ngIf="user && user.id === comment.userId && comment.id !== undefined" 
+                (click)="toggleMenu(comment.id!)" 
+                class="kebab-menu-button">⋮</button>
+
+                <div *ngIf="user && user.id === comment.userId && openMenuId === comment.id" class="comment-menu">
+                    <button (click)="startEditingComment(comment)"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</button>
+                    <button (click)="deleteComment(comment.id)"> <i class="fa fa-trash" aria-hidden="true"></i> Delete</button>
+                </div>
+
+          
             </div>
-    
             <div class="comment-body">
-                <p>{{ comment.content }}</p>
+              <p>{{ comment.content }}</p>
             </div>
-    
-            <div class="comment-actions">
-                <button *ngIf="user && user.id === comment.userId && comment.id" class="cta-button delete" (click)="deleteComment(comment.id)">Delete</button>
-            </div>
-        </div>
-    </div>
-    
+          </div>
+          
 
 </div>
 
