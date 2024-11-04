@@ -22,6 +22,7 @@ export class PostInfoComponent implements OnInit {
   comments: (Comment & { username?: string })[] = [];
   commentCount: number = 0;
   commentForm: FormGroup;
+  isCommenting: boolean = false;
   isEditing = false;
   editingComment: Comment | null = null;
 
@@ -114,6 +115,18 @@ export class PostInfoComponent implements OnInit {
     });
   }
 
+  toggleCommentForm(): void {
+    this.isCommenting = !this.isCommenting;
+    if (!this.isCommenting) {
+      this.commentForm.reset();
+    }
+  }
+
+  cancelComment(): void {
+    this.isCommenting = false;
+    this.commentForm.reset();
+  }
+
   addComment(): void {
     const content = this.commentForm.value.content || '';
     if (this.user && this.postId && content) {
@@ -126,15 +139,17 @@ export class PostInfoComponent implements OnInit {
       };
       this.commentService.addComment(comment).subscribe({
         next: () => {
+          console.log("Comment added.");
           this.loadComments();  
           this.commentForm.reset(); 
+          this.toggleCommentForm();
+          this.loadCommentCount();
         },
         error: (err) => console.error('Error adding comment:', err)
       });
     }
   }
   
-
   updateComment(): void {
     if (this.editingComment) {
       this.editingComment.content = this.commentForm.value.content || '';

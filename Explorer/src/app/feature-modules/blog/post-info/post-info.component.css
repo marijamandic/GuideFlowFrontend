@@ -231,3 +231,64 @@
     left: 0px;
   }
   
+  .comment-input-container.card {
+    max-width: 100%;
+    padding: 15px;
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+
+  .card:hover{
+    transform: scale(1);
+  }
+  
+  .collapsed-comment-input {
+    cursor: pointer;
+    max-width: 95%;
+  }
+  
+  .collapsed-comment-input input {
+    width: 100%;
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+  }
+  
+  .expanded-comment-input {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .expanded-comment-input textarea {
+    max-width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    resize: vertical;
+  }
+  
+  .comment-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  .cancel-button {
+    background-color: #ddd;
+    color: #555;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .comment-button {
+    background-color: #0066cc;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  

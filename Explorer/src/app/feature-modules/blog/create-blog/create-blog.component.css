@@ -48,7 +48,7 @@
   }
   
   .cta-button:disabled {
-    background-color: #2b4f46;
+    background-color: #9b9b9b;
     cursor: not-allowed;
   }
   

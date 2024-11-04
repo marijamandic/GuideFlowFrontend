@@ -32,40 +32,46 @@
         </div>
     </div>
     
-    <!-- Comments Section -->
-<div class="comments-section">   
-    <!-- Comment Form Section -->
-    <div *ngIf="user && (user.role === 'tourist' || user.role === 'author')" class="comment-form-container" [formGroup]="commentForm">
-        <textarea formControlName="content" class="comment-textarea" placeholder="Write your comment"></textarea>
-        <div class="form-actions">
-            <button *ngIf="isEditing" class="cta-button" (click)="cancelEdit()">Cancel</button>
-            <button class="cta-button" (click)="isEditing ? updateComment() : addComment()">
-                {{ isEditing ? 'Update' : 'Comment' }}
-            </button>
+    <div class="comments-section">
+        <!-- Comment Form Section -->
+        <div *ngIf="user && user.role !== 'author'" class="comment-input-container card">
+          <div *ngIf="!isCommenting" (click)="toggleCommentForm()" class="collapsed-comment-input">
+            <input type="text" placeholder="Add a comment" readonly />
+          </div>
+        
+          <div *ngIf="isCommenting" [formGroup]="commentForm" class="expanded-comment-input">
+            <textarea
+              formControlName="content"
+              placeholder="Write your comment"
+              rows="3"
+            ></textarea>
+            <div class="comment-actions">
+              <button (click)="cancelComment()" class="cta-button-cancel">Cancel</button>
+              <button (click)="addComment()" [disabled]="!commentForm.valid" class="cta-button">Comment</button>
+            </div>
+          </div>
         </div>
-    </div>
-
-    <!-- Display Comments -->
-    <div *ngIf="comments.length === 0" class="no-comments">
-        <p>No comments yet. Be the first to add one!</p>
-    </div>
-
-    <div *ngFor="let comment of comments" class="comment-card">
-        <div class="comment-header">
+        
+        <!-- Display Comments -->
+        <div *ngIf="comments.length === 0" class="no-comments">
+          <p>No comments yet. Be the first to add one!</p>
+        </div>
+      
+        <div *ngFor="let comment of comments" class="comment-card">
+          <div class="comment-header">
             <span class="comment-author">{{ comment.username || 'Anonymous' }}</span> •
             <span class="comment-date">{{ comment.createdAt | date:'medium' }}</span>
-        </div>
-    
-        <div class="comment-body">
+          </div>
+      
+          <div class="comment-body">
             <p>{{ comment.content }}</p>
-        </div>
-    
-        <div class="comment-actions">
+          </div>
+      
+          <div class="comment-actions">
             <button *ngIf="user && user.id === comment.userId && comment.id" class="cta-button delete" (click)="deleteComment(comment.id)">Delete</button>
+          </div>
         </div>
-    </div>    
-</div>
-
+      </div>      
 
 </div>
 
