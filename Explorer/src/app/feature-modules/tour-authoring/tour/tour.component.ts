@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Currency, Level, Tour, TourStatus } from '../model/tour.model';
 import { TourService } from '../tour.service';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
+import { User } from 'src/app/infrastructure/auth/model/user.model';
+import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 
 @Component({
   selector: 'xp-tour',
@@ -18,15 +20,18 @@ export class TourComponent implements OnInit {
   latitude: number | null = null;
   longitude: number | null = null;
   searchDistance: number | null = null;
+  user: User | undefined;
 
-  constructor(private service: TourService){}
+  constructor(private service: TourService, private authService: AuthService){}
   
   tours: Tour[] = [];
   filteredTours: Tour[] = [];
 
   ngOnInit(): void {
+      this.authService.user$.subscribe(user => {
+        this.user = user;
+      });
       this.getTours();
-      
   }
 
   initializeTour(): Tour {
@@ -103,9 +108,6 @@ export class TourComponent implements OnInit {
     }
   }
 
-  onDistanceChange(): void {
-    this.searchTours();
-  }
   CurrencyMap = {
     0: 'RSD',
     1: 'EUR',
