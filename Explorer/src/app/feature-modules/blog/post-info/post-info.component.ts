@@ -25,6 +25,7 @@ export class PostInfoComponent implements OnInit {
   isCommenting: boolean = false;
   isEditing = false;
   editingComment: Comment | null = null;
+  openMenuId: number | null = null;
 
   constructor(
     private postService: PostService,
@@ -164,15 +165,6 @@ export class PostInfoComponent implements OnInit {
     }
   }
 
-  deleteComment(commentId: number): void {
-    this.commentService.deleteComments(commentId).subscribe({
-      next: () => {
-        this.loadComments();
-      },
-      error: (err) => console.log('Failed to delete comment:', err)
-    });
-  }
-
   cancelEdit(): void {
     this.isEditing = false;
     this.editingComment = null;
@@ -182,4 +174,34 @@ export class PostInfoComponent implements OnInit {
   getImagePath(imageUrl: string): string {
     return `${environment.webRootHost}${imageUrl}`;
   }
+
+  toggleMenu(commentId?: number): void {
+    if (commentId === undefined) {
+      console.warn('Comment ID is undefined.');
+      return;  
+    }
+    
+    this.openMenuId = this.openMenuId === commentId ? null : commentId;
+    console.log("Toggled menu for comment ID:", commentId);
+    console.log("Current openMenuId:", this.openMenuId);
+  }
+  
+
+  startEditingComment(comment: Comment): void {
+    this.isEditing = true;
+    this.editingComment = { ...comment };
+    this.commentForm.patchValue({ content: comment.content });
+    this.openMenuId = null;  // Close menu after selecting "Edit"
+  }
+
+  deleteComment(commentId: number): void {
+    this.commentService.deleteComments(commentId).subscribe({
+      next: () => {
+        this.loadComments();
+      },
+      error: (err) => console.error('Failed to delete comment:', err)
+    });
+    this.openMenuId = null;  
+  }
 }
+

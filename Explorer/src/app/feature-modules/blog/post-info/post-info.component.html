@@ -58,20 +58,26 @@
         </div>
       
         <div *ngFor="let comment of comments" class="comment-card">
-          <div class="comment-header">
-            <span class="comment-author">{{ comment.username || 'Anonymous' }}</span> •
-            <span class="comment-date">{{ comment.createdAt | date:'medium' }}</span>
+            <div class="comment-header">
+              <span class="comment-author">{{ comment.username || 'Anonymous' }}</span> •
+              <span class="comment-date">{{ comment.createdAt | date:'medium' }}</span>
+              <!-- Kebab icon for dropdown menu -->
+              <button *ngIf="user && user.id === comment.userId && comment.id !== undefined" 
+                (click)="toggleMenu(comment.id!)" 
+                class="kebab-menu-button">⋮</button>
+
+                <div *ngIf="user && user.id === comment.userId && openMenuId === comment.id" class="comment-menu">
+                    <button (click)="startEditingComment(comment)"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</button>
+                    <button (click)="deleteComment(comment.id)"> <i class="fa fa-trash" aria-hidden="true"></i> Delete</button>
+                </div>
+
+          
+            </div>
+            <div class="comment-body">
+              <p>{{ comment.content }}</p>
+            </div>
           </div>
-      
-          <div class="comment-body">
-            <p>{{ comment.content }}</p>
-          </div>
-      
-          <div class="comment-actions">
-            <button *ngIf="user && user.id === comment.userId && comment.id" class="cta-button delete" (click)="deleteComment(comment.id)">Delete</button>
-          </div>
-        </div>
-      </div>      
+          
 
 </div>
 
