@@ -1,19 +1,22 @@
-<div>
-    <table>
+<div class="container">
+    <table class="table">
         <thead>
             <tr>
                 <th>Naziv</th>
                 <th>Opis</th>
                 <th>Cena</th>
+                <th>Valuta</th>
                 <th>Tezina</th>
+                <th>Akcije</th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let tour of tours">
                 <td> {{ tour.name }} </td>
                 <td> {{ tour.description }} </td>
-                <td> {{ tour.price }} </td>
-                <td> {{ tour.level }} </td>
+                <td> {{ tour.price.cost }} </td>
+                <td> {{ CurrencyMap[tour.price.currency] }} </td>
+                <td> {{ LevelMap[tour.level] }} </td>
                 <td>
                     <button color="accent" (click)="deleteTour(tour.id || 0)" mat-icon-button>
                         <mat-icon>delete</mat-icon>
@@ -23,12 +26,16 @@
                     </button>
                 </td>
             </tr>
-            <tr><button color="primary" (click)="onAddClicked()" mat-icon-button>
-                <mat-icon>add</mat-icon>
-            </button></tr>
+            <tr>
+                <td colspan="6" style="text-align: center;">
+                    <button class="add-button" (click)="onAddClicked()">
+                        <mat-icon>add</mat-icon> Add Tour
+                    </button>
+                </td>
+            </tr>
         </tbody>
     </table>
-    <div>
+    <div class="tour-form-container">
         <xp-tour-form *ngIf="shouldRenderTourForm" [shouldEdit]="shouldEdit" [tour]="selectedTour" (tourUpdated)="getTours()"></xp-tour-form>
     </div>
 
@@ -56,8 +63,9 @@
                 <tr *ngFor="let tour of filteredTours">
                     <td> {{ tour.name }} </td>
                     <td> {{ tour.description }} </td>
-                    <td> {{ tour.price }} </td>
-                    <td> {{ tour.level }} </td>
+                    <td> {{ tour.price.cost }} </td>
+                    <td> {{ CurrencyMap[tour.price.currency] }} </td>
+                    <td> {{ LevelMap[tour.level] }} </td>
                 </tr>
             </tbody>
         </table>
