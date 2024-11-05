@@ -29,9 +29,9 @@
         </div>
         <div class="bottom-interaction-bar">
           <div class="vote-container">
-            <button class="vote-button fa fa-arrow-up" (click)="upvote(p.id)"></button>
+            <button class="vote-button fa fa-arrow-up" [ngClass]="{'upvoted': p.isRated && p.isRatedPositively}" (click)="upvote(p.id)"></button>
             <span class="vote-count">420</span>
-            <button class="vote-button fa fa-arrow-down" (click)="downvote(p.id)"></button>
+            <button class="vote-button fa fa-arrow-down" [ngClass]="{'downvoted': p.isRated && !p.isRatedPositively}" (click)="downvote(p.id)"></button>
           </div>
           <div class="interaction-container">
             <button class="interaction-button fa fa-comment"></button>

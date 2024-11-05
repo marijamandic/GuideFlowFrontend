@@ -7,6 +7,8 @@ import { environment } from 'src/env/environment';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { User } from 'src/app/infrastructure/auth/model/user.model';
 import { CommentService } from '../comment.service';
+import { RatingService } from '../rating.service';
+import { Rating } from '../model/rating.model';
 
 @Component({
   selector: 'xp-post',
@@ -19,17 +21,20 @@ export class PostComponent implements OnInit {
   publishedPostsToShow: Post[] = [];
   user: User | undefined;
   commentCounts: { [postId: number]: number } = {};
+  loggedInUserId: number = 0;
 
   constructor(
     private postService: PostService,
     private commentService: CommentService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private ratingService: RatingService
   ) {}
 
   ngOnInit(): void {
     this.authService.user$.subscribe(user => {
       this.user = user;
+      this.loggedInUserId = user.id;
       if (this.user) {
         this.postService.getPosts(this.user.role).subscribe({
           next: (result: Post[]) => {
@@ -40,6 +45,16 @@ export class PostComponent implements OnInit {
             this.draftsToShow.forEach(post => this.loadUsername(post));
             this.publishedPostsToShow.forEach(post => this.loadUsername(post));
             this.loadCommentCounts();
+            this.publishedPostsToShow.forEach(post => {
+              this.ratingService.getRatingById(post.id).subscribe({
+                next: (res: any) => {
+                  const ratings = res.filter((r: any) => r.userId === this.loggedInUserId);
+                  post.isRated = ratings.length > 0;
+                  const positiveRating = ratings.some((rating: any) => rating.ratingStatus === 0)
+                  post.isRatedPositively = positiveRating;
+                }
+              })
+            })
           },
           error: (err: any) => console.error('Error fetching posts:', err)
         });
@@ -96,8 +111,102 @@ export class PostComponent implements OnInit {
   navigateToCreatePost() {
     this.router.navigate(['create-blog']);
   }
+  
+  private addRating(rating: Rating, postId: number) {
+      this.ratingService.postRating(rating).subscribe({
+        next: () => {
+          console.log(`Upvoted post ${postId}`);
+          this.ngOnInit();
+        },
+        error: (err) => {
+          console.error('Error upvoting:', err);
+        }
+      });
+  }
+  async upvote(postId: number) {
+    const rating: Rating = {
+      id: -1,
+      ratingStatus: 0,
+      userId: this.loggedInUserId,
+      postId: postId,
+      createdDate: new Date()
+    }
 
-  upvote(postId: number) {}
+    const hasUpvoted = await this.findUpvote(this.loggedInUserId, postId);
+    const hasDownvoted = await this.findDownvote(this.loggedInUserId, postId);
 
-  downvote(postId: number) {}
+    if (hasUpvoted) {
+      this.deleteRating(this.loggedInUserId, postId);
+    } else {
+      if (hasDownvoted) {
+        await this.deleteRating(this.loggedInUserId, postId);
+      }
+      this.addRating(rating, postId);
+    }
+  }
+
+  async downvote(postId: number) {
+    const rating: Rating = {
+      id: -1,
+      ratingStatus: 1,
+      userId: this.loggedInUserId,
+      postId: postId,
+      createdDate: new Date()
+    }
+
+    const hasUpvoted = await this.findUpvote(this.loggedInUserId, postId);
+    const hasDownvoted = await this.findDownvote(this.loggedInUserId, postId);
+
+    if (hasDownvoted) {
+      this.deleteRating(this.loggedInUserId, postId);
+    } else {
+      if (hasUpvoted) {
+        await this.deleteRating(this.loggedInUserId, postId);
+      }
+      this.addRating(rating, postId);
+    }
+  }
+
+  findUpvote(userId: number, postId: number): Promise<boolean> {
+    return new Promise((resolve) => {
+      this.ratingService.getRatingById(postId).subscribe({
+        next: (res: any) => {
+          const sameRating = res.some((rating: any) => rating.userId === userId && rating.ratingStatus === 0);
+          resolve(sameRating);
+        },
+        error: () => resolve(false)
+      });
+    });
+  }
+  
+  findDownvote(userId: number, postId: number): Promise<boolean> {
+    return new Promise((resolve) => {
+      this.ratingService.getRatingById(postId).subscribe({
+        next: (res: any) => {
+          const sameRating = res.some((rating: any) => rating.userId === userId && rating.ratingStatus === 1);
+          resolve(sameRating);
+        },
+        error: () => resolve(false)
+      });
+    });
+  }
+  
+
+  deleteRating(userId: number, postId: number): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.ratingService.deleteRating(userId, postId).subscribe({
+        next: () => {
+          console.log(`Deleted rating for post ${postId} by user ${userId}`);
+          this.ngOnInit(); 
+          resolve(); 
+        },
+        error: (err) => {
+          console.error('Error deleting rating:', err);
+          reject(err); 
+        }
+      });
+    });
+  }
+  
+  
 }

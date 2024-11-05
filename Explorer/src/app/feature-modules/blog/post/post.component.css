@@ -210,3 +210,10 @@ html, body {
 
 
 
+.upvoted {
+  color: #ff4500;
+}
+
+.downvoted {
+  color: #7193ff;
+}
