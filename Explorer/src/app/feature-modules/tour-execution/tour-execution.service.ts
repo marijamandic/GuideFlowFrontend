@@ -6,6 +6,7 @@ import { TourReview } from './model/tour-review.model';
 import { EquipmentManagement } from './model/equipment-management.model';
 import { environment } from 'src/env/environment';
 import { Problem } from 'src/app/shared/model/problem.model';
+import { CreateProblemInput } from './model/create-problem-input.model';
 
 @Injectable({
 	providedIn: 'root'
@@ -25,7 +26,7 @@ export class TourExecutionService {
 		return this.http.delete<EquipmentManagement>(environment.apiHost + 'tourist/equipmentManagement/' + equipment.equipmentId);
 	}
 
-	createProblem(problem: Problem): Observable<Problem> {
+	createProblem(problem: CreateProblemInput): Observable<Problem> {
 		const headers = new HttpHeaders({
 			Authorization: `Bearer ${localStorage.getItem('access-token')}`,
 			'Content-Type': 'application/json'
