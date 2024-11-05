@@ -13,6 +13,7 @@ import { AdministrationModule } from '../administration/administration.module';
 import { FormsModule } from '@angular/forms';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ProblemComponent } from './problem/problem.component';
+import { ProblemViewComponent } from './problem-view/problem-view.component';
 
 @NgModule({
 	declarations: [
@@ -23,7 +24,8 @@ import { ProblemComponent } from './problem/problem.component';
 		TourComponent,
 		TourFormComponent,
 		TourEquipmentComponent,
-		ProblemComponent
+		ProblemComponent,
+		ProblemViewComponent
 	],
 	imports: [CommonModule, MaterialModule, ReactiveFormsModule, AdministrationModule, FormsModule, SharedModule],
 	exports: [

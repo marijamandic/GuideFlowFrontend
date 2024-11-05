@@ -5,6 +5,8 @@ import { PagedResults } from 'src/app/shared/model/paged-results.model';
 import { convertEnumToString } from 'src/app/shared/utils/enumToStringConverter';
 import { toDateOnly } from 'src/app/shared/utils/dateToDateOnlyConverter';
 import { adjustProblemsArrayResponse } from 'src/app/shared/utils/adjustResponse';
+import { AuthService } from 'src/app/infrastructure/auth/auth.service';
+import { User } from 'src/app/infrastructure/auth/model/user.model';
 
 @Component({
 	selector: 'xp-problem',
@@ -13,8 +15,34 @@ import { adjustProblemsArrayResponse } from 'src/app/shared/utils/adjustResponse
 })
 export class ProblemComponent implements OnInit {
 	problems: Problem[] = [];
+	currentProblem: Problem | undefined;
+	user: User;
 
-	constructor(private service: TourAuthoringService) {}
+	constructor(private tourAuthoringService: TourAuthoringService, private authService: AuthService) {}
+
+	subscribeUser() {
+		this.authService.user$.subscribe((user: User) => {
+			this.user = user;
+		});
+	}
+
+	getInitialData() {
+		if (this.user.role === 'author') {
+			this.tourAuthoringService.getProblemsByAuthorId().subscribe({
+				next: (result: PagedResults<Problem>) => {
+					this.problems = adjustProblemsArrayResponse(result.results);
+				}
+			});
+		}
+
+		if (this.user.role === 'tourist') {
+			this.tourAuthoringService.getProblemsByTouristId().subscribe({
+				next: (result: PagedResults<Problem>) => {
+					this.problems = adjustProblemsArrayResponse(result.results);
+				}
+			});
+		}
+	}
 
 	toString(value: number, type: string) {
 		return convertEnumToString(value, type);
@@ -24,11 +52,19 @@ export class ProblemComponent implements OnInit {
 		return toDateOnly(date);
 	}
 
+	handleViewClick(problemId: number) {
+		this.currentProblem = this.problems.find(p => p.id === problemId);
+	}
+
+	handleMessageAdded(problem: Problem) {
+		let updateProblem = this.problems.find(p => p.id === problem.id);
+		if (updateProblem) {
+			Object.assign(updateProblem, problem);
+		}
+	}
+
 	ngOnInit(): void {
-		this.service.getProblemsByAuthorId().subscribe({
-			next: (result: PagedResults<Problem>) => {
-				this.problems = adjustProblemsArrayResponse(result.results);
-			}
-		});
+		this.subscribeUser();
+		this.getInitialData();
 	}
 }

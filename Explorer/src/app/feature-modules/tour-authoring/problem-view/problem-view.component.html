@@ -1,0 +1,19 @@
+<div *ngIf="problem">
+	<div>{{ problem.id }}</div>
+	<div>{{ problem.details.description }}</div>
+	<div class="messages-wrapper">
+		<h2>Messages</h2>
+		<div class="messages">
+			<div *ngFor="let message of problem.messages" class="message-card">
+				<div *ngIf="user.id === message.userId"><b>Me:</b></div>
+				<div *ngIf="user.id !== message.userId">{{ user.username }}:</div>
+				{{ message.content }}
+			</div>
+		</div>
+		<div class="add-comment">
+			<input type="text" [(ngModel)]="newMessage" />
+			<button type="button" (click)="handleSendMessageClick()">Send</button>
+		</div>
+	</div>
+</div>
+<div *ngIf="!problem">No problem currently selected.</div>
