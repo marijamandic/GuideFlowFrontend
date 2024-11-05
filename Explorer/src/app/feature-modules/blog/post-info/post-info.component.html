@@ -21,7 +21,7 @@
             <div class="bottom-interaction-bar">
                 <div class="vote-container">
                   <button class="vote-button fa fa-arrow-up" [ngClass]="{'upvoted': post.isRated && post.isRatedPositively}" (click)="upvote(post.id)"></button>
-                  <span class="vote-count">420</span>
+                  <span class="vote-count">{{ getNetRating(post.id) }}</span>
                   <button class="vote-button fa fa-arrow-down" [ngClass]="{'downvoted': post.isRated && !post.isRatedPositively}" (click)="downvote(post.id)"></button>
                 </div>
                 <div class="interaction-container">

@@ -21,6 +21,7 @@ export class PostComponent implements OnInit {
   publishedPostsToShow: Post[] = [];
   user: User | undefined;
   commentCounts: { [postId: number]: number } = {};
+  ratingCounts: { [postId: number]: { positive: number; negative: number } } = {};
   loggedInUserId: number = 0;
 
   constructor(
@@ -45,6 +46,7 @@ export class PostComponent implements OnInit {
             this.draftsToShow.forEach(post => this.loadUsername(post));
             this.publishedPostsToShow.forEach(post => this.loadUsername(post));
             this.loadCommentCounts();
+            this.loadRatingCounts();
             this.publishedPostsToShow.forEach(post => {
               this.ratingService.getRatingById(post.id).subscribe({
                 next: (res: any) => {
@@ -73,7 +75,27 @@ export class PostComponent implements OnInit {
       error: (err) => console.error('Error loading username:', err)
     });
   }
- 
+  
+  loadRatingCounts(): void {
+    this.publishedPostsToShow.forEach(post => {
+      this.ratingService.getRatingById(post.id).subscribe({
+        next: (res: Rating[]) => {
+          const positiveCount = res.filter(rating => rating.ratingStatus === 0).length;
+          const negativeCount = res.filter(rating => rating.ratingStatus === 1).length;
+
+          this.ratingCounts[post.id] = { positive: positiveCount, negative: negativeCount };
+        },
+        error: (err) => console.error(`Error loading ratings for post ${post.id}:`, err)
+      });
+    });
+  }
+
+
+  getNetRating(postId: number): number {
+    const ratingCount = this.ratingCounts[postId];
+    return (ratingCount ? ratingCount.positive - ratingCount.negative : 0);
+  }
+
   loadCommentCounts(): void {
     if (!this.user || !this.user.role) {
       console.warn("User information is not available yet.");
