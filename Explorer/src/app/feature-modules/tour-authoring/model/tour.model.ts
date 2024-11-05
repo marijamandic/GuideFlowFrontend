@@ -4,6 +4,7 @@ import { TourReview } from "./tourReview";
 
 export interface Tour {
     id: number;
+    authorId: number;
     name: string;
     description: string;
     price: Price;

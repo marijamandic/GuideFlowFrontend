@@ -28,4 +28,8 @@ export class TourService {
   updateTour(tour: Tour): Observable<Tour> {
     return this.http.put<Tour>(environment.apiHost + 'author/tours/' + tour.id, tour);
   }
+
+  publishTour(tour:Tour): Observable<Tour>{
+    return this.http.put<Tour>(environment.apiHost + 'author/tours/publish/'+ tour.id, tour)
+  }
 }

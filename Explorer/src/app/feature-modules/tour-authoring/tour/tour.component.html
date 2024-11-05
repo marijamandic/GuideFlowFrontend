@@ -1,4 +1,5 @@
 <div class="container">
+    <h2>Drafts</h2>
     <table class="table">
         <thead>
             <tr>
@@ -11,7 +12,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let tour of tours">
+            <tr *ngFor="let tour of draftTours">
                 <td> {{ tour.name }} </td>
                 <td> {{ tour.description }} </td>
                 <td> {{ tour.price.cost }} </td>
@@ -25,6 +26,10 @@
                         <mat-icon>edit</mat-icon>
                     </button>
                 </td>
+                <td>
+                    <button class="add-button" (click)="onPublish(tour)">Publish</button>
+
+                </td>
             </tr>
             <tr>
                 <td colspan="6" style="text-align: center;">
@@ -36,6 +41,33 @@
         </tbody>
     </table>
     <div class="tour-form-container">
-        <xp-tour-form *ngIf="shouldRenderTourForm" [shouldEdit]="shouldEdit" [tour]="selectedTour" (tourUpdated)="getTours()"></xp-tour-form>
+        <xp-tour-form *ngIf="shouldRenderTourForm" [shouldEdit]="shouldEdit" [forPublish]="forPublish" [tour]="selectedTour" (tourUpdated)="getTours()"></xp-tour-form>
     </div>
+
+    <h2>Published Tours</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Naziv</th>
+                <th>Opis</th>
+                <th>Cena</th>
+                <th>Valuta</th>
+                <th>Tezina</th>
+                <th>Akcije</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let tour of publishedTours">
+                <td> {{ tour.name }} </td>
+                <td> {{ tour.description }} </td>
+                <td> {{ tour.price.cost }} </td>
+                <td> {{ CurrencyMap[tour.price.currency] }} </td>
+                <td> {{ LevelMap[tour.level] }} </td>
+                <td>
+                    <button class="add-button" >Archive</button>
+                </td>
+            </tr>
+          
+        </tbody>
+    </table>
 </div>
