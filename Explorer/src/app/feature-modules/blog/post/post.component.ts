@@ -23,6 +23,7 @@ export class PostComponent implements OnInit {
   commentCounts: { [postId: number]: number } = {};
   ratingCounts: { [postId: number]: { positive: number; negative: number } } = {};
   loggedInUserId: number = 0;
+  engagementStatuses: { [postId: number]: number } = {};
 
   constructor(
     private postService: PostService,
@@ -47,6 +48,14 @@ export class PostComponent implements OnInit {
             this.publishedPostsToShow.forEach(post => this.loadUsername(post));
             this.loadCommentCounts();
             this.loadRatingCounts();
+            this.publishedPostsToShow.forEach(post => {
+              this.postService.getEngagementStatus(post.id).subscribe({
+                next: (status: number) => {
+                  this.engagementStatuses[post.id] = status;
+                },
+                error: (err) => console.error(`Error fetching engagement status for post ${post.id}:`, err)
+              });
+            });            
             this.publishedPostsToShow.forEach(post => {
               this.ratingService.getRatingById(post.id).subscribe({
                 next: (res: any) => {
@@ -228,6 +237,21 @@ export class PostComponent implements OnInit {
         }
       });
     });
+  }
+  
+  getEngagementStatusLabel(postId: number): string {
+    switch (this.engagementStatuses[postId]) {
+      case 0:
+        return 'Inactive';
+      case 1:
+        return 'Active';
+      case 2:
+        return 'Famous';
+      case 3:
+        return 'Closed';
+      default:
+        return 'Unknown';
+    }
   }
   
   

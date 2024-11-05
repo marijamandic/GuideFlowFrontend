@@ -21,7 +21,7 @@
     <div *ngFor="let p of publishedPostsToShow" class="post-container" (click)="navigateToPostDetails(p.id)">
       <div class="post-content">
         <div class="post-header">
-          <p class="user-details"><b>{{ p.username }}</b> • {{ p.publishDate | date:'medium' }}</p>
+          <p class="user-details"><b>{{ p.username }}</b> • {{ p.publishDate | date:'medium' }} • {{ getEngagementStatusLabel(p.id) }}</p> 
         </div>
         <h2 class="post-title">{{ p.title }}</h2>
         <div class="limited-description">

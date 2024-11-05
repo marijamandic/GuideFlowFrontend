@@ -31,6 +31,8 @@ export class PostInfoComponent implements OnInit {
   loggedInUserId: number = 0;
   ratingCounts: { [postId: number]: { positive: number; negative: number } } = {};
 
+  engagementStatus: number | null = null;
+
 
   constructor(
     private postService: PostService,
@@ -67,6 +69,7 @@ export class PostInfoComponent implements OnInit {
           this.post = result;
           if (this.post?.userId) {
             this.loadUsername(this.post.userId); 
+            this.loadEngagementStatus();
           }
           this.loadRatingCounts(this.post);
           this.loadRating(this.post);
@@ -95,6 +98,17 @@ export class PostInfoComponent implements OnInit {
   getNetRating(postId: number): number {
     const ratingCount = this.ratingCounts[postId];
     return (ratingCount ? ratingCount.positive - ratingCount.negative : 0);
+  }
+  loadEngagementStatus(): void {
+    if (this.postId) {
+      this.postService.getEngagementStatus(Number(this.postId)).subscribe({
+        next: (status: number) => {
+          console.log(status);
+          this.engagementStatus = status;
+        },
+        error: (err) => console.error(`Error fetching engagement status for post ${this.postId}:`, err)
+      });
+    }
   }
 
   loadRating(post: Post): void{
@@ -339,5 +353,21 @@ export class PostInfoComponent implements OnInit {
       });
     });
   }
+
+  getEngagementStatusLabel(): string {
+    switch (this.engagementStatus) {
+      case 0:
+        return 'Inactive';
+      case 1:
+        return 'Active';
+      case 2:
+        return 'Famous';
+      case 3:
+        return 'Closed';
+      default:
+        return 'Unknown';
+    }
+  }  
+  
 }
 

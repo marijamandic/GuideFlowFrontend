@@ -22,7 +22,7 @@ export class PostService {
     );
   }
   
-
+  // Post
   getPost(id:number,userRole:string) : Observable<Post> {
     if(userRole==="author")
       return this.http.get<Post>(environment.apiHost+'blogManagement/post/'+id);
@@ -38,10 +38,16 @@ export class PostService {
     return this.http.put<Post>(environment.apiHost+'blogManagement/post/'+id,post);
   }
 
+  // Username
   getUsername(userId: number): Observable<string> {
     return this.http.get<{ username: string }>(`${environment.apiHost}user/username/${userId}`)
         .pipe(map(response => response.username)); // Extract the username from the response object
   }
 
-
+  // EngagementStatus
+  getEngagementStatus(postId: number): Observable<number> {
+    // https://localhost:44333/api/postview/engagement/${postId}/status
+    return this.http.get<number>(`${environment.apiHost}api/postview/engagement/${postId}/status`);
+  }
+  
 }

@@ -2,8 +2,8 @@
     <div *ngIf="post" class="post-info">
         <!-- Post Meta (Author and Date) -->
         <div class="post-meta">
-            <span class="author-name">{{ authorName }}</span> •
-            <span>{{ post.publishDate | date: 'medium' }}</span>
+            <span class="author-name">{{ authorName }}  • </span> 
+            <span>{{ post.publishDate | date: 'medium' }} • {{ getEngagementStatusLabel() }} </span>
         </div>
         
         <!-- Post Title -->
@@ -61,6 +61,8 @@
             <div class="comment-header">
               <span class="comment-author">{{ comment.username || 'Anonymous' }}</span> •
               <span class="comment-date">{{ comment.createdAt | date:'medium' }}</span>
+              
+
               <!-- Kebab icon for dropdown menu -->
               <button *ngIf="user && user.id === comment.userId && comment.id !== undefined" 
                 (click)="toggleMenu(comment.id!)" 
@@ -77,8 +79,6 @@
               <p>{{ comment.content }}</p>
             </div>
           </div>
-          
-
 </div>
 
 

@@ -45,9 +45,9 @@ html, body {
 
 .post-image {
   width: 300px;
-  height: auto;
+  height: 200px;
   border-radius: 8px;
-  object-fit: cover;
+  object-fit: fill;
   margin-left: auto;
 }
 
