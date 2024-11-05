@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
-import { Problem, Category, Priority, categoryToStringArray, priorityToStringArray } from 'src/app/shared/model/problem.model';
+import { CreateProblemInput } from '../model/create-problem-input.model';
+import { Category, Priority, categoryToStringArray, priorityToStringArray } from 'src/app/shared/model/details.model';
 import { TourExecutionService } from '../tour-execution.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { toDateOnly } from 'src/app/utils/dateToDateOnlyConverter';
+import { toDateOnly } from 'src/app/shared/utils/dateToDateOnlyConverter';
+import { Problem } from 'src/app/shared/model/problem.model';
 
 @Component({
 	selector: 'xp-report-problem',
@@ -22,13 +24,12 @@ export class ReportProblemComponent {
 	constructor(private service: TourExecutionService) {}
 
 	handleClick(): void {
-		let problem: Problem = {
+		let problem: CreateProblemInput = {
 			userId: 1,
 			tourId: 1,
 			category: this.problemInput.value.category ? +this.problemInput.value.category : 0,
 			priority: this.problemInput.value.priority ? +this.problemInput.value.priority : 0,
-			description: this.problemInput.value.description || '',
-			reportedAt: toDateOnly(new Date())
+			description: this.problemInput.value.description || ''
 		};
 
 		this.service.createProblem(problem).subscribe({

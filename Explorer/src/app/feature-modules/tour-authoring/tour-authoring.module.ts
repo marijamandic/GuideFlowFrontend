@@ -9,38 +9,31 @@ import { CheckpointFormComponent } from './tour-checkpoint-form/tour-checkpoint-
 import { TourComponent } from './tour/tour.component';
 import { TourFormComponent } from './tour-form/tour-form.component';
 import { TourEquipmentComponent } from './tour-equipment/tour-equipment.component';
-import { EquipmentComponent } from '../administration/equipment/equipment.component';
 import { AdministrationModule } from '../administration/administration.module';
 import { FormsModule } from '@angular/forms';
 import { SharedModule } from 'src/app/shared/shared.module';
-
-
+import { ProblemComponent } from './problem/problem.component';
 
 @NgModule({
-  declarations: [
-    TourObjectComponent,
-    TourObjectFormComponent,
-    CheckpointListComponent,
-    CheckpointFormComponent,
-    TourComponent,
-    TourFormComponent,
-    TourEquipmentComponent,
-  ],
-  imports: [
-    CommonModule,
-    MaterialModule,
-    ReactiveFormsModule,
-    AdministrationModule,
-    FormsModule,
-    SharedModule
-  ],
-  exports: [
-    TourObjectComponent,
-    CheckpointListComponent,
-    TourComponent,
-    TourFormComponent,
-    TourObjectFormComponent,
-    TourEquipmentComponent
-  ]
+	declarations: [
+		TourObjectComponent,
+		TourObjectFormComponent,
+		CheckpointListComponent,
+		CheckpointFormComponent,
+		TourComponent,
+		TourFormComponent,
+		TourEquipmentComponent,
+		ProblemComponent
+	],
+	imports: [CommonModule, MaterialModule, ReactiveFormsModule, AdministrationModule, FormsModule, SharedModule],
+	exports: [
+		TourObjectComponent,
+		CheckpointListComponent,
+		TourComponent,
+		TourFormComponent,
+		TourObjectFormComponent,
+		TourEquipmentComponent,
+		ProblemComponent
+	]
 })
 export class TourAuthoringModule {}
