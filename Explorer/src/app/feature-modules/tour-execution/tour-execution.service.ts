@@ -31,7 +31,7 @@ export class TourExecutionService {
 			Authorization: `Bearer ${localStorage.getItem('access-token')}`,
 			'Content-Type': 'application/json'
 		});
-		return this.http.post<Problem>(`${environment.apiHost}problems`, problem, { headers });
+		return this.http.post<Problem>(`${environment.apiHost}tourist/problems`, problem, { headers });
 	}
 
 	getReviews(): Observable<PagedResults<TourReview>> {

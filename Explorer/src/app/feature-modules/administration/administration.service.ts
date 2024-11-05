@@ -38,7 +38,7 @@ export class AdministrationService {
 		const headers = new HttpHeaders({
 			Authorization: `Bearer ${localStorage.getItem('access-token')}`
 		});
-		return this.http.get<PagedResults<Problem>>(`${environment.apiHost}problems/admin`, { headers });
+		return this.http.get<PagedResults<Problem>>(`${environment.apiHost}administrator/problems`, { headers });
 	}
 
 	getClubs(): Observable<PagedResults<Club>> {
