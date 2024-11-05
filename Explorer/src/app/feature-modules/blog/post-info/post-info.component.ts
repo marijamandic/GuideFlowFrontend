@@ -8,6 +8,8 @@ import { environment } from 'src/env/environment';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { User } from 'src/app/infrastructure/auth/model/user.model';
 import { ActivatedRoute, Router } from '@angular/router';
+import { RatingService } from '../rating.service';
+import { Rating } from '../model/rating.model';
 
 @Component({
   selector: 'xp-post-info',
@@ -26,6 +28,7 @@ export class PostInfoComponent implements OnInit {
   isEditing = false;
   editingComment: Comment | null = null;
   openMenuId: number | null = null;
+  loggedInUserId: number = 0;
 
   constructor(
     private postService: PostService,
@@ -33,7 +36,8 @@ export class PostInfoComponent implements OnInit {
     private authService: AuthService,
     private route: ActivatedRoute,
     private router: Router,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private ratingService: RatingService
   ) {
     this.commentForm = this.fb.group({
       content: ['', Validators.required]
@@ -44,6 +48,7 @@ export class PostInfoComponent implements OnInit {
     this.postId = this.route.snapshot.paramMap.get('id');
     this.authService.user$.subscribe(user => {
       this.user = user;
+      this.loggedInUserId = user.id;
     });
 
     if (this.postId) {
@@ -61,6 +66,7 @@ export class PostInfoComponent implements OnInit {
           if (this.post?.userId) {
             this.loadUsername(this.post.userId); 
           }
+          this.loadRating(this.post);
         },
         error: (err: any) => {
           console.log(err);
@@ -69,6 +75,17 @@ export class PostInfoComponent implements OnInit {
     }
   }
 
+
+  loadRating(post: Post): void{
+    this.ratingService.getRatingById(post.id).subscribe({
+      next: (res: any) => {
+        const ratings = res.filter((r: any) => r.userId === this.loggedInUserId);
+        post.isRated = ratings.length > 0;
+        const positiveRating = ratings.some((rating: any) => rating.ratingStatus === 0)
+        post.isRatedPositively = positiveRating;
+      }
+    })
+  }
   loadCommentCount(): void {
     if (this.postId) {
       this.commentService.getCommentCount(this.postId).subscribe({
@@ -202,6 +219,104 @@ export class PostInfoComponent implements OnInit {
       error: (err) => console.error('Failed to delete comment:', err)
     });
     this.openMenuId = null;  
+  }
+
+  private addRating(rating: Rating, postId: number) {
+      this.ratingService.postRating(rating).subscribe({
+        next: () => {
+          console.log(`Upvoted post ${postId}`);
+          this.ngOnInit();
+        },
+        error: (err) => {
+          console.error('Error upvoting:', err);
+        }
+      });
+  }
+  async upvote(postId: number) {
+    const rating: Rating = {
+      id: -1,
+      ratingStatus: 0,
+      userId: this.loggedInUserId,
+      postId: postId,
+      createdDate: new Date().toISOString()
+    }
+
+
+    console.log(rating.createdDate)
+    const hasUpvoted = await this.findUpvote(this.loggedInUserId, postId);
+    const hasDownvoted = await this.findDownvote(this.loggedInUserId, postId);
+
+    if (hasUpvoted) {
+      this.deleteRating(this.loggedInUserId, postId);
+    } else {
+      if (hasDownvoted) {
+        await this.deleteRating(this.loggedInUserId, postId);
+      }
+      this.addRating(rating, postId);
+    }
+  }
+
+  async downvote(postId: number) {
+    const rating: Rating = {
+      id: -1,
+      ratingStatus: 1,
+      userId: this.loggedInUserId,
+      postId: postId,
+      createdDate: new Date().toISOString()
+    }
+
+    const hasUpvoted = await this.findUpvote(this.loggedInUserId, postId);
+    const hasDownvoted = await this.findDownvote(this.loggedInUserId, postId);
+
+    if (hasDownvoted) {
+      this.deleteRating(this.loggedInUserId, postId);
+    } else {
+      if (hasUpvoted) {
+        await this.deleteRating(this.loggedInUserId, postId);
+      }
+      this.addRating(rating, postId);
+    }
+  }
+
+  findUpvote(userId: number, postId: number): Promise<boolean> {
+    return new Promise((resolve) => {
+      this.ratingService.getRatingById(postId).subscribe({
+        next: (res: any) => {
+          const sameRating = res.some((rating: any) => rating.userId === userId && rating.ratingStatus === 0);
+          resolve(sameRating);
+        },
+        error: () => resolve(false)
+      });
+    });
+  }
+
+  findDownvote(userId: number, postId: number): Promise<boolean> {
+    return new Promise((resolve) => {
+      this.ratingService.getRatingById(postId).subscribe({
+        next: (res: any) => {
+          const sameRating = res.some((rating: any) => rating.userId === userId && rating.ratingStatus === 1);
+          resolve(sameRating);
+        },
+        error: () => resolve(false)
+      });
+    });
+  }
+
+
+  deleteRating(userId: number, postId: number): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.ratingService.deleteRating(userId, postId).subscribe({
+        next: () => {
+          console.log(`Deleted rating for post ${postId} by user ${userId}`);
+          this.ngOnInit(); 
+          resolve(); 
+        },
+        error: (err) => {
+          console.error('Error deleting rating:', err);
+          reject(err); 
+        }
+      });
+    });
   }
 }
 

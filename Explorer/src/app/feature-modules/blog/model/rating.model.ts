@@ -3,7 +3,7 @@ export interface Rating {
     ratingStatus: RatingStatus,
     userId: number,
     postId: number,
-    hasVoted?: boolean
+    createdDate: Date | string
 }
 
 

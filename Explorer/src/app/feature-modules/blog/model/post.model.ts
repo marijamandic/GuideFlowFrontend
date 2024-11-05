@@ -7,8 +7,10 @@ export interface Post {
     publishDate: Date;    
     imageUrl: string;
     imageBase64: string;   
-    status: Status;      
-}
+    status: Status;
+    isRated?: boolean;
+    isRatedPositively?: boolean;
+}   
 
 export enum Status {
     Draft = 0,         

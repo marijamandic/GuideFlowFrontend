@@ -221,6 +221,13 @@
     font-weight: bold;
   }
   
+  .upvoted {
+    color: #ff4500;
+  }
+  
+  .downvoted {
+    color: #7193ff; 
+  }
   .bottom-interaction-bar {
     display: flex;
     align-items: center;
