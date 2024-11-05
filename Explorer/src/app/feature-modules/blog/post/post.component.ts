@@ -24,8 +24,9 @@ export class PostComponent implements OnInit {
   ratingCounts: { [postId: number]: { positive: number; negative: number } } = {};
   loggedInUserId: number = 0;
   engagementStatuses: { [postId: number]: number } = {};
-  selectedStatus: Status | '' = ''; // Holds the selected status for filtering
-  statusOptions = [Status.Active, Status.Famous]; // Filter options for dropdown
+  // selectedStatus: Status | '' = ''; // Holds the selected status for filtering
+  // statusOptions = [Status.Active, Status.Famous]; // Filter options for dropdown
+  selectedEngagementStatus: number | '' = '';
 
   constructor(
     private postService: PostService,
@@ -53,7 +54,9 @@ export class PostComponent implements OnInit {
             this.publishedPostsToShow.forEach(post => {
               this.postService.getEngagementStatus(post.id).subscribe({
                 next: (status: number) => {
+                  console.log(`Post ID: ${post.id}, Engagement Status: ${status}`);
                   this.engagementStatuses[post.id] = status;
+                  post.engagementStatus = status;
                 },
                 error: (err) => console.error(`Error fetching engagement status for post ${post.id}:`, err)
               });
@@ -106,14 +109,23 @@ export class PostComponent implements OnInit {
     const ratingCount = this.ratingCounts[postId];
     return (ratingCount ? ratingCount.positive - ratingCount.negative : 0);
   }
-  filterPostsByStatus(event: Event) {
-    const selectedValue = (event.target as HTMLSelectElement)?.value; // Type cast and optional chaining
-    this.selectedStatus = selectedValue ? Number(selectedValue) : ''; // Convert to number if not empty
+
+  filterPostsByEngagementStatus(event: Event) {
+    const selectedValue = (event.target as HTMLSelectElement)?.value;
+    this.selectedEngagementStatus = selectedValue ? Number(selectedValue) : ''; 
+
+    this.publishedPostsToShow = this.selectedEngagementStatus !== ''
+      ? this.posts.filter(post => 
+          post.engagementStatus === this.selectedEngagementStatus && 
+          (post.status !== Status.Draft && post.status !== Status.Closed)
+        )
+      : this.posts.filter(post => post.status !== Status.Draft && post.status !== Status.Closed);
   
-    this.publishedPostsToShow = this.selectedStatus !== ''
-      ? this.posts.filter(post => post.status === this.selectedStatus)
-      : this.posts;
+   
   }
+  
+  
+  
 
 
   getStatusName(status: Status): string {

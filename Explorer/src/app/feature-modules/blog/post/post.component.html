@@ -1,10 +1,11 @@
 <div class="main-container">
   <div class="main-column">
     <div class="right-sidebar">
-      <label for="statusFilter" class="filter-label">Filter by Status:</label>
-      <select id="statusFilter" (change)="filterPostsByStatus($event)">
+      <label for="engagementStatusFilter" class="filter-label">Filter by Engagement Status:</label>
+      <select id="engagementStatusFilter" (change)="filterPostsByEngagementStatus($event)">
         <option value="">All</option>
-        <option [value]="status" *ngFor="let status of statusOptions">{{ getStatusName(status) }}</option>
+        <option value="1">Active</option>
+        <option value="2">Famous</option>
       </select>
     </div>
   <div class="post-flex">

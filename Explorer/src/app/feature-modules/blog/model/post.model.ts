@@ -10,6 +10,7 @@ export interface Post {
     status: Status;
     isRated?: boolean;
     isRatedPositively?: boolean;
+    engagementStatus?: number;
 }   
 
 export enum Status {
