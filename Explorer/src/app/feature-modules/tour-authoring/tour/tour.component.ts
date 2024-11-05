@@ -21,11 +21,14 @@ export class TourComponent implements OnInit {
   longitude: number | null = null;
   searchDistance: number | null = null;
   user: User | undefined;
+  forPublish: boolean = false;
 
   constructor(private service: TourService, private authService: AuthService){}
   
   tours: Tour[] = [];
   filteredTours: Tour[] = [];
+  draftTours: Tour[]=[];
+  publishedTours: Tour[]=[];
 
   ngOnInit(): void {
       this.authService.user$.subscribe(user => {
@@ -37,6 +40,7 @@ export class TourComponent implements OnInit {
   initializeTour(): Tour {
     return {
       id: 0,
+      authorId:-1,
       name: '',
       description: '',
       price: { cost: 0, currency: Currency.EUR },
@@ -56,11 +60,22 @@ export class TourComponent implements OnInit {
     this.service.getTour().subscribe({
       next: (result: PagedResults<Tour>) => {
         this.tours = result.results;
+        this.getDraftTours();
+        this.getPublishedTours();
       },
       error: (err: any)=>{
         console.log(err)
       }
     })
+   
+  }
+
+  getDraftTours():void{
+    
+    this.draftTours = this.tours.filter(t=> t.status === TourStatus.Draft);
+  }
+  getPublishedTours():void{
+    this.publishedTours = this.tours.filter(t => t.status === TourStatus.Published)
   }
 
   deleteTour(id: number): void {
@@ -96,16 +111,26 @@ export class TourComponent implements OnInit {
   }
 
   searchTours(): void {
-    if (this.latitude !== null && this.longitude !== null && this.searchDistance) {
+    if (this.latitude !== null && this.longitude !== null && this.searchDistance !== null) {
       this.service.searchTours(this.latitude, this.longitude, this.searchDistance).subscribe({
-        next: (result: PagedResults<Tour>) => {
-          this.filteredTours = result.results;
+        next: (tours: Tour[]) => {
+          this.filteredTours = tours;
+
         },
         error: (err: any) => {
-          console.log(this.latitude, this.longitude, this.searchDistance);
+          console.error('Error fetching search results:', err);
         }
       });
+    } else {
+      console.log('Please select a point on the map and enter a search distance.');
     }
+  }
+   
+  onPublish(tour:Tour): void {
+    this.selectedTour = tour;
+    this.shouldEdit = true;
+    this.forPublish = true;
+    this.shouldRenderTourForm = true;
   }
 
   CurrencyMap = {
@@ -119,6 +144,11 @@ LevelMap = {
     1: 'Advanced',
     2: 'Expert'
 };
+StatusMap = {
+  0: 'Draft',
+  1: 'Published',
+  2: 'Archived'
+}
 }
 
   
