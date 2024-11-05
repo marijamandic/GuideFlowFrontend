@@ -24,6 +24,8 @@ export class PostComponent implements OnInit {
   ratingCounts: { [postId: number]: { positive: number; negative: number } } = {};
   loggedInUserId: number = 0;
   engagementStatuses: { [postId: number]: number } = {};
+  selectedStatus: Status | '' = ''; // Holds the selected status for filtering
+  statusOptions = [Status.Active, Status.Famous]; // Filter options for dropdown
 
   constructor(
     private postService: PostService,
@@ -103,6 +105,19 @@ export class PostComponent implements OnInit {
   getNetRating(postId: number): number {
     const ratingCount = this.ratingCounts[postId];
     return (ratingCount ? ratingCount.positive - ratingCount.negative : 0);
+  }
+  filterPostsByStatus(event: Event) {
+    const selectedValue = (event.target as HTMLSelectElement)?.value; // Type cast and optional chaining
+    this.selectedStatus = selectedValue ? Number(selectedValue) : ''; // Convert to number if not empty
+  
+    this.publishedPostsToShow = this.selectedStatus !== ''
+      ? this.posts.filter(post => post.status === this.selectedStatus)
+      : this.posts;
+  }
+
+
+  getStatusName(status: Status): string {
+    return Status[status];  // Ovo vraća ime enum-a (Draft, Published, Closed)
   }
 
   loadCommentCounts(): void {
