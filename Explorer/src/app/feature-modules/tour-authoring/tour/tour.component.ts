@@ -14,11 +14,14 @@ export class TourComponent implements OnInit {
   selectedTour: Tour = this.initializeTour();
   shouldRenderTourForm: boolean = false;
   shouldEdit: boolean = false;
+  forPublish: boolean = false;
   
 
   constructor(private service: TourService){}
   
   tours: Tour[] = [];
+  draftTours: Tour[]=[];
+  publishedTours: Tour[]=[];
 
   ngOnInit(): void {
       this.getTours();
@@ -28,6 +31,7 @@ export class TourComponent implements OnInit {
   initializeTour(): Tour {
     return {
       id: 0,
+      authorId:-1,
       name: '',
       description: '',
       price: { cost: 0, currency: Currency.EUR },
@@ -47,11 +51,22 @@ export class TourComponent implements OnInit {
     this.service.getTour().subscribe({
       next: (result: PagedResults<Tour>) => {
         this.tours = result.results;
+        this.getDraftTours();
+        this.getPublishedTours();
       },
       error: (err: any)=>{
         console.log(err)
       }
     })
+   
+  }
+
+  getDraftTours():void{
+    
+    this.draftTours = this.tours.filter(t=> t.status === TourStatus.Draft);
+  }
+  getPublishedTours():void{
+    this.publishedTours = this.tours.filter(t => t.status === TourStatus.Published)
   }
 
   deleteTour(id: number): void {
@@ -72,6 +87,16 @@ export class TourComponent implements OnInit {
     this.shouldEdit = false;
     this.shouldRenderTourForm = true;
   }
+   
+  onPublish(tour:Tour): void {
+    this.selectedTour = tour;
+    this.shouldEdit = true;
+    this.forPublish = true;
+    this.shouldRenderTourForm = true;
+  }
+
+
+
   CurrencyMap = {
     0: 'RSD',
     1: 'EUR',
@@ -83,6 +108,11 @@ LevelMap = {
     1: 'Advanced',
     2: 'Expert'
 };
+StatusMap = {
+  0: 'Draft',
+  1: 'Published',
+  2: 'Archived'
+}
 }
 
   
