@@ -1,6 +1,6 @@
 import { Problem } from '../model/problem.model';
 
-export const convertResolutionDateStrings = (problems: Problem[]): Problem[] => {
+export const adjustProblemsArrayResponse = (problems: Problem[]): Problem[] => {
 	return [
 		...problems.map(problem => ({
 			...problem,

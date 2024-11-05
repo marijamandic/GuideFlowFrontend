@@ -4,7 +4,7 @@ import { TourAuthoringService } from '../tour-authoring.service';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
 import { convertEnumToString } from 'src/app/shared/utils/enumToStringConverter';
 import { toDateOnly } from 'src/app/shared/utils/dateToDateOnlyConverter';
-import { convertResolutionDateStrings } from 'src/app/shared/utils/stringToDateConverter';
+import { adjustProblemsArrayResponse } from 'src/app/shared/utils/adjustResponse';
 
 @Component({
 	selector: 'xp-problem',
@@ -27,7 +27,7 @@ export class ProblemComponent implements OnInit {
 	ngOnInit(): void {
 		this.service.getProblemsByAuthorId().subscribe({
 			next: (result: PagedResults<Problem>) => {
-				this.problems = convertResolutionDateStrings(result.results);
+				this.problems = adjustProblemsArrayResponse(result.results);
 			}
 		});
 	}
