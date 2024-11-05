@@ -9,10 +9,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { ReportProblemComponent } from './report-problem/report-problem.component';
 import { TourReviewComponent } from './tour-review/tour-review.component';
 import { TourReviewFormComponent } from './tour-review-form/tour-review-form.component';
+import { ProblemStatusComponent } from './problem-status/problem-status.component';
 
 @NgModule({
-	declarations: [EquipmentManagementComponent, EquipmentFormComponent, ReportProblemComponent, TourReviewComponent, TourReviewFormComponent],
+	declarations: [EquipmentManagementComponent, EquipmentFormComponent, ReportProblemComponent, TourReviewComponent, TourReviewFormComponent,ProblemStatusComponent],
 	imports: [CommonModule, MatFormFieldModule, MatInputModule, ReactiveFormsModule, MatIconModule, CommonModule],
-	exports: [EquipmentManagementComponent, ReportProblemComponent, TourReviewComponent]
+	exports: [EquipmentManagementComponent, ReportProblemComponent, TourReviewComponent,ProblemStatusComponent]
 })
 export class TourExecutionModule {}
