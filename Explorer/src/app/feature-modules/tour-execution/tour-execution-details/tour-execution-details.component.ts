@@ -129,7 +129,6 @@ isLessThanThirtyFivePercent(): void {
   this.tourExecutionService.getPercentage(this.tourExecution?.id || 0).subscribe({
     next: (percent: number) => {
       console.log(`Pređeni procenat: ${percent}`);
-
       this.percentageSubject.next(percent);
       this.percentageCompleted = percent;
 
@@ -161,13 +160,13 @@ getReviewMessage(): string {
   console.log("Manje od 7 dana:", isPastSevenDays)
   console.log("Manje od 35:", this.isBelowThirtyFivePercent)
   if (isPastSevenDays && this.isBelowThirtyFivePercent) {
-    return "Recenziju nije moguće ostaviti jer je prošlo više od 7 dana od poslednje aktivnosti i manje od 35% ture je pređeno.";
+    return "Review cannot be submitted because more than 7 days have passed since the last activity and less than 35% of the tour has been completed.";
   } else if (isPastSevenDays) {
-    return "Recenziju nije moguće ostaviti jer je prošlo više od 7 dana od poslednje aktivnosti.";
+    return "Review cannot be submitted because more than 7 days have passed since the last activity.";
   } else if (this.isBelowThirtyFivePercent) {
-    return "Recenziju nije moguće ostaviti jer je manje od 35% ture pređeno.";
+    return "Review cannot be submitted because less than 35% of the tour has been completed.";
   } else {
-    return "";
+    return ""; 
   }
   }
 }
