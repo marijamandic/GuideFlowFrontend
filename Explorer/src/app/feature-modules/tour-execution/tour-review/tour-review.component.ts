@@ -60,7 +60,7 @@ export class TourReviewComponent implements OnInit {
       tourId: this.tourId
     };
 
-    this.service.handleClick(tourReview).subscribe({
+    this.service.getPercentage(this.tourId).subscribe({
       next: () => {
         this.tourReviewUpdated.emit();
         this.tourReviewForm.reset(); 

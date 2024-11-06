@@ -6,6 +6,7 @@ import { TourReview } from './model/tour-review.model';
 import { EquipmentManagement } from './model/equipment-management.model';
 import { environment } from 'src/env/environment';
 import { Problem } from 'src/app/shared/model/problem.model';
+import { Tour } from '../tour-authoring/model/tour.model';
 
 @Injectable({
 	providedIn: 'root'
@@ -40,4 +41,8 @@ export class TourExecutionService {
 	handleClick(tourReview: TourReview): Observable<TourReview> {
 		return this.http.post<TourReview>('https://localhost:44333/api/tourist/tourReview', tourReview);
 	}
+	
+	getPercentage(tourExecutionId: number): Observable<number> {
+		return this.http.get<number>(`https://localhost:44333/api/execution/tourExecution/${tourExecutionId}/completion-percentage`);
+	}		
 }

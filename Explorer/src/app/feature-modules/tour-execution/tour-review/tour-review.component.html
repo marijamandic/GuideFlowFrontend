@@ -1,7 +1,7 @@
 <div class="review-card">
-    <h2>Rate your experience</h2>
-    <h5>We highly value your feedback! Kindly take a moment to rate your experience and provide us with your thoughts. Your input helps us improve and serve you better.</h5>
     <form [formGroup]="tourReviewForm" (ngSubmit)="handleClick()">
+        <h2>Rate your experience</h2>
+        <h5>We highly value your feedback! Kindly take a moment to rate your experience and provide us with your thoughts. Your input helps us improve and serve you better.</h5>  
         <div class="stars">
             <span 
                 *ngFor="let star of [1, 2, 3, 4, 5]; let i = index" 
