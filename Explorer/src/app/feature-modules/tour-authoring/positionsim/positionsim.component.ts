@@ -67,5 +67,6 @@ export class PositionsimComponent implements OnInit {
     }
   }
   
-  
+  //******da bih mogao da kreiram commit posto sam greskom prvo pushovao na development */
+  promenljiva = 1;
 }
