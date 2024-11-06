@@ -34,11 +34,17 @@ export class AdministrationService {
 		return this.http.put<Equipment>(environment.apiHost + 'administration/equipment/' + equipment.id, equipment);
 	}
 
-	getAllProblems(): Observable<PagedResults<Problem>> {
+	 getAllProblems():Observable<PagedResults<Problem>> {
 		const headers = new HttpHeaders({
 			Authorization: `Bearer ${localStorage.getItem('access-token')}`
 		});
 		return this.http.get<PagedResults<Problem>>(`${environment.apiHost}problems/admin`, { headers });
+	}
+	getProblems(): Observable<PagedResults<Problem>>{
+		return this.http.get<PagedResults<Problem>>(environment.apiHost + 'problems');
+	}
+	updateDeadline(id: number,date : string) : Observable<Problem>{
+		return this.http.put<Problem>(environment.apiHost + 'problems/' + id + '/deadline',{ Date: date });
 	}
 
 	getClubs(): Observable<PagedResults<Club>> {

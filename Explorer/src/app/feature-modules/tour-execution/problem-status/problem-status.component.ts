@@ -53,9 +53,9 @@ export class ProblemStatusComponent implements OnInit {
     }
 
     formatDate(date: Date): string {
-        const parsedDate = date instanceof Date ? date : new Date(date);
-        return parsedDate.toISOString().split('T')[0];
-    }
+		const parsedDate = new Date(date);
+		return parsedDate.toLocaleDateString('en-CA');
+	}
 
     toggleForm(problemId: number | null): void {
         this.selectedProblemId = this.selectedProblemId === problemId ? null : problemId;
