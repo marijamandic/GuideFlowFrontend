@@ -24,6 +24,7 @@ export class PostComponent implements OnInit {
   ratingCounts: { [postId: number]: { positive: number; negative: number } } = {};
   loggedInUserId: number = 0;
   engagementStatuses: { [postId: number]: number } = {};
+  dropdownOpen: boolean = false;
   // selectedStatus: Status | '' = ''; // Holds the selected status for filtering
   // statusOptions = [Status.Active, Status.Famous]; // Filter options for dropdown
   selectedEngagementStatus: number | '' = '';
@@ -110,24 +111,33 @@ export class PostComponent implements OnInit {
     return (ratingCount ? ratingCount.positive - ratingCount.negative : 0);
   }
 
-  filterPostsByEngagementStatus(event: Event) {
-    const selectedValue = (event.target as HTMLSelectElement)?.value;
-    this.selectedEngagementStatus = selectedValue ? Number(selectedValue) : ''; 
+  toggleDropdown() {
+    this.dropdownOpen = !this.dropdownOpen;
+  }
 
+  setEngagementStatus(status: number | '') {
+    this.selectedEngagementStatus = status;
+    this.filterPostsByEngagementStatus();
+    this.dropdownOpen = false;
+  }
+
+  getSelectedEngagementStatus(): string {
+    switch (this.selectedEngagementStatus) {
+      case 1: return 'Active';
+      case 2: return 'Famous';
+      default: return 'All';
+    }
+  }
+
+  filterPostsByEngagementStatus() {
     this.publishedPostsToShow = this.selectedEngagementStatus !== ''
       ? this.posts.filter(post => 
           post.engagementStatus === this.selectedEngagementStatus && 
           (post.status !== Status.Draft && post.status !== Status.Closed)
         )
       : this.posts.filter(post => post.status !== Status.Draft && post.status !== Status.Closed);
-  
-   
   }
   
-  
-  
-
-
   getStatusName(status: Status): string {
     return Status[status];  // Ovo vraća ime enum-a (Draft, Published, Closed)
   }
@@ -277,7 +287,7 @@ export class PostComponent implements OnInit {
       case 3:
         return 'Closed';
       default:
-        return 'Unknown';
+        return 'Inactive';
     }
   }
   
