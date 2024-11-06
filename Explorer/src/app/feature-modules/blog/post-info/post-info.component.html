@@ -58,28 +58,39 @@
         </div>
       
         <div *ngFor="let comment of comments" class="comment-card">
-            <div class="comment-header">
+          <div class="comment-header">
               <span class="comment-author">{{ comment.username || 'Anonymous' }}</span> •
               <span class="comment-date">{{ comment.createdAt | date:'medium' }}</span>
-              
-
+      
               <!-- Kebab icon for dropdown menu -->
-              <button *ngIf="user && user.id === comment.userId && comment.id !== undefined" 
-                (click)="toggleMenu(comment.id!)" 
-                class="kebab-menu-button">⋮</button>
-
-                <div *ngIf="user && user.id === comment.userId && openMenuId === comment.id" class="comment-menu">
-                    <button (click)="startEditingComment(comment)"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</button>
-                    <button (click)="deleteComment(comment.id)"> <i class="fa fa-trash" aria-hidden="true"></i> Delete</button>
-                </div>
-
-          
-            </div>
-            <div class="comment-body">
-              <p>{{ comment.content }}</p>
-            </div>
+              <button *ngIf="user && user.id === comment.userId" 
+                      (click)="toggleMenu(comment.id!)" 
+                      class="kebab-menu-button">⋮</button>
+      
+              <!-- Only show menu if openMenuId matches the comment's ID -->
+              <div *ngIf="user && user.id === comment.userId && openMenuId === comment.id" class="comment-menu">
+                  <button (click)="startEditingComment(comment)"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</button>
+                  <button (click)="deleteComment(comment.id!)"><i class="fa fa-trash" aria-hidden="true"></i> Delete</button>
+              </div>
           </div>
-</div>
+      
+          <!-- Comment content or edit form -->
+          <div *ngIf="isEditing && editingComment?.id === comment.id" class="comment-edit-form">
+              <textarea *ngIf="editingComment" [(ngModel)]="editingComment.content" rows="3" class="edit-textarea"></textarea>
+              <div class="comment-actions">
+                  <button (click)="cancelEdit()" class="cta-button-cancel">Cancel</button>
+                  <button (click)="updateComment()" class="cta-button-save">Save</button>
+              </div>
+          </div>
+      
+          <div *ngIf="!isEditing || editingComment?.id !== comment.id" class="comment-body">
+              <p>{{ comment.content }}</p>
+          </div>
+       </div>
+      
+      
+      </div>
+      
 
 
   

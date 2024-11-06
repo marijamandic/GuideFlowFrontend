@@ -310,7 +310,7 @@ html, body {
   position: relative;
 }
 
-/* Positioning the DRAFT label in the top-left corner */
+ 
 .draft-label {
   position: absolute;
   top: 100px;
@@ -323,9 +323,6 @@ html, body {
   font-weight: bold;
   z-index: 1;
 }
-
-
-
 
 .upvoted {
   color: #ff4500;

@@ -25,9 +25,9 @@ export class PostInfoComponent implements OnInit {
   commentCount: number = 0;
   commentForm: FormGroup;
   isCommenting: boolean = false;
+  openMenuId: number | null = null;
   isEditing = false;
   editingComment: Comment | null = null;
-  openMenuId: number | null = null;
   loggedInUserId: number = 0;
   ratingCounts: { [postId: number]: { positive: number; negative: number } } = {};
 
@@ -61,7 +61,8 @@ export class PostInfoComponent implements OnInit {
       this.loadCommentCount();
     }
   }
-
+ 
+  // --- ### --- ### Post ### --- ### ---
   loadPost(): void {
     if (this.user && this.postId) {
       this.postService.getPost(Number(this.postId), this.user.role).subscribe({
@@ -81,46 +82,26 @@ export class PostInfoComponent implements OnInit {
     }
   }
 
-  loadRatingCounts(post: Post): void {
-
-    this.ratingService.getRatingById(post.id).subscribe({
-        next: (res: Rating[]) => {
-          const positiveCount = res.filter(rating => rating.ratingStatus === 0).length;
-          const negativeCount = res.filter(rating => rating.ratingStatus === 1).length;
-
-          this.ratingCounts[post.id] = { positive: positiveCount, negative: negativeCount };
-        },
-        error: (err) => console.error(`Error loading ratings for post ${post.id}:`, err)
-      });
-    
+  getImagePath(imageUrl: string): string {
+    return `${environment.webRootHost}${imageUrl}`;
   }
-
-  getNetRating(postId: number): number {
-    const ratingCount = this.ratingCounts[postId];
-    return (ratingCount ? ratingCount.positive - ratingCount.negative : 0);
-  }
-  loadEngagementStatus(): void {
+  
+  //  --- ### --- ### Comments ### --- ### ---
+  loadComments(): void {
     if (this.postId) {
-      this.postService.getEngagementStatus(Number(this.postId)).subscribe({
-        next: (status: number) => {
-          console.log(status);
-          this.engagementStatus = status;
+      this.commentService.getComments(this.postId).subscribe({
+        next: (comments: Comment[]) => {
+          this.comments = comments;
+          this.loadCommentUsernames();
+          this.isEditing = false;
         },
-        error: (err) => console.error(`Error fetching engagement status for post ${this.postId}:`, err)
+        error: (err: any) => {
+          console.error('Error loading comments:', err);
+        }
       });
     }
-  }
+  }  
 
-  loadRating(post: Post): void{
-    this.ratingService.getRatingById(post.id).subscribe({
-      next: (res: any) => {
-        const ratings = res.filter((r: any) => r.userId === this.loggedInUserId);
-        post.isRated = ratings.length > 0;
-        const positiveRating = ratings.some((rating: any) => rating.ratingStatus === 0)
-        post.isRatedPositively = positiveRating;
-      }
-    })
-  }
   loadCommentCount(): void {
     if (this.postId) {
       this.commentService.getCommentCount(this.postId).subscribe({
@@ -133,20 +114,6 @@ export class PostInfoComponent implements OnInit {
       });
     }
   }
-
-  loadComments(): void {
-    if (this.postId) {
-      this.commentService.getComments(this.postId).subscribe({
-        next: (comments: Comment[]) => {
-          this.comments = comments;
-          this.loadCommentUsernames();
-        },
-        error: (err: any) => {
-          console.error('Error loading comments:', err);
-        }
-      });
-    }
-  }  
 
   loadUsername(userId: number): void {
     this.postService.getUsername(userId).subscribe({
@@ -203,10 +170,19 @@ export class PostInfoComponent implements OnInit {
     }
   }
   
+  toggleMenu(commentId: number): void {
+    // Toggle the menu for the specific comment
+    this.openMenuId = this.openMenuId === commentId ? null : commentId;
+  }
+
+  startEditingComment(comment: Comment): void {
+    this.isEditing = true;
+    this.editingComment = { ...comment };
+    this.openMenuId = null; 
+  }
+
   updateComment(): void {
     if (this.editingComment) {
-      this.editingComment.content = this.commentForm.value.content || '';
-      this.editingComment.lastModified = new Date();
       this.commentService.editComment(this.editingComment).subscribe({
         next: () => {
           this.loadComments();
@@ -223,39 +199,18 @@ export class PostInfoComponent implements OnInit {
     this.commentForm.reset();
   }
 
-  getImagePath(imageUrl: string): string {
-    return `${environment.webRootHost}${imageUrl}`;
-  }
-
-  toggleMenu(commentId?: number): void {
-    if (commentId === undefined) {
-      console.warn('Comment ID is undefined.');
-      return;  
-    }
-    
-    this.openMenuId = this.openMenuId === commentId ? null : commentId;
-    console.log("Toggled menu for comment ID:", commentId);
-    console.log("Current openMenuId:", this.openMenuId);
-  }
-  
-
-  startEditingComment(comment: Comment): void {
-    this.isEditing = true;
-    this.editingComment = { ...comment };
-    this.commentForm.patchValue({ content: comment.content });
-    this.openMenuId = null;  // Close menu after selecting "Edit"
-  }
-
   deleteComment(commentId: number): void {
+    // Call the delete API with the specific comment ID
     this.commentService.deleteComments(commentId).subscribe({
-      next: () => {
-        this.loadComments();
-      },
-      error: (err) => console.error('Failed to delete comment:', err)
+        next: () => {
+            this.loadComments();  // Refresh comments after deletion
+        },
+        error: (err) => console.error('Failed to delete comment:', err)
     });
-    this.openMenuId = null;  
-  }
+    this.openMenuId = null;  // Close the menu after deletion
+}
 
+  //  --- ### --- ### Rating ### --- ### ---
   private addRating(rating: Rating, postId: number) {
       this.ratingService.postRating(rating).subscribe({
         next: () => {
@@ -267,6 +222,37 @@ export class PostInfoComponent implements OnInit {
         }
       });
   }
+
+  loadRatingCounts(post: Post): void {
+
+    this.ratingService.getRatingById(post.id).subscribe({
+        next: (res: Rating[]) => {
+          const positiveCount = res.filter(rating => rating.ratingStatus === 0).length;
+          const negativeCount = res.filter(rating => rating.ratingStatus === 1).length;
+
+          this.ratingCounts[post.id] = { positive: positiveCount, negative: negativeCount };
+        },
+        error: (err) => console.error(`Error loading ratings for post ${post.id}:`, err)
+      });
+    
+  }
+
+  getNetRating(postId: number): number {
+    const ratingCount = this.ratingCounts[postId];
+    return (ratingCount ? ratingCount.positive - ratingCount.negative : 0);
+  }
+
+  loadRating(post: Post): void{
+    this.ratingService.getRatingById(post.id).subscribe({
+      next: (res: any) => {
+        const ratings = res.filter((r: any) => r.userId === this.loggedInUserId);
+        post.isRated = ratings.length > 0;
+        const positiveRating = ratings.some((rating: any) => rating.ratingStatus === 0)
+        post.isRatedPositively = positiveRating;
+      }
+    })
+  }
+
   async upvote(postId: number) {
     const rating: Rating = {
       id: -1,
@@ -275,7 +261,6 @@ export class PostInfoComponent implements OnInit {
       postId: postId,
       createdDate: new Date().toISOString()
     }
-
 
     console.log(rating.createdDate)
     const hasUpvoted = await this.findUpvote(this.loggedInUserId, postId);
@@ -337,7 +322,6 @@ export class PostInfoComponent implements OnInit {
     });
   }
 
-
   deleteRating(userId: number, postId: number): Promise<void> {
     return new Promise((resolve, reject) => {
       this.ratingService.deleteRating(userId, postId).subscribe({
@@ -354,6 +338,20 @@ export class PostInfoComponent implements OnInit {
     });
   }
 
+  //  --- ### --- ### Engagement ### --- ### ---
+
+  loadEngagementStatus(): void {
+    if (this.postId) {
+      this.postService.getEngagementStatus(Number(this.postId)).subscribe({
+        next: (status: number) => {
+          console.log(status);
+          this.engagementStatus = status;
+        },
+        error: (err) => console.error(`Error fetching engagement status for post ${this.postId}:`, err)
+      });
+    }
+  }
+
   getEngagementStatusLabel(): string {
     switch (this.engagementStatus) {
       case 0:
@@ -365,7 +363,7 @@ export class PostInfoComponent implements OnInit {
       case 3:
         return 'Closed';
       default:
-        return 'Unknown';
+        return 'Inactive';
     }
   }  
   
