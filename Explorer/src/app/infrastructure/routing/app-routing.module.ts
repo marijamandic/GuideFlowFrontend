@@ -27,6 +27,7 @@ import { RatingTheAppComponent } from 'src/app/feature-modules/layout/rating-the
 import { AllAppRatingsComponent } from 'src/app/feature-modules/administration/all-app-ratings/all-app-ratings.component';
 import { TourSpecificationComponent } from 'src/app/feature-modules/marketplace/tour-specification/tour-specification.component';
 import { AccountComponent } from 'src/app/feature-modules/administration/account/account.component';
+import { TourExecutionDetailsComponent } from 'src/app/feature-modules/tour-execution/tour-execution-details/tour-execution-details.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -50,6 +51,7 @@ const routes: Routes = [
   { path: 'createBlog', component: CreateBlogComponent },
   { path: 'tourObjects', component: TourObjectComponent, canActivate: [AuthGuard] },
   { path: 'checkpoints', component: CheckpointListComponent },
+  { path: 'tour-execution/:id', component: TourExecutionDetailsComponent},
   { path: 'tour', component: TourComponent },
   { path: 'tourEquipment', component: TourEquipmentComponent },
   { path: 'ratingTheApp', component: RatingTheAppComponent },

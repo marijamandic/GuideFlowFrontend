@@ -6,6 +6,8 @@ import { TourReview } from './model/tour-review.model';
 import { EquipmentManagement } from './model/equipment-management.model';
 import { environment } from 'src/env/environment';
 import { Problem } from 'src/app/shared/model/problem.model';
+import { TourExecution } from './model/tour-execution.model';
+import { UpdateTourExecutionDto } from './model/update-tour-execution.dto';
 
 @Injectable({
 	providedIn: 'root'
@@ -39,5 +41,11 @@ export class TourExecutionService {
 
 	handleClick(tourReview: TourReview): Observable<TourReview> {
 		return this.http.post<TourReview>('https://localhost:44333/api/tourist/tourReview', tourReview);
+	}
+	getTourExecution(id:string){
+		return this.http.get<TourExecution>(environment.apiHost+'execution/tourExecution/'+id);
+	}
+	updateTourExecution(updateTourExecutionDto : UpdateTourExecutionDto){
+		return this.http.put<TourExecution>(environment.apiHost+'execution/tourExecution',updateTourExecutionDto)
 	}
 }
