@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
 import { Tour } from './model/tour.model';
 import { environment } from 'src/env/environment';
-import { User } from './model/user';
+import { Tourist } from './model/tourist';
 
 @Injectable({
   providedIn: 'root'
@@ -29,12 +29,12 @@ export class TourService {
     return this.http.put<Tour>(environment.apiHost + 'author/tours/' + tour.id, tour);
   }
 
-  getTouristById(id: number): Observable<User> {
-    return this.http.get<User>(`https://localhost:44333/api/tourists/${id}`);
+  getTouristById(id: number): Observable<Tourist> {
+    return this.http.get<Tourist>(`https://localhost:44333/api/tourists/${id}`);
   }
 
-  updateTourist(user: User): Observable<User> {
-    return this.http.put<User>(`https://localhost:44333/api/tourists/${user.id}`, user);
+  updateTourist(tourist: Tourist): Observable<Tourist> {
+    return this.http.put<Tourist>(`https://localhost:44333/api/tourists/${tourist.id}`, tourist);
   }
   
 }
