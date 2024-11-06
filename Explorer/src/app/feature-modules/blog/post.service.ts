@@ -46,8 +46,7 @@ export class PostService {
 
   // EngagementStatus
   getEngagementStatus(postId: number): Observable<number> {
-    // https://localhost:44333/api/postview/engagement/${postId}/status
-    return this.http.get<number>(`${environment.apiHost}posts/engagement/${postId}/status`);
+    return this.http.get<number>(`${environment.apiHost}postview/engagement/${postId}/status`);
   }
   
 }
