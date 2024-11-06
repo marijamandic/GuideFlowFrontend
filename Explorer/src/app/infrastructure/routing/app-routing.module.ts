@@ -30,6 +30,8 @@ import { AccountComponent } from 'src/app/feature-modules/administration/account
 import { PublicPointRequestsComponent } from 'src/app/feature-modules/tour-authoring/public-point-requests/public-point-requests.component';
 import { TourReviewFormComponent } from 'src/app/feature-modules/tour-execution/tour-review-form/tour-review-form.component';
 import { TourReviewComponent } from 'src/app/feature-modules/tour-execution/tour-review/tour-review.component';
+import { TourExecutionDetailsComponent } from 'src/app/feature-modules/tour-execution/tour-execution-details/tour-execution-details.component';
+
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
@@ -52,6 +54,7 @@ const routes: Routes = [
   { path: 'createBlog', component: CreateBlogComponent },
   { path: 'tourObjects', component: TourObjectComponent, canActivate: [AuthGuard] },
   { path: 'checkpoints', component: CheckpointListComponent },
+  { path: 'tour-execution/:id', component: TourExecutionDetailsComponent},
   { path: 'tour', component: TourComponent },
   { path: 'tourEquipment', component: TourEquipmentComponent },
   { path: 'ratingTheApp', component: RatingTheAppComponent },
