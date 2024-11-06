@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { TourReview } from '../model/tour-review.model';
+import { Component, Output, EventEmitter, OnInit } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { TourExecutionService } from '../tour-execution.service';
-import { PagedResults } from 'src/app/shared/model/paged-results.model';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import { TourReview } from '../model/tour-review.model';
 
 @Component({
   selector: 'xp-tour-review',
@@ -11,29 +11,63 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 })
 export class TourReviewComponent implements OnInit {
 
-  tourReview: TourReview[] = [];
+  @Output() tourReviewUpdated = new EventEmitter<null>();
 
-  constructor (private service: TourExecutionService) {}
+  tourReviewForm = new FormGroup({
+    rating: new FormControl('', [Validators.required, Validators.min(1), Validators.max(5)]),
+    comment: new FormControl('', [Validators.required]),
+    tourDate: new FormControl('', [Validators.required]),
+  });
 
-  handleReviewCreated(): void {
-    this.service.getReviews().subscribe({
-      next: (result: PagedResults<TourReview>) => {
-        this.tourReview = result.results;
-      },
-      error: (err: any) => {
-        console.log(err)
-      }
-    })
-  }
+  tourId: number;
+  touristId: number;
+
+  rating: number = 0;
+  hoverRatingIndex: number = 0; 
+
+  constructor(
+    private route: ActivatedRoute,
+    private service: TourExecutionService
+  ) {}
 
   ngOnInit(): void {
-    this.service.getReviews().subscribe({
-      next: (result: PagedResults<TourReview>) => {
-        this.tourReview = result.results;
+    this.route.paramMap.subscribe(params => {
+      this.tourId = Number(params.get('tourId')) || 0;
+      this.touristId = Number(params.get('touristId')) || 0;
+    });
+  }
+
+  setRating(rating: number): void {
+    this.rating = rating;
+  }
+
+  hoverRating(rating: number): void {
+    this.hoverRatingIndex = rating;
+  }
+
+  resetHover(): void {
+    this.hoverRatingIndex = 0;
+  }
+
+  handleClick(): void {
+    const tourReview: TourReview = {
+      rating: this.rating,
+      comment: this.tourReviewForm.value.comment || '',
+      creationDate: new Date(), 
+      tourDate: new Date(),
+      percentageCompleted: 0, 
+      touristId: this.touristId,
+      tourId: this.tourId
+    };
+
+    this.service.handleClick(tourReview).subscribe({
+      next: () => {
+        this.tourReviewUpdated.emit();
+        this.tourReviewForm.reset(); 
       },
-      error: (err: any) => {
-        console.log(err)
+      error: (err) => {
+        console.error('Greška pri slanju recenzije:', err);
       }
-    })
+    });
   }
 }

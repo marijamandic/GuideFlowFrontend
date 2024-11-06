@@ -1,25 +1,23 @@
-<div>
-    <table>
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Rating</th>
-                <th>Comment</th>
-                <th>Date Created</th>
-                <th>Tour Date</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor = "let trev of tourReview">
-                <td>{{ trev.id }}</td>
-                <td>{{ trev.rating }}</td>
-                <td>{{ trev.comment }}</td>
-                <td>{{ trev.creationDate}}</td>
-                <td>{{ trev.tourDate}}</td>
-            </tr>
-        </tbody>
-    </table>
-    <xp-tour-review-form (tourReviewUpdated)="handleReviewCreated()">
-        
-    </xp-tour-review-form>
+<div class="review-card">
+    <h2>Rate your experience</h2>
+    <h5>We highly value your feedback! Kindly take a moment to rate your experience and provide us with your thoughts. Your input helps us improve and serve you better.</h5>
+    <form [formGroup]="tourReviewForm" (ngSubmit)="handleClick()">
+        <div class="stars">
+            <span 
+                *ngFor="let star of [1, 2, 3, 4, 5]; let i = index" 
+                (click)="setRating(i + 1)" 
+                (mouseover)="hoverRating(i + 1)" 
+                (mouseleave)="resetHover()"
+                [class.filled]="i < rating || hoverRatingIndex >= i + 1"
+                class="star"
+            >
+                ★
+            </span>
+        </div>
+        <input type="hidden" formControlName="rating" [value]="rating" />
+
+        <textarea id="comment" formControlName="comment" placeholder="Write a comment..." required></textarea>
+
+        <button type="submit">Submit Review</button>
+    </form>
 </div>

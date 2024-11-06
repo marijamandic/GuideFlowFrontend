@@ -28,7 +28,8 @@ import { AllAppRatingsComponent } from 'src/app/feature-modules/administration/a
 import { TourSpecificationComponent } from 'src/app/feature-modules/marketplace/tour-specification/tour-specification.component';
 import { AccountComponent } from 'src/app/feature-modules/administration/account/account.component';
 import { PublicPointRequestsComponent } from 'src/app/feature-modules/tour-authoring/public-point-requests/public-point-requests.component';
-
+import { TourReviewFormComponent } from 'src/app/feature-modules/tour-execution/tour-review-form/tour-review-form.component';
+import { TourReviewComponent } from 'src/app/feature-modules/tour-execution/tour-review/tour-review.component';
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
@@ -59,6 +60,7 @@ const routes: Routes = [
   { path: 'account', component: AccountComponent, canActivate: [AuthGuard] },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'pending', component: PublicPointRequestsComponent },
+  { path: 'tourReview/:tourId/:touristId', component: TourReviewComponent },
 ];
 
 @NgModule({
