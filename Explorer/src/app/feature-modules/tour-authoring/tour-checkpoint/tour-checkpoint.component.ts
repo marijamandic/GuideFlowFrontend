@@ -1,10 +1,10 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms'; 
-import { TourCheckpointService } from '../tour-checkpoint.service';
 import { Checkpoint } from '../model/tourCheckpoint.model';
 import { MapComponent } from 'src/app/shared/map/map.component';
-import { ApprovalStatus, PointType, PublicPoint } from '../model/publicPoint.model';
-import { PublicPointService } from '../tour-public-point.service';
+import { TourService } from '../tour.service';
+import { TransportDuration, TransportType } from '../model/transportDuration.model';
+import { Router,ActivatedRoute } from '@angular/router';
+
 
 @Component({
   selector: 'xp-checkpoint-list',
@@ -12,126 +12,36 @@ import { PublicPointService } from '../tour-public-point.service';
   styleUrls: ['./tour-checkpoint.component.css']
 })
 export class CheckpointListComponent implements OnInit {
+  tourId!: number;
   checkpoints: Checkpoint[] = [];
-  editingCheckpoint: Checkpoint | null = null; 
-  checkpointForm: FormGroup; 
+  selectedCheckpoint:Checkpoint;
   checkpointCoordinates: { latitude: number, longitude: number }[] = [];
-  @Output() coordinatesSelected = new EventEmitter<{ latitude: number; longitude: number }>();
   @Output() checkpointsLoaded = new EventEmitter<{ latitude: number; longitude: number; }[]>();
-  isAddingCheckpoint = false;
-  selectedTour: string = 'tour1'; 
-  newCheckpoint = { id: 0, name: '', description: '', imageUrl: '', latitude: 0, longitude: 0, secret: ''};
-  isChecked: boolean = false; 
+  shouldRenderCheckpointForm:boolean = false;
+  shouldEdit:boolean = false; 
+  isViewMode:boolean = false;
+  allTransportData: { transportType: string; time: number; distance: number }[] = [];
+  transportDurations: TransportDuration[] = [];
+  
+  constructor(private tourService: TourService,private router:Router,private route: ActivatedRoute) {}
 
   toggleAddCheckpointForm() {
-    this.isAddingCheckpoint = !this.isAddingCheckpoint;
-  }
-
-  onFileSelected(event: any) {
-    const file: File = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        this.newCheckpoint.imageUrl = reader.result as string;
-      };
-    }
-  }
-
-  onIsCheckedChange(event: Event) {
-    const checkbox = event.target as HTMLInputElement;
-    this.isChecked = checkbox.checked; 
-  }
-  
-  addCheckpoint(): void {
-    if(this.isChecked) {
-      this.createPublicObject()
-    } else {
-      if (!this.newCheckpoint || this.newCheckpoint.id === 0) {
-        this.createNewCheckpoint();
-      } else {
-        this.updateExistingCheckpoint();
-      }
-    }
-    
-  }
-  
-  private createNewCheckpoint(): void {
-    const newCheckpoint: Checkpoint = { ...this.newCheckpoint };
-    console.log('Creating new checkpoint:', newCheckpoint);
-  
-    this.checkpointService.addCheckpoint(newCheckpoint).subscribe({
-      next: () => {
-        console.log('New checkpoint added.');
-        this.loadCheckpoints();
-        this.resetNewCheckpointForm();
-      },
-      error: (err) => console.error('Error adding checkpoint:', err)
-    });
-  }
-  
-  private updateExistingCheckpoint(): void {
-    const updatedCheckpoint: Checkpoint = { ...this.newCheckpoint };
-  
-    this.checkpointService.updateCheckpoint(updatedCheckpoint).subscribe({
-      next: () => {
-        this.loadCheckpoints();
-        this.resetNewCheckpointForm();
-      },
-      error: (err) => console.error('Error updating checkpoint:', err)
-    });
-  }
-  
-  resetNewCheckpointForm() {
-    this.newCheckpoint = { id: 0, name: '', description: '', imageUrl: '', latitude: 0, longitude: 0, secret: '' };
-    this.isAddingCheckpoint = false;
-  }
-  
-  constructor(private checkpointService: TourCheckpointService, private fb: FormBuilder, private publicPointService: PublicPointService) {
-    this.checkpointForm = this.fb.group({
-      name: ['', Validators.required],
-      description: ['', Validators.required],
-      imageUrl: ['', Validators.required],
-      latitude: [0, Validators.required],
-      longitude: [0, Validators.required],
-      secret: ['', Validators.required]
-    });
+    this.shouldRenderCheckpointForm=true;
   }
 
   ngOnInit(): void {
+    this.tourId = Number(this.route.snapshot.paramMap.get('tourId'));
     this.loadCheckpoints();
   }
-
-  loadCheckpointsMap() {
-    if (this.selectedTour == 'tour1') {
-      this.checkpointService.getCheckpointsByTour(1).subscribe({
-        next: (data) => {
-          this.checkpoints = data; 
-          this.checkpointCoordinates = this.checkpoints.map(cp => ({ latitude: cp.latitude, longitude: cp.longitude }));
-          this.checkpointsLoaded.emit(this.checkpointCoordinates);
-        },
-        error: (err) => {
-          console.error('Greška prilikom učitavanja checkpoint-a:', err);
-        }
-        });
-    } else {
-      this.checkpointService.getCheckpointsByTour(0).subscribe({
-        next: (data) => {
-          this.checkpoints = data; 
-          this.checkpointCoordinates = this.checkpoints.map(cp => ({ latitude: cp.latitude, longitude: cp.longitude }));
-          this.checkpointsLoaded.emit(this.checkpointCoordinates);
-        },
-        error: (err) => {
-          console.error('Greška prilikom učitavanja checkpoint-a:', err);
-        }
-        });
-    }
-  }
   
-  loadCheckpoints(page: number = 1, pageSize: number = 10): void {
-    this.checkpointService.getCheckpoints(page, pageSize).subscribe({
+  loadCheckpoints(): void {
+    this.shouldRenderCheckpointForm=false;
+    this.shouldEdit=false;
+    this.tourService.getTourById(this.tourId).subscribe({
       next: (data) => {
-        this.checkpoints = data.results; 
+        this.checkpoints = data.checkpoints; 
+        this.checkpointCoordinates = this.checkpoints.map(cp => ({ latitude: cp.latitude, longitude: cp.longitude }));
+        this.checkpointsLoaded.emit(this.checkpointCoordinates);
       },
       error: (err) => {
         console.error('Greška prilikom učitavanja checkpoint-a:', err);
@@ -140,75 +50,17 @@ export class CheckpointListComponent implements OnInit {
   }
 
   editCheckpoint(checkpoint: Checkpoint): void {
-    this.toggleAddCheckpointForm()
-    this.newCheckpoint.description = checkpoint.description
-    this.newCheckpoint.name = checkpoint.name
-    this.newCheckpoint.imageUrl = checkpoint.imageUrl || ''
-    this.newCheckpoint.latitude = checkpoint.latitude
-    this.newCheckpoint.longitude = checkpoint.longitude
-    this.newCheckpoint.id = checkpoint.id || 0
-    this.newCheckpoint.secret = checkpoint.secret || ''
-    this.editingCheckpoint = checkpoint; 
-    this.loadFormData(checkpoint); 
+    this.selectedCheckpoint=checkpoint;
+    this.shouldRenderCheckpointForm=true;
+    this.shouldEdit=true;
   }
 
-  loadFormData(checkpoint: Checkpoint): void {
-    this.checkpointForm.patchValue({
-      name: checkpoint.name,
-      description: checkpoint.description,
-      imageUrl: checkpoint.imageUrl,
-      latitude: checkpoint.latitude,
-      longitude: checkpoint.longitude
-    });
-  }
-
-  onCoordinatesSelected(coordinates: { latitude: number; longitude: number }): void {
-    this.newCheckpoint.latitude = coordinates.latitude
-    this.newCheckpoint.longitude = coordinates.longitude
-
-    if (this.editingCheckpoint) {
-      this.editingCheckpoint.latitude = coordinates.latitude;
-      this.editingCheckpoint.longitude = coordinates.longitude;
-    } else {
-      this.editingCheckpoint = {
-        name: '',
-        description: '',
-        imageUrl: '',
-        latitude: coordinates.latitude,
-        longitude: coordinates.longitude,
-        secret: ''
-      };
-    }
-  }
-
-  createPublicObject(): void {
-    const publicObject: PublicPoint = {
-        id: 0, 
-        name: this.newCheckpoint.name || "",
-        description: this.newCheckpoint.description || "",
-        latitude: this.newCheckpoint.latitude || 0,
-        longitude: this.newCheckpoint.longitude || 0,
-        imageUrl: this.newCheckpoint.imageUrl || "",
-        approvalStatus: ApprovalStatus.Pending, 
-        type: PointType.Checkpoint
-    };
-
-    this.publicPointService.addPublicPoint(publicObject).subscribe({
-        next: (_) => {
-            this.checkpointsLoaded.emit();
-            console.log('Public object successfully created');
-        },
-        error: (err) => {
-            console.error('Error creating public object:', err);
-        }
-    });
-  }
   
-  deleteCheckpoint(checkpoint: Checkpoint): void {
+  /*deleteCheckpoint(checkpoint: Checkpoint): void {
     if (checkpoint.id !== undefined) {
       this.checkpointService.deleteCheckpoint(checkpoint.id).subscribe({
         next: () => {
-          this.checkpoints = this.checkpoints.filter(c => c.id !== checkpoint.id);
+          this.loadCheckpoints();
           console.log('Checkpoint deleted with ID:', checkpoint.id);
         },
         error: (err: any) => {
@@ -218,5 +70,71 @@ export class CheckpointListComponent implements OnInit {
     } else {
       console.error('Checkpoint ID is undefined, cannot delete.');
     }
+  }*/
+
+    onDistanceCalculated(event: { transportType: string; time: number; distance: number }):void{
+      this.addNewTransportData(event);
+      if(event.transportType==='walking'){
+        this.tourService.updateTourLength(this.tourId,event.distance).subscribe({
+          next: (data) => {
+            console.log('Updated length:'+ data.lengthInKm);
+          },
+          error: (err) => {
+            console.error('Greška prilikom update length-a:', err);
+          }
+        });
+      }
+  }
+
+  addNewTransportData(event: { transportType: string; time: number; distance: number }): void {
+    const existingEventIndex = this.allTransportData.findIndex(
+      e => e.transportType === event.transportType
+    );
+
+    if (existingEventIndex !== -1) {
+      this.allTransportData.splice(existingEventIndex, 1);
+    }
+
+    this.allTransportData.push(event);
+  }
+
+  finishCheckpointsAdding():void{
+    this.CreateTransportDurations();
+    console.log('usao u finish');
+    if(this.checkpoints.length>=2 && this.transportDurations.length>=1){
+      this.tourService.addTransportDurations(this.tourId,this.transportDurations).subscribe({
+        next: (data) => {
+          console.log('Transport Durations added:'+ data.transportDurations);
+          this.router.navigate(['/tour']);
+          alert("Tour with checkpoints added succesfully!");
+        },
+        error: (err) => {
+          console.error('Greška prilikom add-a transport durations-a:', err);
+        }
+      });
+    }else{
+      alert("You can't finish adding checkpoint without minimum 2 checkpoints and 1 transport duration!");
+    }
+  }
+
+  CreateTransportDurations():void{
+    this.transportDurations = this.allTransportData.map(data => {
+      let transportTypeEnum: TransportType;
+    
+      if (data.transportType === 'walking') {
+        transportTypeEnum = TransportType.Walking;
+      } else if (data.transportType === 'cycling') {
+        transportTypeEnum = TransportType.Bicycle;
+      } else if (data.transportType === 'driving') {
+        transportTypeEnum = TransportType.Car;
+      } else {
+        throw new Error(`Unknown transport type: ${data.transportType}`);
+      }
+    
+      return {
+        time: data.time,
+        transportType: transportTypeEnum
+      };
+    });
   }
 }

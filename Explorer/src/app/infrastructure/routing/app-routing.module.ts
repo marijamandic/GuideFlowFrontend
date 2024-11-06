@@ -50,7 +50,7 @@ const routes: Routes = [
   { path: 'comment', component: CommentComponent },
   { path: 'createBlog', component: CreateBlogComponent },
   { path: 'tourObjects', component: TourObjectComponent, canActivate: [AuthGuard] },
-  { path: 'checkpoints', component: CheckpointListComponent },
+  { path: 'checkpoints/:tourId', component: CheckpointListComponent },
   { path: 'tour', component: TourComponent },
   { path: 'tourEquipment', component: TourEquipmentComponent },
   { path: 'ratingTheApp', component: RatingTheAppComponent },

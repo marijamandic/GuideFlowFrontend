@@ -41,7 +41,7 @@
         </tbody>
     </table>
     <div class="tour-form-container">
-        <xp-tour-form *ngIf="shouldRenderTourForm" [shouldEdit]="shouldEdit" [forPublish]="forPublish" [tour]="selectedTour" (tourUpdated)="getTours()"></xp-tour-form>
+        <xp-tour-form *ngIf="shouldRenderTourForm" [shouldEdit]="shouldEdit" [tour]="selectedTour" (tourUpdated)="getTours()"></xp-tour-form>
     </div>
 
     <h2>Published Tours</h2>
@@ -64,7 +64,7 @@
                 <td> {{ CurrencyMap[tour.price.currency] }} </td>
                 <td> {{ LevelMap[tour.level] }} </td>
                 <td>
-                    <button class="add-button" >Archive</button>
+                    <button class="add-button" (click)="archiveTour(tour)">Archive</button>
                 </td>
             </tr>
           

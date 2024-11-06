@@ -1,16 +1,6 @@
-<!--<form [formGroup]="tourForm">
-    
-
-        <button *ngIf="!shouldEdit" color="primary" type="submit" (click)="addTour()">Done</button>
-        <button *ngIf="shouldEdit" color="primary" type="submit" (click)="updateTour()">Done</button>
-        (ngSubmit)="addTour()"
-    </div>
-</form>
--->
 <div class="form-container">
   <form  #tourForm="ngForm" class="tour-form">
-    <h2 *ngIf="!forPublish">Add Tour</h2>
-    <h2 *ngIf="forPublish">Publish Tour</h2>
+    <h2>Add Tour</h2>
     
     <label for="name">Tour Name</label>
     <input id="name" [(ngModel)]="tour.name" name="name" required placeholder="Tour Name">
@@ -41,10 +31,8 @@
     </div>
 
     <button type="button" class="add-tag-button" (click)="addTag()">Add Tag</button>
-    <button class="cta-button" *ngIf="(!shouldEdit && !forPublish)"  type="submit" (click)="addTour()">Done</button>
-    <button class="cta-button" *ngIf="(shouldEdit && !forPublish)"  type="submit" (click)="updateTour()">Done</button>
-    <button class="cta-button" *ngIf="forPublish" type="submit" (click)="publishTour()">Done</button>
-   
+    <button class="cta-button" *ngIf="!shouldEdit"  type="submit" (click)="addTour()">Done</button>
+    <button class="cta-button" *ngIf="shouldEdit"  type="submit" (click)="updateTour()">Done</button>   
   </form>
 </div>
 

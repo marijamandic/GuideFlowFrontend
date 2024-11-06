@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
 import { Tour } from './model/tour.model';
 import { environment } from 'src/env/environment';
+import { Checkpoint } from './model/tourCheckpoint.model';
+import { TransportDuration } from './model/transportDuration.model';
 
 
 @Injectable({
@@ -15,6 +17,10 @@ export class TourService {
 
   getTour(): Observable<PagedResults<Tour>> {
     return this.http.get<PagedResults<Tour>>('https://localhost:44333/api/authoring/tour')
+  }
+
+  getTourById(id:number):Observable<Tour> {
+    return this.http.get<Tour>(environment.apiHost + 'authoring/tour/' + id)
   }
 
   deleteTour(id: number): Observable<Tour> {
@@ -29,7 +35,20 @@ export class TourService {
     return this.http.put<Tour>(environment.apiHost + 'authoring/tour/' + tour.id, tour);
   }
 
-  publishTour(tour:Tour): Observable<Tour>{
-    return this.http.put<Tour>(environment.apiHost + 'authoring/tour/publish/'+ tour.id, tour)
+  addCheckpoint(tourId:number,checkpoint:Checkpoint): Observable<Tour>{
+    return this.http.put<Tour>(environment.apiHost + 'authoring/tour/addingCheckpoint/'+ tourId, checkpoint)
+  }
+
+  updateTourLength(tourId:number,length:number):Observable<Tour>{
+    return this.http.put<Tour>(environment.apiHost + 'authoring/tour/updatingLength/'+ tourId, length)
+  }
+
+  addTransportDurations(tourId:number,transportDurations:TransportDuration[]):Observable<Tour>{
+    return this.http.put<Tour>(environment.apiHost + 'authoring/tour/addingTransportDuration/'+ tourId, transportDurations)
+  }
+
+  changeStatus(tourId:number,status:string):Observable<Tour>{
+    return this.http.put<Tour>(environment.apiHost + 'authoring/tour/changeStatus/'+ tourId,JSON.stringify(status),
+      { headers: { 'Content-Type': 'application/json' } })
   }
 }
