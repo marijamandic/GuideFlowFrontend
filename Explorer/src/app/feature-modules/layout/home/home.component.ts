@@ -1,4 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/infrastructure/auth/auth.service';
+import { User } from 'src/app/infrastructure/auth/model/user.model';
+import { ShoppingCart } from '../../marketplace/model/shoppingCart.model';
+import { MarketplaceService } from '../../marketplace/marketplace.service';
+import { TourService } from '../../tour-authoring/tour.service';
+import { Tour } from '../../tour-authoring/model/tour.model';
+import { PagedResults } from 'src/app/shared/model/paged-results.model';
 
 @Component({
   selector: 'xp-home',
@@ -13,6 +20,12 @@ export class HomeComponent implements OnInit {
   ]; 
   currentImageIndex: number = 0;
   isTransitioning = false;
+  user: User | undefined;
+  shoppingCart: ShoppingCart | undefined
+  selectedTour: Tour | undefined
+
+  constructor(private authService: AuthService, private marketPlaceService: MarketplaceService,
+    private tourService: TourService) {}
 
   tours = [
     { name: 'Lorem Ipsum', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ', rating: 8.5, reviews: 'Very good, 235 reviews', imageUrl: 'assets/images/tour4.jpg' },
@@ -32,8 +45,30 @@ export class HomeComponent implements OnInit {
     { name: 'Lorem Ipsum', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ', rating: 8.3, reviews: 'Very good, 180 reviews', imageUrl: 'assets/images/club6.jpg' }
   ];
 
-  ngOnInit() {
+  tours_2: Tour[] = []
+
+  ngOnInit(): void {
+    this.authService.user$.subscribe(user => {
+      this.user = user;
+      this.marketPlaceService.getShoppingCartById(user.id).subscribe({
+        next: (result: ShoppingCart) => {
+          this.shoppingCart = result;
+        }
+      })
+    });
     this.startImageRotation();
+  }
+
+  getTours(): void {
+    this.tourService.getTour().subscribe({
+      next: (result: PagedResults<Tour>) => {
+        this.tours_2 = result.results
+      }
+    })
+  }
+
+  onTourClick(tour: Tour): void {
+    this.selectedTour = tour
   }
 
   ngAfterViewInit() {

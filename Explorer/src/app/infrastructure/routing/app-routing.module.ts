@@ -27,6 +27,8 @@ import { RatingTheAppComponent } from 'src/app/feature-modules/layout/rating-the
 import { AllAppRatingsComponent } from 'src/app/feature-modules/administration/all-app-ratings/all-app-ratings.component';
 import { TourSpecificationComponent } from 'src/app/feature-modules/marketplace/tour-specification/tour-specification.component';
 import { AccountComponent } from 'src/app/feature-modules/administration/account/account.component';
+import { TourPreviewComponent } from 'src/app/feature-modules/marketplace/tour-preview/tour-preview.component';
+import { ShoppingCartComponent } from 'src/app/feature-modules/marketplace/shopping-cart/shopping-cart.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -57,6 +59,8 @@ const routes: Routes = [
   { path: 'specification', component: TourSpecificationComponent },
   { path: 'account', component: AccountComponent, canActivate: [AuthGuard] },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
+  {path: 'tourPreview/:tourName', component: TourPreviewComponent},
+  {path: 'shoppingCart', component: ShoppingCartComponent}
 ];
 
 @NgModule({

@@ -5,7 +5,8 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { MaterialModule } from 'src/app/infrastructure/material/material.module';
 import { RouterModule } from '@angular/router';
 import { RatingTheAppComponent } from './rating-the-app/rating-the-app.component';
-import { FormsModule } from '@angular/forms'; // <-- Import FormsModule
+import { FormsModule } from '@angular/forms';
+import { MarketplaceModule } from "../marketplace/marketplace.module"; // <-- Import FormsModule
 
 @NgModule({
   declarations: [
@@ -17,8 +18,9 @@ import { FormsModule } from '@angular/forms'; // <-- Import FormsModule
     CommonModule,
     MaterialModule,
     RouterModule,
-    FormsModule
-  ],
+    FormsModule,
+    MarketplaceModule
+],
   exports: [
     NavbarComponent,
     HomeComponent,

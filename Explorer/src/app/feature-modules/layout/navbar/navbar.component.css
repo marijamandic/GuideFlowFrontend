@@ -110,6 +110,12 @@ mat-icon:hover{
     color: #585858
 }
 
+.shopping-cart{
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
 /* Media queries for responsiveness */
 @media (max-width: 768px) {
     .nav-links {

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { User } from 'src/app/infrastructure/auth/model/user.model';
+import { ShoppingCart } from '../../marketplace/model/shoppingCart.model';
+import { MarketplaceService } from '../../marketplace/marketplace.service';
 
 @Component({
   selector: 'xp-navbar',
@@ -11,7 +13,7 @@ export class NavbarComponent implements OnInit {
   user: User | undefined;
   isDropdownOpen: boolean = false;
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private marketPlaceService : MarketplaceService) {}
 
   ngOnInit(): void {
     this.authService.user$.subscribe(user => {
