@@ -1,6 +1,5 @@
-import { Component, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Output, EventEmitter, OnInit, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
 import { TourExecutionService } from '../tour-execution.service';
 import { TourReview } from '../model/tour-review.model';
 
@@ -10,32 +9,24 @@ import { TourReview } from '../model/tour-review.model';
   styleUrls: ['./tour-review.component.css']
 })
 export class TourReviewComponent implements OnInit {
-
   @Output() tourReviewUpdated = new EventEmitter<null>();
+  
+  @Input() tourId: number = 0;
+  @Input() touristId: number = 0;
+  @Input() startDate: Date | null | undefined;
+  @Input() percentageCompleted: number = 0;
 
   tourReviewForm = new FormGroup({
     rating: new FormControl('', [Validators.required, Validators.min(1), Validators.max(5)]),
     comment: new FormControl('', [Validators.required]),
-    tourDate: new FormControl('', [Validators.required]),
   });
-
-  tourId: number;
-  touristId: number;
 
   rating: number = 0;
   hoverRatingIndex: number = 0; 
 
-  constructor(
-    private route: ActivatedRoute,
-    private service: TourExecutionService
-  ) {}
+  constructor(private service: TourExecutionService) {}
 
-  ngOnInit(): void {
-    this.route.paramMap.subscribe(params => {
-      this.tourId = Number(params.get('tourId')) || 0;
-      this.touristId = Number(params.get('touristId')) || 0;
-    });
-  }
+  ngOnInit(): void {}
 
   setRating(rating: number): void {
     this.rating = rating;
@@ -54,19 +45,19 @@ export class TourReviewComponent implements OnInit {
       rating: this.rating,
       comment: this.tourReviewForm.value.comment || '',
       creationDate: new Date(), 
-      tourDate: new Date(),
-      percentageCompleted: 0, 
+      tourDate: this.startDate ?? new Date(),
+      percentageCompleted: this.percentageCompleted, 
       touristId: this.touristId,
       tourId: this.tourId
     };
 
-    this.service.getPercentage(this.tourId).subscribe({
+    this.service.handleClick(tourReview).subscribe({
       next: () => {
         this.tourReviewUpdated.emit();
         this.tourReviewForm.reset(); 
       },
       error: (err) => {
-        console.error('Greška pri slanju recenzije:', err);
+        console.error('Error submitting review:', err);
       }
     });
   }
