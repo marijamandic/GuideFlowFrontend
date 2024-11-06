@@ -115,7 +115,7 @@ isMoreThanSevenDaysAgo(): boolean {
   const lastActivityDate = new Date(this.tourExecution.lastActivity);
   const currentDate = new Date();
   const diffInDays = (currentDate.getTime() - lastActivityDate.getTime()) / (1000 * 60 * 60 * 24);
-  return diffInDays >= 7;
+  return diffInDays < 7;
 }
 
 isLessThanThirtyFivePercent(): void {
