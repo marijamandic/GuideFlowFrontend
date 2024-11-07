@@ -1,0 +1,27 @@
+.purchased-tours-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .purchased-tours-table th, 
+  .purchased-tours-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+  }
+  
+  .purchased-tours-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .purchased-tours-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .purchased-tours-table tr:hover {
+    background-color: #e1e1e1;
+  }
+  

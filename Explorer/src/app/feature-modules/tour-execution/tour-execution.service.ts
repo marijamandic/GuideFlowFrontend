@@ -8,6 +8,8 @@ import { environment } from 'src/env/environment';
 import { Problem } from 'src/app/shared/model/problem.model';
 import { TourExecution } from './model/tour-execution.model';
 import { UpdateTourExecutionDto } from './model/update-tour-execution.dto';
+import { PurchasedTours } from './model/purchased-tours.model';
+import { CreateTourExecutionDto } from './model/create-tour-execution.dto';
 
 @Injectable({
 	providedIn: 'root'
@@ -47,5 +49,13 @@ export class TourExecutionService {
 	}
 	updateTourExecution(updateTourExecutionDto : UpdateTourExecutionDto){
 		return this.http.put<TourExecution>(environment.apiHost+'execution/tourExecution',updateTourExecutionDto)
+	}
+
+	getPurchased(id:number){
+		return this.http.get<PurchasedTours[]>(environment.apiHost + 'execution/tourExecution/purchased/' + id);
+	}
+
+	createSession(createTourExecutionDto: CreateTourExecutionDto){
+		return this.http.post<TourExecution>('https://localhost:44333/api/execution/tourExecution', createTourExecutionDto);
 	}
 }
