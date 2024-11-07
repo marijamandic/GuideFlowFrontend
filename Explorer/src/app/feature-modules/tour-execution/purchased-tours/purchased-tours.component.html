@@ -1,4 +1,8 @@
-<table class="purchased-tours-table">
+<div *ngIf="message" class="no-tours-message">
+  {{ message }}
+</div>
+
+<table *ngIf="!message && purchasedTours.length > 0" class="purchased-tours-table">
   <thead>
     <tr>
       <th>Name</th>
