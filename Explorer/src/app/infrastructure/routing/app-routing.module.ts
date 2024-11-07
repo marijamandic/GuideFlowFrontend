@@ -27,6 +27,7 @@ import { RatingTheAppComponent } from 'src/app/feature-modules/layout/rating-the
 import { AllAppRatingsComponent } from 'src/app/feature-modules/administration/all-app-ratings/all-app-ratings.component';
 import { TourSpecificationComponent } from 'src/app/feature-modules/marketplace/tour-specification/tour-specification.component';
 import { AccountComponent } from 'src/app/feature-modules/administration/account/account.component';
+import { PositionsimComponent } from 'src/app/feature-modules/tour-authoring/positionsim/positionsim.component';
 import { TourExecutionDetailsComponent } from 'src/app/feature-modules/tour-execution/tour-execution-details/tour-execution-details.component';
 
 const routes: Routes = [
@@ -59,6 +60,7 @@ const routes: Routes = [
   { path: 'specification', component: TourSpecificationComponent },
   { path: 'account', component: AccountComponent, canActivate: [AuthGuard] },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: 'position-sim', component: PositionsimComponent }
 ];
 
 @NgModule({

@@ -6,6 +6,8 @@ import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { TourExecution } from '../model/tour-execution.model';
 import { environment } from 'src/env/environment';
 import { UpdateTourExecutionDto } from '../model/update-tour-execution.dto';
+import { TourService } from '../../tour-authoring/tour.service';
+import { Tourist } from '../../tour-authoring/model/tourist';
 
 @Component({
   selector: 'xp-tour-execution-details',
@@ -15,6 +17,7 @@ import { UpdateTourExecutionDto } from '../model/update-tour-execution.dto';
 export class TourExecutionDetailsComponent implements OnInit{
   tourExecutionId : string | null=null;
   user : User | undefined;
+  tourist : Tourist | undefined;
   tourExecution : TourExecution | null=null;
   dto: UpdateTourExecutionDto = {
     TourExecutionId: 0,
@@ -23,20 +26,29 @@ export class TourExecutionDetailsComponent implements OnInit{
   };
   private intervalId : any;
 
-  constructor(private tourExecutionService: TourExecutionService , private authService: AuthService, private router: Router , private route : ActivatedRoute){}
+  constructor(private tourExecutionService: TourExecutionService , private authService: AuthService,private tourService : TourService , private route : ActivatedRoute){}
 
   ngOnInit(): void {
       this.tourExecutionId = this.route.snapshot.paramMap.get('id');
       this.authService.user$.subscribe(user =>{
         this.user = user;
+        this.tourService.getTouristById(user.id).subscribe({
+          next: (result: Tourist) => {
+            this.tourist = result;
+            console.log(this.tourist);
+            if(this.tourist && this.tourExecutionId){
+              this.fetchTourExecution();
+      
+              this.intervalId = setInterval( ()=> {
+                this.updateTourExecution();
+              },10000)
+            }
+          },
+          error: (err: any) => {
+            console.log(err);
+          }
+        })
       }) 
-      if(this.user && this.tourExecutionId){
-        this.fetchTourExecution();
-
-        this.intervalId = setInterval( ()=> {
-          this.updateTourExecution();
-        },10000)
-      }
   }
   ngOnDestroy() : void {
     if(this.intervalId){
@@ -58,10 +70,9 @@ export class TourExecutionDetailsComponent implements OnInit{
     });
   }
   updateTourExecution(){
-
     this.dto.TourExecutionId= Number(this.tourExecutionId)
-    this.dto.Latitude = 46.2075;
-    this.dto.Longitude = 6.1502;
+    this.dto.Latitude = this.tourist?.location.latitude ?? 0;
+    this.dto.Longitude = this.tourist?.location.longitude ?? 0;
     this.tourExecutionService.updateTourExecution(this.dto).subscribe({
       next: (result : TourExecution) => {
         this.tourExecution = result;
