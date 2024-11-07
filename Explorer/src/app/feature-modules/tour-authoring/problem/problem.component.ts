@@ -7,6 +7,7 @@ import { toDateOnly } from 'src/app/shared/utils/dateToDateOnlyConverter';
 import { adjustProblemsArrayResponse } from 'src/app/shared/utils/adjustResponse';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { User } from 'src/app/infrastructure/auth/model/user.model';
+import { Location } from '@angular/common';
 
 @Component({
 	selector: 'xp-problem',
@@ -18,7 +19,7 @@ export class ProblemComponent implements OnInit {
 	currentProblem: Problem | undefined;
 	user: User;
 
-	constructor(private tourAuthoringService: TourAuthoringService, private authService: AuthService) {}
+	constructor(private tourAuthoringService: TourAuthoringService, private authService: AuthService, private location: Location) {}
 
 	subscribeUser() {
 		this.authService.user$.subscribe((user: User) => {
@@ -31,6 +32,7 @@ export class ProblemComponent implements OnInit {
 			this.tourAuthoringService.getProblemsByAuthorId().subscribe({
 				next: (result: PagedResults<Problem>) => {
 					this.problems = adjustProblemsArrayResponse(result.results);
+					this.getState();
 				}
 			});
 		}
@@ -39,8 +41,16 @@ export class ProblemComponent implements OnInit {
 			this.tourAuthoringService.getProblemsByTouristId().subscribe({
 				next: (result: PagedResults<Problem>) => {
 					this.problems = adjustProblemsArrayResponse(result.results);
+					this.getState();
 				}
 			});
+		}
+	}
+
+	getState() {
+		const navigation = this.location.getState() as { problemId: number };
+		if (navigation && navigation.problemId) {
+			this.currentProblem = this.problems.find(p => p.id === navigation.problemId);
 		}
 	}
 

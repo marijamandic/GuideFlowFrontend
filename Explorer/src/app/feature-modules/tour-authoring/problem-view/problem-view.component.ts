@@ -6,7 +6,6 @@ import { PagedResults } from 'src/app/shared/model/paged-results.model';
 import { Message } from 'src/app/shared/model/message.model';
 import { adjustMessageArrayResponse } from 'src/app/shared/utils/adjustResponse';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
-import { takeUntil } from 'rxjs';
 import { User } from 'src/app/infrastructure/auth/model/user.model';
 
 @Component({

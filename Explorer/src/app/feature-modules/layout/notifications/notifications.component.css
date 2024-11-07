@@ -1,0 +1,21 @@
+.notification-main {
+	margin: 20px;
+}
+
+.notification-card {
+	width: 200px;
+	height: 50px;
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
+	background-color: lightblue;
+	padding: 10px;
+	transition: transform 0.6s ease;
+}
+
+.right-border {
+	border-left: 3px solid black;
+}
+
+.notification-card:hover {
+	transform: scale(1.1);
+}
