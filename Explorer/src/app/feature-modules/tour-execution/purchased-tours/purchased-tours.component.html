@@ -1,0 +1,22 @@
+<table class="purchased-tours-table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Average Grade</th>
+      <th>Length (km)</th>
+      <th>Start session</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let tour of purchasedTours">
+      <td>{{ tour.name }}</td>
+      <td>{{ tour.description }}</td>
+      <td>{{ tour.averageGrade }}</td>
+      <td>{{ tour.lengthInKm }} km</td>
+      <td>
+        <button (click)="createSession(tour.id)" class="action-button">Start Tour</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
