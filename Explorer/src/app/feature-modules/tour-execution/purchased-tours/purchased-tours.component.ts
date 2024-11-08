@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { User } from 'src/app/infrastructure/auth/model/user.model';
 import { TourExecution } from '../model/tour-execution.model';
 import { CreateTourExecutionDto } from '../model/create-tour-execution.dto';
+import { environment } from 'src/env/environment';
 
 @Component({
   selector: 'xp-purchased-tours',
@@ -75,5 +76,9 @@ export class PurchasedToursComponent implements OnInit{
         }
       });
     }
+  }
+
+  getImagePath(imageUrl: string){
+    return environment.webRootHost+imageUrl;
   }
 }

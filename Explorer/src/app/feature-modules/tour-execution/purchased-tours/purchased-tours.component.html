@@ -1,26 +1,24 @@
-<div *ngIf="message" class="no-tours-message">
+<h1 *ngIf="message" class="purchased-tours">
   {{ message }}
-</div>
+</h1>
 
-<table *ngIf="!message && purchasedTours.length > 0" class="purchased-tours-table">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Description</th>
-      <th>Average Grade</th>
-      <th>Length (km)</th>
-      <th>Start session</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let tour of purchasedTours">
-      <td>{{ tour.name }}</td>
-      <td>{{ tour.description }}</td>
-      <td>{{ tour.averageGrade }}</td>
-      <td>{{ tour.lengthInKm }} km</td>
-      <td>
-        <button (click)="createSession(tour.id)" class="action-button">Start Tour</button>
-      </td>
-    </tr>
-  </tbody>
-</table>
+<section *ngIf="!message && purchasedTours.length > 0" class="purchased-tours">
+  <h1>Purchased tours</h1>
+  <div class="tour-cards-wrapper">
+    <div class="cards">
+      <div *ngFor="let tour of purchasedTours" class="card">
+        <!-- <div class="card-image" [style.backgroundImage]="getImagePath(tour.checkpoints[0].imageUrl)"></div> -->
+        <div class="tour-info">
+          <h3 class="title">{{ tour.name }}</h3>
+          <p>{{ tour.description }}</p>
+          <div class="tour-rating">
+            <span class="rating-badge">{{ tour.averageGrade }}</span>
+            <span class="rating-text">{{ tour.lengthInKm }} km</span>
+          </div>
+          <button (click)="createSession(tour.id)" class="button">Start session</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
