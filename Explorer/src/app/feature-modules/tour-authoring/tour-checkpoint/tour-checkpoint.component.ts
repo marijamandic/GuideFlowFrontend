@@ -190,7 +190,8 @@ export class CheckpointListComponent implements OnInit {
         longitude: this.newCheckpoint.longitude || 0,
         imageUrl: this.newCheckpoint.imageUrl || "",
         approvalStatus: ApprovalStatus.Pending, 
-        type: PointType.Checkpoint
+        type: PointType.Checkpoint,
+        authorId: 0
     };
 
     this.publicPointService.addPublicPoint(publicObject).subscribe({

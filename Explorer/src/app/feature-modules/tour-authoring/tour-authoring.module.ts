@@ -14,8 +14,7 @@ import { AdministrationModule } from '../administration/administration.module';
 import { FormsModule } from '@angular/forms';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { PublicPointRequestsComponent } from './public-point-requests/public-point-requests.component';
-
-
+import { PublicPointNotificationsComponent } from './public-point-notifications/public-point-notifications.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +26,7 @@ import { PublicPointRequestsComponent } from './public-point-requests/public-poi
     TourFormComponent,
     TourEquipmentComponent,
     PublicPointRequestsComponent,
+    PublicPointNotificationsComponent,
   ],
   imports: [
     CommonModule,
@@ -44,6 +44,7 @@ import { PublicPointRequestsComponent } from './public-point-requests/public-poi
     TourObjectFormComponent,
     TourEquipmentComponent,
     PublicPointRequestsComponent,
+    PublicPointNotificationsComponent,
   ]
 })
 export class TourAuthoringModule {}

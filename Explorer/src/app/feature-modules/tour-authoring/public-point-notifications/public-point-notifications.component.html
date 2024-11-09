@@ -1,0 +1,70 @@
+<div class="notifications-container">
+    <div class="header">
+        <h4>Notifications</h4>
+        <span class="mark-read-text" >Mark as read</span>
+    </div>
+
+    <div *ngIf="unreadNotifications.length === 0 && readNotifications.length === 0">
+        <p>No notifications available.</p>
+    </div>
+
+    <div class="notification-table">
+        <div *ngFor="let notification of unreadNotifications" class="notification-row unread"
+             [ngClass]="{'accepted': notification.isAccepted, 'rejected': !notification.isAccepted}"
+             (click)="openNotificationDialog(notification)">
+            <div class="notification-title">
+                <span><strong class="notification-point">Public Point ID: {{ notification.publicPointId }}</strong></span>
+                <div class="notification-comment">
+                    {{ truncateComment(notification.comment, 100) }}
+                </div>
+                <div class="notification-date">{{ notification.creationTime | date:'MMMM d, y, h:mm a' }}</div>
+                <div class="notification-status" [ngClass]="notification.isAccepted ? 'status-accepted' : 'status-rejected'">
+                    {{ notification.isAccepted ? 'ACCEPTED' : 'REJECTED' }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="notification-table">
+        <div *ngFor="let notification of readNotifications" class="notification-row read"
+             [ngClass]="{'accepted': notification.isAccepted, 'rejected': !notification.isAccepted}"
+             (click)="openNotificationDialog(notification)">
+            <div class="notification-title">
+                <strong class="notification-point">Public Point ID: {{ notification.publicPointId }}</strong>
+                <div class="notification-comment">
+                    {{ truncateComment(notification.comment, 100) }}
+                </div>
+                <div class="notification-date">{{ notification.creationTime | date:'MMMM d, y, h:mm a' }}</div>
+                <div class="notification-status" [ngClass]="notification.isAccepted ? 'status-accepted' : 'status-rejected'">
+                    {{ notification.isAccepted ? 'ACCEPTED' : 'REJECTED' }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="showModal" class="modal-backdrop">
+        <div class="modal-content card">
+            <div *ngIf="selectedPoint?.imageUrl">
+                <img [src]="selectedPoint?.imageUrl" alt="Public Point Image" class="modal-image card-image"/>
+            </div>
+    
+            <div class="card-details">
+                <h2>{{ selectedPoint?.name }}</h2>
+                <p>{{ selectedPoint?.description }}</p>
+                <p><span class="label">Status:</span>
+                    <ng-container *ngIf="selectedPoint?.approvalStatus === 2">Rejected</ng-container>
+                    <ng-container *ngIf="selectedPoint?.approvalStatus === 1">Accepted</ng-container>
+                    <ng-container *ngIf="selectedPoint?.approvalStatus === 0">Pending</ng-container>
+                    <ng-container *ngIf="selectedPoint?.approvalStatus === undefined">No status</ng-container>
+                </p>
+    
+                <p><span class="label">Comment:</span> {{ selectedNotification?.comment }}</p>
+                <p><span class="label">Decision:</span> {{ selectedNotification?.isAccepted ? 'Accepted' : 'Rejected' }}</p>
+    
+                <button class="close-button" (click)="closeModal()">Close</button>
+            </div>
+        </div>
+    </div>
+    
+    
+</div>

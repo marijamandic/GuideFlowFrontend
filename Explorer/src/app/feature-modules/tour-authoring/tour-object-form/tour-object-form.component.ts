@@ -140,7 +140,8 @@ export class TourObjectFormComponent {
         longitude: this.tourObjectForm.value.longitude || 0,
         imageUrl: this.tourObjectForm.value.imageBase64 || "",
         approvalStatus: ApprovalStatus.Pending, 
-        type: PointType.Object
+        type: PointType.Object,
+        authorId: 0
     };
 
     this.publicPointService.addPublicPoint(publicObject).subscribe({

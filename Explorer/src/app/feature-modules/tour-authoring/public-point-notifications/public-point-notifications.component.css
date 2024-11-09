@@ -1,0 +1,223 @@
+.notifications-container {
+    max-width: 350px;
+    background-color: #fcfcfc;
+    border-radius: 8px;
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.2);
+    border-top: 4px solid #e4dfdf;  
+    border-bottom: 2.5px solid #e4dfdf;
+    border-left: 2px solid #e4dfdf;
+    border-right: 2px solid #e4dfdf;
+    margin: 40px;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between; /* Poravnava elemente s krajevima */
+    align-items: center; /* Poravnava elemente vertikalno u centar */
+    border-bottom: 2px solid #d5d0d0;
+    padding-top: 10px;
+    padding-bottom: 7px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 5px;
+  }
+  
+  .mark-read-text {
+    color: #007bff; /* Plava boja kao link */
+    cursor: pointer; /* Pokazuje da je klikabilno */
+    font-size: 13px; /* Manji font */
+    margin-right: 15px;
+    font-weight: 500;
+  }
+
+  h4 {
+    margin-bottom: 0px;
+    margin-left: 15px;
+    font-weight: 600;
+    font-size: 14px; /* Manji font */
+    letter-spacing: 1px; /* Veći razmak između slova */
+  }  
+
+  .notification-table {
+    margin-top: 0px;
+    padding: 15px 10px 5px 10px;
+  }
+  
+  .notification-row {
+    display: flex;
+    align-items: center;
+    padding: 0px; /* Manja visina i padding */
+    height: 90px; /* Manja visina reda */
+    overflow: hidden;
+    margin-bottom: 10px;
+    border-radius: 8px 8px 12px 12px;
+    box-shadow: 0 3px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .unread {
+    background-color: #d4f1f380;
+  }
+  
+  .read {
+    background-color: #eeebeb42;
+  }
+  
+  .red-dot {
+    width: 7px;
+    height: 7px;
+    background-color: rgba(255, 0, 0, 0.74);
+    border-radius: 50%;
+    margin-left: 10px; /* Razmak od teksta */
+    margin-top: 0px; /* Ovdje podešavaš visinu da tačka bude u liniji sa tekstom */
+    box-shadow: 0 1px 4px rgba(255, 0, 0, 1);
+  }
+  
+  
+  .notification-title {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: 10px;
+  }
+  
+  .notification-point {
+    font-size: 14px; /* Manji font za komentar */
+    margin-left: 10px;
+    font-weight: 500;
+    color: black;
+    position: relative;
+  }
+  .notification-point::after {
+    content: "";
+    width: 7px;
+    height: 7px;
+    background-color: rgba(255, 0, 0, 0.74);
+    border-radius: 50%;
+    position: absolute;
+    right: -15px; /* Pozicija tačke na desnoj strani */
+    top: 50%; /* Poravnanje vertikalno u sredini naslova */
+    transform: translateY(-50%); /* Precizno centriranje tačke */
+    box-shadow: 0 1px 4px rgba(255, 0, 0, 1);
+  }
+  
+
+  .notification-comment {
+    font-size: 14px; /* Manji font za komentar */
+    margin-left: 10px;
+    font-weight: 400;
+    padding-right: 10px;
+  }
+  
+  .notification-date {
+    color: #888;
+    font-size: 11px; /* Manji font za datum */
+    margin-top: 0px; /* Manji razmak između datuma i komentara */
+    margin-left: 10px;
+    margin-bottom: 2px;
+  }
+  
+  .notification-status {
+    font-weight: bold;
+    text-align: center;
+    height: 25px;
+    font-size: 12px; /* Manji font za status */
+    color: #ffffff;
+    letter-spacing: 4px; /* Veći razmak između slova */
+  }
+  .status-accepted {
+    background-color: #19ba3e; /* Svetlo zelena za accepted */
+    font-weight: bold;
+}
+
+    .status-rejected {
+        background-color: #dc3545; /* Crvena za rejected */
+    font-weight: bold;
+}
+  
+  .status-line {
+    width: 0px;
+    height: 100%;
+    background-color: transparent;
+    margin-left: 0px; /* Manji razmak između statusa i linije */
+  }
+  
+  .accepted .status-line {
+    background-color: transparent;
+  }
+  
+  .rejected .status-line {
+    background-color: transparent;
+  }
+ /* Modal backdrop */
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 20;
+}
+
+/* Card-like modal content */
+.modal-content.card {
+    position: relative;
+    background: #fff;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 400px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+/* Image styling */
+.card-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+/* Card content details */
+.card-details {
+    padding: 15px;
+}
+
+.card-details h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #007bff;
+}
+
+.card-details p {
+    margin: 10px 0;
+    color: #555;
+}
+
+.card-details .label {
+    font-weight: bold;
+    color: #007bff;
+}
+
+/* Close button */
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    color: #e30e23;
+    font-weight: 800;
+}
+
+.close-button:hover {
+    color: #dc3545; /* Red color on hover */
+}

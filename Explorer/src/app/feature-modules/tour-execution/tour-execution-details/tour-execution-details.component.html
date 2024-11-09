@@ -29,18 +29,18 @@
           </div>
       </div>
       <!-- Progress Bar Section -->
-<div *ngIf="percentageCompleted !== null">
-  <p><strong>Progress:</strong> {{ percentageCompleted }}%</p>
-  <div class="progress-container">
-    <div 
-      class="progress-bar" 
-      [style.width.%]="percentageCompleted" 
-      [class.low]="percentageCompleted < 35" 
-      [class.medium]="percentageCompleted >= 35 && percentageCompleted < 70" 
-      [class.high]="percentageCompleted >= 70">
-    </div>
-  </div>
-</div>
+      <div *ngIf="percentageCompleted !== null">
+        <p><strong>Progress:</strong> {{ percentageCompleted }}%</p>
+        <div class="progress-container">
+          <div 
+            class="progress-bar" 
+            [style.width.%]="percentageCompleted" 
+            [class.low]="percentageCompleted < 35" 
+            [class.medium]="percentageCompleted >= 35 && percentageCompleted < 70" 
+            [class.high]="percentageCompleted >= 70">
+          </div>
+        </div>
+      </div>
 
       <button 
         class="review-button" 

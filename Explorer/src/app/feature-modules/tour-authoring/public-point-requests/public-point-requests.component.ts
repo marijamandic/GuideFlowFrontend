@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PublicPointService } from '../tour-public-point.service';
 import { PublicPoint, ApprovalStatus } from '../model/publicPoint.model';
+import { PublicPointNotification } from '../model/publicPointNotification.model';
 
 @Component({
   selector: 'app-public-point-requests',
@@ -9,11 +10,21 @@ import { PublicPoint, ApprovalStatus } from '../model/publicPoint.model';
 })
 export class PublicPointRequestsComponent implements OnInit {
   pendingPublicPoints: PublicPoint[] = [];
+  rejectOverlayVisible: boolean[] = [];
+  publicPointNotification: PublicPointNotification;
+  rejectionComment: string[] = [];
 
   constructor(private publicPointService: PublicPointService) {}
 
   ngOnInit(): void {
     this.loadPendingPublicPoints();
+  }
+  openRejectOverlay(index: number): void {
+    this.rejectOverlayVisible[index] = true;
+  }
+
+  closeRejectOverlay(index: number): void {
+    this.rejectOverlayVisible[index] = false;
   }
 
   loadPendingPublicPoints(): void {
@@ -32,9 +43,26 @@ export class PublicPointRequestsComponent implements OnInit {
   }
 
   acceptPublicPoint(point: PublicPoint): void {
+    const notification: PublicPointNotification = {
+        id: 0, 
+        publicPointId: point.id,
+        authorId: point.authorId, 
+        isAccepted: true,
+        comment: "",
+        isRead: false,
+        creationTime: new Date(), 
+    };
+
     this.publicPointService.updatePublicPoint({ ...point, approvalStatus: ApprovalStatus.Accepted }).subscribe(
       () => {
         this.loadPendingPublicPoints();
+        this.publicPointService.createNotification(notification).subscribe(
+            () => {
+              console.log('Notification created successfully');
+              this.loadPendingPublicPoints();
+            },
+            (error) => console.error('Error creating notification', error)
+          );
       },
       (error) => {
         console.error('Error accepting public point', error);
@@ -42,14 +70,30 @@ export class PublicPointRequestsComponent implements OnInit {
     );
   }
 
-  rejectPublicPoint(point: PublicPoint): void {
+  rejectPublicPoint(point: PublicPoint, index: number): void {
+    const comment = this.rejectionComment[index];
+    const notification: PublicPointNotification = {
+      id: 0, 
+      publicPointId: point.id,
+      authorId: point.authorId, 
+      isAccepted: false,
+      comment: comment,
+      isRead: false,
+      creationTime: new Date(), 
+    };
+
     this.publicPointService.updatePublicPoint({ ...point, approvalStatus: ApprovalStatus.Rejected }).subscribe(
       () => {
-        this.loadPendingPublicPoints();
+        this.publicPointService.createNotification(notification).subscribe(
+          () => {
+            console.log('Notification created successfully');
+            this.loadPendingPublicPoints();
+          },
+          (error) => console.error('Error creating notification', error)
+        );
       },
-      (error) => {
-        console.error('Error rejecting public point', error);
-      }
+      (error) => console.error('Error rejecting public point', error)
     );
+    this.closeRejectOverlay(index);
   }
 }

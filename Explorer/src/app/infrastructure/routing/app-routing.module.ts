@@ -32,7 +32,7 @@ import { TourReviewFormComponent } from 'src/app/feature-modules/tour-execution/
 import { TourReviewComponent } from 'src/app/feature-modules/tour-execution/tour-review/tour-review.component';
 import { TourExecutionDetailsComponent } from 'src/app/feature-modules/tour-execution/tour-execution-details/tour-execution-details.component';
 import { PurchasedToursComponent } from 'src/app/feature-modules/tour-execution/purchased-tours/purchased-tours.component';
-
+import { PublicPointNotificationsComponent } from 'src/app/feature-modules/tour-authoring/public-point-notifications/public-point-notifications.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -67,6 +67,7 @@ const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'pending', component: PublicPointRequestsComponent },
   { path: 'tourReview/:tourId/:touristId', component: TourReviewComponent },
+  { path: 'author/notifications', component: PublicPointNotificationsComponent },
 ];
 
 @NgModule({
