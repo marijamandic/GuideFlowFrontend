@@ -7,6 +7,8 @@ import { environment } from 'src/env/environment';
 import { TourEquipment } from './model/tour-equipment.model';
 import { Equipment } from '../administration/model/equipment.model';
 import { Problem } from 'src/app/shared/model/problem.model';
+import { CreateMessageInput } from './model/create-message-input.model';
+import { Message } from 'src/app/shared/model/message.model';
 
 @Injectable({
 	providedIn: 'root'
@@ -54,7 +56,23 @@ export class TourAuthoringService {
 			Authorization: `Bearer ${localStorage.getItem('access-token')}`,
 			'Content-Type': 'application-json'
 		});
-		return this.http.get<PagedResults<Problem>>(`${environment.apiHost}problems/author`, { headers });
+		return this.http.get<PagedResults<Problem>>(`${environment.apiHost}author/problems`, { headers });
+	}
+
+	getProblemsByTouristId(): Observable<PagedResults<Problem>> {
+		const headers = new HttpHeaders({
+			Authorization: `Bearer ${localStorage.getItem('access-token')}`,
+			'Content-Type': 'application-json'
+		});
+		return this.http.get<PagedResults<Problem>>(`${environment.apiHost}tourist/problems`, { headers });
+	}
+
+	createMessage(message: CreateMessageInput, role: string): Observable<PagedResults<Message>> {
+		const headers = new HttpHeaders({
+			Authorization: `Bearer ${localStorage.getItem('access-token')}`,
+			'Content-Type': 'application/json'
+		});
+		return this.http.post<PagedResults<Message>>(`${environment.apiHost}${role}/problems/messages`, message, { headers });
 	}
 
 	//#endregion

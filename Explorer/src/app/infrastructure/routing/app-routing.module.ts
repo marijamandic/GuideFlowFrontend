@@ -28,6 +28,9 @@ import { AllAppRatingsComponent } from 'src/app/feature-modules/administration/a
 import { TourSpecificationComponent } from 'src/app/feature-modules/marketplace/tour-specification/tour-specification.component';
 import { AccountComponent } from 'src/app/feature-modules/administration/account/account.component';
 import { ProblemComponent } from 'src/app/feature-modules/tour-authoring/problem/problem.component';
+import { NotificationsComponent } from 'src/app/feature-modules/layout/notifications/notifications.component';
+import { ProblemStatusComponent } from 'src/app/feature-modules/tour-execution/problem-status/problem-status.component';
+import { AdminProblemComponent } from 'src/app/feature-modules/administration/admin-problem/admin-problem.component';
 
 const routes: Routes = [
 	{ path: 'home', component: HomeComponent },
@@ -58,6 +61,9 @@ const routes: Routes = [
 	{ path: 'specification', component: TourSpecificationComponent },
 	{ path: 'account', component: AccountComponent, canActivate: [AuthGuard] },
 	{ path: 'author-problems', component: ProblemComponent },
+	{ path: 'notifications', component: NotificationsComponent },
+	{ path: 'tourist-problems', component: ProblemStatusComponent },
+	{ path: 'admin-problems', component: AdminProblemComponent },
 	{ path: '', redirectTo: '/home', pathMatch: 'full' }
 ];
 

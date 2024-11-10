@@ -3,5 +3,5 @@ export interface Message {
 	problemId: number;
 	userId: number;
 	content: string;
-	postedAt: string;
+	postedAt: Date;
 }

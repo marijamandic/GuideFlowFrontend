@@ -1,4 +1,4 @@
-import { NgModule, Component } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './infrastructure/routing/app-routing.module';
 import { AppComponent } from './app.component';
@@ -15,6 +15,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { JwtInterceptor } from './infrastructure/auth/jwt/jwt.interceptor';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
 	declarations: [AppComponent],
@@ -32,7 +33,8 @@ import { MatInputModule } from '@angular/material/input';
 		AuthModule,
 		HttpClientModule,
 		MatFormFieldModule,
-		MatInputModule
+		MatInputModule,
+		FormsModule
 	],
 	providers: [
 		{

@@ -1,12 +1,20 @@
-<div>
-	<ul>
-		<li *ngFor="let problem of problems">
-			<div class="problem-card">
-				<div>{{ toString(problem.details.category, 'category') }}</div>
-				<div>{{ toString(problem.details.priority, 'priority') }}</div>
-				<div>{{ problem.details.description }}</div>
-				<div>{{ toDateOnly(problem.resolution.reportedAt) }}</div>
-			</div>
-		</li>
-	</ul>
+<div class="main-div">
+	<div>
+		<ul>
+			<li *ngFor="let problem of problems">
+				<div class="problem-card">
+					<div>
+						<div>{{ toString(problem.details.category, 'category') }}</div>
+						<div>{{ toString(problem.details.priority, 'priority') }}</div>
+						<div>{{ problem.details.description }}</div>
+						<div>{{ toDateOnly(problem.resolution.reportedAt) }}</div>
+					</div>
+					<button type="button" (click)="handleViewClick(problem.id!)">View</button>
+				</div>
+			</li>
+		</ul>
+	</div>
+	<div class="problem-view">
+		<xp-problem-view [problem]="currentProblem" (onMessageAdded)="handleMessageAdded($event)"></xp-problem-view>
+	</div>
 </div>
