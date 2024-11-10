@@ -1,48 +1,378 @@
-.container-close{
+.main-column {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
     display: flex;
-    align-items: flex-end;
+    flex-direction: column;
+    align-items: center; 
+    min-height: 90vh;
+    overflow-y: auto;
 }
-.close-post{
-    background-color: red;
+
+.post-info {
+    display: flex;
+    flex-direction: column;
+    max-width: 1200px; 
+    padding-bottom: 50px;
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    overflow: hidden; 
+    padding: 30px;
+}
+
+.post-image {
+    width: 100%;
+    height: 40vh; 
+    object-fit: cover;
+    margin: 0;
     border-radius: 10px;
 }
-.post-info {
-    overflow: hidden; /* Sprečava da sadržaj prelazi van komponente */
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #fff;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    margin: 20px auto; /* Centriranje */
-    text-align: center; /* Centriranje teksta */
-    max-width: 600px; /* Maksimalna širina */
+
+.post-content {
+    padding-top: 10px; 
+}
+
+.post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
 }
 
 .post-title {
-    font-size: 28px;
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--accent-color);
+    margin-top: 0;
+}
+
+.post-meta {
+    font-size: 0.9em;
+    color: #555;
+}
+
+.author-name{
+    font-weight: bold;
+}
+
+.post-author-id {
+    font-size: 14px;
+    color: #555;
+    text-align: right;
+}
+
+.post-description {
+    color: var(--text-color);
+    font-size: 16px;
+    margin: 15px 0;
+}
+
+.post-details {
+    font-size: 14px;
+    color: #555;
+}
+
+
+.comments-section {
+    width: 100%;
+    max-width: 1200px;
+    margin-top: 15px;
+    background-color: transparent;
+    overflow-y: auto;
+    margin-bottom: 200px;
+}
+
+.comment-card {
+    background-color: #fff;
+    padding: 15px;
+    margin: 15px auto;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.comment-header {
+    display: flex;
+    align-items: center;
+    gap: 5px; 
+    font-size: 0.9em; 
+    color: #555; 
+}
+
+.comment-date {
+    color: #888;
+}
+
+.comment-author {
+    font-weight: bold;
+}
+
+.comment-date {
+    color: #777;
+}
+
+.comment-body {
+    font-size: 16px;
     color: #333;
     margin-bottom: 10px;
 }
 
-.post-description,
-.post-author,
-.post-publish-date,
-.post-status {
-    font-size: 16px;
-    color: #555;
-    margin-bottom: 8px;
+.comment-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
 }
 
-.post-image {
-    max-width: 100%; /* Održavanje proporcija */
-    height: auto;
-    border-radius: 8px;
-    margin-top: 10px;
-    max-height: 200px; /* Manja slika */
-}
-
-.divider {
-    margin: 20px 0;
+.edit-btn,
+.delete-btn {
+    padding: 8px 12px;
+    font-size: 14px;
+    color: white;
     border: none;
-    border-top: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.delete {
+    background-color: #a04750;
+    width: 130px;
+}
+
+.delete-btn:hover {
+    background-color: #612b31;
+}
+
+.close-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #ffffff; 
+    padding: 20px;
+    border-radius: 15px;
+    width: 100%;
+    max-width: 1000px;
+    margin: 15px auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.done-message {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.close-button {
+    font-size: 14px;
+    color: white;
+    background-color: #ff4d4d; 
+    border: none;
+    border-radius: 5px;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.close-button:hover {
+    background-color: #e60000; 
+}
+
+.vote-container, .interaction-container {
+    display: inline-flex;
+    align-items: center;
+    border: none;
+    border-radius: 30px; 
+    padding: 5px 10px;
+    background-color: var(--primary-color); 
+    margin-right: 15px;
+  }
+  
+  .vote-button, .interaction-button {
+    font-size: 1.2em;
+    color: white; 
+    background: none;
+    border: none;
+    border-radius: 30px; 
+    cursor: pointer;
+    padding: 5px;
+  }
+  
+  .vote-button:hover, .interaction-button:hover {
+    box-shadow: white 0px 7px 29px 0px;
+  }
+  
+  .vote-button:focus, .interaction-button:focus {
+    outline: none;
+  }
+  
+  .vote-button.fa-arrow-up:hover {
+    color: #ff4500;
+  }
+  
+  .vote-button.fa-arrow-down:hover {
+    color: #7193ff;
+  }
+  
+  .vote-count, .interaction-count {
+    margin: 0 10px;
+    font-size: 1.1em;
+    color: white;
+    font-weight: bold;
+  }
+  
+  .upvoted {
+    color: #ff4500;
+  }
+  
+  .downvoted {
+    color: #7193ff; 
+  }
+  .bottom-interaction-bar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    margin-top: auto;
+    position: relative;
+    bottom: -15px;
+    left: 0px;
+  }
+  
+  .comment-input-container.card {
+    max-width: 100%;
+    padding: 15px;
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+
+  .card:hover{
+    transform: scale(1);
+  }
+  
+  .collapsed-comment-input {
+    cursor: pointer;
+    max-width: 95%;
+  }
+  
+  .collapsed-comment-input input {
+    width: 100%;
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+  }
+  
+  .expanded-comment-input {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .expanded-comment-input textarea {
+    max-width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    resize: vertical;
+  }
+  
+  .comment-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  .cancel-button {
+    background-color: #ddd;
+    color: #555;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .comment-button {
+    background-color: #0066cc;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .kebab-menu-button {
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
+    color: #888;
+    margin-left: auto;
+}
+
+.comment-menu {
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    top: 45px;
+    right: 10px;
+    display: flex;
+    flex-direction: column;
+    z-index: 10;
+}
+
+.comment-menu button {
+    background: none;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+}
+
+.comment-menu button:hover {
+    background-color: #f0f0f0;
+    border-radius: 15px;
+}
+
+.comment-edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.edit-textarea {
+  width: 95%;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  resize: vertical;
+}
+
+.comment-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.cta-button-save {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 15px;
+  cursor: pointer;
+}
+
+.cta-button-cancel {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 15px;
+  cursor: pointer;
 }

@@ -46,6 +46,7 @@ export class CommentFormComponent implements OnChanges{
     this.service.addComment(comment).subscribe({
       next: () => {
         this.commentUpdated.emit();
+        this.commentForm.reset();
       }
     });
   }
@@ -63,4 +64,11 @@ export class CommentFormComponent implements OnChanges{
       next: () => { this.commentUpdated.emit();}
     });
   }
+
+  cancelEdit(): void {
+    this.commentForm.reset();
+    this.shouldEdit = false;
+    this.commentUpdated.emit(); // Emit event to refresh or reset view as needed
+  }
+  
 }
