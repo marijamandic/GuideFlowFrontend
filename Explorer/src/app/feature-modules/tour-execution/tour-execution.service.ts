@@ -6,6 +6,7 @@ import { TourReview } from './model/tour-review.model';
 import { EquipmentManagement } from './model/equipment-management.model';
 import { environment } from 'src/env/environment';
 import { Problem } from 'src/app/shared/model/problem.model';
+import { Tour } from '../tour-authoring/model/tour.model';
 import { TourExecution } from './model/tour-execution.model';
 import { UpdateTourExecutionDto } from './model/update-tour-execution.dto';
 import { PurchasedTours } from './model/purchased-tours.model';
@@ -43,7 +44,10 @@ export class TourExecutionService {
 
 	handleClick(tourReview: TourReview): Observable<TourReview> {
 		return this.http.post<TourReview>('https://localhost:44333/api/tourist/tourReview', tourReview);
-	}
+	}	
+	getPercentage(tourExecutionId: number): Observable<number> {
+		return this.http.get<number>(`https://localhost:44333/api/execution/tourExecution/${tourExecutionId}/completion-percentage`);
+	}		
 	getTourExecution(id:string){
 		return this.http.get<TourExecution>(environment.apiHost+'execution/tourExecution/'+id);
 	}
