@@ -6,7 +6,6 @@
 		<div class="messages">
 			<div *ngFor="let message of problem.messages" class="message-card">
 				<div *ngIf="user.id === message.userId"><b>Me:</b></div>
-				<div *ngIf="user.id !== message.userId">{{ user.username }}:</div>
 				{{ message.content }}
 			</div>
 		</div>
