@@ -7,6 +7,8 @@ import { EquipmentManagement } from './model/equipment-management.model';
 import { environment } from 'src/env/environment';
 import { Problem } from 'src/app/shared/model/problem.model';
 import { CreateProblemInput } from './model/create-problem-input.model';
+import { ProblemStatusComponent } from './problem-status/problem-status.component';
+import { ProblemStatus } from './model/problem-status.model';
 
 @Injectable({
 	providedIn: 'root'
@@ -32,6 +34,12 @@ export class TourExecutionService {
 			'Content-Type': 'application/json'
 		});
 		return this.http.post<Problem>(`${environment.apiHost}tourist/problems`, problem, { headers });
+	}
+	getUserProblems(userId : number) : Observable<PagedResults<Problem>>{
+		return this.http.get<PagedResults<Problem>>(environment.apiHost + 'problems/' + userId);
+	}
+	changeProblemStatus(id : number, changedStatus : ProblemStatus) : Observable<Problem>{
+		return this.http.put<Problem>(environment.apiHost + 'problems/' + id,changedStatus);
 	}
 
 	getReviews(): Observable<PagedResults<TourReview>> {
