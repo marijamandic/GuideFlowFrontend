@@ -1,0 +1,83 @@
+.tour-card {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 320px;
+    padding: 16px;
+    margin: 16px auto;
+    text-align: center;
+}
+.tour-card img {
+    width: 100%;
+    border-radius: 8px;
+}
+.tour-info {
+    margin-top: 16px;
+    text-align: left;
+}
+.tour-info h2 {
+    font-size: 24px;
+    color: #333;
+}
+.tour-info p {
+    margin: 4px 0;
+    color: #666;
+}
+.reviews {
+    margin-top: 16px;
+    text-align: left;
+}
+.reviews h3 {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 8px;
+}
+.review-card {
+    background-color: #f9f9f9;
+    border-radius: 4px;
+    padding: 8px;
+    margin-bottom: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;  
+    align-items: flex-start; 
+}
+
+.rating-badge {
+    background-color: var(--primary-color);
+    color: #ffffff;
+    padding: 5px 8px;
+    border-radius: 5px;
+    font-size: 12px;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    margin-right: 10px;  
+}
+
+.review-message {
+    color: #555;
+    font-size: 14px;
+    margin: 0;
+    word-wrap: break-word; 
+    flex-grow: 1;  
+    min-width: 0;  
+}
+.purchase-button-container {
+    text-align: center;
+    margin-top: 16px;
+}
+
+.purchase-button {
+    background-color: #ff7f50;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.purchase-button:hover {
+    background-color: #ff6347;
+}

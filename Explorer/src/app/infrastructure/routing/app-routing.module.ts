@@ -59,7 +59,7 @@ const routes: Routes = [
   { path: 'specification', component: TourSpecificationComponent },
   { path: 'account', component: AccountComponent, canActivate: [AuthGuard] },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
-  {path: 'tourPreview/:tourName', component: TourPreviewComponent},
+  {path: 'tourPreview/:id', component: TourPreviewComponent},
   {path: 'shoppingCart', component: ShoppingCartComponent}
 ];
 
