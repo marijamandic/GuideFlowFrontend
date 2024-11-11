@@ -153,4 +153,5 @@ export class MapComponent implements AfterViewInit {
 
     this.mapReset.emit();
   }
+  
 }

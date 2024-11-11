@@ -29,6 +29,8 @@ import { TourSpecificationComponent } from 'src/app/feature-modules/marketplace/
 import { AccountComponent } from 'src/app/feature-modules/administration/account/account.component';
 import { TourPreviewComponent } from 'src/app/feature-modules/marketplace/tour-preview/tour-preview.component';
 import { ShoppingCartComponent } from 'src/app/feature-modules/marketplace/shopping-cart/shopping-cart.component';
+import { PositionsimComponent } from 'src/app/feature-modules/tour-authoring/positionsim/positionsim.component';
+import { TourExecutionDetailsComponent } from 'src/app/feature-modules/tour-execution/tour-execution-details/tour-execution-details.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -52,6 +54,7 @@ const routes: Routes = [
   { path: 'createBlog', component: CreateBlogComponent },
   { path: 'tourObjects', component: TourObjectComponent, canActivate: [AuthGuard] },
   { path: 'checkpoints', component: CheckpointListComponent },
+  { path: 'tour-execution/:id', component: TourExecutionDetailsComponent},
   { path: 'tour', component: TourComponent },
   { path: 'tourEquipment', component: TourEquipmentComponent },
   { path: 'ratingTheApp', component: RatingTheAppComponent },
@@ -60,7 +63,8 @@ const routes: Routes = [
   { path: 'account', component: AccountComponent, canActivate: [AuthGuard] },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   {path: 'tourPreview/:id', component: TourPreviewComponent},
-  {path: 'shoppingCart', component: ShoppingCartComponent}
+  {path: 'shoppingCart', component: ShoppingCartComponent},
+  { path: 'position-sim', component: PositionsimComponent }
 ];
 
 @NgModule({

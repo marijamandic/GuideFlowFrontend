@@ -1,0 +1,31 @@
+<div *ngIf="tourExecution">
+    <h2>Tour Execution Details</h2>
+    <p><strong>Tour Execution ID:</strong> {{ tourExecution.id }}</p>
+    <p><strong>Tour ID:</strong> {{ tourExecution.tourId }}</p>
+    <p><strong>User ID:</strong> {{ tourExecution.userId }}</p>
+    <p><strong>Tour Range:</strong> {{ tourExecution.tourRange }} km</p>
+    <p><strong>Start Time:</strong> {{ tourExecution.startTime | date: 'short' }}</p>
+    <p><strong>End Time:</strong> {{ tourExecution.endTime | date: 'short' }}</p>
+    <p><strong>Last Activity:</strong> {{ tourExecution.lastActivity | date: 'short' }}</p>
+    <p><strong>Execution Status:</strong> {{ tourExecution.executionStatus }}</p>
+  
+    <!-- Prikaz Checkpoint Status liste -->
+    <h3>Checkpoints Status</h3>
+    <div *ngFor="let checkpointStatus of tourExecution.checkpointsStatus" class="checkpoint-status">
+      <p><strong>Checkpoint Status ID:</strong> {{ checkpointStatus.id }}</p>
+      <p><strong>Checkpoint ID:</strong> {{ checkpointStatus.checkpointId }}</p>
+      <p><strong>Completion Time:</strong> {{ checkpointStatus.completionTime | date: 'short' }}</p>
+  
+      <!-- Prikaz Checkpoint detalja -->
+      <div class="checkpoint-details">
+        <h4>Checkpoint Details</h4>
+        <p><strong>Name:</strong> {{ checkpointStatus.checkpoint.name }}</p>
+        <p><strong>Description:</strong> {{ checkpointStatus.checkpoint.description }}</p>
+        <p><strong>Secret:</strong> {{ checkpointStatus.checkpoint.secret }}</p>
+        <p><strong>Latitude:</strong> {{ checkpointStatus.checkpoint.latitude }}</p>
+        <p><strong>Longitude:</strong> {{ checkpointStatus.checkpoint.longitude }}</p>
+        <img [src]="getImagePath(checkpointStatus.checkpoint.imageUrl)" alt="Checkpoint Image" width="100" />
+      </div>
+    </div>
+</div>
+  
