@@ -19,6 +19,7 @@ import { ClubMemberListComponent } from 'src/app/feature-modules/administration/
 import { AllAppRatingsComponent } from './all-app-ratings/all-app-ratings.component';
 import { LayoutModule } from '../layout/layout.module';
 import { AccountComponent } from './account/account.component';
+import { ClubPostComponent } from './club-post/club-post.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { AccountComponent } from './account/account.component';
     ProblemComponent,
     AllAppRatingsComponent,
     ProblemComponent,
-    AccountComponent
+    AccountComponent,
+    ClubPostComponent
   ],
   imports: [
     CommonModule,
@@ -57,7 +59,8 @@ import { AccountComponent } from './account/account.component';
     ClubMemberListComponent,
     ProblemComponent,
     AllAppRatingsComponent,
-    AccountComponent
+    AccountComponent,
+    ClubPostComponent
   ]
 })
 export class AdministrationModule {}
