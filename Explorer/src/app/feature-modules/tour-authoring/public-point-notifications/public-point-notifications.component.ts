@@ -53,6 +53,9 @@ export class PublicPointNotificationsComponent implements OnInit {
         );
     }
 
+    loadPublicPoint(publicPointId: number): void {
+    }
+
     openNotificationDialog(notification: PublicPointNotification): void {
         this.selectedNotification = notification;
         this.publicPointService.getPublicPointsByTour(notification.publicPointId).subscribe(

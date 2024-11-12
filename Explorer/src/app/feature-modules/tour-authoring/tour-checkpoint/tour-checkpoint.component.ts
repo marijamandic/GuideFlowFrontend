@@ -5,6 +5,8 @@ import { Checkpoint } from '../model/tourCheckpoint.model';
 import { MapComponent } from 'src/app/shared/map/map.component';
 import { ApprovalStatus, PointType, PublicPoint } from '../model/publicPoint.model';
 import { PublicPointService } from '../tour-public-point.service';
+import { User } from 'src/app/infrastructure/auth/model/user.model';
+import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 
 @Component({
   selector: 'xp-checkpoint-list',
@@ -22,6 +24,7 @@ export class CheckpointListComponent implements OnInit {
   selectedTour: string = 'tour1'; 
   newCheckpoint = { id: 0, name: '', description: '', imageUrl: '', latitude: 0, longitude: 0, secret: ''};
   isChecked: boolean = false; 
+  user: User | undefined;
 
   toggleAddCheckpointForm() {
     this.isAddingCheckpoint = !this.isAddingCheckpoint;
@@ -87,7 +90,7 @@ export class CheckpointListComponent implements OnInit {
     this.isAddingCheckpoint = false;
   }
   
-  constructor(private checkpointService: TourCheckpointService, private fb: FormBuilder, private publicPointService: PublicPointService) {
+  constructor(private checkpointService: TourCheckpointService, private authService: AuthService,private fb: FormBuilder, private publicPointService: PublicPointService) {
     this.checkpointForm = this.fb.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
@@ -99,6 +102,11 @@ export class CheckpointListComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.authService.user$.subscribe((user) => {
+      this.user = user;
+      console.log("OVO JE USER: ", this.user)
+      console.log("EE", this.user?.id)
+    });
     this.loadCheckpoints();
   }
 
@@ -191,7 +199,7 @@ export class CheckpointListComponent implements OnInit {
         imageUrl: this.newCheckpoint.imageUrl || "",
         approvalStatus: ApprovalStatus.Pending, 
         type: PointType.Checkpoint,
-        authorId: 0
+        authorId: this.user?.id || 0
     };
 
     this.publicPointService.addPublicPoint(publicObject).subscribe({
