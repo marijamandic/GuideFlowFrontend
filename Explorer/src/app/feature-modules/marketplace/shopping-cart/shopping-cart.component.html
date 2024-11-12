@@ -1,13 +1,18 @@
 <div class="shopping-cart">
     <h2>Your Shopping Cart</h2>
     <div *ngIf="shoppingCart.items && shoppingCart.items.length > 0; else emptyCart">
-        <div *ngFor="let item of shoppingCart.items " class="order-item">
+        <div *ngFor="let item of shoppingCart.items" class="order-item">
             <div class="item-details">
                 <h3 class="tour-name">{{ item.tourName }}</h3>
                 <p class="tour-id">ID: {{ item.tourId }}</p>
             </div>
+            <div class="item-quantity">
+                <button class="quantity-btn" (click)="decreaseQuantity(item)">-</button>
+                <span class="quantity">{{ item.quantity }}</span>
+                <button class="quantity-btn" (click)="increaseQuantity(item)">+</button>
+            </div>
             <div class="item-price">
-                <p class="price">Price: ${{ item.price }}</p>
+                <p class="price">${{ item.price.cost * item.quantity }}</p>
             </div>
             <button class="remove-btn" (click)="removeItem(item.tourId)">Remove</button>
         </div>

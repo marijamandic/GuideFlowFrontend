@@ -2,6 +2,11 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Currency, Level, Tour, TourStatus, TransportType } from '../../tour-authoring/model/tour.model';
 import { ActivatedRoute } from '@angular/router';
 import { TourService } from '../../tour-authoring/tour.service';
+import { MarkdownService } from 'ngx-markdown';
+import { MarketplaceService } from '../marketplace.service';
+import { OrderItem } from '../model/orderItem.model';
+import { AuthService } from 'src/app/infrastructure/auth/auth.service';
+import { User } from 'src/app/infrastructure/auth/model/user.model';
 
 @Component({
   selector: 'xp-tour-preview',
@@ -11,9 +16,12 @@ import { TourService } from '../../tour-authoring/tour.service';
 export class TourPreviewComponent implements OnInit {
 
   tourId: number 
-  public currentTour: Tour 
+  public currentTour: Tour
+  user: User
 
-  constructor(private route: ActivatedRoute, private tourService: TourService) {
+  constructor(private route: ActivatedRoute, private tourService: TourService,
+              private marketService: MarketplaceService, private authService: AuthService)
+    {
     this.currentTour = {
       id: 1,
       authorId: 101,
@@ -105,14 +113,17 @@ export class TourPreviewComponent implements OnInit {
               transportType: TransportType.Walking
           }
       ]
-  };
-  }
+    };
+   }
 
   ngOnInit(): void {
     this.tourId = Number(this.route.snapshot.paramMap.get('id'));
-    console.log('Tour ID:', this.tourId);
+    this.authService.user$.subscribe({
+        next: (user: User) => {
+            this.user = user
+        }
+    });
    // this.getCurrentTour()
-   console.log(this.currentTour)
   }
 
   getCurrentTour(): void {
@@ -121,6 +132,17 @@ export class TourPreviewComponent implements OnInit {
         this.currentTour = result
       }
     })
+  }
+
+  addToCart(): void {
+        let orderItem : OrderItem = {
+            tourId: this.currentTour.id,
+            tourName: this.currentTour.name,
+            price: this.currentTour.price,
+            quantity: 1
+        }
+        this.marketService.addItemToCart(this.user.id, orderItem)
+        alert('Added To Cart')
   }
 
 }

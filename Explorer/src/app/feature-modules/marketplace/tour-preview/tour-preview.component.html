@@ -3,7 +3,7 @@
         <h2>{{currentTour.name}}</h2>
         <div class="tour-images">
             <div *ngFor="let checkpoint of currentTour.checkpoints; let i = index" class="checkpoint-images">
-                <img [src]="checkpoint.imageUrl">
+                <img [src]="checkpoint.imageUrl" alt="Img">
             </div>
         </div>
         <p>Desription: {{currentTour.description}}</p>
@@ -44,6 +44,6 @@
         </div>
     </div>
     <div class="purchase-button-container">
-        <button class="purchase-button">Buy Tour</button>
+        <button class="purchase-button" (click)="addToCart()">Add To Cart</button>
     </div>
 </div>
