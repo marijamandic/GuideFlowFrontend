@@ -4,7 +4,7 @@
         <span class="mark-read-text" >Mark as read</span>
     </div>
 
-    <div *ngIf="unreadNotifications.length === 0 && readNotifications.length === 0">
+    <div class="header" *ngIf="unreadNotifications.length === 0 && readNotifications.length === 0">
         <p>No notifications available.</p>
     </div>
 
@@ -30,7 +30,7 @@
              [ngClass]="{'accepted': notification.isAccepted, 'rejected': !notification.isAccepted}"
              (click)="openNotificationDialog(notification)">
             <div class="notification-title">
-                <strong class="notification-point">Public Point ID: {{ notification.publicPointId }}</strong>
+                <strong class="notification-point-read">Public Point ID: {{ notification.publicPointId }}</strong>
                 <div class="notification-comment">
                     {{ truncateComment(notification.comment, 100) }}
                 </div>

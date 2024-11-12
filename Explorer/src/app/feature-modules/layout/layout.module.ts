@@ -6,23 +6,24 @@ import { MaterialModule } from 'src/app/infrastructure/material/material.module'
 import { RouterModule } from '@angular/router';
 import { RatingTheAppComponent } from './rating-the-app/rating-the-app.component';
 import { FormsModule } from '@angular/forms'; // <-- Import FormsModule
-
+import { SharedModule } from 'src/app/shared/shared.module';
 @NgModule({
   declarations: [
     HomeComponent,
     NavbarComponent,
-    RatingTheAppComponent
+    RatingTheAppComponent,
   ],
   imports: [
     CommonModule,
     MaterialModule,
     RouterModule,
-    FormsModule
+    FormsModule,
+    SharedModule
   ],
   exports: [
     NavbarComponent,
     HomeComponent,
-    RatingTheAppComponent
+    RatingTheAppComponent,
   ]
 })
 export class LayoutModule { }

@@ -69,6 +69,23 @@
     color: #585858;
 }
 
+.notification-icon {
+    cursor: pointer;
+    margin-right: 21px;
+    position: relative;
+}
+
+.notification-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 5px;
+    font-size: 10px;
+}
+
 .dropdown-content {
     display: flex;
     flex-direction: column;
@@ -119,4 +136,22 @@ mat-icon:hover{
     .menu-icon {
         display: flex;
     }
+}
+.notification-dropdown {
+    position: absolute;
+    top: 55px;
+    right: 120px;
+    width: 350px;
+    max-height: 400px;
+    overflow-y: auto;
+    background-color: #bc1616ad;
+    border-radius: 10px;
+    padding: 0px;
+    z-index: 1000;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+  
+.notification-dropdown::-webkit-scrollbar {
+    display: none;
 }

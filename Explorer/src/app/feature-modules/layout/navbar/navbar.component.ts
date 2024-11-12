@@ -10,6 +10,8 @@ import { User } from 'src/app/infrastructure/auth/model/user.model';
 export class NavbarComponent implements OnInit {
   user: User | undefined;
   isDropdownOpen: boolean = false;
+  notificationCount: number = 0;
+  showNotifications: boolean = false;
 
   constructor(private authService: AuthService) {}
 
@@ -25,5 +27,9 @@ export class NavbarComponent implements OnInit {
 
   onLogout(): void {
     this.authService.logout();
+  }
+
+  toggleNotifications(): void {
+    this.showNotifications = !this.showNotifications;
   }
 }

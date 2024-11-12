@@ -141,7 +141,7 @@ export class TourObjectFormComponent {
         imageUrl: this.tourObjectForm.value.imageBase64 || "",
         approvalStatus: ApprovalStatus.Pending, 
         type: PointType.Object,
-        authorId: 0
+        authorId: 1
     };
 
     this.publicPointService.addPublicPoint(publicObject).subscribe({

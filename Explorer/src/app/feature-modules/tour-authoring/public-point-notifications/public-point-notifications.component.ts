@@ -8,7 +8,7 @@ import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 @Component({
     selector: 'app-public-point-notifications',
     templateUrl: './public-point-notifications.component.html',
-    styleUrls: ['./public-point-notifications.component.css']
+    styleUrls: ['./public-point-notifications.component.css'],
 })
 export class PublicPointNotificationsComponent implements OnInit {
     notifications: PublicPointNotification[] = [];

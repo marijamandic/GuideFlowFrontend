@@ -7,7 +7,7 @@
     border-bottom: 2.5px solid #e4dfdf;
     border-left: 2px solid #e4dfdf;
     border-right: 2px solid #e4dfdf;
-    margin: 40px;
+    margin: 0px;
   }
   
   .header {
@@ -16,7 +16,7 @@
     align-items: center; /* Poravnava elemente vertikalno u centar */
     border-bottom: 2px solid #d5d0d0;
     padding-top: 10px;
-    padding-bottom: 7px;
+    padding-bottom: 10px;
     padding-left: 10px;
     padding-right: 10px;
     border-radius: 5px;
@@ -40,7 +40,7 @@
 
   .notification-table {
     margin-top: 0px;
-    padding: 15px 10px 5px 10px;
+    padding: 5px 10px 5px 10px;
   }
   
   .notification-row {
@@ -100,7 +100,13 @@
     transform: translateY(-50%); /* Precizno centriranje tačke */
     box-shadow: 0 1px 4px rgba(255, 0, 0, 1);
   }
-  
+  .notification-point-read {
+    font-size: 14px; /* Manji font za komentar */
+    margin-left: 10px;
+    font-weight: 500;
+    color: black;
+    position: relative;
+  }
 
   .notification-comment {
     font-size: 14px; /* Manji font za komentar */
@@ -221,3 +227,4 @@
 .close-button:hover {
     color: #dc3545; /* Red color on hover */
 }
+

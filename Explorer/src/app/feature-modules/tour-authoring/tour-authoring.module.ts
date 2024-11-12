@@ -12,10 +12,8 @@ import { TourEquipmentComponent } from './tour-equipment/tour-equipment.componen
 import { EquipmentComponent } from '../administration/equipment/equipment.component';
 import { AdministrationModule } from '../administration/administration.module';
 import { FormsModule } from '@angular/forms';
-import { SharedModule } from 'src/app/shared/shared.module';
 import { PublicPointRequestsComponent } from './public-point-requests/public-point-requests.component';
-import { PublicPointNotificationsComponent } from './public-point-notifications/public-point-notifications.component';
-
+import { SharedModule } from 'src/app/shared/shared.module';
 @NgModule({
   declarations: [
     TourObjectComponent,
@@ -26,7 +24,6 @@ import { PublicPointNotificationsComponent } from './public-point-notifications/
     TourFormComponent,
     TourEquipmentComponent,
     PublicPointRequestsComponent,
-    PublicPointNotificationsComponent,
   ],
   imports: [
     CommonModule,
@@ -44,7 +41,6 @@ import { PublicPointNotificationsComponent } from './public-point-notifications/
     TourObjectFormComponent,
     TourEquipmentComponent,
     PublicPointRequestsComponent,
-    PublicPointNotificationsComponent,
   ]
 })
 export class TourAuthoringModule {}
