@@ -60,6 +60,14 @@ export class TourExecutionService {
 	}
 
 	createSession(createTourExecutionDto: CreateTourExecutionDto){
-		return this.http.post<TourExecution>('https://localhost:44333/api/execution/tourExecution', createTourExecutionDto);
+		return this.http.post<TourExecution>(environment.apiHost + 'execution/tourExecution', createTourExecutionDto);
+	}
+
+	completeSession(id:number): Observable<any>{
+		return this.http.put<any>(environment.apiHost + 'execution/tourExecution/complete/' + id, null);
+	}
+
+	abandonSession(id:number): Observable<any>{
+		return this.http.put<any>(environment.apiHost + 'execution/tourExecution/abandon/' + id, null);
 	}
 }
