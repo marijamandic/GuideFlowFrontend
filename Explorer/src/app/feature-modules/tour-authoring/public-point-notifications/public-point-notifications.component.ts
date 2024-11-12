@@ -18,19 +18,22 @@ export class PublicPointNotificationsComponent implements OnInit {
     selectedNotification: PublicPointNotification | null = null;
     selectedPoint: PublicPoint | null = null;
     showModal: boolean = false;
-    user: User | undefined;
+    private user: User | undefined;
 
     constructor(private publicPointService: PublicPointService, private authService: AuthService) {}
 
     ngOnInit(): void {
-        this.loadNotifications();
         this.authService.user$.subscribe((user) => {
             this.user = user;
+            console.log("OVO JE USER: ", this.user)
+            console.log("EE", this.user?.id)
           });
+        this.loadNotifications();
     }
 
     loadNotifications(page: number = 1, pageSize: number = 10): void {
-        this.publicPointService.getNotificationsByAuthor(0).subscribe(
+        console.log("EE", this.user?.id)
+        this.publicPointService.getNotificationsByAuthor(this.user?.id || 0).subscribe(
             (data) => {
                 this.notifications = data;
                 this.totalCount = this.notifications.length;
