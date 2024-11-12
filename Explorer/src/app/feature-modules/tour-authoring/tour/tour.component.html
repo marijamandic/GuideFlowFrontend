@@ -1,34 +1,109 @@
-<div>
-    <table>
-        <thead>
-            <tr>
-                <th>Naziv</th>
-                <th>Opis</th>
-                <th>Cena</th>
-                <th>Tezina</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let tour of tours">
-                <td> {{ tour.name }} </td>
-                <td> {{ tour.description }} </td>
-                <td> {{ tour.price }} </td>
-                <td> {{ tour.level }} </td>
-                <td>
-                    <button color="accent" (click)="deleteTour(tour.id || 0)" mat-icon-button>
-                        <mat-icon>delete</mat-icon>
-                    </button>
-                    <button color="primary" (click)="onEditClicked(tour)" mat-icon-button>
-                        <mat-icon>edit</mat-icon>
-                    </button>
-                </td>
-            </tr>
-            <tr><button color="primary" (click)="onAddClicked()" mat-icon-button>
-                <mat-icon>add</mat-icon>
-            </button></tr>
-        </tbody>
-    </table>
-    <div>
-        <xp-tour-form *ngIf="shouldRenderTourForm" [shouldEdit]="shouldEdit" [tour]="selectedTour" (tourUpdated)="getTours()"></xp-tour-form>
+<div class="container">
+    <div class="container" *ngIf="user && user.role !== 'tourist'">
+        <h2>Drafts</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Naziv</th>
+                    <th>Opis</th>
+                    <th>Cena</th>
+                    <th>Valuta</th>
+                    <th>Tezina</th>
+                    <th>Akcije</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let tour of draftTours">
+                    <td> {{ tour.name }} </td>
+                    <td> {{ tour.description }} </td>
+                    <td> {{ tour.price.cost }} </td>
+                    <td> {{ CurrencyMap[tour.price.currency] }} </td>
+                    <td> {{ LevelMap[tour.level] }} </td>
+                    <td>
+                        <button color="accent" (click)="deleteTour(tour.id || 0)" mat-icon-button>
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                        <button color="primary" (click)="onEditClicked(tour)" mat-icon-button>
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                    </td>
+                    <td>
+                        <button class="add-button" (click)="onPublish(tour)">Publish</button>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6" style="text-align: center;">
+                        <button class="add-button" (click)="onAddClicked()">
+                            <mat-icon>add</mat-icon> Add Tour
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="tour-form-container">
+            <xp-tour-form *ngIf="shouldRenderTourForm" [shouldEdit]="shouldEdit" [forPublish]="forPublish" [tour]="selectedTour" (tourUpdated)="getTours()"></xp-tour-form>
+        </div>
+
+        <h2>Published Tours</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Naziv</th>
+                    <th>Opis</th>
+                    <th>Cena</th>
+                    <th>Valuta</th>
+                    <th>Tezina</th>
+                    <th>Akcije</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let tour of publishedTours">
+                    <td> {{ tour.name }} </td>
+                    <td> {{ tour.description }} </td>
+                    <td> {{ tour.price.cost }} </td>
+                    <td> {{ CurrencyMap[tour.price.currency] }} </td>
+                    <td> {{ LevelMap[tour.level] }} </td>
+                    <td>
+                        <button class="add-button" >Archive</button>
+                    </td>
+                </tr>
+            
+            </tbody>
+        </table>
+    </div>
+
+    <div *ngIf="user && user.role === 'tourist'">
+        <xp-map [allowMultipleMarkers]="false"
+            [initialMarkers]="initialMarkers"
+            (markerAdded)="onMarkerAdded($event)"
+            (mapReset)="onMapReset()"
+            (coordinatesSelected)="onCoordinatesSelected($event)">
+        </xp-map>
+        <div class="search-container">
+            <input type="text" [(ngModel)]="searchDistance" placeholder="Unesite distancu od tačke" />
+            <button class="button" (click)="searchTours()" color="primary">Pretraži ture</button>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Naziv</th>
+                    <th>Opis</th>
+                    <th>Cena</th>
+                    <th>Valuta</th>
+                    <th>Tezina</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let tour of filteredTours">
+                    <td> {{ tour.name }} </td>
+                    <td> {{ tour.description }} </td>
+                    <td> {{ tour.price.cost }} </td>
+                    <td> {{ CurrencyMap[tour.price.currency] }} </td>
+                    <td> {{ LevelMap[tour.level] }} </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>

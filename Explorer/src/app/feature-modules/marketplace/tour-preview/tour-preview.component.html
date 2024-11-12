@@ -1,30 +1,49 @@
 <div class="tour-card">
-    <img src="slika-ture.jpg" alt="Slika Ture">
     <div class="tour-info">
-        <h2>Naziv Ture</h2>
-        <p>Opis: Predivna tura kroz istorijski centar grada, pogodna za sve uzraste.</p>
-        <p>Dužina: 3 km</p>
-        <p>Vreme prolaska: 2 sata</p>
-        <p>Početna tačka: Glavni trg</p>
+        <h2>{{currentTour.name}}</h2>
+        <div class="tour-images">
+            <div *ngFor="let checkpoint of currentTour.checkpoints; let i = index" class="checkpoint-images">
+                <img [src]="checkpoint.imageUrl">
+            </div>
+        </div>
+        <p>Desription: {{currentTour.description}}</p>
+        <p>Lenght: {{currentTour.lengthInKm}} km</p>
+        <span>
+            <span class="icon-with-duration">
+                <mat-icon>directions_car</mat-icon>
+                <label  *ngIf="currentTour.transportDurations[0].time.hours > 0">
+                    {{currentTour.transportDurations[0].time.hours}} h 
+                </label>
+                <label> {{currentTour.transportDurations[0].time.minutes}} min</label>
+              </span>
+              
+              <span class="icon-with-duration">
+                <label class="material-symbols-outlined">directions_bike</label>
+                <label  *ngIf="currentTour.transportDurations[1].time.hours > 0">
+                    {{currentTour.transportDurations[1].time.hours}}h 
+                </label>
+                <label>{{currentTour.transportDurations[1].time.minutes}} min</label>
+              </span>
+              
+              <span class="icon-with-duration">
+                <label class="material-symbols-outlined">directions_walk</label>
+                <label  *ngIf="currentTour.transportDurations[2].time.hours > 0">
+                    {{currentTour.transportDurations[2].time.hours}}h 
+                </label>
+                <label>{{currentTour.transportDurations[2].time.minutes}} min</label>
+              </span>
+        </span>
+        <p>Beginning Checkpoint: {{currentTour.checkpoints[0].name}}</p>
     </div>
     
-    <!-- Recenzije -->
     <div class="reviews">
-        <h3>Recenzije</h3>
-        <div class="review-card">
-            <span class="rating-badge">5</span>
-            <p class="review-message">"Predivno iskustvo!"</p>
-        </div>
-        <div class="review-card">
-            <span class="rating-badge">5</span>
-            <p class="review-message">"Lep ambijent, ali malo naporna tura.NIGGGGGGGGGGGGGGGGGGGGGGGGG"</p>
-        </div>
-        <div class="review-card">
-            <span class="rating-badge">5</span>
-            <p class="review-message">"Odlično organizovano, preporučujem svima!"</p>
+        <h3>Reviews</h3>
+        <div class="review-card" *ngFor="let review of currentTour.reviews">
+            <span class="rating-badge">{{review.rating}}</span>
+            <p class="review-message">{{review.comment}}</p>
         </div>
     </div>
     <div class="purchase-button-container">
-        <button class="purchase-button">Kupi Turu</button>
+        <button class="purchase-button">Buy Tour</button>
     </div>
 </div>

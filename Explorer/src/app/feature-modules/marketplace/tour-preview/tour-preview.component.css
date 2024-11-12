@@ -2,14 +2,28 @@
     background-color: #ffffff;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    width: 320px;
+    width: 500px;
     padding: 16px;
     margin: 16px auto;
     text-align: center;
 }
-.tour-card img {
+.tour-images {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); 
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.checkpoint-images img {
     width: 100%;
+    height: auto;
     border-radius: 8px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.checkpoint-images img:hover {
+    transform: scale(1.05); 
 }
 .tour-info {
     margin-top: 16px;
@@ -82,3 +96,9 @@
 .purchase-button:hover {
     background-color: #ff6347;
 }
+.icon-with-duration {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 10px;  
+  }
+  

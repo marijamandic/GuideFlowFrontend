@@ -1,41 +1,50 @@
-<form [formGroup]="tourForm">
-    <div>
-        <mat-form-field>
-            <mat-label>Name</mat-label>
-            <input matInput formControlName="name" type="text" required />
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>Description</mat-label>
-          <textarea matInput
-          cdkTextareaAutosize
-          cdkAutosizeMinRows="1"
-          formControlName="description"
-          cdkAutosizeMaxRows="5" required></textarea>
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>Price</mat-label>
-          <input matInput formControlName="price" type="number" required />
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>Level</mat-label>
-          <input matInput formControlName="level" type="number" required />
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>Status</mat-label>
-          <input matInput formControlName="status" type="text" required />
-        </mat-form-field>
-
-        <mat-form-field>
-            <mat-label>Taggs</mat-label>
-            <input matInput formControlName="taggs" type="text" placeholder="Comma-separated tag IDs" required />
-          </mat-form-field>
-          
+<!--<form [formGroup]="tourForm">
+    
 
         <button *ngIf="!shouldEdit" color="primary" type="submit" (click)="addTour()">Done</button>
         <button *ngIf="shouldEdit" color="primary" type="submit" (click)="updateTour()">Done</button>
+        (ngSubmit)="addTour()"
     </div>
 </form>
+-->
+<div class="form-container">
+  <form  #tourForm="ngForm" class="tour-form">
+    <h2 *ngIf="!forPublish">Add Tour</h2>
+    <h2 *ngIf="forPublish">Publish Tour</h2>
+    
+    <label for="name">Tour Name</label>
+    <input id="name" [(ngModel)]="tour.name" name="name" required placeholder="Tour Name">
+    
+    <label for="description">Description</label>
+    <textarea id="description" [(ngModel)]="tour.description" name="description" required placeholder="Description"></textarea>
+    
+    <label for="cost">Price</label>
+    <input id="cost" [(ngModel)]="tour.price.cost" name="cost" required placeholder="Price">
+    
+    <label for="currency">Currency</label>
+    <select id="currency" [(ngModel)]="tour.price.currency" name="currency" required>
+      <option value="EUR">EUR</option>
+      <option value="USD">USD</option>
+      <option value="RSD">RSD</option>
+    </select>
+    
+    <label for="level">Level</label>
+    <select id="level" [(ngModel)]="tour.level" name="level" required>
+      <option value="Easy">Easy</option>
+      <option value="Advanced">Advanced</option>
+      <option value="Expert">Expert</option>
+    </select>
+    
+    <div class="tags-container" *ngFor="let tag of tags; let i = index">
+      <label for="tag{{i}}">Tag {{i + 1}}</label>
+      <input id="tag{{i}}" [(ngModel)]="tags[i]" name="tag{{i}}" placeholder="Tag">
+    </div>
+
+    <button type="button" class="add-tag-button" (click)="addTag()">Add Tag</button>
+    <button class="cta-button" *ngIf="(!shouldEdit && !forPublish)"  type="submit" (click)="addTour()">Done</button>
+    <button class="cta-button" *ngIf="(shouldEdit && !forPublish)"  type="submit" (click)="updateTour()">Done</button>
+    <button class="cta-button" *ngIf="forPublish" type="submit" (click)="publishTour()">Done</button>
+   
+  </form>
+</div>
+
