@@ -1,3 +1,5 @@
+import { Checkpoint } from "./checkpoint.model";
+
 export interface PurchasedTours{
     id: number,
     name: string,
@@ -6,6 +8,7 @@ export interface PurchasedTours{
     tourStatus: Status,
     averageGrade: number,
     lengthInKm: number
+    checkpoints : Checkpoint[];
 }
 
 export enum Level{
