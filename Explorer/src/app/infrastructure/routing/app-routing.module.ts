@@ -44,10 +44,11 @@ const routes: Routes = [
   { path: 'club-request', component: ClubRequestComponent, canActivate: [AuthGuard] },
   { path: 'club-request/add', component: ClubRequestFormComponent, canActivate: [AuthGuard] },
   { path: 'club-members/:id', component: ClubMemberListComponent, canActivate: [AuthGuard] },
-  { path: 'blog', component: PostComponent },
-  { path: 'blog/:id', component: PostInfoComponent },
+  { path: 'blog', component: PostComponent, canActivate: [AuthGuard] },
+  { path: 'blog/:id', component: PostInfoComponent, canActivate: [AuthGuard] },
   { path: 'comment', component: CommentComponent },
-  { path: 'createBlog', component: CreateBlogComponent },
+  { path: 'edit-post/:id', component: CreateBlogComponent },
+  { path: 'create-blog', component: CreateBlogComponent },
   { path: 'tourObjects', component: TourObjectComponent, canActivate: [AuthGuard] },
   { path: 'checkpoints', component: CheckpointListComponent },
   { path: 'tour', component: TourComponent },
@@ -57,6 +58,10 @@ const routes: Routes = [
   { path: 'specification', component: TourSpecificationComponent },
   { path: 'account', component: AccountComponent, canActivate: [AuthGuard] },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: 'home', component: HomeComponent},
+  { path: 'login', component: LoginComponent},
+  { path: 'register', component: RegistrationComponent},
+  { path: 'equipment', component: EquipmentComponent, canActivate: [AuthGuard],}
 ];
 
 @NgModule({
