@@ -30,6 +30,6 @@ export class TourService {
   }
 
   publishTour(tour:Tour): Observable<Tour>{
-    return this.http.put<Tour>(environment.apiHost + 'authoring/tour/publish/'+ tour.id, tour)
+    return this.http.put<Tour>(environment.apiHost + 'authoring/tour/publish/'+ tour.id, tour.id)
   }
 }

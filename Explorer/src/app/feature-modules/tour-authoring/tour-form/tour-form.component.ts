@@ -140,8 +140,6 @@ export class TourFormComponent implements OnChanges {
     }
   }
 
-  
-    //this.tourForm.reset();
     
 
     updateTour(): void {
