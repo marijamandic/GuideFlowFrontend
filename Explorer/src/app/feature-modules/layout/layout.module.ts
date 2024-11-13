@@ -5,13 +5,15 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { MaterialModule } from 'src/app/infrastructure/material/material.module';
 import { RouterModule } from '@angular/router';
 import { RatingTheAppComponent } from './rating-the-app/rating-the-app.component';
-import { FormsModule } from '@angular/forms'; // <-- Import FormsModule
+import { FormsModule } from '@angular/forms';
+import { FooterComponent } from './footer/footer.component'; // <-- Import FormsModule
 
 @NgModule({
   declarations: [
     HomeComponent,
     NavbarComponent,
-    RatingTheAppComponent
+    RatingTheAppComponent,
+    FooterComponent
   ],
   imports: [
     CommonModule,
@@ -22,7 +24,8 @@ import { FormsModule } from '@angular/forms'; // <-- Import FormsModule
   exports: [
     NavbarComponent,
     HomeComponent,
-    RatingTheAppComponent
+    RatingTheAppComponent,
+    FooterComponent
   ]
 })
 export class LayoutModule { }

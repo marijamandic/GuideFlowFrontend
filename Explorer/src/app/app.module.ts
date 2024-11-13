@@ -19,6 +19,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { Routes } from '@angular/router';
 import { HomeComponent } from './feature-modules/layout/home/home.component';
 import { RatingTheAppComponent } from './feature-modules/layout/rating-the-app/rating-the-app.component';
+import { FooterComponent } from './feature-modules/layout/footer/footer.component';
 
 @NgModule({
 	declarations: [
@@ -41,7 +42,7 @@ import { RatingTheAppComponent } from './feature-modules/layout/rating-the-app/r
 		HttpClientModule,
 		MatFormFieldModule,
 		MatInputModule,
-		
+		LayoutModule,
 	],
 	providers: [
 		{
