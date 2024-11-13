@@ -5,25 +5,13 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { MaterialModule } from 'src/app/infrastructure/material/material.module';
 import { RouterModule } from '@angular/router';
 import { RatingTheAppComponent } from './rating-the-app/rating-the-app.component';
-import { FormsModule } from '@angular/forms'; // <-- Import FormsModule
+import { FormsModule } from '@angular/forms';
+import { NotificationsComponent } from './notifications/notifications.component'; // <-- Import FormsModule
 import { SharedModule } from 'src/app/shared/shared.module';
+
 @NgModule({
-  declarations: [
-    HomeComponent,
-    NavbarComponent,
-    RatingTheAppComponent,
-  ],
-  imports: [
-    CommonModule,
-    MaterialModule,
-    RouterModule,
-    FormsModule,
-    SharedModule
-  ],
-  exports: [
-    NavbarComponent,
-    HomeComponent,
-    RatingTheAppComponent,
-  ]
+	declarations: [HomeComponent, NavbarComponent, RatingTheAppComponent, NotificationsComponent],
+	imports: [CommonModule, MaterialModule, RouterModule, FormsModule,SharedModule],
+	exports: [NavbarComponent, HomeComponent, RatingTheAppComponent, NotificationsComponent]
 })
-export class LayoutModule { }
+export class LayoutModule {}

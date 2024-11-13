@@ -9,12 +9,13 @@ import { CheckpointFormComponent } from './tour-checkpoint-form/tour-checkpoint-
 import { TourComponent } from './tour/tour.component';
 import { TourFormComponent } from './tour-form/tour-form.component';
 import { TourEquipmentComponent } from './tour-equipment/tour-equipment.component';
-import { EquipmentComponent } from '../administration/equipment/equipment.component';
 import { AdministrationModule } from '../administration/administration.module';
 import { FormsModule } from '@angular/forms';
 import { PublicPointRequestsComponent } from './public-point-requests/public-point-requests.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { PositionsimComponent } from './positionsim/positionsim.component';
+import { ProblemComponent } from './problem/problem.component';
+import { ProblemViewComponent } from './problem-view/problem-view.component';
 
 
 
@@ -29,6 +30,8 @@ import { PositionsimComponent } from './positionsim/positionsim.component';
     TourEquipmentComponent,
     PublicPointRequestsComponent,
     PositionsimComponent,
+    ProblemComponent,
+    ProblemViewComponent
   ],
   imports: [
     CommonModule,
@@ -47,7 +50,8 @@ import { PositionsimComponent } from './positionsim/positionsim.component';
     TourEquipmentComponent,
     PublicPointRequestsComponent,
     TourEquipmentComponent,
-    PositionsimComponent
+    PositionsimComponent,
+    ProblemComponent
   ]
 })
 export class TourAuthoringModule {}
