@@ -1,47 +1,5 @@
-<!--<form [formGroup]="tourForm">
-    <div>
-        <mat-form-field>
-            <mat-label>Name</mat-label>
-            <input matInput formControlName="name" type="text" required />
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>Description</mat-label>
-          <textarea matInput
-          cdkTextareaAutosize
-          cdkAutosizeMinRows="1"
-          formControlName="description"
-          cdkAutosizeMaxRows="5" required></textarea>
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>Price</mat-label>
-          <input matInput formControlName="price" type="Price" required />
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>Level</mat-label>
-          <input matInput formControlName="level" type="Level" required />
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>Status</mat-label>
-          <input matInput formControlName="status" type="Status" required />
-        </mat-form-field>
-
-        <mat-form-field>
-            <mat-label>Taggs</mat-label>
-            <input matInput formControlName="taggs" type="text" placeholder="Comma-separated tag IDs" required />
-          </mat-form-field>
-          
-
-        <button *ngIf="!shouldEdit" color="primary" type="submit" (click)="addTour()">Done</button>
-        <button *ngIf="shouldEdit" color="primary" type="submit" (click)="updateTour()">Done</button>
-    </div>
-</form>
--->
 <div class="form-container">
-  <form (ngSubmit)="addTour()" #tourForm="ngForm" class="tour-form">
+  <form  #tourForm="ngForm" class="tour-form">
     <h2>Add Tour</h2>
     
     <label for="name">Tour Name</label>
@@ -73,7 +31,8 @@
     </div>
 
     <button type="button" class="add-tag-button" (click)="addTag()">Add Tag</button>
-    <button class="cta-button" type="submit">Done</button>
+    <button class="cta-button" *ngIf="!shouldEdit"  type="submit" (click)="addTour()">Done</button>
+    <button class="cta-button" *ngIf="shouldEdit"  type="submit" (click)="updateTour()">Done</button>   
   </form>
 </div>
 

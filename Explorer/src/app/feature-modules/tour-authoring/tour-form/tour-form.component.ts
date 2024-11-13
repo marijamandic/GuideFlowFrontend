@@ -1,7 +1,10 @@
 import { Component, EventEmitter, Input, Inject, OnChanges, Output, SimpleChanges } from '@angular/core';
-import { Currency, Tour } from '../model/tour.model';
+import { Tour } from '../model/tour.model';
+import { Currency } from '../model/price.model';
 import { TourService } from '../tour.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 
 
 export enum TourStatus {
@@ -26,10 +29,11 @@ export class TourFormComponent implements OnChanges {
   @Output() tourUpdated = new EventEmitter<null>();
   @Input() tour: Tour ;
   @Input() shouldEdit: boolean = false;
-
+  
+  userId:number=-1;
   tags: string[] = [''];
 
-  constructor(private service: TourService) {
+  constructor(private service: TourService,private router:Router,private authService:AuthService) {
   }
   
   ngOnChanges(): void {
@@ -38,11 +42,17 @@ export class TourFormComponent implements OnChanges {
     if (this.shouldEdit) {
       this.tags = this.tour.taggs || ['']; // Učitaj postojeće tagove
     }
+    this.authService.user$.subscribe(user => {
+      if(user){
+      this.userId = user.id;
+      }
+    });
   }
 
   initializeTour(): Tour {
     return {
       id: 0,
+      authorId:-1,
       name: '',
       description: '',
       price: { cost: 0, currency:0 },
@@ -62,6 +72,8 @@ export class TourFormComponent implements OnChanges {
   }
 
   addTour(): void {
+    console.log('add metoda')
+
     const curr = this.ConvertCurrency();
     const level = this.ConvertLevel();
     const status = this.ConvertStatus();
@@ -70,10 +82,10 @@ export class TourFormComponent implements OnChanges {
       name: this.tour.name || "",
       description: this.tour.description || "",
       id: 0,
+      authorId:this.userId,
       price: {
         cost: this.tour.price.cost || 0,
-       // currency: this.tour.price.currency || 0
-       currency : curr
+        currency : curr
       },
       level: level || 0,
       status: status || 0,
@@ -85,118 +97,84 @@ export class TourFormComponent implements OnChanges {
       reviews: this.tour.reviews || [],
     };
     this.service.addTour(newTour).subscribe({
-      next: () => { this.tourUpdated.emit(); }
+      next: (result:Tour) => {
+        this.router.navigate(['/checkpoints', result.id]);
+      }
     });
 
   }
-
-  ConvertCurrency(): number {
-
-    switch (this.tour.price.currency) {
-      case  Currency.RSD :
-        return 0;
-      case Currency.EUR:
-        return 1;
-      case Currency.USD:
-        return 2;
-      default:
-        return 0;
-    }
-  }
-
-  
-  ConvertLevel(): number {
-
-    switch (this.tour.level) {
-      case  0 :
-        return 0;
-      case 1:
-        return 1;
-      case 2:
-        return 2;
-      default:
-        return 0;
-    }
-  }
-
-  
-  ConvertStatus(): number {
-
-    switch (this.tour.status) {
-      case  0 :
-        return 0;
-      case 1:
-        return 1;
-      case 2:
-        return 2;
-      default:
-        return 0;
-    }
-  }
-
-  
-    //this.tourForm.reset();
-    /*if(this.shouldEdit) {
-      this.tourForm.patchValue(this.tour);
-    }  }
-    tourForm = new FormGroup({
-      id: new FormControl(0),
-      name: new FormControl(''),
-      description: new FormControl(''),
-      price: new FormGroup({
-        cost: new FormControl(0),
-        currency: new FormControl(Currency.EUR),
-      }),
-      level: new FormControl(Level.Easy),
-      status: new FormControl(TourStatus.Draft),
-      lengthInKm: new FormControl(0),
-      averageGrade: new FormControl(0),
-      tags: new FormControl(''),
-      checkpoints: new FormControl([]), // Ako je to lista
-      transportDurations: new FormControl([]), // Ako je to lista
-      reviews: new FormControl([]), // Ako je to lista
-    });
-    
-      
-
-    addTour(): void {
-      const tour: Tour = {
-        name: this.tourForm.value.name || "",
-        description: this.tourForm.value.description || "",
-        id: 0,
-        price: {
-          cost: this.tourForm.value.price.cost || 0,
-          currency: this.tourForm.value.price.currency || Currency.EUR // Postavite podrazumevanu vrednost
-        },
-        level: this.tourForm.value.level || Level.Easy,
-        status: this.tourForm.value.status || TourStatus.Draft,
-        tags: this.tourForm.value.tags.split(',').map(tag => tag.trim()),
-      };
-
-      this.service.addTour(tour).subscribe({
-        next: () => { this.tourUpdated.emit() }
-      });
-    }
 
     updateTour(): void {
+      const curr = this.ConvertCurrency();
+      const level = this.ConvertLevel();
+      const status = this.ConvertStatus();
+      console.log('update metoda')
       const tour: Tour = {
-        name: this.tourForm.value.name || "",
-        description: this.tourForm.value.description || "",
-        id: this.tourForm.value.id || 0,
+        name: this.tour.name || "",
+        description: this.tour.description || "",
+        id: 0,
+        authorId:this.userId,
         price: {
-          cost: this.tourForm.value.price.cost || 0,
-          currency: this.tourForm.value.price.currency || Currency.EUR // Postavite podrazumevanu vrednost
+          cost: this.tour.price.cost || 0,
+          currency : curr
         },
-        level: this.tourForm.value.level || Level.Easy,
-        status: this.tourForm.value.status || TourStatus.Draft,
-        tags: this.tourForm.value.tags.split(',').map(tag => tag.trim()),
-      };
-      tour.id = this.tour.id;
-      this.service.updateTour(tour).subscribe({
-        next: () => { this.tourUpdated.emit();}
-      });*/
-    
-    
+        level: level || 0,
+        status: status || 0,
+        lengthInKm : this.tour.lengthInKm || 0,
+        averageGrade: this.tour.averageGrade || 0,
+        taggs: this.tags.filter(tag => tag.trim() !== ''), // Filtriraj prazne tagove
+        checkpoints: this.tour.checkpoints || [],
+        transportDurations: this.tour.transportDurations || [],
+        reviews: this.tour.reviews || [],
+        }
 
+        tour.id = this.tour.id;
+        this.service.updateTour(tour).subscribe({
+          next: () => { this.tourUpdated.emit();}
+        });
+      }
 
+      ConvertCurrency(): number {
+        console.log('Currency je ',this.tour.price.currency)
+         switch (this.tour.price.currency.toString()) {
+           case  "RSD" :
+             return 0;
+           case "EUR":
+             return 1;
+           case "USD":
+             return 2;
+           default:
+             return 0;
+         }
+       }
+     
+       
+       ConvertLevel(): number {
+     
+         switch (this.tour.level.toString()) {
+           case  "Easy" :
+             return 0;
+           case "Advanced":
+             return 1;
+           case "Expert":
+             return 2;
+           default:
+             return 0;
+         }
+       }
+     
+       
+       ConvertStatus(): number {
+     
+         switch (this.tour.status.toString()) {
+           case  "Draft" :
+             return 0;
+           case "Published":
+             return 1;
+           case "Archived":
+             return 2;
+           default:
+             return 0; 
+         }
+       }
 }

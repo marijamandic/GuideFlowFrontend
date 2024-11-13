@@ -28,6 +28,7 @@ import { AllAppRatingsComponent } from 'src/app/feature-modules/administration/a
 import { TourSpecificationComponent } from 'src/app/feature-modules/marketplace/tour-specification/tour-specification.component';
 import { AccountComponent } from 'src/app/feature-modules/administration/account/account.component';
 import { TourViewComponent } from 'src/app/feature-modules/tour-execution/tour-view/tour-view.component';
+import { PublicPointRequestsComponent } from 'src/app/feature-modules/tour-authoring/public-point-requests/public-point-requests.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -50,7 +51,7 @@ const routes: Routes = [
   { path: 'comment', component: CommentComponent },
   { path: 'createBlog', component: CreateBlogComponent },
   { path: 'tourObjects', component: TourObjectComponent, canActivate: [AuthGuard] },
-  { path: 'checkpoints', component: CheckpointListComponent },
+  { path: 'checkpoints/:tourId', component: CheckpointListComponent },
   { path: 'tour', component: TourComponent },
   { path: 'tourEquipment', component: TourEquipmentComponent },
   { path: 'ratingTheApp', component: RatingTheAppComponent },
@@ -59,6 +60,7 @@ const routes: Routes = [
   { path: 'account', component: AccountComponent, canActivate: [AuthGuard] },
   { path: 'tourView', component: TourViewComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: 'pending', component: PublicPointRequestsComponent },
 ];
 
 @NgModule({
