@@ -69,4 +69,9 @@ export class TourService {
     return this.http.put<Tourist>(`https://localhost:44333/api/tourists/${tourist.id}`, tourist);
   }
   
+
+  searchTours(latitude: number, longitude: number, distance: number, page: number = 0, pageSize: number = 0): Observable<Tour[]> {
+    const url = `${environment.apiHost}authoring/tour/search/${latitude}/${longitude}/${distance}?page=${page}&pageSize=${pageSize}`;
+    return this.http.get<Tour[]>(url);
+}
 }

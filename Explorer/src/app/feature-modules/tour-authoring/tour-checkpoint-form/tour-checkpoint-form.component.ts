@@ -131,6 +131,7 @@ export class CheckpointFormComponent implements OnChanges {
     this.publicPointService.addPublicPoint(publicObject).subscribe({
         next: (_) => {
             console.log('Public object successfully created');
+            this.updatedCheckpoint.emit();
         },
         error: (err) => {
             console.error('Error creating public object:', err);

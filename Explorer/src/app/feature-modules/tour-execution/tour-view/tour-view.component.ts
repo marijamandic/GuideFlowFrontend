@@ -13,7 +13,7 @@ export class TourViewComponent implements OnInit {
 
   allTours: Tour[] = [];
 
-  constructor(private service: TourExecutionService, private reviewService: TourExecutionService) { }
+  constructor(private service: TourExecutionService) { }
 
   ngOnInit(): void {
     this.service.getAllTours().subscribe({
@@ -29,7 +29,6 @@ export class TourViewComponent implements OnInit {
 
   calculateAverageRating(reviews: { rating: number }[]): number {
     if (reviews.length === 0) return 0;
-    
     const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
     return totalRating / reviews.length;
   }
