@@ -5,6 +5,8 @@ import { PublicPoint,ApprovalStatus,PointType } from '../model/publicPoint.model
 import { TourCheckpointService } from '../tour-checkpoint.service';
 import { PublicPointService } from '../tour-public-point.service';
 import { TourService } from '../tour.service';
+import { AuthService } from 'src/app/infrastructure/auth/auth.service';
+import { User } from 'src/app/infrastructure/auth/model/user.model';
 
 @Component({
   selector: 'xp-tour-checkpoint-form',
@@ -23,14 +25,18 @@ export class CheckpointFormComponent implements OnChanges {
   isChecked: boolean = false; 
   isViewMode:boolean = true;
   imageBase64:string;
+  user : User;
 
-  constructor(private checkpointService: TourCheckpointService,private tourService:TourService,private publicPointService: PublicPointService) {}
+  constructor(private authService: AuthService,private tourService:TourService,private publicPointService: PublicPointService) {}
 
   ngOnChanges(): void {
     this.checkpointForm.reset();
     if (this.shouldEdit) {
       this.checkpointForm.patchValue(this.checkpoint);
     }
+    this.authService.user$.subscribe((user)=>{
+      this.user = user;
+    })
   }
 
   checkpointForm = new FormGroup({
@@ -118,7 +124,8 @@ export class CheckpointFormComponent implements OnChanges {
         longitude: this.checkpointForm.value.longitude || 0,
         imageUrl: this.checkpointForm.value.imageUrl || "",
         imageBase64:this.checkpointForm.value.imageBase64 || "",
-        approvalStatus: ApprovalStatus.Pending, 
+        approvalStatus: ApprovalStatus.Pending,
+        authorId: this.user.id, 
         type: PointType.Checkpoint
     };
     this.publicPointService.addPublicPoint(publicObject).subscribe({
