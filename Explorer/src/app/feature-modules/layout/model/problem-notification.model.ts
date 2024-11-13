@@ -11,4 +11,5 @@ export interface ProblemNotification {
 	isOpened: boolean;
 	type: NotificationType;
 	problemId: number;
+	isNewDeadline: boolean;
 }
