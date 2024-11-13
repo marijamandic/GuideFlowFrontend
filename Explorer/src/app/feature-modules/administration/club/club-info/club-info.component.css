@@ -79,34 +79,81 @@
     justify-content: flex-end;
     margin-top: 10px;
   }
+
+  .cta-button{
+    margin-left: 10px;
+    margin-right: 10px;
+  }
   
-  .edit-club-button {
-    padding: 8px 16px;
-    font-size: 14px;
-    font-weight: bold;
-    color: white;
-    background-color: #4CAF50; /* Izaberite boju prema potrebama */
-    border: none;
-    border-radius: 5px;
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 15px;
+    width: 60vh;
+    min-height: 20vh;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .modal-content h3 {
+    text-align: center;
+  }
+
+  .modal-content ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    flex: 1;
+    overflow-y: auto;
+  }
+  
+  .modal-content li {
+    padding: 10px;
     cursor: pointer;
+    border-bottom: 1px solid #eee;
   }
   
-  .edit-club-button:hover {
-    background-color: #45a049;
-  }
-  .request-club-button {
-    padding: 8px 16px;
-    font-size: 14px;
-    font-weight: bold;
-    color: white;
-    background-color: #4CAF50; /* Ista boja kao Edit dugme */
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-left: 10px; /* Razmak između dugmića */
+  .modal-content li.selected {
+    background-color: #e0f7fa;
+    color: #00796b;
   }
   
-  .request-club-button:hover {
-    background-color: #45a049;
+  .modal-actions {
+    display: flex;
+    justify-content: right;
+    margin-top: 20px;
+  }
+  
+  .modal-content input {
+    width: 80%;
+    padding: 8px;
+    align-items: center;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+  }
+  
+  .search-bar {
+    display: block;
+    margin: 0 auto 15px auto;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    text-align: center;
+    width: 70%;
   }
   

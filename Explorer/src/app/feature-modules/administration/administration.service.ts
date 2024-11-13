@@ -12,6 +12,7 @@ import { ClubInvitation } from './model/club-invitation.model';
 import { ClubMemberList } from './model/club-member-list.model';
 import { Account } from './model/account.model';
 import { ClubPost } from './model/club-post.model';
+import { User } from 'src/app/infrastructure/auth/model/user.model';
 
 @Injectable({
 	providedIn: 'root'
@@ -137,4 +138,8 @@ export class AdministrationService {
   getClubPosts(): Observable<ClubPost[]> {
     return this.http.get<ClubPost[]>(environment.apiHost + 'administration/clubpost');
   }
+
+  getAllUsers(): Observable<User[]> {
+    return this.http.get<User[]>(`${environment.apiHost}user/all`);
+  }  
 }

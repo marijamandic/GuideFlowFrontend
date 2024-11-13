@@ -24,6 +24,7 @@ export class NavbarComponent implements OnInit {
   }
 
   onLogout(): void {
+    this.toggleDropdown();
     this.authService.logout();
   }
 }
