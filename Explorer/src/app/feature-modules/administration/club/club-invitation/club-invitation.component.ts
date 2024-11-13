@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AdministrationService } from '../administration.service';
-import { ClubInvitation, ClubInvitationStatus } from '../model/club-invitation.model';
+import { AdministrationService } from '../../administration.service';
+import { ClubInvitation, ClubInvitationStatus } from '../../model/club-invitation.model';
 
 @Component({
   selector: 'xp-club-invitation',

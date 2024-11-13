@@ -1,7 +1,7 @@
 import { Component, OnInit, OnChanges, SimpleChanges, EventEmitter, Output,Input } from '@angular/core';
-import { AdministrationService } from '../administration.service';
+import { AdministrationService } from '../../administration.service';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
-import { Club } from '../model/club.model';
+import { Club } from '../../model/club.model';
 import { FormControl, FormGroup,Validators } from '@angular/forms';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 @Component({

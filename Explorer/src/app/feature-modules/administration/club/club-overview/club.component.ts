@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { AdministrationService } from '../administration.service';
-import { Club } from '../model/club.model'; 
+import { AdministrationService } from '../../administration.service';
+import { Club } from '../../model/club.model'; 
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { environment } from 'src/env/environment';
-import { ClubRequestService } from '../club-request.service';
-import { ClubRequest } from '../model/club-request.model';
+import { ClubRequestService } from '../../club-request.service';
+import { ClubRequest } from '../../model/club-request.model';
 
 @Component({
   selector: 'xp-club',

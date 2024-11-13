@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AdministrationService } from '../administration.service';
-import { ClubPost, ResourceType } from '../model/club-post.model';
+import { AdministrationService } from '../../administration.service';
+import { ClubPost, ResourceType } from '../../model/club-post.model';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { User } from 'src/app/infrastructure/auth/model/user.model';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
