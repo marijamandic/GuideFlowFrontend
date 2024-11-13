@@ -186,4 +186,5 @@ export class MapComponent implements AfterViewInit,OnChanges {
     }
     this.mapReset.emit();
   }
+  
 }

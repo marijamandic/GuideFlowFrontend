@@ -1,0 +1,204 @@
+.title {
+    display: flex;
+    justify-content: center;
+}
+.tourExecutionContainer{
+    display: flex;
+}
+.tourDetails{
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.mapDetails{
+    width: 60%;
+    background-color: green;
+}
+
+.tourExecution-card {
+  display: flex;
+  flex-direction: column;
+  background-color: #84dcc6;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 70%;
+  margin: 16px auto;
+  font-family: Arial, sans-serif;
+}
+.tourExecution-card h3{
+  font-size: x-large;
+  color: #000;
+  margin-bottom: 1px;
+}
+.basicInfo{
+  padding-left: 16px;
+}
+.checkpoint-card h3{
+  font-size: x-large;
+  color: #000;
+  margin-bottom: 1px;
+}
+.checkpoint-card {
+    background-color: #84dcc6;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    
+    max-width: 400px;
+    width: 70%;
+    margin: 16px auto;
+    font-family: Arial, sans-serif;
+  }
+  
+  .checkpoint-header {
+    padding: 16px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 8px;
+    margin-bottom: 8px;
+  }
+  
+  .checkpoint-info {
+    padding: 16px;
+  }
+  
+  .checkpoint-image-wrapper {
+    overflow: hidden;
+    border-radius: 8px 8px 0 0; 
+    max-height: 250px; 
+    margin-bottom: 10px;
+  }
+  
+  .checkpoint-image {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .checkpoint-dots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .checkpoint-dots div {
+    width: 10px;
+    height: 10px;
+    background-color: #ddd;
+    border-radius: 50%;
+    margin: 0 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .checkpoint-dots div.active {
+    background-color: #007bff; /* Možete promeniti boju za aktivni checkpoint */
+  }
+  
+  
+  /* Marija i Ivan css*/
+  
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+
+  .review-popup {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+    position: relative;
+    text-align: center;
+  }
+
+  .close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border: none;
+    background: transparent;
+    font-size: 18px;
+    cursor: pointer;
+  }
+
+  /* Optional: Add styling for review button */
+  .review-button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .expired-message {
+    color: red;
+    font-weight: bold;
+    margin-top: 10px;
+  }
+
+  .progress-container {
+    width: 100%;
+    background-color: #e0e0e0;
+    border-radius: 25px;
+    height: 20px;
+    margin: 10px 0;
+  }
+
+  .progress-bar {
+    height: 100%;
+    border-radius: 25px;
+    transition: width 0.3s ease-in-out;
+  }
+
+  .low {
+    background-color: red;
+  }
+
+  .medium {
+    background-color: orange;
+  }
+
+  .high {
+    background-color: green;
+  }
+
+  .button {
+    display: inline-block;
+    background-color: var(--primary-color);
+    color: white;
+    padding: 12px 25px;
+    border-radius: 30px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    text-align: center;
+    margin: 20px auto;
+    display: block;
+    width: fit-content;
+    outline: none;
+    border: none;
+  }
+
+  .button:focus {
+    outline: none;
+  }
+
+  .button:hover {
+    background-color: var(--hover-color);
+    transform: scale(1.05);
+  }
+
+  .button-container {
+    display: flex;
+    /* gap: 20px; */
+    justify-content: center;
+  }

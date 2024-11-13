@@ -1,0 +1,26 @@
+   .purchased-tours {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .tour-cards-wrapper {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .tour-info {
+    padding: 15px;
+  }
+  
+  .tour-rating {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .rating-badge, .rating-text {
+    font-size: 14px;
+    color: var(--accent-color);
+  }
+  

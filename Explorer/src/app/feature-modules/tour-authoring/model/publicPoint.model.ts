@@ -19,4 +19,5 @@ export interface PublicPoint {
     imageBase64?: string; 
     approvalStatus: ApprovalStatus; 
     type: PointType;
+    authorId: number;
 }

@@ -1,20 +1,28 @@
 <div class="pending-public-points-container">
     <h1>Pending Public Points</h1>
     <div class="points-grid">
-      <div *ngFor="let point of pendingPublicPoints" class="point-card">
-        <img [src]="point.imageUrl || 'default-image-url.jpg'" alt="{{ point.name }}" class="point-image" />
-        <div class="point-details">
-          <h2>{{ point.name }}</h2>
-          <p>{{ point.description }}</p>
-          <p><strong>Latitude:</strong> {{ point.latitude }}</p>
-          <p><strong>Longitude:</strong> {{ point.longitude }}</p>
-          <p><strong>Status:</strong> {{ getApprovalStatus(point.approvalStatus) }}</p>
-          <div class="button-group">
-            <button class="accept-button" (click)="acceptPublicPoint(point)">Accept</button>
-            <button class="reject-button" (click)="rejectPublicPoint(point)">Reject</button>
-          </div>
+        <div *ngFor="let point of pendingPublicPoints; let i = index" class="point-card">
+            <img [src]="point.imageUrl || 'default-image-url.jpg'" alt="{{ point.name }}" class="point-image" />
+            <div class="point-details">
+                <h2>{{ point.name }}</h2>
+                <p>{{ point.description }}</p>
+                <p><strong>Latitude:</strong> {{ point.latitude }}</p>
+                <p><strong>Longitude:</strong> {{ point.longitude }}</p>
+                <p><strong>Status:</strong> {{ getApprovalStatus(point.approvalStatus) }}</p>
+                <div class="button-group">
+                    <button class="accept-button" (click)="acceptPublicPoint(point)">Accept</button>
+                    <button class="reject-button" (click)="openRejectOverlay(i)">Reject</button>
+                </div>
+            </div>
+
+            <!-- Overlay prozor za unos komentara prilikom reject-a -->
+            <div *ngIf="rejectOverlayVisible[i]" class="reject-overlay">
+                <div class="overlay-content">
+                    <button class="close-button" (click)="closeRejectOverlay(i)">✕</button>
+                    <textarea [(ngModel)]="rejectionComment[i]" placeholder="Enter rejection reason..."></textarea>
+                    <button class="submit-button" (click)="rejectPublicPoint(point, i)">Submit</button>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
-  
+</div>

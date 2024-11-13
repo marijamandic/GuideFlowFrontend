@@ -3,5 +3,8 @@ export interface TourReview{
     rating?: number,
     comment?: string,
     creationDate?: Date,
-    tourDate?: Date
+    tourDate?: Date,
+    percentageCompleted: number,
+    touristId: number,
+    tourId: number
 }

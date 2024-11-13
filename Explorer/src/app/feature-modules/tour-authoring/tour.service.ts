@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
 import { Tour } from './model/tour.model';
 import { environment } from 'src/env/environment';
+import { Tourist } from './model/tourist';
 import { Checkpoint } from './model/tourCheckpoint.model';
 import { TransportDuration } from './model/transportDuration.model';
 
@@ -59,4 +60,13 @@ export class TourService {
     return this.http.put<Tour>(environment.apiHost + 'authoring/tour/changeStatus/'+ tourId,JSON.stringify(status),
       { headers: { 'Content-Type': 'application/json' } })
   }
+
+  getTouristById(id: number): Observable<Tourist> {
+    return this.http.get<Tourist>(`https://localhost:44333/api/tourists/${id}`);
+  }
+
+  updateTourist(tourist: Tourist): Observable<Tourist> {
+    return this.http.put<Tourist>(`https://localhost:44333/api/tourists/${tourist.id}`, tourist);
+  }
+  
 }

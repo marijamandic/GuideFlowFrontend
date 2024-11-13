@@ -6,6 +6,8 @@ import { TourObject } from '../model/tourObject.model';
 import { PublicPoint } from '../model/publicPoint.model';
 import { ApprovalStatus } from '../model/publicPoint.model';
 import { PointType } from '../model/publicPoint.model';
+import { User } from 'src/app/infrastructure/auth/model/user.model';
+import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 
 @Component({
   selector: 'xp-tour-object-form',
@@ -26,10 +28,12 @@ export class TourObjectFormComponent {
   @Input() id: number = 0;
   isEditing: boolean = true;
   isChecked: boolean = false; 
+  user: User | undefined;
 
   constructor(
     private service: TourAuthoringService,
-    private publicPointService: PublicPointService
+    private publicPointService: PublicPointService,
+    private authService: AuthService
   ) {}
 
   categories = [
@@ -38,6 +42,12 @@ export class TourObjectFormComponent {
     { value: 2, label: 'Toilet' },
     { value: 3, label: 'Other' }
   ];
+
+  ngOnInit(): void {
+    this.authService.user$.subscribe((user) => {
+      this.user = user;
+    });
+  }
 
   ngOnChanges() {
     console.log('Latitude:', this.latitude, 'Longitude:', this.longitude);
@@ -140,7 +150,8 @@ export class TourObjectFormComponent {
         longitude: this.tourObjectForm.value.longitude || 0,
         imageUrl: this.tourObjectForm.value.imageBase64 || "",
         approvalStatus: ApprovalStatus.Pending, 
-        type: PointType.Object
+        type: PointType.Object,
+        authorId: this.user?.id || 0
     };
 
     this.publicPointService.addPublicPoint(publicObject).subscribe({

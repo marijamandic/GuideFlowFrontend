@@ -7,7 +7,7 @@ import { AuthGuard } from '../auth/auth.guard';
 import { RegistrationComponent } from '../auth/registration/registration.component';
 import { ProfileInfoComponent } from 'src/app/feature-modules/administration/profile-info/profile-info.component';
 import { EquipmentManagementComponent } from 'src/app/feature-modules/tour-execution/equipment-management/equipment-management.component';
-import { ProblemComponent } from 'src/app/feature-modules/administration/problem/problem.component';
+// import { ProblemComponent } from 'src/app/feature-modules/administration/problem/problem.component';
 import { ReportProblemComponent } from 'src/app/feature-modules/tour-execution/report-problem/report-problem.component';
 import { TourObjectComponent } from 'src/app/feature-modules/tour-authoring/tour-object/tour-object.component';
 import { CheckpointListComponent } from 'src/app/feature-modules/tour-authoring/tour-checkpoint/tour-checkpoint.component';
@@ -28,7 +28,17 @@ import { AllAppRatingsComponent } from 'src/app/feature-modules/administration/a
 import { TourSpecificationComponent } from 'src/app/feature-modules/marketplace/tour-specification/tour-specification.component';
 import { AccountComponent } from 'src/app/feature-modules/administration/account/account.component';
 import { TourViewComponent } from 'src/app/feature-modules/tour-execution/tour-view/tour-view.component';
+import { ProblemComponent } from 'src/app/feature-modules/tour-authoring/problem/problem.component';
+import { NotificationsComponent } from 'src/app/feature-modules/layout/notifications/notifications.component';
+import { ProblemStatusComponent } from 'src/app/feature-modules/tour-execution/problem-status/problem-status.component';
+import { AdminProblemComponent } from 'src/app/feature-modules/administration/admin-problem/admin-problem.component';
 import { PublicPointRequestsComponent } from 'src/app/feature-modules/tour-authoring/public-point-requests/public-point-requests.component';
+import { TourReviewFormComponent } from 'src/app/feature-modules/tour-execution/tour-review-form/tour-review-form.component';
+import { TourReviewComponent } from 'src/app/feature-modules/tour-execution/tour-review/tour-review.component';
+import { PositionsimComponent } from 'src/app/feature-modules/tour-authoring/positionsim/positionsim.component';
+import { TourExecutionDetailsComponent } from 'src/app/feature-modules/tour-execution/tour-execution-details/tour-execution-details.component';
+import { PurchasedToursComponent } from 'src/app/feature-modules/tour-execution/purchased-tours/purchased-tours.component';
+import { PublicPointNotificationsComponent } from 'src/app/feature-modules/tour-authoring/public-point-notifications/public-point-notifications.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -37,7 +47,7 @@ const routes: Routes = [
   { path: 'equipment', component: EquipmentComponent, canActivate: [AuthGuard] },
   { path: 'profileInfo', component: ProfileInfoComponent },
   { path: 'equipmentManagement', component: EquipmentManagementComponent },
-  { path: 'problem', component: ProblemComponent },
+  //{ path: 'problem', component: ProblemComponent },
   { path: 'report', component: ReportProblemComponent },
   { path: 'club', component: ClubComponent, canActivate: [AuthGuard] },
   { path: 'club-invitation', component: ClubInvitationComponent, canActivate: [AuthGuard] },
@@ -52,19 +62,29 @@ const routes: Routes = [
   { path: 'createBlog', component: CreateBlogComponent },
   { path: 'tourObjects', component: TourObjectComponent, canActivate: [AuthGuard] },
   { path: 'checkpoints/:tourId', component: CheckpointListComponent },
+  { path: 'tour-execution/:id', component: TourExecutionDetailsComponent},
   { path: 'tour', component: TourComponent },
   { path: 'tourEquipment', component: TourEquipmentComponent },
   { path: 'ratingTheApp', component: RatingTheAppComponent },
   { path: 'allAppRatings', component: AllAppRatingsComponent },
   { path: 'specification', component: TourSpecificationComponent },
+  { path: 'purchased', component: PurchasedToursComponent },
   { path: 'account', component: AccountComponent, canActivate: [AuthGuard] },
   { path: 'tourView', component: TourViewComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'pending', component: PublicPointRequestsComponent },
+  { path: 'tourReview/:tourId/:touristId', component: TourReviewComponent },
+  { path: 'author/notifications', component: PublicPointNotificationsComponent },
+  { path: 'position-sim', component: PositionsimComponent },
+	{ path: 'author-problems', component: ProblemComponent },
+	{ path: 'notifications', component: NotificationsComponent },
+	{ path: 'tourist-problems', component: ProblemStatusComponent },
+	{ path: 'admin-problems', component: AdminProblemComponent },
+	{ path: '', redirectTo: '/home', pathMatch: 'full' }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+	imports: [RouterModule.forRoot(routes)],
+	exports: [RouterModule]
 })
 export class AppRoutingModule {}
