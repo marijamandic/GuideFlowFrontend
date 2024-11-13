@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { EquipmentManagementComponent } from './equipment-management/equipment-management.component';
 import { EquipmentFormComponent } from './equipment-form/equipment-form.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -15,6 +15,7 @@ import { TourReviewFormComponent } from './tour-review-form/tour-review-form.com
 import { TourExecutionDetailsComponent } from './tour-execution-details/tour-execution-details.component';
 
 @NgModule({
+  providers:[DatePipe],
   declarations: [
     EquipmentManagementComponent,
     EquipmentFormComponent,

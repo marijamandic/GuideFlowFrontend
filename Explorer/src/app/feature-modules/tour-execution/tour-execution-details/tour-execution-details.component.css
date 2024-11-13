@@ -1,0 +1,100 @@
+.title {
+    display: flex;
+    justify-content: center;
+}
+.tourExecutionContainer{
+    display: flex;
+}
+.tourDetails{
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.mapDetails{
+    width: 60%;
+    background-color: green;
+}
+
+.tourExecution-card {
+  display: flex;
+  flex-direction: column;
+  background-color: #84dcc6;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 70%;
+  margin: 16px auto;
+  font-family: Arial, sans-serif;
+}
+.tourExecution-card h3{
+  font-size: x-large;
+  color: #000;
+  margin-bottom: 1px;
+}
+.basicInfo{
+  padding-left: 16px;
+}
+.checkpoint-card h3{
+  font-size: x-large;
+  color: #000;
+  margin-bottom: 1px;
+}
+.checkpoint-card {
+    background-color: #84dcc6;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    
+    max-width: 400px;
+    width: 70%;
+    margin: 16px auto;
+    font-family: Arial, sans-serif;
+  }
+  
+  .checkpoint-header {
+    padding: 16px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 8px;
+    margin-bottom: 8px;
+  }
+  
+  .checkpoint-info {
+    padding: 16px;
+  }
+  
+  .checkpoint-image-wrapper {
+    overflow: hidden;
+    border-radius: 8px 8px 0 0; 
+    max-height: 250px; 
+    margin-bottom: 10px;
+  }
+  
+  .checkpoint-image {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .checkpoint-dots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .checkpoint-dots div {
+    width: 10px;
+    height: 10px;
+    background-color: #ddd;
+    border-radius: 50%;
+    margin: 0 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .checkpoint-dots div.active {
+    background-color: #007bff; /* Možete promeniti boju za aktivni checkpoint */
+  }
+  
+  

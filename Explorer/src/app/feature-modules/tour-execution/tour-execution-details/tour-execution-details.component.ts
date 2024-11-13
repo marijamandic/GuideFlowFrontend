@@ -8,6 +8,8 @@ import { environment } from 'src/env/environment';
 import { UpdateTourExecutionDto } from '../model/update-tour-execution.dto';
 import { TourService } from '../../tour-authoring/tour.service';
 import { Tourist } from '../../tour-authoring/model/tourist';
+import { DatePipe } from '@angular/common';
+import { CheckpointStatus } from '../model/checkpoint-status.model';
 
 @Component({
   selector: 'xp-tour-execution-details',
@@ -19,6 +21,9 @@ export class TourExecutionDetailsComponent implements OnInit{
   user : User | undefined;
   tourist : Tourist | undefined;
   tourExecution : TourExecution | null=null;
+  executionStatus : string | null = null;
+  currentCheckpoint : CheckpointStatus;
+  currentIndex : number =0;
   dto: UpdateTourExecutionDto = {
     TourExecutionId: 0,
     Longitude: 0,
@@ -26,7 +31,7 @@ export class TourExecutionDetailsComponent implements OnInit{
   };
   private intervalId : any;
 
-  constructor(private tourExecutionService: TourExecutionService , private authService: AuthService,private tourService : TourService , private route : ActivatedRoute){}
+  constructor(private tourExecutionService: TourExecutionService,private datePipe : DatePipe , private authService: AuthService,private tourService : TourService , private route : ActivatedRoute){}
 
   ngOnInit(): void {
       this.tourExecutionId = this.route.snapshot.paramMap.get('id');
@@ -35,7 +40,6 @@ export class TourExecutionDetailsComponent implements OnInit{
         this.tourService.getTouristById(user.id).subscribe({
           next: (result: Tourist) => {
             this.tourist = result;
-            console.log(this.tourist);
             if(this.tourist && this.tourExecutionId){
               this.fetchTourExecution();
       
@@ -62,7 +66,7 @@ export class TourExecutionDetailsComponent implements OnInit{
     this.tourExecutionService.getTourExecution(this.tourExecutionId!).subscribe({
       next: (result: TourExecution) => {
         this.tourExecution = result;
-        console.log(result);
+        this.currentCheckpoint = result.checkpointsStatus[this.currentIndex];
       },
       error: (err: any) => {
         console.log(err);
@@ -82,4 +86,43 @@ export class TourExecutionDetailsComponent implements OnInit{
       }
     });
   }
+  mapToTourExecutionStatus(status : number) {
+    if(status===0){
+      return "Active"
+    }else if(status===1){
+      return "Completed"
+    }else{
+      return "Abandoned"
+    }
+  }
+ mapToCompletionTime(date: any) {
+  // Ensure date is a valid Date object
+  const validDate = new Date(date);
+  const minDate = new Date("0001-01-01T00:00:00Z"); // Najmanji mogući datum (1970-01-01T00:00:00Z)
+  
+  // Check if the provided date is valid
+  if (isNaN(validDate.getTime())) {
+    console.error("Invalid date:", date);
+    return "Invalid date"; // Or handle the invalid date case as needed
+  }
+  
+  if (validDate.getUTCFullYear() < minDate.getUTCFullYear()) {
+    return 'Niste stigli do ovog checkpointa';
+  }
+
+  const formattedDate = this.datePipe.transform(date, 'dd/MM/yyyy, HH:mm a');
+  return formattedDate || date;
+ }
+ getCurrentCheckpointIndex(): number {
+  // Proverite da li postoji 'tourExecution' i 'checkpointsStatus', a zatim pronađite indeks trenutnog checkpointa
+  if (this.tourExecution && this.tourExecution.checkpointsStatus) {
+    return this.currentIndex
+  }
+  return -1; // Ako nije pronađen trenutni checkpoint, vraćamo -1
+}
+setCurrentCheckpoint(index: number): void {
+  this.currentIndex = index;
+  console.log(this.currentIndex)
+  this.currentCheckpoint = this.tourExecution?.checkpointsStatus[this.currentIndex] ?? this.currentCheckpoint
+} 
 }
