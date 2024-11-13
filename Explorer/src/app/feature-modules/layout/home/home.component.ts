@@ -49,11 +49,6 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.authService.user$.subscribe(user => {
       this.user = user;
-      this.marketPlaceService.getShoppingCartById(user.id).subscribe({
-        next: (result: ShoppingCart) => {
-          this.shoppingCart = result;
-        }
-      })
     });
     this.startImageRotation();
   }
