@@ -9,6 +9,7 @@ import { MaterialModule } from 'src/app/infrastructure/material/material.module'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProfileInfoFormComponent } from './profile-info-form/profile-info-form.component';
 import { ProblemComponent } from './problem/problem.component';
+import { AdminProblemComponent } from './admin-problem/admin-problem.component';
 import { ClubFormComponent } from './club/club-form/club-form.component';
 import { ClubComponent } from './club/club-overview/club.component';
 import { ClubRequestComponent } from './club/club-request/club-request.component';
@@ -38,6 +39,7 @@ import { ClubInfoComponent } from './club/club-info/club-info.component';
     ProblemComponent,
     AllAppRatingsComponent,
     ProblemComponent,
+    AdminProblemComponent,
     AccountComponent,
     ClubPostComponent,
     ClubInfoComponent
@@ -62,6 +64,7 @@ import { ClubInfoComponent } from './club/club-info/club-info.component';
     ClubMemberListComponent,
     ProblemComponent,
     AllAppRatingsComponent,
+    AdminProblemComponent,
     AccountComponent,
     ClubPostComponent
   ]

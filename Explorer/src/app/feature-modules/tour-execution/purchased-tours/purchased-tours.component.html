@@ -1,0 +1,25 @@
+<h1 *ngIf="message" class="purchased-tours">
+  {{ message }}
+</h1>
+
+<section *ngIf="!message && purchasedTours.length > 0" class="purchased-tours">
+  <h1>Purchased tours</h1>
+  <div class="tour-cards-wrapper">
+    <div class="cards">
+      <div *ngFor="let tour of purchasedTours" class="card">
+        <!-- <img [src]="getImagePath(tour.checkpoints[0].imageUrl)" alt="Checkpoint Image" width="100" /> -->
+        <div class="card-image" [style.backgroundImage]="getImagePath(tour.checkpoints[0].imageUrl)"></div>
+        <div class="tour-info">
+          <h3 class="title">{{ tour.name }}</h3>
+          <p>{{ tour.description }}</p>
+          <div class="tour-rating">
+            <span class="rating-badge">{{ tour.averageGrade }}</span>
+            <span class="rating-text">{{ tour.lengthInKm }} km</span>
+          </div>
+          <button (click)="createSession(tour.id)" class="button">{{ isActiveSession(tour.id) ? 'Enter Session' : 'Start Session' }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+

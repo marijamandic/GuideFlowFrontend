@@ -9,10 +9,16 @@ import { CheckpointFormComponent } from './tour-checkpoint-form/tour-checkpoint-
 import { TourComponent } from './tour/tour.component';
 import { TourFormComponent } from './tour-form/tour-form.component';
 import { TourEquipmentComponent } from './tour-equipment/tour-equipment.component';
-import { EquipmentComponent } from '../administration/equipment/equipment.component';
 import { AdministrationModule } from '../administration/administration.module';
 import { FormsModule } from '@angular/forms';
+import { PublicPointRequestsComponent } from './public-point-requests/public-point-requests.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { PositionsimComponent } from './positionsim/positionsim.component';
+import { ProblemComponent } from './problem/problem.component';
+import { ProblemViewComponent } from './problem-view/problem-view.component';
 
 
 
@@ -25,6 +31,10 @@ import { SharedModule } from 'src/app/shared/shared.module';
     TourComponent,
     TourFormComponent,
     TourEquipmentComponent,
+    PublicPointRequestsComponent,
+    PositionsimComponent,
+    ProblemComponent,
+    ProblemViewComponent
   ],
   imports: [
     CommonModule,
@@ -32,7 +42,10 @@ import { SharedModule } from 'src/app/shared/shared.module';
     ReactiveFormsModule,
     AdministrationModule,
     FormsModule,
-    SharedModule
+    SharedModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule
   ],
   exports: [
     TourObjectComponent,
@@ -40,7 +53,11 @@ import { SharedModule } from 'src/app/shared/shared.module';
     TourComponent,
     TourFormComponent,
     TourObjectFormComponent,
-    TourEquipmentComponent
+    TourEquipmentComponent,
+    PublicPointRequestsComponent,
+    TourEquipmentComponent,
+    PositionsimComponent,
+    ProblemComponent
   ]
 })
 export class TourAuthoringModule {}

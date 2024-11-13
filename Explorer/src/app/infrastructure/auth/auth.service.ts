@@ -14,7 +14,7 @@ import { Registration } from './model/registration.model';
   providedIn: 'root'
 })
 export class AuthService {
-  user$ = new BehaviorSubject<User>({username: "", id: 0, role: "" });
+  user$ = new BehaviorSubject<User>({username: "", id: 0, role: "", location: { latitude: 0, longitude: 0 } });
   //@Output() idOfUser: number = 0;
 
   constructor(private http: HttpClient,
@@ -47,7 +47,7 @@ export class AuthService {
     console.log("Logging out.")
     this.router.navigate(['/home']).then(_ => {
       this.tokenStorage.clear();
-      this.user$.next({username: "", id: 0, role: "" });
+      this.user$.next({username: "", id: 0, role: "", location: {longitude: 0, latitude: 0} });
       }
     );
   }
@@ -69,6 +69,10 @@ export class AuthService {
       role: jwtHelperService.decodeToken(accessToken)[
         'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
       ],
+      location: {
+        latitude: jwtHelperService.decodeToken(accessToken).lat,
+        longitude: jwtHelperService.decodeToken(accessToken).lng
+      }
     };
     //this.idOfUser = +jwtHelperService.decodeToken(accessToken).id;
     //console.log(this.idOfUser);
