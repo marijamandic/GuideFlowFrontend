@@ -17,6 +17,7 @@ export class ClubInfoComponent implements OnInit {
   clubPosts: ClubPost[] = [];
   shouldEdit: boolean = false;
   ownerId : number = 0;
+  role : string = "";
 
   constructor(
     private route: ActivatedRoute,
@@ -28,6 +29,7 @@ export class ClubInfoComponent implements OnInit {
   ngOnInit(): void {
     this.authService.user$.subscribe(user => {
       this.ownerId = user.id;
+      this.role = user.role;
     });
     const clubId = Number(this.route.snapshot.paramMap.get('id'));
     if (clubId) {
