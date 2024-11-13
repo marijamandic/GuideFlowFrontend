@@ -1,0 +1,14 @@
+ <form [formGroup] = "clubPostForm">
+  <div class="form-row">
+    <label for="message">Message:</label>
+    <textarea matInput formControlName="content" id="message" rows="3"></textarea>
+  </div>
+
+  <div class="form-row">
+    <label for="resource">Resource:</label>
+    <textarea matInput formControlName="resource"  id="resource" rows="3" style="height:20px;"></textarea>
+  </div>
+  
+  <button mat-raised-button type="submit" color="primary" (click)="addClubPost()">Submit</button>
+</form>
+  

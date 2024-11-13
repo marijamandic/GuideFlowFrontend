@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { AdministrationService } from '../administration.service';
+import { AdministrationService } from '../../administration.service';
 import { ActivatedRoute } from '@angular/router';
-import { ClubMemberList } from '../model/club-member-list.model';
+import { ClubMemberList } from '../../model/club-member-list.model';
 
 @Component({
   selector: 'xp-club-member-list',

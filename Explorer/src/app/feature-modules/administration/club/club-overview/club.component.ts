@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { AdministrationService } from '../administration.service';
-import { Club } from '../model/club.model'; 
+import { AdministrationService } from '../../administration.service';
+import { Club } from '../../model/club.model'; 
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { environment } from 'src/env/environment';
-import { ClubRequestService } from '../club-request.service';
-import { ClubRequest } from '../model/club-request.model';
+import { ClubRequestService } from '../../club-request.service';
+import { ClubRequest } from '../../model/club-request.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'xp-club',
@@ -21,7 +22,10 @@ export class ClubComponent implements OnInit {
   idOfOwner: number = 0;
   loggedTouristId: number = 0;
 
-  constructor(private service: AdministrationService, private authSerivce: AuthService, private clubRequestService: ClubRequestService) { }
+  constructor(private service: AdministrationService,
+    private authSerivce: AuthService,
+    private clubRequestService: ClubRequestService,
+    private router: Router,) { }
   
   ngOnInit(): void {
     this.getClub();
@@ -65,18 +69,23 @@ export class ClubComponent implements OnInit {
       }
     })
   }
-  onEditClicked(club: Club) :void {
+  /*onEditClicked(club: Club): void {
     this.selectedClub = club;
     this.shouldEdit = true;
-    this.shouldRenderClubForm = true;
+    this.router.navigate(['new-club'], { state: { club: club, shouldEdit: true } });
+  }*/
+  onAddClicked(): void {
+    this.router.navigate(['new-club']);
   }
 
-  onAddClicked(): void {
-    this.shouldEdit = false;
-    this.shouldRenderClubForm = true;
+  navigateToClubInfo(clubId: number | undefined): void {
+    if (clubId !== undefined) {
+      this.router.navigate([`/club-info`, clubId]);
+    }
   }
+  
+  
   getImagePath(imageUrl: string){
-    //console.log(imageUrl);
     return environment.webRootHost+imageUrl;
   }
 
