@@ -13,7 +13,8 @@
 }
 .mapDetails{
     width: 60%;
-    background-color: green;
+    display: flex;
+    flex-direction: column;
 }
 
 .tourExecution-card {
