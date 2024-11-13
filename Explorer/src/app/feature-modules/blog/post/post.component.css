@@ -331,3 +331,35 @@ html, body {
 .downvoted {
   color: #7193ff;
 }
+
+@keyframes pulseGlow {
+  0%, 100% {
+      box-shadow: 0 0 10px rgba(132, 220, 198, 0.3), 0 0 20px rgba(132, 220, 198, 0.2);
+      transform: scale(1);
+  }
+  50% {
+      box-shadow: 0 0 30px rgba(132, 220, 198, 0.6), 0 0 60px rgba(132, 220, 198, 0.5);
+      transform: scale(1.1);
+  }
+}
+
+.floating-add-blog-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #84dcc6;
+  color: white;
+  padding: 15px 30px;
+  border-radius: 25px;
+  font-weight: bold;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+  z-index: 1000;
+  animation: pulseGlow 3s ease-in-out infinite; /* Apply pulsing animation */
+}
+
+.floating-add-blog-button:hover {
+  background-color: #66c5af;
+  transform: scale(1.1);
+}
