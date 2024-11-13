@@ -12,9 +12,9 @@ import { Router } from '@angular/router';
 })
 export class ClubFormComponent implements OnInit, OnChanges {
   
-  @Output() clubUpdated = new EventEmitter<null>();
+  //@Output() clubUpdated = new EventEmitter<null>();
   @Input() club: Club;
-  @Input() shouldEdit: boolean = false;
+  @Input() shouldEdit: boolean;
   ownerId: number = 0;
   imageBase64: string;
 
@@ -35,6 +35,15 @@ export class ClubFormComponent implements OnInit, OnChanges {
     this.authService.user$.subscribe(user => {
       this.ownerId = user.id;
     });
+    const navigation = this.router.getCurrentNavigation();
+    //console.log(this.shouldEdit);
+    if (navigation?.extras.state) {
+        this.club = navigation.extras.state['club'];
+        this.shouldEdit = navigation.extras.state['shouldEdit'];
+        if (this.shouldEdit) {
+            this.clubForm.patchValue(this.club);
+        }
+    }
   }
 
   ngOnChanges(): void {
@@ -65,10 +74,12 @@ export class ClubFormComponent implements OnInit, OnChanges {
       imageUrl: this.clubForm.value.imageBase64 || "",
     };
     this.service.addClub(club).subscribe({
-      next: () => { this.clubUpdated.emit(); },
+      next: () => {
+        this.router.navigate(['club']);
+        this.shouldEdit = false;
+      },
       error: (err) => { console.log(err); } 
     });
-    this.router.navigate(['club']);
   }
 
   updateClub(): void {
@@ -81,7 +92,10 @@ export class ClubFormComponent implements OnInit, OnChanges {
       imageUrl: this.clubForm.value.imageBase64 || "",
     };
     this.service.updateClub(club).subscribe({
-      next: () => { this.clubUpdated.emit(); }
+      next: () => {
+        this.router.navigate(['club']);
+        this.shouldEdit = false;
+      } 
     });
     this.router.navigate(['club']);
   }

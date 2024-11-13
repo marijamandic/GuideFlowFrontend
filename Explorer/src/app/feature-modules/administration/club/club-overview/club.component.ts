@@ -69,12 +69,11 @@ export class ClubComponent implements OnInit {
       }
     })
   }
-  onEditClicked(club: Club) :void {
+  /*onEditClicked(club: Club): void {
     this.selectedClub = club;
     this.shouldEdit = true;
-    this.shouldRenderClubForm = true;
-  }
-
+    this.router.navigate(['new-club'], { state: { club: club, shouldEdit: true } });
+  }*/
   onAddClicked(): void {
     this.router.navigate(['new-club']);
   }

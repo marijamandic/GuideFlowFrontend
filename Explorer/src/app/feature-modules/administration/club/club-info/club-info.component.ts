@@ -1,8 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AdministrationService } from '../../administration.service';
 import { Club } from '../../model/club.model';
 import { ClubPost } from '../../model/club-post.model';
+import { environment } from 'src/env/environment';
+import { Router } from '@angular/router';
+import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 
 @Component({
   selector: 'app-club-info',
@@ -12,13 +15,20 @@ import { ClubPost } from '../../model/club-post.model';
 export class ClubInfoComponent implements OnInit {
   club: Club;
   clubPosts: ClubPost[] = [];
+  shouldEdit: boolean = false;
+  ownerId : number = 0;
 
   constructor(
     private route: ActivatedRoute,
-    private administrationService: AdministrationService
+    private administrationService: AdministrationService,
+    private authService : AuthService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
+    this.authService.user$.subscribe(user => {
+      this.ownerId = user.id;
+    });
     const clubId = Number(this.route.snapshot.paramMap.get('id'));
     if (clubId) {
       this.loadClubData(clubId);
@@ -38,7 +48,14 @@ export class ClubInfoComponent implements OnInit {
     });
   }
 
-  getImagePath(imageUrl: string): string {
-    return `https://your-cdn-path/${imageUrl}`;
+  getImagePath(imageUrl: string){
+    return environment.webRootHost+imageUrl;
+  }
+  onEditClub(): void {
+    this.shouldEdit = true;
+    this.router.navigate(['new-club'], { state: { club: this.club, shouldEdit: this.shouldEdit } });
+  }
+  onRequestClub(): void {
+    this.router.navigate(['club-request/add']);
   }
 }

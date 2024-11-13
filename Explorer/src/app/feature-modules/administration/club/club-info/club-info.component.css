@@ -74,4 +74,39 @@
     color: #555;
     margin-top: 10px;
   }
+  .edit-club-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+  }
+  
+  .edit-club-button {
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    background-color: #4CAF50; /* Izaberite boju prema potrebama */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .edit-club-button:hover {
+    background-color: #45a049;
+  }
+  .request-club-button {
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    background-color: #4CAF50; /* Ista boja kao Edit dugme */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 10px; /* Razmak između dugmića */
+  }
+  
+  .request-club-button:hover {
+    background-color: #45a049;
+  }
   

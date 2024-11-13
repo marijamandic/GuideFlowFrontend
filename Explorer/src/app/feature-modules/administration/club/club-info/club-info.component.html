@@ -11,6 +11,10 @@
     <div *ngIf="club?.description" class="club-description">
       <p>{{ club.description }}</p>
     </div>
+    <div class="edit-club-container">
+      <button *ngIf="club?.ownerId === ownerId" class="edit-club-button" (click)="onEditClub()">Edit Club</button>
+      <button class="request-club-button" (click)="onRequestClub()">Request To Join</button>
+    </div>
   </div>
 
   <!-- Club Posts Section -->
