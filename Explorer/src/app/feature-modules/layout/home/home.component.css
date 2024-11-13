@@ -25,38 +25,29 @@ p{
 
 .main-column {
     width: 100%;
-    max-width: 90vh; 
-    margin: 0 auto; 
-    padding: 0 20px; 
+    max-width: 1400px; /* Adjust as necessary */
+    margin: 0 auto;
+    padding: 0 20px;
     display: flex;
     flex-direction: column;
-    align-items: center; 
+    align-items: center;
+    box-sizing: border-box;
 }
 
 .carousel {
     position: relative;
     width: 100%;
+    padding: 0;
     margin: 0 auto;
     overflow: hidden;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     background: linear-gradient(to right, white, transparent);
-}
-
-/* Main containers */
-.main-column,
-.carousel-container,
-.tour-cards-container,
-.club-cards-container {
-    width: 100%;
-    max-width: 100vw;
-    overflow-x: hidden;
     box-sizing: border-box;
 }
 
 .carousel-container {
     position: relative;
     width: 100%;
-    max-width: 100%;
     height: 800px;
     display: flex;
     justify-content: center;
