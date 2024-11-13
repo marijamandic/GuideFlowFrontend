@@ -225,4 +225,47 @@ getReviewMessage(): string {
     return ""; 
   }
   }
+
+  completeSession(): void{
+    if (this.tourExecutionId && this.user) {
+      this.tourExecutionService.completeSession(this.user.id).subscribe({
+        next: (result) => {
+          console.log('Session completed successfully', result);
+          this.tourExecution = result;
+          this.router.navigate([`/purchased`]);
+          alert('Session completed successfully');
+        },
+        error: (err) => {
+          if (err.status === 500) {
+            console.error('Error completing session', err);
+            alert('You can not complete this session yet');
+          } else {
+            console.error('Other error', err);
+          }
+        }
+      });
+    }
+  }
+
+  abandonSession(): void{
+    if (this.tourExecutionId && this.user) {
+      this.tourExecutionService.abandonSession(this.user.id).subscribe({
+        next: (result) => {
+          console.log('Session abandoned successfully', result);
+          this.tourExecution = result;
+          this.router.navigate([`/purchased`]);
+          alert('Session abandoned successfully');
+        },
+        error: (err) => {
+          if (err.status === 500) {
+            console.error('Error abandoning session', err);
+            alert('You can not abadnon this session yet');
+          } else {
+            console.error('Other error', err);
+          }
+        }
+      });
+    }
+  }
+
 }
