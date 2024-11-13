@@ -11,6 +11,7 @@ import { ClubRequest } from './model/club-request.model';
 import { ClubInvitation } from './model/club-invitation.model';
 import { ClubMemberList } from './model/club-member-list.model';
 import { Account } from './model/account.model';
+import { Follower } from './model/follower.model';
 
 @Injectable({
 	providedIn: 'root'
@@ -128,5 +129,9 @@ export class AdministrationService {
   
   getProfileInfo(): Observable<PagedResults<ProfileInfo>> {
     return this.http.get<PagedResults<ProfileInfo>>(environment.apiHost + 'administration/profileInfo');
-  }  
+  } 
+  
+  getFollower(userId : number) : Observable<PagedResults<Follower>> {
+    return this.http.get<PagedResults<Follower>>(environment.apiHost + 'tourist/follower')
+  }
 }

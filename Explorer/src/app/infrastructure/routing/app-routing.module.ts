@@ -64,7 +64,8 @@ const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   {path: 'tourPreview/:id', component: TourPreviewComponent},
   {path: 'shoppingCart', component: ShoppingCartComponent},
-  { path: 'position-sim', component: PositionsimComponent }
+  { path: 'position-sim', component: PositionsimComponent },
+
 ];
 
 @NgModule({

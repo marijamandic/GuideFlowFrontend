@@ -123,7 +123,7 @@ export class TourPreviewComponent implements OnInit {
             this.user = user
         }
     });
-   // this.getCurrentTour()
+   this.getCurrentTour()
   }
 
   getCurrentTour(): void {

@@ -6,7 +6,7 @@ import { MaterialModule } from 'src/app/infrastructure/material/material.module'
 import { RouterModule } from '@angular/router';
 import { RatingTheAppComponent } from './rating-the-app/rating-the-app.component';
 import { FormsModule } from '@angular/forms';
-import { MarketplaceModule } from "../marketplace/marketplace.module"; // <-- Import FormsModule
+import { MarketplaceModule } from "../marketplace/marketplace.module";
 
 @NgModule({
   declarations: [

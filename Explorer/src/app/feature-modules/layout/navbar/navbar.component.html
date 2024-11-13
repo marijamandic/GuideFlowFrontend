@@ -21,7 +21,8 @@
         </div>
         <div class="profile-menu">
             <mat-icon class="profile-icon" (click)="toggleDropdown()">account_circle</mat-icon>
-            <mat-icon  *ngIf="user && user.username == ''"  class="shopping_cart" [routerLink]="['/shoppingCart']">shopping_cart</mat-icon>
+            <mat-icon  *ngIf="user && user.username != ''"  class="shopping_cart" [routerLink]="['/shoppingCart']">shopping_cart</mat-icon>
+            <mat-icon>notifcations</mat-icon>
             <div class="dropdown-content" *ngIf="isDropdownOpen">
                 <a *ngIf="user && user.username === ''" [routerLink]="['/login']">Login</a>
                 <a *ngIf="user && user.username !== ''" (click)="onLogout()">Logout</a>
