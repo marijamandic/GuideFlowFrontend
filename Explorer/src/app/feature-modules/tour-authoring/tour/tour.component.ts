@@ -16,11 +16,15 @@ export class TourComponent implements OnInit {
   tour: Tour[] = [];
   selectedTour: Tour = this.initializeTour();
   shouldRenderTourForm: boolean = false;
-  shouldEdit: boolean = false;  
+  shouldEdit: boolean = false; 
   currentView: string;
   user:User;
+  initialMarkers: L.LatLng[] = [];
+  latitude: number | null = null;
+  longitude: number | null = null;
+  searchDistance: number | null = null;
 
-  constructor(private service: TourService,private authService:AuthService){}
+  constructor(private service: TourService, private authService: AuthService){}
   
   tours: Tour[] = [];
   draftTours: Tour[]=[];
@@ -103,6 +107,34 @@ export class TourComponent implements OnInit {
     this.selectedTour = this.initializeTour();
     this.shouldEdit = false;
     this.shouldRenderTourForm = true;
+  }
+
+  onCoordinatesSelected(coordinates: { latitude: number; longitude: number }): void {
+    console.log('Coordinates selected:', coordinates);
+    this.latitude = coordinates.latitude;
+    this.longitude = coordinates.longitude;
+    this.searchTours();
+  }
+  onMarkerAdded(latlng: L.LatLng): void {
+    console.log('New marker added at:', latlng);
+  }
+  onMapReset(): void {
+    console.log('Map reset');
+  }
+
+  searchTours(): void {
+    if (this.latitude !== null && this.longitude !== null && this.searchDistance !== null) {
+      this.service.searchTours(this.latitude, this.longitude, this.searchDistance).subscribe({
+        next: (tours: Tour[]) => {
+          this.publishedTours = tours;
+        },
+        error: (err: any) => {
+          console.error('Error fetching search results:', err);
+        }
+      });
+    } else {
+      console.log('Please select a point on the map and enter a search distance.');
+    }
   }
    
   onPublish(tour:Tour): void {

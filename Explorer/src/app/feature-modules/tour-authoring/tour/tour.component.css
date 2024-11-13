@@ -4,6 +4,29 @@
     align-items: center;
     padding: 20px;
     background-color: #f2f2f2;
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 700px; /* Širina pretraživačkog bara se poklapa sa mapom */
+    margin: 10px auto 0; /* Razmak iznad i centriranje */
+  }
+
+  input[type="text"] {
+    padding: 10px;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    flex: 1; /* Zauzima preostalu širinu */
+  }
+
+.table {
+    width: 100%;
+    max-width: 800px; /* Maksimalna širina tabele */
+    margin: 20px 0;
+    border-collapse: collapse; /* Uklanja razmake između ćelija */
     max-width: 1000px; /* Maksimalna širina stranice */
     margin: 0 auto; /* Centriranje stranice */
 }
