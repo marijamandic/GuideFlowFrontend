@@ -38,7 +38,42 @@
               </div>
             </div>
           </div>
-          
+          <div *ngIf="percentageCompleted !== null">
+            <p><strong>Progress:</strong> {{ percentageCompleted }}%</p>
+            <div class="progress-container">
+              <div 
+                class="progress-bar" 
+                [style.width.%]="percentageCompleted" 
+                [class.low]="percentageCompleted < 35" 
+                [class.medium]="percentageCompleted >= 35 && percentageCompleted < 70" 
+                [class.high]="percentageCompleted >= 70">
+              </div>
+            </div>
+          </div>
+            <button 
+              class="review-button" 
+              (click)="openReviewForm()" 
+              [disabled]="isDisabled()"
+              >
+              Ostavi recenziju
+            </button>
+
+            <p *ngIf="getReviewMessage()" class="expired-message">
+            {{ getReviewMessage() }}
+            </p>
+        </div>
+        <div *ngIf="isReviewFormOpen" class="overlay">
+          <div class="review-popup">
+            <xp-tour-review 
+              [tourId]="tourExecution?.tourId ?? 0"
+              [touristId]="tourExecution?.userId ?? 0"
+              [startDate]="tourExecution?.startTime ?? null"
+              [percentageCompleted]="percentageCompleted ?? 0"
+              (tourReviewUpdated)="closeReviewForm()"
+            >
+            </xp-tour-review>
+            <button class="close-button" (click)="closeReviewForm()">X</button>
+          </div>
         </div>
       </div>
       <div class="mapDetails">
@@ -47,4 +82,3 @@
     </div>
     
 </div>
-  

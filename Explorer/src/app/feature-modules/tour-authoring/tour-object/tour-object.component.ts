@@ -38,12 +38,10 @@ export class TourObjectComponent implements OnInit {
     console.log(this.selectedTourObject)
     this.latitude = tourObject.latitude;
     this.longitude = tourObject.longitude;
-    this.shouldEdit = true; // Oznaka da je forma u modu uređivanja
-    this.shouldRenderTourObjectForm = true; // Prikaz forme za uređivanje
+    this.shouldEdit = true; 
+    this.shouldRenderTourObjectForm = true;
   }
   
-
-
   onMapReset(): void {
     console.log('Map reset');
   }

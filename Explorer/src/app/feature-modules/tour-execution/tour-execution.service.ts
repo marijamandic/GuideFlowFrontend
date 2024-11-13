@@ -6,8 +6,11 @@ import { TourReview } from './model/tour-review.model';
 import { EquipmentManagement } from './model/equipment-management.model';
 import { environment } from 'src/env/environment';
 import { Problem } from 'src/app/shared/model/problem.model';
+import { Tour } from '../tour-authoring/model/tour.model';
 import { TourExecution } from './model/tour-execution.model';
 import { UpdateTourExecutionDto } from './model/update-tour-execution.dto';
+import { PurchasedTours } from './model/purchased-tours.model';
+import { CreateTourExecutionDto } from './model/create-tour-execution.dto';
 
 @Injectable({
 	providedIn: 'root'
@@ -41,11 +44,22 @@ export class TourExecutionService {
 
 	handleClick(tourReview: TourReview): Observable<TourReview> {
 		return this.http.post<TourReview>('https://localhost:44333/api/tourist/tourReview', tourReview);
-	}
+	}	
+	getPercentage(tourExecutionId: number): Observable<number> {
+		return this.http.get<number>(`https://localhost:44333/api/execution/tourExecution/${tourExecutionId}/completion-percentage`);
+	}		
 	getTourExecution(id:string){
 		return this.http.get<TourExecution>(environment.apiHost+'execution/tourExecution/'+id);
 	}
 	updateTourExecution(updateTourExecutionDto : UpdateTourExecutionDto){
 		return this.http.put<TourExecution>(environment.apiHost+'execution/tourExecution',updateTourExecutionDto)
+	}
+
+	getPurchased(id:number){
+		return this.http.get<PurchasedTours[]>(environment.apiHost + 'execution/tourExecution/purchased/' + id);
+	}
+
+	createSession(createTourExecutionDto: CreateTourExecutionDto){
+		return this.http.post<TourExecution>('https://localhost:44333/api/execution/tourExecution', createTourExecutionDto);
 	}
 }
