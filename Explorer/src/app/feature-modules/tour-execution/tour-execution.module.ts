@@ -12,6 +12,7 @@ import { ReportProblemComponent } from './report-problem/report-problem.componen
 
 import { TourReviewComponent } from './tour-review/tour-review.component';
 import { TourReviewFormComponent } from './tour-review-form/tour-review-form.component';
+import { TourViewComponent } from './tour-view/tour-view.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { TourReviewFormComponent } from './tour-review-form/tour-review-form.com
     EquipmentFormComponent,
     ReportProblemComponent,
 	TourReviewComponent,
-	TourReviewFormComponent
+	TourReviewFormComponent,
+ TourViewComponent
   ],
   imports: [
     CommonModule,
