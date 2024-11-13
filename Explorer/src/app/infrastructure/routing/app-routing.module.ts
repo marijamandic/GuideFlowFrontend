@@ -27,6 +27,7 @@ import { RatingTheAppComponent } from 'src/app/feature-modules/layout/rating-the
 import { AllAppRatingsComponent } from 'src/app/feature-modules/administration/all-app-ratings/all-app-ratings.component';
 import { TourSpecificationComponent } from 'src/app/feature-modules/marketplace/tour-specification/tour-specification.component';
 import { AccountComponent } from 'src/app/feature-modules/administration/account/account.component';
+import { TourViewComponent } from 'src/app/feature-modules/tour-execution/tour-view/tour-view.component';
 import { ProblemComponent } from 'src/app/feature-modules/tour-authoring/problem/problem.component';
 import { NotificationsComponent } from 'src/app/feature-modules/layout/notifications/notifications.component';
 import { ProblemStatusComponent } from 'src/app/feature-modules/tour-execution/problem-status/problem-status.component';
@@ -60,7 +61,7 @@ const routes: Routes = [
   { path: 'comment', component: CommentComponent },
   { path: 'createBlog', component: CreateBlogComponent },
   { path: 'tourObjects', component: TourObjectComponent, canActivate: [AuthGuard] },
-  { path: 'checkpoints', component: CheckpointListComponent },
+  { path: 'checkpoints/:tourId', component: CheckpointListComponent },
   { path: 'tour-execution/:id', component: TourExecutionDetailsComponent},
   { path: 'tour', component: TourComponent },
   { path: 'tourEquipment', component: TourEquipmentComponent },
@@ -69,6 +70,8 @@ const routes: Routes = [
   { path: 'specification', component: TourSpecificationComponent },
   { path: 'purchased', component: PurchasedToursComponent },
   { path: 'account', component: AccountComponent, canActivate: [AuthGuard] },
+  { path: 'tourView', component: TourViewComponent },
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'pending', component: PublicPointRequestsComponent },
   { path: 'tourReview/:tourId/:touristId', component: TourReviewComponent },
   { path: 'author/notifications', component: PublicPointNotificationsComponent },

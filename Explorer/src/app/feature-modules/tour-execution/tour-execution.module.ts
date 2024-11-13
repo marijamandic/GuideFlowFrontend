@@ -9,6 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { ReportProblemComponent } from './report-problem/report-problem.component';
 import { TourReviewComponent } from './tour-review/tour-review.component';
 import { TourReviewFormComponent } from './tour-review-form/tour-review-form.component';
+import { TourViewComponent } from './tour-view/tour-view.component';
 import { ProblemStatusComponent } from './problem-status/problem-status.component';
 import { TourExecutionDetailsComponent } from './tour-execution-details/tour-execution-details.component';
 import { PurchasedToursComponent } from './purchased-tours/purchased-tours.component';
@@ -23,7 +24,8 @@ import { PurchasedToursComponent } from './purchased-tours/purchased-tours.compo
 	TourReviewFormComponent,
  TourExecutionDetailsComponent,
  PurchasedToursComponent,
- ProblemStatusComponent
+ ProblemStatusComponent,
+ TourViewComponent
   ],
   imports: [
     CommonModule,

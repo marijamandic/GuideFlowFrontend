@@ -6,10 +6,10 @@ import { TourReview } from './model/tour-review.model';
 import { EquipmentManagement } from './model/equipment-management.model';
 import { environment } from 'src/env/environment';
 import { Problem } from 'src/app/shared/model/problem.model';
+import { Tour } from '../tour-authoring/model/tour.model';
 import { CreateProblemInput } from './model/create-problem-input.model';
 import { ProblemStatusComponent } from './problem-status/problem-status.component';
 import { ProblemStatus } from './model/problem-status.model';
-import { Tour } from '../tour-authoring/model/tour.model';
 import { TourExecution } from './model/tour-execution.model';
 import { UpdateTourExecutionDto } from './model/update-tour-execution.dto';
 import { PurchasedTours } from './model/purchased-tours.model';
@@ -49,6 +49,10 @@ export class TourExecutionService {
 
 	getReviews(): Observable<PagedResults<TourReview>> {
 		return this.http.get<PagedResults<TourReview>>('https://localhost:44333/api/tourist/tourReview');
+	}
+
+	getAllTours(): Observable<PagedResults<Tour>> {
+		return this.http.get<PagedResults<Tour>>('https://localhost:44333/api/authoring/tour');
 	}
 
 	handleClick(tourReview: TourReview): Observable<TourReview> {

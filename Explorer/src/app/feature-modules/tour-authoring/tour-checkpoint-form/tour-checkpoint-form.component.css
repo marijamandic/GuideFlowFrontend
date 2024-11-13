@@ -1,10 +1,23 @@
-form {
-    max-width: 400px; 
-    margin: 0 auto; 
-    padding: 20px; 
-    background-color: #f9f9f9; 
-    border-radius: 8px; 
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+.container {
+    max-width: 800px; /* Smanjite maksimalnu širinu prema potrebama */
+    margin: 0 auto; /* Centriranje sadržaja */
+    padding: 20px; /* Dodajte unutrašnje margine */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Opcionalno, za vizuelno isticanje */
+    border-radius: 8px; /* Zaobljeni uglovi */
+    background-color: #f9f9f9; /* Svetla pozadina za kontrast */
+}
+
+form, .map-container {
+    width: 100%; /* Prati širinu roditelja */
+    max-width: 750px; /* Podesite maksimalnu širinu prema potrebama */
+    margin: 0 auto; /* Centriranje forme i mape unutar kontejnera */
+}
+
+.map-container {
+    height: 400px; /* Smanjite visinu mape prema potrebama */
+    max-height: 400px; /* Ograničite maksimalnu visinu */
+    overflow-y: auto; /* Sprečava prelazak sadržaja van okvira */
+    border: 1px solid #ccc; /* Opcionalno, za vizuelnu granicu */
 }
 
 mat-form-field {
@@ -26,3 +39,5 @@ mat-label {
     color: red; 
     font-size: 14px; 
 }
+
+  
