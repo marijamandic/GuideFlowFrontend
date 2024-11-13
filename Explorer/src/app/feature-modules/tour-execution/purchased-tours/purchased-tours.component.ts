@@ -20,6 +20,7 @@ export class PurchasedToursComponent implements OnInit{
   tourExecutionId : string | null=null;
   user: User | undefined;
   tourExecution: TourExecution | null=null;
+  activeTourExecution: TourExecution | null = null;
   dto: CreateTourExecutionDto = {
     TourId : 0,
     UserId: 0
@@ -33,6 +34,7 @@ export class PurchasedToursComponent implements OnInit{
     }) 
     if(this.user){
       this.getPurchasedByUser();
+      this.checkActiveSession();
     }
   }
 
@@ -57,6 +59,11 @@ export class PurchasedToursComponent implements OnInit{
 
   createSession(tourId: number): void{
     if(this.user){
+      if(this.activeTourExecution && this.activeTourExecution.tourId == tourId && this.activeTourExecution.userId == this.user.id){
+        this.router.navigate([`/tour-execution/${this.activeTourExecution.id}`])
+        return;
+      }
+
       const dto: CreateTourExecutionDto = {
         UserId: this.user.id,
         TourId: tourId
@@ -65,6 +72,7 @@ export class PurchasedToursComponent implements OnInit{
       this.tourExecutionService.createSession(dto).subscribe({
         next: (result: TourExecution) => {
           console.log('Tour execution created:', result);
+          this.tourExecution = result;
           this.router.navigate([`/tour-execution/${result.id}`]);
         },
         error: (err: any) => {
@@ -76,6 +84,23 @@ export class PurchasedToursComponent implements OnInit{
         }
       });
     }
+  }
+
+  checkActiveSession(): void{
+    if(this.user?.id){
+      this.tourExecutionService.getActiveSessionByUser(this.user.id).subscribe({
+        next: (result: TourExecution | null) => {
+          this.activeTourExecution = result;
+        },
+        error: (err: any) => {
+          console.log('Error checking active session: ', err);
+        }
+      })
+    }
+  }
+
+  isActiveSession(tourId: number): boolean {
+    return this.activeTourExecution?.tourId === tourId && this.activeTourExecution?.userId === this.user?.id;
   }
 
   getImagePath(imageUrl: string){

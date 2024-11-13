@@ -16,7 +16,7 @@
             <span class="rating-badge">{{ tour.averageGrade }}</span>
             <span class="rating-text">{{ tour.lengthInKm }} km</span>
           </div>
-          <button (click)="createSession(tour.id)" class="button">Start session</button>
+          <button (click)="createSession(tour.id)" class="button">{{ isActiveSession(tour.id) ? 'Enter Session' : 'Start Session' }}</button>
         </div>
       </div>
     </div>

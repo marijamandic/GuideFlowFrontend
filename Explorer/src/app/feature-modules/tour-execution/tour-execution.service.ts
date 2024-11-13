@@ -70,4 +70,8 @@ export class TourExecutionService {
 	abandonSession(id:number): Observable<any>{
 		return this.http.put<any>(environment.apiHost + 'execution/tourExecution/abandon/' + id, null);
 	}
+
+	getActiveSessionByUser(id: number){
+		return this.http.get<TourExecution>(environment.apiHost + 'execution/tourExecution/getByUser/' + id);
+	}
 }
