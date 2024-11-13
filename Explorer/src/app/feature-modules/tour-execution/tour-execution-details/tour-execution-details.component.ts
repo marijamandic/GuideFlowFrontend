@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TourExecutionService } from '../tour-execution.service';
 import { User } from 'src/app/infrastructure/auth/model/user.model';
@@ -12,6 +12,7 @@ import { TourService } from '../../tour-authoring/tour.service';
 import { Tourist } from '../../tour-authoring/model/tourist';
 import { DatePipe } from '@angular/common';
 import { CheckpointStatus } from '../model/checkpoint-status.model';
+import { Checkpoint } from '../../tour-authoring/model/tourCheckpoint.model';
 
 @Component({
   selector: 'xp-tour-execution-details',
@@ -34,6 +35,11 @@ export class TourExecutionDetailsComponent implements OnInit{
   private intervalId: any;
   isReviewFormOpen = false;
   isBelowThirtyFivePercent = false;
+
+  checkpoints: Checkpoint[] = [];
+  checkpointCoordinates: { latitude: number, longitude: number }[] = [];
+  @Output() checkpointsLoaded = new EventEmitter<{ latitude: number; longitude: number; }[]>();
+  isViewMode:boolean = false;
 
   constructor(
     private tourService: TourService,
@@ -97,6 +103,7 @@ export class TourExecutionDetailsComponent implements OnInit{
       next: (result: TourExecution) => {
         this.tourExecution = result;
         this.currentCheckpoint = result.checkpointsStatus[this.currentIndex];
+        this.loadCheckpoints();
       },
       error: (err: any) => {
         console.log(err);
@@ -263,6 +270,21 @@ getReviewMessage(): string {
           } else {
             console.error('Other error', err);
           }
+        }
+      });
+    }
+  }
+
+  loadCheckpoints(): void {
+    if(this.tourExecution){
+      this.tourService.getTourById(this.tourExecution.tourId).subscribe({
+        next: (data) => {
+          this.checkpoints = data.checkpoints; 
+          this.checkpointCoordinates = this.checkpoints.map(cp => ({ latitude: cp.latitude, longitude: cp.longitude }));
+          this.checkpointsLoaded.emit(this.checkpointCoordinates);
+        },
+        error: (err) => {
+          console.error('Greška prilikom učitavanja checkpoint-a:', err);
         }
       });
     }
