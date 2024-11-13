@@ -12,7 +12,7 @@
 
         <div>
             <label for="fileInput">Image URL</label>
-            <input id="fileInput" type="file" (change)="onFileSelected($event)" accept="image/*">
+            <input id="fileInput" type="file" (change)="onFileSelected($event)">
         </div>
 
         <mat-form-field>
@@ -30,12 +30,12 @@
             <input matInput formControlName="secret" type="text" required />
         </mat-form-field>
 
-        <div>
+        <div *ngIf="!shouldEdit">
             <label>Is this tour object public?</label>
             <input type="checkbox" (change)="onIsCheckedChange($event)" />
         </div>
 
-        <div class="map-container" style="margin-top: 30px;">
+        <div class="map-container">
             <xp-map (coordinatesSelected)="onCoordinatesSelected($event)" [showSearchBar]="isViewMode"></xp-map>
         </div>
     </div>

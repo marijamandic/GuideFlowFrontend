@@ -39,6 +39,14 @@ export class TourService {
     return this.http.put<Tour>(environment.apiHost + 'authoring/tour/addingCheckpoint/'+ tourId, checkpoint)
   }
 
+  updateCheckpoint(tourId:number,checkpoint:Checkpoint): Observable<Tour>{
+    return this.http.put<Tour>(environment.apiHost + 'authoring/tour/editingCheckpoint/'+ tourId, checkpoint)
+  }
+
+  deleteCheckpoint(id: number,checkpoint:Checkpoint): Observable<Tour> {
+    return this.http.put<Tour>(environment.apiHost + 'authoring/tour/deletingCheckpoint/' + id,checkpoint);
+  }
+
   updateTourLength(tourId:number,length:number):Observable<Tour>{
     return this.http.put<Tour>(environment.apiHost + 'authoring/tour/updatingLength/'+ tourId, length)
   }

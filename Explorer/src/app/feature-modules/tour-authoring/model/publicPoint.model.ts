@@ -16,6 +16,7 @@ export interface PublicPoint {
     latitude: number;
     longitude: number;
     imageUrl: string;
+    imageBase64?: string; 
     approvalStatus: ApprovalStatus; 
     type: PointType;
 }

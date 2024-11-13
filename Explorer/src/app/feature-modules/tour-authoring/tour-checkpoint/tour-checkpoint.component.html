@@ -18,13 +18,13 @@
         <td>{{ checkpoint.name }}</td>
         <td>{{ checkpoint.description }}</td>
         <td>
-          <img [src]="checkpoint.imageUrl" alt="Checkpoint image" style="max-width: 100px;">
+          <img [src]="getImagePath(checkpoint.imageUrl)" alt="Checkpoint image" style="max-width: 100px;">
         </td>
         <td>{{ checkpoint.latitude }}</td>
         <td>{{ checkpoint.longitude }}</td>
         <td>
           <button style="background-color: rgb(15, 170, 15);" (click)="editCheckpoint(checkpoint)">Edit</button>
-          <button style="background-color: red;">Delete</button>
+          <button style="background-color: red;" (click)="deleteCheckpoint(checkpoint)">Delete</button>
         </td>
       </tr>
     </tbody>

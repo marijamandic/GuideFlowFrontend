@@ -141,17 +141,27 @@ export class MapComponent implements AfterViewInit,OnChanges {
 
   registerOnClick(): void {
     this.map.on('click', (e: any) => {
+      if (!this.showSearchBar) {
+        return;
+      }
+
+      this.markers.forEach(marker => {
+        this.map.removeLayer(marker);
+      });
+      this.markers = [];
+
       const coord = e.latlng;
       const marker = new L.Marker([coord.lat, coord.lng]).addTo(this.map);
-      this.addMarker(marker);
-      this.markerAdded.emit(coord); // Emitujemo događaj kada se marker doda
+      this.markers.push(marker);
+      
+      this.coordinatesSelected.emit({ latitude: coord.lat, longitude: coord.lng });
     });
   }
 
   addMarker(marker: L.Marker): void {
     this.markers.push(marker);
 
-    marker.on('click', () => {
+    /*marker.on('click', () => {
       console.log("EEEE")
       const latLng = marker.getLatLng();
       this.coordinatesSelected.emit({ latitude: latLng.lat, longitude: latLng.lng });
@@ -159,10 +169,12 @@ export class MapComponent implements AfterViewInit,OnChanges {
     });
 
     const latLng = marker.getLatLng();
-    this.coordinatesSelected.emit({ latitude: latLng.lat, longitude: latLng.lng });
+    this.coordinatesSelected.emit({ latitude: latLng.lat, longitude: latLng.lng });*/
   }
 
   resetMap(): void {
+    this.searchAddress="";
+
     this.markers.forEach(marker => {
       this.map.removeLayer(marker);
     });
@@ -172,7 +184,6 @@ export class MapComponent implements AfterViewInit,OnChanges {
       this.map.removeControl(this.routeControl);
       this.routeControl = null;
     }
-
     this.mapReset.emit();
   }
 }

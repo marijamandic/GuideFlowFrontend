@@ -13,21 +13,22 @@ import { TourService } from '../tour.service';
 })
 export class CheckpointFormComponent implements OnChanges {
   
-  @Input() checkpoint: Checkpoint | null = null;
+  @Input() checkpoint: Checkpoint;
   @Input() tourId!:number;
   @Input() shouldEdit: boolean = false;
   @Output() updatedCheckpoint = new EventEmitter<void>();
-  @Output() coordinatesSelected = new EventEmitter<{ latitude: number; longitude: number }>();
-  checkpointCoordinates: { latitude: number, longitude: number }[] = [];
-  @Output() checkpointsLoaded = new EventEmitter<{ latitude: number; longitude: number; }[]>();
+  //@Output() coordinatesSelected = new EventEmitter<{ latitude: number; longitude: number }>();
+  //checkpointCoordinates: { latitude: number, longitude: number }[] = [];
+  //@Output() checkpointsLoaded = new EventEmitter<{ latitude: number; longitude: number; }[]>();
   isChecked: boolean = false; 
   isViewMode:boolean = true;
+  imageBase64:string;
 
   constructor(private checkpointService: TourCheckpointService,private tourService:TourService,private publicPointService: PublicPointService) {}
 
   ngOnChanges(): void {
     this.checkpointForm.reset();
-    if (this.checkpoint) {
+    if (this.shouldEdit) {
       this.checkpointForm.patchValue(this.checkpoint);
     }
   }
@@ -36,6 +37,7 @@ export class CheckpointFormComponent implements OnChanges {
     name:new FormControl('',[Validators.required]),
     description:new FormControl('', [Validators.required]),
     imageUrl:new FormControl('', [Validators.required]),
+    imageBase64:new FormControl('', [Validators.required]),
     latitude:new FormControl (0, [Validators.required]),
     longitude:new FormControl(0, [Validators.required]),
     secret:new FormControl('',[Validators.required])
@@ -47,7 +49,10 @@ export class CheckpointFormComponent implements OnChanges {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => {
-        this.checkpointForm.value.imageUrl = reader.result as string;
+        this.imageBase64 = reader.result as string;
+        this.checkpointForm.patchValue({
+          imageBase64: this.imageBase64
+        });
       };
     }
   }
@@ -63,17 +68,17 @@ export class CheckpointFormComponent implements OnChanges {
         return;
       }
       
-      if (!this.checkpoint || this.checkpoint.id === undefined) {
-
+      if (!this.shouldEdit) {
         const checkpoint: Checkpoint = {
           name: this.checkpointForm.value.name || "",
           description:this.checkpointForm.value.description || "",
           imageUrl:this.checkpointForm.value.imageUrl || "",
+          imageBase64:this.checkpointForm.value.imageBase64 || "",
           latitude:this.checkpointForm.value.latitude || 0,
           longitude:this.checkpointForm.value.longitude || 0,
           secret:this.checkpointForm.value.secret || ""
         };
-
+        console.log(checkpoint);
         this.tourService.addCheckpoint(this.tourId,checkpoint).subscribe({
           next: () => {
             this.updatedCheckpoint.emit();
@@ -88,12 +93,13 @@ export class CheckpointFormComponent implements OnChanges {
           name: this.checkpointForm.value.name || "",
           description:this.checkpointForm.value.description || "",
           imageUrl:this.checkpointForm.value.imageUrl || "",
+          imageBase64:this.checkpointForm.value.imageBase64 || "",
           latitude:this.checkpointForm.value.latitude || 0,
           longitude:this.checkpointForm.value.longitude || 0,
           secret:this.checkpointForm.value.secret || ""
         };
         checkpoint.id=this.checkpoint.id;
-        this.checkpointService.updateCheckpoint(checkpoint).subscribe({
+        this.tourService.updateCheckpoint(this.tourId,checkpoint).subscribe({
           next: () => {
             console.log('Checkpoint updated.');
             this.updatedCheckpoint.emit();
@@ -111,6 +117,7 @@ export class CheckpointFormComponent implements OnChanges {
         latitude: this.checkpointForm.value.latitude || 0,
         longitude: this.checkpointForm.value.longitude || 0,
         imageUrl: this.checkpointForm.value.imageUrl || "",
+        imageBase64:this.checkpointForm.value.imageBase64 || "",
         approvalStatus: ApprovalStatus.Pending, 
         type: PointType.Checkpoint
     };

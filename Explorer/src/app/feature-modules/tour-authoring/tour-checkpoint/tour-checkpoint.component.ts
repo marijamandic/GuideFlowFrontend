@@ -4,6 +4,7 @@ import { MapComponent } from 'src/app/shared/map/map.component';
 import { TourService } from '../tour.service';
 import { TransportDuration, TransportType } from '../model/transportDuration.model';
 import { Router,ActivatedRoute } from '@angular/router';
+import { environment } from 'src/env/environment';
 
 
 @Component({
@@ -49,6 +50,13 @@ export class CheckpointListComponent implements OnInit {
     });
   }
 
+  getImagePath(imageUrl: string | undefined){
+    if(imageUrl!==undefined){
+      return environment.webRootHost+imageUrl;
+    }
+    return "";
+  }
+
   editCheckpoint(checkpoint: Checkpoint): void {
     this.selectedCheckpoint=checkpoint;
     this.shouldRenderCheckpointForm=true;
@@ -56,9 +64,9 @@ export class CheckpointListComponent implements OnInit {
   }
 
   
-  /*deleteCheckpoint(checkpoint: Checkpoint): void {
-    if (checkpoint.id !== undefined) {
-      this.checkpointService.deleteCheckpoint(checkpoint.id).subscribe({
+  deleteCheckpoint(checkpoint: Checkpoint): void {
+    if (checkpoint.id !== undefined && this.tourId) {
+      this.tourService.deleteCheckpoint(this.tourId,checkpoint).subscribe({
         next: () => {
           this.loadCheckpoints();
           console.log('Checkpoint deleted with ID:', checkpoint.id);
@@ -70,7 +78,7 @@ export class CheckpointListComponent implements OnInit {
     } else {
       console.error('Checkpoint ID is undefined, cannot delete.');
     }
-  }*/
+  }
 
     onDistanceCalculated(event: { transportType: string; time: number; distance: number }):void{
       this.addNewTransportData(event);
