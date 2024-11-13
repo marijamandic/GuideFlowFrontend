@@ -1,21 +1,33 @@
-<form [formGroup]="clubForm">
-    <div>
-        <p>Crete your Club</p>
-        <mat-form-field>
-            <mat-label>Name</mat-label>
-            <input matInput formControlName="name" type="text"/>
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>Description</mat-label>
-          <textarea matInput
-          cdkTextareaAutosize
-          cdkAutosizeMinRows="1"
-          formControlName="description"
-          cdkAutosizeMaxRows="5"></textarea>
-        </mat-form-field>
-        <label>Image Url</label>
-        <input type="file" (change)="onFileSelected($event)">
-        <button *ngIf="!shouldEdit" color="primary" type="submit" (click)="addClub()" mat-raised-button>Done</button>
-        <button *ngIf="shouldEdit" color="primary" type="submit" (click)="updateClub()" mat-raised-button>Done</button>
-    </div>
-</form>
+<div class="main-column">
+    <form [formGroup]="clubForm" (ngSubmit)="shouldEdit ? updateClub() : addClub()" class="club-form">
+      <table>
+        <tr>
+          <td><h2>{{ shouldEdit ? 'Edit Club' : 'Create a Club' }}</h2></td>
+        </tr>
+        <tr>
+          <td><label for="name">Name</label></td>
+        </tr>
+        <tr>
+          <td><input id="name" formControlName="name" class="form-control" type="text" /></td>
+        </tr>
+        <tr>
+          <td><label for="description">Description</label></td>
+        </tr>
+        <tr>
+          <td><textarea id="description" formControlName="description" class="form-control"></textarea></td>
+        </tr>
+        <tr>
+          <td><label for="fileUpload">Image Upload</label></td>
+        </tr>
+        <tr>
+          <td><input type="file" id="fileUpload" (change)="onFileSelected($event)" class="form-control"></td>
+        </tr>
+        <tr>
+          <td colspan="2" style="text-align: center;">
+            <button type="submit" class="cta-button form-button">{{ shouldEdit ? 'Update Club' : 'Create Club' }}</button>
+          </td>
+        </tr>
+      </table>
+    </form>
+  </div>
+  

@@ -1,0 +1,28 @@
+<div class="main-column">
+  <!-- Club Header Section -->
+  <div class="club-info-header">
+    <!-- Club Name (if available) -->
+    <div *ngIf="club?.name" class="club-name">{{ club.name }}</div>
+    
+    <!-- Club Image (if available) -->
+    <img *ngIf="club?.imageUrl" [src]="getImagePath(club.imageUrl)" alt="Club image" class="club-image" />
+
+    <!-- Club Description (if available) -->
+    <div *ngIf="club?.description" class="club-description">
+      <p>{{ club.description }}</p>
+    </div>
+  </div>
+
+  <!-- Club Posts Section -->
+  <div class="club-posts-section">
+    <div *ngFor="let post of clubPosts" class="club-post">
+      <!-- Post Content (if available) -->
+      <p class="post-content" *ngIf="post?.content">{{ post.content }}</p>
+      
+      <!-- Display Resource Information (if available) -->
+      <div class="post-resource" *ngIf="post?.resourceId">
+        <p>Resource ID: {{ post.resourceId }}</p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -20,6 +20,7 @@ import { AllAppRatingsComponent } from './all-app-ratings/all-app-ratings.compon
 import { LayoutModule } from '../layout/layout.module';
 import { AccountComponent } from './account/account.component';
 import { ClubPostComponent } from './club/club-post/club-post.component';
+import { ClubInfoComponent } from './club/club-info/club-info.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { ClubPostComponent } from './club/club-post/club-post.component';
     AllAppRatingsComponent,
     ProblemComponent,
     AccountComponent,
-    ClubPostComponent
+    ClubPostComponent,
+    ClubInfoComponent
   ],
   imports: [
     CommonModule,

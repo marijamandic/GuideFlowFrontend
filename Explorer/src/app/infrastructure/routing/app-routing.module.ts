@@ -27,6 +27,8 @@ import { RatingTheAppComponent } from 'src/app/feature-modules/layout/rating-the
 import { AllAppRatingsComponent } from 'src/app/feature-modules/administration/all-app-ratings/all-app-ratings.component';
 import { TourSpecificationComponent } from 'src/app/feature-modules/marketplace/tour-specification/tour-specification.component';
 import { AccountComponent } from 'src/app/feature-modules/administration/account/account.component';
+import { ClubFormComponent } from 'src/app/feature-modules/administration/club/club-form/club-form.component';
+import { ClubInfoComponent } from 'src/app/feature-modules/administration/club/club-info/club-info.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -44,6 +46,8 @@ const routes: Routes = [
   { path: 'club-request', component: ClubRequestComponent, canActivate: [AuthGuard] },
   { path: 'club-request/add', component: ClubRequestFormComponent, canActivate: [AuthGuard] },
   { path: 'club-members/:id', component: ClubMemberListComponent, canActivate: [AuthGuard] },
+  { path: 'club-info/:id', component: ClubInfoComponent, canActivate: [AuthGuard] },
+  { path: 'new-club', component: ClubFormComponent, canActivate: [AuthGuard]},
   { path: 'blog', component: PostComponent, canActivate: [AuthGuard] },
   { path: 'blog/:id', component: PostInfoComponent, canActivate: [AuthGuard] },
   { path: 'comment', component: CommentComponent },

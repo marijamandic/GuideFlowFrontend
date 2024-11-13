@@ -6,6 +6,7 @@ import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { environment } from 'src/env/environment';
 import { ClubRequestService } from '../../club-request.service';
 import { ClubRequest } from '../../model/club-request.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'xp-club',
@@ -21,7 +22,10 @@ export class ClubComponent implements OnInit {
   idOfOwner: number = 0;
   loggedTouristId: number = 0;
 
-  constructor(private service: AdministrationService, private authSerivce: AuthService, private clubRequestService: ClubRequestService) { }
+  constructor(private service: AdministrationService,
+    private authSerivce: AuthService,
+    private clubRequestService: ClubRequestService,
+    private router: Router,) { }
   
   ngOnInit(): void {
     this.getClub();
@@ -72,11 +76,17 @@ export class ClubComponent implements OnInit {
   }
 
   onAddClicked(): void {
-    this.shouldEdit = false;
-    this.shouldRenderClubForm = true;
+    this.router.navigate(['new-club']);
   }
+
+  navigateToClubInfo(clubId: number | undefined): void {
+    if (clubId !== undefined) {
+      this.router.navigate([`/club-info`, clubId]);
+    }
+  }
+  
+  
   getImagePath(imageUrl: string){
-    //console.log(imageUrl);
     return environment.webRootHost+imageUrl;
   }
 
