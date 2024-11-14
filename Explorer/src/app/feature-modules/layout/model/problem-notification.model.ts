@@ -2,6 +2,12 @@ enum NotificationType {
 	ProblemNotification
 }
 
+enum ProblemNotificationType {
+	NewMessage,
+	NewDeadline,
+	DeadlinePassed
+}
+
 export interface ProblemNotification {
 	id: number;
 	userId: number;
@@ -11,5 +17,5 @@ export interface ProblemNotification {
 	isOpened: boolean;
 	type: NotificationType;
 	problemId: number;
-	isNewDeadline: boolean;
+	pnt: ProblemNotificationType;
 }

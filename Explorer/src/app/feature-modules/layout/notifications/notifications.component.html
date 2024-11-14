@@ -1,10 +1,16 @@
 <div class="notification-main">
 	<h2>Problem notifications</h2>
-	<div *ngFor="let notification of notifications" [ngClass]="{ 'notification-card': true, 'right-border': !notification.isOpened }">
+	<div
+		*ngFor="let notification of notifications"
+		[ngClass]="{ 'notification-card': true, 'right-border': !notification.isOpened }"
+		(click)="handleNotificationClick(notification.id)"
+	>
 		<div>
 			<b> {{ notification.sender }} </b>
 		</div>
 		<div>{{ notification.message }}</div>
-		<button (click)="handleNotificationClick(notification.problemId)" *ngIf="!notification.isNewDeadline" type="button">Open problem</button>
+		<button (click)="handleOpenProblem(notification.id, notification.problemId)" *ngIf="notification.pnt === 0" type="button">
+			Open problem
+		</button>
 	</div>
 </div>
