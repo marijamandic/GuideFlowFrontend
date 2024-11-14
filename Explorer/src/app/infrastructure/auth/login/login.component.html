@@ -1,16 +1,14 @@
-<form [formGroup]="loginForm" (ngSubmit)="login()">
-    <div>
-        <mat-form-field>
-            <mat-label>Username</mat-label>
-            <input matInput formControlName="username" type="text"/>
-        </mat-form-field>
-        <mat-form-field>
-            <mat-label>Password</mat-label>
-            <input matInput formControlName="password" type="password"/>
-        </mat-form-field>
-    <button color="primary" type="submit" mat-raised-button>Login</button>
-    <p>Don't have an account yet?<a href="/register">Sign Up</a></p>
-    </div>
-</form>
+<div class="main-column">
+    <form [formGroup]="loginForm" (ngSubmit)="login()" class="blog-form">
+        <h2>Login</h2>
+        <label for="username">Username</label>
+        <input id="username" formControlName="username" class="form-control" type="text"/>
 
+        <label for="password">Password</label>
+        <input id="password" formControlName="password" class="form-control" type="password"/>
 
+        <button type="submit" class="cta-button form-button" [disabled]="loginForm.invalid">Login</button>
+
+        <p>No account? <a href="/register">Create one!</a></p>
+    </form>
+</div>

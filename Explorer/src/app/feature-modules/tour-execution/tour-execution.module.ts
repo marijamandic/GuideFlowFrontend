@@ -13,6 +13,7 @@ import { TourViewComponent } from './tour-view/tour-view.component';
 import { ProblemStatusComponent } from './problem-status/problem-status.component';
 import { TourExecutionDetailsComponent } from './tour-execution-details/tour-execution-details.component';
 import { PurchasedToursComponent } from './purchased-tours/purchased-tours.component';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   providers:[DatePipe],
@@ -30,6 +31,7 @@ import { PurchasedToursComponent } from './purchased-tours/purchased-tours.compo
   imports: [
     CommonModule,
     MatFormFieldModule,
+    SharedModule,
     MatInputModule,
     ReactiveFormsModule,
     MatIconModule,

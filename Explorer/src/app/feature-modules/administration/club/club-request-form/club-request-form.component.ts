@@ -1,7 +1,7 @@
 import { Component, Output, EventEmitter, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup, Validators} from '@angular/forms'
-import { AdministrationService } from '../administration.service';
-import { ClubRequest } from '../model/club-request.model';
+import { AdministrationService } from '../../administration.service';
+import { ClubRequest } from '../../model/club-request.model';
 
 
 enum ClubRequestStatus {

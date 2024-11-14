@@ -11,6 +11,8 @@ import { ClubRequest } from './model/club-request.model';
 import { ClubInvitation } from './model/club-invitation.model';
 import { ClubMemberList } from './model/club-member-list.model';
 import { Account } from './model/account.model';
+import { ClubPost } from './model/club-post.model';
+import { User } from 'src/app/infrastructure/auth/model/user.model';
 
 @Injectable({
 	providedIn: 'root'
@@ -121,15 +123,29 @@ export class AdministrationService {
 		return this.http.patch<Account>(environment.apiHost + 'administration/account', account);
 	}
 
-	getProfileInfoByUserId(userId: number): Observable<ProfileInfo> {
-		return this.http.get<ProfileInfo>(environment.apiHost + 'administration/profileInfo/' + userId);
-	}
+  getProfileInfoByUserId(userId: number): Observable<ProfileInfo> {
+    return this.http.get<ProfileInfo>(environment.apiHost + 'administration/profileInfo/' + userId);
+  }  
+  
+  updateProfileInfo(profileInfo: ProfileInfo): Observable<ProfileInfo> {
+    return this.http.put<ProfileInfo>(
+      `${environment.apiHost}administration/profileInfo/${profileInfo.id}/${profileInfo.userId}`,
+      profileInfo
+    );
+  }  
+  
+  getProfileInfo(): Observable<PagedResults<ProfileInfo>> {
+    return this.http.get<PagedResults<ProfileInfo>>(environment.apiHost + 'administration/profileInfo');
+  }  
 
-	updateProfileInfo(profileInfo: ProfileInfo): Observable<ProfileInfo> {
-		return this.http.put<ProfileInfo>(`${environment.apiHost}administration/profileInfo/${profileInfo.id}/${profileInfo.userId}`, profileInfo);
-	}
+  addClubPost(clubPost: ClubPost): Observable<ClubPost> {
+    return this.http.post<ClubPost>(environment.apiHost + 'administration/clubpost', clubPost);
+  }
+  getClubPosts(): Observable<ClubPost[]> {
+    return this.http.get<ClubPost[]>(environment.apiHost + 'administration/clubpost');
+  }
 
-	getProfileInfo(): Observable<PagedResults<ProfileInfo>> {
-		return this.http.get<PagedResults<ProfileInfo>>(environment.apiHost + 'administration/profileInfo');
-	}
+  getAllUsers(): Observable<User[]> {
+    return this.http.get<User[]>(`${environment.apiHost}user/all`);
+  }  
 }

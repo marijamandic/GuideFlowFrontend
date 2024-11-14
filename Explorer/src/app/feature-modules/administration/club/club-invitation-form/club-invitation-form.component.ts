@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AdministrationService } from '../administration.service';
-import { ClubInvitation } from '../model/club-invitation.model';
+import { AdministrationService } from '../../administration.service';
+import { ClubInvitation } from '../../model/club-invitation.model';
 
 @Component({
   selector: 'xp-club-invitation-form',

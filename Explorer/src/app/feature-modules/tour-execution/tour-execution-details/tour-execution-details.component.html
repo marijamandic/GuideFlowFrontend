@@ -65,23 +65,25 @@
         <div *ngIf="isReviewFormOpen" class="overlay">
           <div class="review-popup">
             <xp-tour-review 
-              [tourId]="tourExecution?.tourId ?? 0"
-              [touristId]="tourExecution?.userId ?? 0"
-              [startDate]="tourExecution?.startTime ?? null"
-              [percentageCompleted]="percentageCompleted ?? 0"
+              [tourId]="tourExecution.tourId"
+              [touristId]="tourExecution.userId"
+              [startDate]="tourExecution.startTime"
+              [percentageCompleted]="percentageCompleted"
               (tourReviewUpdated)="closeReviewForm()"
             >
             </xp-tour-review>
             <button class="close-button" (click)="closeReviewForm()">X</button>
           </div>
         </div>
-        <div class="button-container">
-          <button class="button" (click)="abandonSession()">Abandon session</button>
-          <button class="button" (click)="completeSession()">Complete session</button>
-        </div>
       </div>
       <div class="mapDetails">
-
+        <div style="margin-top: 30px;" >
+          <xp-map [showSearchBar]="isViewMode" [checkpoints]="checkpointCoordinates" ></xp-map>
+          <div class="button-container">
+            <button class="button" (click)="abandonSession()">Abandon session</button>
+            <button class="button" (click)="completeSession()">Complete session</button>
+          </div>
+        </div>
       </div>
     </div>
     

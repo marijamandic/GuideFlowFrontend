@@ -25,9 +25,10 @@
             <span *ngIf="user && user.username !== '' && notificationCount > 0" class="notification-badge">{{ notificationCount }}</span>
             <mat-icon class="profile-icon" (click)="toggleDropdown()">account_circle</mat-icon>
             <div class="dropdown-content" *ngIf="isDropdownOpen">
-                <a *ngIf="user && user.username === ''" [routerLink]="['/login']">Login</a>
-                <a *ngIf="user && user.username !== ''" (click)="onLogout()">Logout</a>
-                <a [routerLink]="['/settings']">Settings</a>
+                <a *ngIf="user && user.username === ''" [routerLink]="['/login']"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a>
+                <a *ngIf="user && user.username !== ''" (click)="onLogout()"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a>
+                <a [routerLink]="['/settings']" (click) = "toggleDropdown()"><i class="fa fa-cog" aria-hidden="true"></i> Settings</a>
+                <a [routerLink]="['/profile']" (click) = "toggleDropdown()"><i class="fa fa-user" aria-hidden="true"></i> Profile</a>
                 <a *ngIf="user && user.role === 'administrator'"color="primary" mat-raised-button [routerLink]="['equipment']">Manage equipment</a>
             </div>
         </div>

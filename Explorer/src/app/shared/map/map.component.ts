@@ -15,6 +15,7 @@ export class MapComponent implements AfterViewInit,OnChanges {
   private routeControl: any = null;
 
   @Input() initialMarkers: L.LatLng[] = [];
+  @Input() allowMultipleMarkers: boolean = true;
   @Input() checkpoints: { latitude: number; longitude: number }[] = [];
   @Input() showSearchBar: boolean = true;
   @Output() markerAdded = new EventEmitter<L.LatLng>();
@@ -144,32 +145,21 @@ export class MapComponent implements AfterViewInit,OnChanges {
       if (!this.showSearchBar) {
         return;
       }
-
       this.markers.forEach(marker => {
         this.map.removeLayer(marker);
       });
       this.markers = [];
-
       const coord = e.latlng;
       const marker = new L.Marker([coord.lat, coord.lng]).addTo(this.map);
-      this.markers.push(marker);
-      
+      this.markers.push(marker); 
       this.coordinatesSelected.emit({ latitude: coord.lat, longitude: coord.lng });
     });
   }
 
   addMarker(marker: L.Marker): void {
     this.markers.push(marker);
-
-    /*marker.on('click', () => {
-      console.log("EEEE")
-      const latLng = marker.getLatLng();
-      this.coordinatesSelected.emit({ latitude: latLng.lat, longitude: latLng.lng });
-      console.log(this.coordinatesSelected)
-    });
-
     const latLng = marker.getLatLng();
-    this.coordinatesSelected.emit({ latitude: latLng.lat, longitude: latLng.lng });*/
+    this.coordinatesSelected.emit({ latitude: latLng.lat, longitude: latLng.lng });
   }
 
   resetMap(): void {
@@ -184,6 +174,7 @@ export class MapComponent implements AfterViewInit,OnChanges {
       this.map.removeControl(this.routeControl);
       this.routeControl = null;
     }
+
     this.mapReset.emit();
   }
   

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ClubRequest, ClubRequestStatus } from '../model/club-request.model';
-import { Club } from '../model/club.model';
+import { ClubRequest, ClubRequestStatus } from '../../model/club-request.model';
+import { Club } from '../../model/club.model';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
-import { AdministrationService } from '../administration.service';
-import { ClubRequestService } from '../club-request.service'; // Make sure this service is imported
+import { AdministrationService } from '../../administration.service';
+import { ClubRequestService } from '../../club-request.service'; // Make sure this service is imported
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 
 @Component({
