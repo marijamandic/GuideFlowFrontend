@@ -1,23 +1,88 @@
-form {
+.main-column {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh; 
-    z-index: 2;
+    height: 100vh;
+    background-color: var(--background-color);
+    background: linear-gradient(
+        135deg,
+        #f5f7fa, 
+        #c5dfd8, 
+        #e2d1f9, 
+        #f0d9ff  
+    );
+    background-size: 400% 400%;
+    animation: gradientAnimation 10s ease infinite;
 }
 
-div {
+@keyframes gradientAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.blog-form {
+    background-color: var(--secondary-color);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 100%;
-    max-width: 400px; 
-    display: flex;
-    flex-direction: column;
-    padding: 20px; 
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); 
-    background-color: white; 
-    border-radius: 8px; 
+    max-width: 500px;
 }
 
+.blog-form label {
+    display: block;
+    margin-bottom: 8px;
+    margin-top: 8px; 
+    font-weight: bold;
+    color: var(--accent-color);
+}
+
+.form-control {
+    width: 100%; 
+    padding: 10px;
+    border: 1px solid #cccccc;
+    font-family: var(--font-family);
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box; 
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    outline: none;
+}
+
+button {
+    background-color: var(--primary-color);
+    font-size: 16px;
+    color: white;
+    padding: 12px 30px;
+    border-radius: 25px;
+    border: none;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s, transform 0.3s ease;
+    width: 100%; 
+}
+
+button:disabled {
+    background-color: #9b9b9b;
+    cursor: not-allowed;
+}
+
+button:hover:not(:disabled) {
+    background-color: var(--primary-color);
+    transform: scale(1.05);
+}
 
 p {
-    margin-top: 10px;
+    text-align: center;
+    font-size: 14px;
+    color: var(--accent-color);
+    padding: 15px;
+}
+
+a{
+    color: var(--hover-color);
 }

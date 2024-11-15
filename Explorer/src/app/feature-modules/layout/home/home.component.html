@@ -9,7 +9,7 @@
     <div class="overlay">
         <h1 class="motivational-message">Discover new paths,</h1>
         <h1 class="motivational-message">one adventure at a time</h1>
-        <button class="cta-button" routerLink="/tours">Book a tour</button>
+        <button class="cta-button glow-button" routerLink="/tours">Book a tour</button>
     </div>
 
     <!-- POPULAR TOURS -->
@@ -17,7 +17,7 @@
         <h2>Most popular tours</h2>
         <div class="tour-cards-wrapper" >
             <div class="tour-cards-container">
-                <div *ngFor="let tour of tours" class="tour-card">
+                <a *ngFor="let tour of tours" class="tour-card"  [routerLink]="['/tourPreview', tour.id]">
                     <div class="tour-image" [style.backgroundImage]="'url(' + tour.imageUrl + ')'"></div>
                     <div class="tour-info">
                         <h3>{{ tour.name }}</h3>
@@ -27,7 +27,7 @@
                             <span class="rating-text">{{ tour.reviews }}</span>
                         </div>
                     </div>
-                </div>
+                </a>
             </div>
         </div>
     </section>
@@ -62,7 +62,7 @@
     </section>
 </div>
 
-<!--FOOTER -->
+<!--FOOTER 
 <footer class="footer">
     <div class="footer-container">
         <div class="footer-logo">
@@ -88,7 +88,7 @@
             </div>
         </div>
     </div>
-</footer>
+</footer> -->
 
 
 

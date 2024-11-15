@@ -1,7 +1,10 @@
 import { Component, EventEmitter, Input, Inject, OnChanges, Output, SimpleChanges } from '@angular/core';
-import { Currency, Tour } from '../model/tour.model';
+import { Tour } from '../model/tour.model';
+import { Currency } from '../model/price.model';
 import { TourService } from '../tour.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 
 
 export enum TourStatus {
@@ -26,13 +29,11 @@ export class TourFormComponent implements OnChanges {
   @Output() tourUpdated = new EventEmitter<null>();
   @Input() tour: Tour ;
   @Input() shouldEdit: boolean = false;
-  @Input() forPublish: boolean = false;
-  @Input() shouldRenderTourForm: boolean = false;
   
-
+  userId:number=-1;
   tags: string[] = [''];
 
-  constructor(private service: TourService) {
+  constructor(private service: TourService,private router:Router,private authService:AuthService) {
   }
   
   ngOnChanges(): void {
@@ -41,6 +42,11 @@ export class TourFormComponent implements OnChanges {
     if (this.shouldEdit) {
       this.tags = this.tour.taggs || ['']; // Učitaj postojeće tagove
     }
+    this.authService.user$.subscribe(user => {
+      if(user){
+      this.userId = user.id;
+      }
+    });
   }
 
   initializeTour(): Tour {
@@ -76,7 +82,7 @@ export class TourFormComponent implements OnChanges {
       name: this.tour.name || "",
       description: this.tour.description || "",
       id: 0,
-      authorId:-1,
+      authorId:this.userId,
       price: {
         cost: this.tour.price.cost || 0,
         currency : curr
@@ -91,69 +97,23 @@ export class TourFormComponent implements OnChanges {
       reviews: this.tour.reviews || [],
     };
     this.service.addTour(newTour).subscribe({
-      next: () => { this.tourUpdated.emit(); }
+      next: (result:Tour) => {
+        this.router.navigate(['/checkpoints', result.id]);
+      }
     });
 
   }
-
-  ConvertCurrency(): number {
-   console.log('Currency je ',this.tour.price.currency)
-    switch (this.tour.price.currency.toString()) {
-      case  "RSD" :
-        return 0;
-      case "EUR":
-        return 1;
-      case "USD":
-        return 2;
-      default:
-        return 0;
-    }
-  }
-
-  
-  ConvertLevel(): number {
-
-    switch (this.tour.level.toString()) {
-      case  "Easy" :
-        return 0;
-      case "Advanced":
-        return 1;
-      case "Expert":
-        return 2;
-      default:
-        return 0;
-    }
-  }
-
-  
-  ConvertStatus(): number {
-
-    switch (this.tour.status.toString()) {
-      case  "Draft" :
-        return 0;
-      case "Published":
-        return 1;
-      case "Archived":
-        return 2;
-      default:
-        return 0; 
-    }
-  }
-
-    
 
     updateTour(): void {
       const curr = this.ConvertCurrency();
       const level = this.ConvertLevel();
       const status = this.ConvertStatus();
       console.log('update metoda')
-
-
       const tour: Tour = {
         name: this.tour.name || "",
         description: this.tour.description || "",
         id: 0,
-        authorId:-1,
+        authorId:this.userId,
         price: {
           cost: this.tour.price.cost || 0,
           currency : curr
@@ -174,16 +134,47 @@ export class TourFormComponent implements OnChanges {
         });
       }
 
-      publishTour(): void {
-      
-        //tour.id = this.tour.id;
-        this.service.publishTour(this.tour).subscribe({
-          next: () => { this.tourUpdated.emit();}
-        });
-      console.log('objavio sam turu',this.tour.name)
-      
-      }
-    
-
-
+      ConvertCurrency(): number {
+        console.log('Currency je ',this.tour.price.currency)
+         switch (this.tour.price.currency.toString()) {
+           case  "RSD" :
+             return 0;
+           case "EUR":
+             return 1;
+           case "USD":
+             return 2;
+           default:
+             return 0;
+         }
+       }
+     
+       
+       ConvertLevel(): number {
+     
+         switch (this.tour.level.toString()) {
+           case  "Easy" :
+             return 0;
+           case "Advanced":
+             return 1;
+           case "Expert":
+             return 2;
+           default:
+             return 0;
+         }
+       }
+     
+       
+       ConvertStatus(): number {
+     
+         switch (this.tour.status.toString()) {
+           case  "Draft" :
+             return 0;
+           case "Published":
+             return 1;
+           case "Archived":
+             return 2;
+           default:
+             return 0; 
+         }
+       }
 }

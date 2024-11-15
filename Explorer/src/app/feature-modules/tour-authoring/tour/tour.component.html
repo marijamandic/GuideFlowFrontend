@@ -1,73 +1,82 @@
 <div class="container">
-    <h2>Drafts</h2>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Naziv</th>
-                <th>Opis</th>
-                <th>Cena</th>
-                <th>Valuta</th>
-                <th>Tezina</th>
-                <th>Akcije</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let tour of draftTours">
-                <td> {{ tour.name }} </td>
-                <td> {{ tour.description }} </td>
-                <td> {{ tour.price.cost }} </td>
-                <td> {{ CurrencyMap[tour.price.currency] }} </td>
-                <td> {{ LevelMap[tour.level] }} </td>
-                <td>
-                    <button color="accent" (click)="deleteTour(tour.id || 0)" mat-icon-button>
-                        <mat-icon>delete</mat-icon>
-                    </button>
-                    <button color="primary" (click)="onEditClicked(tour)" mat-icon-button>
-                        <mat-icon>edit</mat-icon>
-                    </button>
-                </td>
-                <td>
-                    <button class="add-button" (click)="onPublish(tour)">Publish</button>
-
-                </td>
-            </tr>
-            <tr>
-                <td colspan="6" style="text-align: center;">
-                    <button class="add-button" (click)="onAddClicked()">
-                        <mat-icon>add</mat-icon> Add Tour
-                    </button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <div class="tour-form-container">
-        <xp-tour-form *ngIf="shouldRenderTourForm" [shouldEdit]="shouldEdit" [forPublish]="forPublish" [tour]="selectedTour" (tourUpdated)="getTours()"></xp-tour-form>
+    <div class="tabs">
+        <button *ngIf="user.role === 'author'" (click)="currentView = 'drafts'" [class.active]="currentView === 'drafts'">Drafts</button>
+        <button *ngIf="user.role === 'tourist' || user.role === 'author'" (click)="currentView = 'published'" [class.active]="currentView === 'published'">Published</button>
+        <button *ngIf="user.role === 'author'"  (click)="currentView = 'archive'" [class.active]="currentView === 'archive'">Archive</button>
     </div>
 
-    <h2>Published Tours</h2>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Naziv</th>
-                <th>Opis</th>
-                <th>Cena</th>
-                <th>Valuta</th>
-                <th>Tezina</th>
-                <th>Akcije</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let tour of publishedTours">
-                <td> {{ tour.name }} </td>
-                <td> {{ tour.description }} </td>
-                <td> {{ tour.price.cost }} </td>
-                <td> {{ CurrencyMap[tour.price.currency] }} </td>
-                <td> {{ LevelMap[tour.level] }} </td>
-                <td>
-                    <button class="add-button" >Archive</button>
-                </td>
-            </tr>
-          
-        </tbody>
-    </table>
+    <!-- Draft Tours -->
+    <div *ngIf="currentView === 'drafts'" class="card-container">
+        <div *ngIf="draftTours.length > 0; else noDrafts">
+            <div *ngFor="let tour of draftTours" class="tour-card">
+                <h2>{{ tour.name }}</h2>
+                <p><strong>Description:</strong> {{ tour.description }}</p>
+                <p><strong>Price:</strong> {{ tour.price.cost }} {{ CurrencyMap[tour.price.currency] }}</p>
+                <p><strong>Level:</strong> {{ LevelMap[tour.level] }}</p>
+                <div class="actions" *ngIf="user && user.id===tour.authorId">
+                    <button (click)="deleteTour(tour.id || 0)" mat-icon-button>
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                    <button (click)="onEditClicked(tour)" mat-icon-button>
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button (click)="onPublish(tour)" class="add-button">Publish</button>
+                </div>
+            </div>
+        </div>
+        <ng-template #noDrafts>
+            <p *ngIf="!shouldRenderTourForm">No draft tours available.</p>
+        </ng-template>
+
+        <button *ngIf="!shouldRenderTourForm" (click)="onAddClicked()" class="add-button fixed-bottom">
+            <mat-icon>add</mat-icon> Add Tour
+        </button>
+        <div class="tour-form-container" *ngIf="shouldRenderTourForm">
+            <xp-tour-form [shouldEdit]="shouldEdit" [tour]="selectedTour" (tourUpdated)="getTours()"></xp-tour-form>
+        </div>
+    </div>
+    <div *ngIf="currentView === 'published'" class="card-container">
+        <div *ngIf="user && user.role === 'tourist'">
+                <xp-map [allowMultipleMarkers]="false"
+                [initialMarkers]="initialMarkers"
+                (markerAdded)="onMarkerAdded($event)"
+                (mapReset)="onMapReset()"
+                (coordinatesSelected)="onCoordinatesSelected($event)">
+            </xp-map>
+            <div class="search-container">
+                <input type="text" [(ngModel)]="searchDistance" placeholder="Unesite distancu od tačke" />
+                <button class="button" (click)="searchTours()" color="primary">Pretraži ture</button>
+            </div>
+        </div>
+        <div *ngIf="publishedTours.length > 0; else noPublished">
+            <div *ngFor="let tour of publishedTours" class="tour-card">
+                <h2>{{ tour.name }}</h2>
+                <p><strong>Description:</strong> {{ tour.description }}</p>
+                <p><strong>Price:</strong> {{ tour.price.cost }} {{ CurrencyMap[tour.price.currency] }}</p>
+                <p><strong>Level:</strong> {{ LevelMap[tour.level] }}</p>
+                <div class="actions" *ngIf="user && user.id===tour.authorId">
+                    <button (click)="archiveTour(tour)" class="add-button">Archive</button>
+                </div>
+            </div>
+        </div>
+        <ng-template #noPublished>
+            <p>No published tours available.</p>
+        </ng-template>
+    </div>
+    <div *ngIf="currentView === 'archive'" class="card-container">
+        <div *ngIf="archivedTours.length > 0; else noArchived">
+            <div *ngFor="let tour of archivedTours" class="tour-card">
+                <h2>{{ tour.name }}</h2>
+                <p><strong>Description:</strong> {{ tour.description }}</p>
+                <p><strong>Price:</strong> {{ tour.price.cost }} {{ CurrencyMap[tour.price.currency] }}</p>
+                <p><strong>Level:</strong> {{ LevelMap[tour.level] }}</p>
+                <div class="actions" *ngIf="user && user.id===tour.authorId">
+                    <button (click)="onPublish(tour)" class="add-button">Activate</button>
+                </div>
+            </div>
+        </div>
+        <ng-template #noArchived>
+            <p>No archived tours available.</p>
+        </ng-template>
+    </div>
 </div>
