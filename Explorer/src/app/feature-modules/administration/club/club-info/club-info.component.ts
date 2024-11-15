@@ -1,4 +1,4 @@
-import { Component, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AdministrationService } from '../../administration.service';
 import { Club } from '../../model/club.model';
@@ -6,7 +6,7 @@ import { ClubPost } from '../../model/club-post.model';
 import { environment } from 'src/env/environment';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
-import { ClubInvitation } from '../../model/club-invitation.model';
+import { ClubInvitation, ClubInvitationStatus } from '../../model/club-invitation.model';
 import { User } from 'src/app/infrastructure/auth/model/user.model';
 
 @Component({
@@ -18,18 +18,19 @@ export class ClubInfoComponent implements OnInit {
   club: Club;
   clubPosts: ClubPost[] = [];
   shouldEdit: boolean = false;
-  ownerId : number = 0;
-  role : string = "";
+  ownerId: number = 0;
+  role: string = "";
   users: User[] = [];
   filteredUsers: User[] = [];
   showModal: boolean = false;
   searchTerm: string = "";
   selectedUser: User | null = null;
+  invitations: ClubInvitation[] = [];
 
   constructor(
     private route: ActivatedRoute,
     private administrationService: AdministrationService,
-    private authService : AuthService,
+    private authService: AuthService,
     private router: Router
   ) {}
 
@@ -37,20 +38,43 @@ export class ClubInfoComponent implements OnInit {
     this.authService.user$.subscribe(user => {
       this.ownerId = user.id;
       this.role = user.role;
-      console.log("Logged-in user:", user); 
     });
-  
+
     this.administrationService.getAllUsers().subscribe((users) => {
       this.users = users;
-      this.filteredUsers = users;
-      console.log("Fetched users:", users); 
+      this.filterUsers();
     });
-  
+
     const clubId = Number(this.route.snapshot.paramMap.get('id'));
     if (clubId) {
       this.loadClubData(clubId);
       this.loadClubPosts();
+      this.loadClubInvitations(clubId);
     }
+  }
+
+  loadClubInvitations(clubId: number): void {
+    this.administrationService.getClubInvitationsByClubId(clubId).subscribe((invitations) => {
+        this.invitations = invitations.filter(invite => invite.status === ClubInvitationStatus.PENDING);
+        this.filterUsers();
+    });
+}
+
+  filterUsers(): void {
+    console.log('Filtering users...');
+    console.log('this.invitations:', this.invitations);
+    const pendingUserIds: number[] = this.invitations.map(invite => invite.touristId);
+    console.log('pendingUserIds:', pendingUserIds);
+    console.log('this.ownerId:', this.ownerId);
+    this.filteredUsers = this.users.filter(user => {
+        const shouldInclude = 
+            user.id !== this.ownerId &&
+            !pendingUserIds.includes(user.id) &&
+            user.username.toLowerCase().includes(this.searchTerm.toLowerCase());
+        console.log(`Should include user ${user.username}? ${shouldInclude}`);
+        return shouldInclude;
+    });
+    console.log('this.filteredUsers:', this.filteredUsers);
   }
   
 
@@ -75,20 +99,24 @@ export class ClubInfoComponent implements OnInit {
   }
 
   searchUsers(): void {
-    this.filteredUsers = this.users.filter(user => 
-      user.username.toLowerCase().includes(this.searchTerm.toLowerCase())
-    );
+    this.filteredUsers = this.users
+      .filter(user => 
+        user.id !== this.ownerId &&                
+        !this.invitations.some(invite => invite.touristId === user.id && invite.status === ClubInvitationStatus.PENDING)
+      )
+      .filter(user => user.username.toLowerCase().includes(this.searchTerm.toLowerCase()));
   }
 
   onInvite(): void {
     if (this.selectedUser) {
-      const invitation: ClubInvitation = { clubId: this.club.id!, touristId: this.selectedUser.id, status: 0 };
+      const invitation: ClubInvitation = { clubId: this.club.id!, touristId: this.selectedUser.id, status: ClubInvitationStatus.PENDING };
       this.administrationService.addClubInvitation(invitation).subscribe({
         next: () => {
           this.filteredUsers = this.filteredUsers.filter(user => user.id !== this.selectedUser!.id);
           this.users = this.users.filter(user => user.id !== this.selectedUser!.id);
           this.selectedUser = null;
-          alert("User invited successfully!");
+          console.log("User invited successfully!");
+          this.filterUsers();
         },
         error: (err) => console.error("Error inviting user:", err)
       });
@@ -97,16 +125,13 @@ export class ClubInfoComponent implements OnInit {
     }
   }
 
-  getImagePath(imageUrl: string){
-    return environment.webRootHost+imageUrl;
+  getImagePath(imageUrl: string) {
+    return environment.webRootHost + imageUrl;
   }
+
   onEditClub(): void {
     this.shouldEdit = true;
     this.router.navigate(['new-club'], { state: { club: this.club, shouldEdit: this.shouldEdit } });
-  }
-
-  onIvnite(): void{
-    console.log("Hello chatGPT, please fix this.");
   }
 
   onRequestClub(): void {
