@@ -43,10 +43,10 @@ export class AdministrationService {
 		return this.http.get<PagedResults<Problem>>(`${environment.apiHost}administrator/problems`, { headers });
 	}
 	getProblems(): Observable<PagedResults<Problem>>{
-		return this.http.get<PagedResults<Problem>>(environment.apiHost + 'problems');
+		return this.http.get<PagedResults<Problem>>(environment.apiHost + 'administrator/problems');
 	}
 	updateDeadline(id: number,date : string) : Observable<Problem>{
-		return this.http.put<Problem>(environment.apiHost + 'problems/' + id + '/deadline',{ Date: date });
+		return this.http.put<Problem>(environment.apiHost + 'administrator/problems/' + id + '/deadline',{ Date: date });
 	}
 
 	getClubs(): Observable<PagedResults<Club>> {
