@@ -10,17 +10,16 @@ import { AuthService } from 'src/app/infrastructure/auth/auth.service';
   templateUrl: './comment.component.html',
   styleUrls: ['./comment.component.css']
 })
-export class CommentComponent implements OnInit{
-
+export class CommentComponent implements OnInit {
   @Input() postId!: string;
   user: User | undefined;
-  selectedComment: Comment;
-  comments:Comment[]=[];
+  selectedComment: Comment | undefined;
+  comments: Comment[] = [];
   commentCreators: { [key: number]: string } = {};
   shouldRenderCommentForm: boolean = false;
   shouldEdit: boolean = false;
 
-  constructor (private service:CommentService,private authService: AuthService){ }
+  constructor(private service: CommentService, private authService: AuthService) {}
 
   ngOnInit(): void {
     console.log(this.postId);
@@ -30,37 +29,36 @@ export class CommentComponent implements OnInit{
     this.getComments();
   }
 
-  deleteComments(id:number):void{
+  deleteComments(id: number): void {
     this.service.deleteComments(id).subscribe({
-      next:()=>{
+      next: () => {
         this.getComments();
       },
-      error:(err:any)=>{
+      error: (err: any) => {
         console.log(err);
       }
-    })
+    });
   }
 
-  getComments():void{
-    this.shouldRenderCommentForm=false;
-    this.shouldEdit=false;
-    if(this.postId!==null && this.user){
-      this.service.getComments(this.postId,this.user.role).subscribe({
-        next:(result: PagedResults<Comment>)=>{
-          this.comments = result.results;
+  getComments(): void {
+    this.shouldRenderCommentForm = false;
+    this.shouldEdit = false;
+    if (this.postId !== null) {
+      this.service.getComments(this.postId).subscribe({
+        next: (comments: Comment[]) => {
+          this.comments = comments;
           this.loadCommentCreators();
         },
         error: (err: any) => {
           console.log(err);
         }
-      })
+      });
     }
   }
 
   loadCommentCreators(): void {
     this.comments.forEach(comment => {
-      if (!this.commentCreators[comment.userId]) 
-      {
+      if (!this.commentCreators[comment.userId]) {
         this.service.getCommentCreator(comment.userId).subscribe({
           next: (result: User) => {
             this.commentCreators[comment.userId] = result.username;
@@ -80,8 +78,7 @@ export class CommentComponent implements OnInit{
   }
 
   onAddClicked(): void {
-    this.shouldEdit=false;
+    this.shouldEdit = false;
     this.shouldRenderCommentForm = true;
   }
-  
 }
