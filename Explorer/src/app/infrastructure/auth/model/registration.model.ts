@@ -3,5 +3,6 @@ export interface Registration {
     surname: string,
     email: string,
     username: string,
-    password: string
+    password: string,
+    location: { latitude: number; longitude: number };
 }
