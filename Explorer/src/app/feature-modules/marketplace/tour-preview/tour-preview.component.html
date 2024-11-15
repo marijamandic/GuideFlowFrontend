@@ -1,0 +1,34 @@
+<div class="tour-card" *ngIf="currentTour">
+    <div class="tour-info" >
+        <h2>{{currentTour.name}}</h2>
+        <div class="tour-images">
+            <div *ngFor="let checkpoint of currentTour.checkpoints" class="checkpoint-images">
+                <img [src]="checkpoint.imageUrl" alt="Img">
+            </div>
+        </div>
+        <p>Desription: {{currentTour.description}}</p>
+        <p>Lenght: {{currentTour.lengthInKm}} km</p>
+        <span>
+            <span *ngFor="let transportDuration of currentTour.transportDurations">
+                <span class="icon-with-duration">
+                  <mat-icon *ngIf="transportDuration.transportType == TransportType.Car">directions_car</mat-icon>
+                  <mat-icon *ngIf="transportDuration.transportType === TransportType.Bicycle">directions_bike</mat-icon>
+                  <mat-icon *ngIf="transportDuration.transportType === TransportType.Walking">directions_walk</mat-icon>
+                  <label>{{transportDuration.time}} min</label>
+                </span>
+              </span>
+        </span>
+        <p>Beginning Checkpoint: {{currentTour.checkpoints[0].name}}</p>
+    </div>
+    
+    <div class="reviews">
+        <h3>Reviews</h3>
+        <div class="review-card" *ngFor="let review of currentTour.reviews">
+            <span class="rating-badge">{{review.rating}}</span>
+            <p class="review-message">{{review.comment}}</p>
+        </div>
+    </div>
+    <div class="purchase-button-container">
+        <button class="purchase-button" (click)="addToCart()">Add To Cart</button>
+    </div>
+</div>

@@ -5,6 +5,7 @@ import { PagedResults } from 'src/app/shared/model/paged-results.model'
 import { User } from 'src/app/infrastructure/auth/model/user.model';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { environment } from 'src/env/environment';
+import { Follower } from '../model/follower.model';
 
 @Component({
   selector: 'xp-profile-info',
@@ -16,6 +17,7 @@ export class ProfileInfoComponent implements OnInit{
 
   profileInfo: ProfileInfo[] = [];
   selectedProfileInfo : ProfileInfo;
+  followers: Follower[] = []
   shouldEdit: boolean;
   shouldRenderProfileInfoForm: boolean=false;
   public userId: number;
@@ -36,6 +38,8 @@ export class ProfileInfoComponent implements OnInit{
       next: (result: ProfileInfo) => {
         console.log("API response:", result);
         this.profileInfo = [result];
+
+        
       },
       error: (err:any) => {
         console.log("Error fetching profile info", err);
@@ -56,4 +60,5 @@ export class ProfileInfoComponent implements OnInit{
     getImagePath(imageUrl: string){
       return environment.webRootHost+imageUrl;
     }
+
 }

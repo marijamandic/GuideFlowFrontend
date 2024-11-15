@@ -17,7 +17,7 @@
         <h2>Most popular tours</h2>
         <div class="tour-cards-wrapper" >
             <div class="tour-cards-container">
-                <div *ngFor="let tour of tours" class="tour-card">
+                <a *ngFor="let tour of tours" class="tour-card"  [routerLink]="['/tourPreview', tour.id]">
                     <div class="tour-image" [style.backgroundImage]="'url(' + tour.imageUrl + ')'"></div>
                     <div class="tour-info">
                         <h3>{{ tour.name }}</h3>
@@ -27,7 +27,7 @@
                             <span class="rating-text">{{ tour.reviews }}</span>
                         </div>
                     </div>
-                </div>
+                </a>
             </div>
         </div>
     </section>

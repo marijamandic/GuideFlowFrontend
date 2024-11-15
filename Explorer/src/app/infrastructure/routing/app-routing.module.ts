@@ -37,6 +37,8 @@ import { AdminProblemComponent } from 'src/app/feature-modules/administration/ad
 import { PublicPointRequestsComponent } from 'src/app/feature-modules/tour-authoring/public-point-requests/public-point-requests.component';
 import { TourReviewFormComponent } from 'src/app/feature-modules/tour-execution/tour-review-form/tour-review-form.component';
 import { TourReviewComponent } from 'src/app/feature-modules/tour-execution/tour-review/tour-review.component';
+import { TourPreviewComponent } from 'src/app/feature-modules/marketplace/tour-preview/tour-preview.component';
+import { ShoppingCartComponent } from 'src/app/feature-modules/marketplace/shopping-cart/shopping-cart.component';
 import { PositionsimComponent } from 'src/app/feature-modules/tour-authoring/positionsim/positionsim.component';
 import { TourExecutionDetailsComponent } from 'src/app/feature-modules/tour-execution/tour-execution-details/tour-execution-details.component';
 import { PurchasedToursComponent } from 'src/app/feature-modules/tour-execution/purchased-tours/purchased-tours.component';
@@ -85,7 +87,10 @@ const routes: Routes = [
 	{ path: 'notifications', component: NotificationsComponent },
 	{ path: 'tourist-problems', component: ProblemStatusComponent },
 	{ path: 'admin-problems', component: AdminProblemComponent },
-	{ path: '', redirectTo: '/home', pathMatch: 'full' }
+	{ path: '', redirectTo: '/home', pathMatch: 'full' },
+  {path: 'tourPreview/:id', component: TourPreviewComponent},
+  {path: 'shoppingCart', component: ShoppingCartComponent},
+
 ];
 
 @NgModule({
