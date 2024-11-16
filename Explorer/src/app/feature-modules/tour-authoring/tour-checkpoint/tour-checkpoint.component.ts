@@ -1,10 +1,11 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { Checkpoint } from '../model/tourCheckpoint.model';
 import { MapComponent } from 'src/app/shared/map/map.component';
 import { TourService } from '../tour.service';
 import { TransportDuration, TransportType } from '../model/transportDuration.model';
 import { Router,ActivatedRoute } from '@angular/router';
 import { environment } from 'src/env/environment';
+import { Tour } from '../model/tour.model';
 
 
 @Component({
@@ -17,6 +18,7 @@ export class CheckpointListComponent implements OnInit {
   checkpoints: Checkpoint[] = [];
   selectedCheckpoint:Checkpoint;
   checkpointCoordinates: { latitude: number, longitude: number }[] = [];
+  @Input() forUpdating : boolean;
   @Output() checkpointsLoaded = new EventEmitter<{ latitude: number; longitude: number; }[]>();
   shouldRenderCheckpointForm:boolean = false;
   shouldEdit:boolean = false; 
@@ -115,7 +117,12 @@ export class CheckpointListComponent implements OnInit {
       this.tourService.addTransportDurations(this.tourId,this.transportDurations).subscribe({
         next: (data) => {
           console.log('Transport Durations added:'+ data.transportDurations);
-          this.router.navigate(['/tour']);
+          if(!this.forUpdating){
+            this.router.navigate(['/tour']);
+            this.isComplete = true;
+            this.showFeedback = true;
+          }
+          this.router.navigate(['/tourDetails',this.tourId])
           //alert("Tour with checkpoints added succesfully!");
           this.isComplete = true;
           this.showFeedback = true;

@@ -5,6 +5,7 @@ import { TourService } from '../tour.service';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { User } from 'src/app/infrastructure/auth/model/user.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'xp-tour',
@@ -16,6 +17,7 @@ export class TourComponent implements OnInit {
   tour: Tour[] = [];
   selectedTour: Tour = this.initializeTour();
   shouldRenderTourForm: boolean = false;
+  shouldOpenDetails:boolean = false;
   shouldEdit: boolean = false; 
   currentView: string;
   user:User;
@@ -24,7 +26,7 @@ export class TourComponent implements OnInit {
   longitude: number | null = null;
   searchDistance: number | null = null;
 
-  constructor(private service: TourService, private authService: AuthService){}
+  constructor(private service: TourService,private router:Router, private authService: AuthService){}
   
   tours: Tour[] = [];
   draftTours: Tour[]=[];
@@ -89,6 +91,12 @@ export class TourComponent implements OnInit {
     this.archivedTours = this.tours.filter(t => t.status === TourStatus.Archived)
   }
 
+  onTourClick(tour: any) {
+    if(this.user.role ==='author'){
+      this.router.navigate(['/tourDetails', tour.id]); // Navigacija na TourDetailComponent sa id-jem ture
+    }
+  }
+
 
   deleteTour(id: number): void {
     this.service.deleteTour(id).subscribe({
@@ -100,6 +108,7 @@ export class TourComponent implements OnInit {
   onEditClicked(tour: Tour): void {
     this.selectedTour = tour;
     this.shouldRenderTourForm = true;
+   
     this.shouldEdit = true;
   }
 
@@ -137,7 +146,8 @@ export class TourComponent implements OnInit {
     }
   }
    
-  onPublish(tour:Tour): void {
+  onPublish(event: MouseEvent,tour:Tour): void {
+    event.stopPropagation();
     if(tour.id !== null && tour.id !== undefined){
       console.log(tour.id);
       this.service.changeStatus(tour.id,"Publish").subscribe({
@@ -155,7 +165,8 @@ export class TourComponent implements OnInit {
     }
   }
   
-  archiveTour(tour:Tour):void{
+  archiveTour(event: MouseEvent,tour:Tour):void{
+    event.stopPropagation();
     if(tour.id !== null && tour.id !== undefined){
       this.service.changeStatus(tour.id,"Archive").subscribe({
         next: () => {

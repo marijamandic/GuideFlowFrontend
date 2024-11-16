@@ -50,13 +50,17 @@
 
   <div class="submit-button-container" >
 
-    <button *ngIf="!shouldRenderCheckpointForm" (click)="finishCheckpointsAdding()" class="cta-button floating-add-button">
-      + Submit
+    <button *ngIf="!shouldRenderCheckpointForm " (click)="finishCheckpointsAdding()" class="cta-button floating-add-button">
+       Submit
     </button>
 
   </div>
 
   <div class="instructions feedback" *ngIf="!isComplete && showFeedback">
     You must add at least two checkpoints!
+  </div>
+
+  <div class="instructions feedback" *ngIf="isComplete && showFeedback">
+    Checkpoints updated!
   </div>
 </div>

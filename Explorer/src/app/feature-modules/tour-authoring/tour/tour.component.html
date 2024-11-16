@@ -8,19 +8,14 @@
     <!-- Draft Tours -->
     <div *ngIf="currentView === 'drafts'" class="card-container">
         <div *ngIf="draftTours.length > 0; else noDrafts">
-            <div *ngFor="let tour of draftTours" class="tour-card">
+            <div *ngFor="let tour of draftTours" class="tour-card" (click)="onTourClick(tour)">
                 <h2>{{ tour.name }}</h2>
                 <p><strong>Description:</strong> {{ tour.description }}</p>
                 <p><strong>Price:</strong> {{ tour.price.cost }} {{ CurrencyMap[tour.price.currency] }}</p>
                 <p><strong>Level:</strong> {{ LevelMap[tour.level] }}</p>
                 <div class="actions" *ngIf="user && user.id===tour.authorId">
-                    <button (click)="deleteTour(tour.id || 0)" mat-icon-button>
-                        <mat-icon>delete</mat-icon>
-                    </button>
-                    <button (click)="onEditClicked(tour)" mat-icon-button>
-                        <mat-icon>edit</mat-icon>
-                    </button>
-                    <button (click)="onPublish(tour)" class="add-button">Publish</button>
+               
+                    <button (click)="onPublish($event ,tour)" class="add-button">Publish</button>
                 </div>
             </div>
         </div>
@@ -51,14 +46,14 @@
                 <button class="button" (click)="searchTours()" color="primary">Pretraži ture</button>
             </div>
         </div>
-        <div *ngIf="publishedTours.length > 0; else noPublished">
-            <div *ngFor="let tour of publishedTours" class="tour-card">
+        <div *ngIf="publishedTours.length > 0; else noPublished" >
+            <div *ngFor="let tour of publishedTours" class="tour-card" (click)="onTourClick(tour)">
                 <h2>{{ tour.name }}</h2>
                 <p><strong>Description:</strong> {{ tour.description }}</p>
                 <p><strong>Price:</strong> {{ tour.price.cost }} {{ CurrencyMap[tour.price.currency] }}</p>
                 <p><strong>Level:</strong> {{ LevelMap[tour.level] }}</p>
                 <div class="actions" *ngIf="user && user.id===tour.authorId">
-                    <button (click)="archiveTour(tour)" class="add-button">Archive</button>
+                    <button (click)="archiveTour($event, tour)" class="add-button">Archive</button>
                 </div>
             </div>
         </div>
@@ -68,13 +63,13 @@
     </div>
     <div *ngIf="currentView === 'archive'" class="card-container">
         <div *ngIf="archivedTours.length > 0; else noArchived">
-            <div *ngFor="let tour of archivedTours" class="tour-card">
+            <div *ngFor="let tour of archivedTours" class="tour-card" (click)="onTourClick(tour)">
                 <h2>{{ tour.name }}</h2>
                 <p><strong>Description:</strong> {{ tour.description }}</p>
                 <p><strong>Price:</strong> {{ tour.price.cost }} {{ CurrencyMap[tour.price.currency] }}</p>
                 <p><strong>Level:</strong> {{ LevelMap[tour.level] }}</p>
                 <div class="actions" *ngIf="user && user.id===tour.authorId">
-                    <button (click)="onPublish(tour)" class="add-button">Activate</button>
+                    <button (click)="onPublish($event,tour)" class="add-button">Activate</button>
                 </div>
             </div>
         </div>

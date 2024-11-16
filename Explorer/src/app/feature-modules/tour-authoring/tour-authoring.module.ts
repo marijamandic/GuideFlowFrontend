@@ -19,6 +19,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { PositionsimComponent } from './positionsim/positionsim.component';
 import { ProblemComponent } from './problem/problem.component';
 import { ProblemViewComponent } from './problem-view/problem-view.component';
+import { TourDetailsComponent } from './tour-details/tour-details.component';
 
 
 
@@ -34,7 +35,8 @@ import { ProblemViewComponent } from './problem-view/problem-view.component';
     PublicPointRequestsComponent,
     PositionsimComponent,
     ProblemComponent,
-    ProblemViewComponent
+    ProblemViewComponent,
+    TourDetailsComponent
   ],
   imports: [
     CommonModule,
