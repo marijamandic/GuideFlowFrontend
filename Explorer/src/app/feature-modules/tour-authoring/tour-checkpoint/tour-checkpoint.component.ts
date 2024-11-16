@@ -21,6 +21,8 @@ export class CheckpointListComponent implements OnInit {
   shouldRenderCheckpointForm:boolean = false;
   shouldEdit:boolean = false; 
   isViewMode:boolean = false;
+  isComplete:boolean = false;
+  showFeedback:boolean= false;
   allTransportData: { transportType: string; time: number; distance: number }[] = [];
   transportDurations: TransportDuration[] = [];
   
@@ -114,14 +116,18 @@ export class CheckpointListComponent implements OnInit {
         next: (data) => {
           console.log('Transport Durations added:'+ data.transportDurations);
           this.router.navigate(['/tour']);
-          alert("Tour with checkpoints added succesfully!");
+          //alert("Tour with checkpoints added succesfully!");
+          this.isComplete = true;
+          this.showFeedback = true;
         },
         error: (err) => {
           console.error('Greška prilikom add-a transport durations-a:', err);
         }
       });
     }else{
-      alert("You can't finish adding checkpoint without minimum 2 checkpoints and 1 transport duration!");
+      //alert("You can't finish adding checkpoint without minimum 2 checkpoints and 1 transport duration!");
+      this.isComplete = false;
+      this.showFeedback = true;
     }
   }
 

@@ -28,9 +28,12 @@
             <p *ngIf="!shouldRenderTourForm">No draft tours available.</p>
         </ng-template>
 
-        <button *ngIf="!shouldRenderTourForm" (click)="onAddClicked()" class="add-button fixed-bottom">
-            <mat-icon>add</mat-icon> Add Tour
+        <button *ngIf="!shouldRenderTourForm"  class="cta-button floating-add-button" (click)="onAddClicked()">
+            <i class="fa fa-plus" aria-hidden="true"></i>
         </button>
+
+        
+
         <div class="tour-form-container" *ngIf="shouldRenderTourForm">
             <xp-tour-form [shouldEdit]="shouldEdit" [tour]="selectedTour" (tourUpdated)="getTours()"></xp-tour-form>
         </div>
