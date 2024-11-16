@@ -156,4 +156,15 @@
     text-align: center;
     width: 70%;
   }
+
+  .cta-button[disabled] {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  .cta-button.pending {
+    background-color: #9b9b9b;
+    color: #fff;
+  }
+  
   

@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { ClubInvitation, ClubInvitationStatus } from '../../model/club-invitation.model';
 import { User } from 'src/app/infrastructure/auth/model/user.model';
+import { ClubRequest, ClubRequestStatus } from '../../model/club-request.model';
 
 @Component({
   selector: 'app-club-info',
@@ -26,6 +27,9 @@ export class ClubInfoComponent implements OnInit {
   searchTerm: string = "";
   selectedUser: User | null = null;
   invitations: ClubInvitation[] = [];
+  isMember: boolean = false;
+  isPending: boolean = false;
+
 
   constructor(
     private route: ActivatedRoute,
@@ -50,31 +54,61 @@ export class ClubInfoComponent implements OnInit {
       this.loadClubData(clubId);
       this.loadClubPosts();
       this.loadClubInvitations(clubId);
+      this.loadMembershipStatus(clubId);
+      this.checkPendingRequest(clubId, this.ownerId);
     }
   }
 
+  loadMembershipStatus(clubId: number): void {
+    this.administrationService.getAllClubMembers(clubId).subscribe(members => {
+      this.isMember = members.some(member => member.userId === this.ownerId);
+    });
+  }
+
+  checkPendingRequest(clubId: number, userId: number): void {
+    this.administrationService.getClubRequestByUser(userId).subscribe({
+      next: (requests) => {
+        const filteredRequests = requests.filter(
+          (request: ClubRequest) =>
+            request.clubId === clubId &&
+            request.status === ClubRequestStatus.PENDING
+        );
+        this.isPending = filteredRequests.length > 0;
+        console.log("Filtered requests:", filteredRequests);
+        console.log("isPending value:", this.isPending);
+      },
+      error: (err) => {
+        console.error("Error fetching club requests:", err);
+        this.isPending = false;
+      }
+    });
+  }
+  
+    
+  
+
   loadClubInvitations(clubId: number): void {
-    this.administrationService.getClubInvitationsByClubId(clubId).subscribe((invitations) => {
+    this.administrationService.getClubInvitationsByClubId(clubId).subscribe((invitations: ClubInvitation[]) => {
         this.invitations = invitations.filter(invite => invite.status === ClubInvitationStatus.PENDING);
         this.filterUsers();
     });
-}
+  }
 
   filterUsers(): void {
-    console.log('Filtering users...');
-    console.log('this.invitations:', this.invitations);
+    // console.log('Filtering users...');
+    // console.log('this.invitations:', this.invitations);
     const pendingUserIds: number[] = this.invitations.map(invite => invite.touristId);
-    console.log('pendingUserIds:', pendingUserIds);
-    console.log('this.ownerId:', this.ownerId);
+    // console.log('pendingUserIds:', pendingUserIds);
+    // console.log('this.ownerId:', this.ownerId);
     this.filteredUsers = this.users.filter(user => {
         const shouldInclude = 
             user.id !== this.ownerId &&
             !pendingUserIds.includes(user.id) &&
             user.username.toLowerCase().includes(this.searchTerm.toLowerCase());
-        console.log(`Should include user ${user.username}? ${shouldInclude}`);
+        // console.log(`Should include user ${user.username}? ${shouldInclude}`);
         return shouldInclude;
     });
-    console.log('this.filteredUsers:', this.filteredUsers);
+    // console.log('this.filteredUsers:', this.filteredUsers);
   }
   
 
@@ -135,10 +169,42 @@ export class ClubInfoComponent implements OnInit {
   }
 
   onRequestClub(): void {
-    this.router.navigate(['club-request/add']);
+    if (!this.isMember && !this.isPending && this.club?.id && this.ownerId) {
+      const clubRequest: ClubRequest = {
+        clubId: this.club.id,
+        touristId: this.ownerId,
+        status: ClubRequestStatus.PENDING, 
+      };
+  
+      this.administrationService.addRequest(clubRequest).subscribe({
+        next: () => {
+          this.isPending = true;
+          console.log("Request to join the club submitted successfully.");
+        },
+        error: (err) => console.error("Error submitting club request:", err),
+      });
+    }
   }
 
   selectUser(user: User): void {
     this.selectedUser = this.selectedUser?.id === user.id ? null : user;
   }
+
+  
 }
+
+function mapStatusToEnum(status: string): ClubRequestStatus {
+  switch (status) {
+    case "PENDING":
+      return ClubRequestStatus.PENDING;
+    case "ACCEPTED":
+      return ClubRequestStatus.ACCEPTED;
+    case "DECLINED":
+      return ClubRequestStatus.DECLINED;
+    case "CANCELLED":
+      return ClubRequestStatus.CANCELLED;
+    default:
+      throw new Error(`Unknown status: ${status}`);
+  }
+}
+

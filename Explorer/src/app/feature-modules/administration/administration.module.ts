@@ -12,10 +12,6 @@ import { ProblemComponent } from './problem/problem.component';
 import { AdminProblemComponent } from './admin-problem/admin-problem.component';
 import { ClubFormComponent } from './club/club-form/club-form.component';
 import { ClubComponent } from './club/club-overview/club.component';
-import { ClubRequestComponent } from './club/club-request/club-request.component';
-import { ClubRequestFormComponent } from './club/club-request-form/club-request-form.component';
-import { ClubInvitationComponent } from './club/club-invitation/club-invitation.component';
-import { ClubInvitationFormComponent } from './club/club-invitation-form/club-invitation-form.component';
 import { ClubMemberListComponent } from 'src/app/feature-modules/administration/club/club-member-list/club-member-list.component';
 import { AllAppRatingsComponent } from './all-app-ratings/all-app-ratings.component';
 import { LayoutModule } from '../layout/layout.module';
@@ -31,10 +27,6 @@ import { ClubInfoComponent } from './club/club-info/club-info.component';
     ProfileInfoFormComponent,
     ClubFormComponent,
     ClubComponent,
-    ClubRequestComponent,
-    ClubRequestFormComponent,
-    ClubInvitationComponent,
-    ClubInvitationFormComponent,
     ClubMemberListComponent,
     ProblemComponent,
     AllAppRatingsComponent,
@@ -58,9 +50,6 @@ import { ClubInfoComponent } from './club/club-info/club-info.component';
     ProfileInfoComponent,
     ClubFormComponent,
     ClubComponent,
-    ClubRequestComponent,
-    ClubInvitationComponent,
-    ClubInvitationFormComponent,
     ClubMemberListComponent,
     ProblemComponent,
     AllAppRatingsComponent,

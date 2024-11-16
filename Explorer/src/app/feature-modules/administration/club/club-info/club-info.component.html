@@ -14,7 +14,8 @@
     <div class="edit-club-container">
       <button class="cta-button" *ngIf="club?.ownerId === ownerId" (click)="openInviteModal()">Invite</button>
       <button class="cta-button" *ngIf="club?.ownerId === ownerId" (click)="onEditClub()">Edit</button>
-      <button class="cta-button" *ngIf="role === 'tourist' && club?.ownerId !== ownerId" (click)="onRequestClub()">Join</button>
+      <button class="cta-button" [class.pending]="isPending"  *ngIf="role === 'tourist' && club?.ownerId !== ownerId" [disabled]="isMember || isPending" (click)="onRequestClub()" > {{ isMember ? 'Already a Member' : (isPending ? 'Pending Approval' : 'Join') }} </button>
+
     </div>
   </div>
 
