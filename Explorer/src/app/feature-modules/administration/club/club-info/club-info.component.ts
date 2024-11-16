@@ -71,7 +71,6 @@ export class ClubInfoComponent implements OnInit {
       this.administrationService.getUsername(this.club.ownerId).subscribe({
         next: (username) => {
           this.ownerUsername = username;
-          console.log("Owner's username loaded:", username);
         },
         error: (err) => {
           console.error("Error fetching owner's username:", err);
@@ -89,8 +88,6 @@ export class ClubInfoComponent implements OnInit {
             request.status === ClubRequestStatus.PENDING
         );
         this.isPending = filteredRequests.length > 0;
-        console.log("Filtered requests:", filteredRequests);
-        console.log("isPending value:", this.isPending);
       },
       error: (err) => {
         console.error("Error fetching club requests:", err);
