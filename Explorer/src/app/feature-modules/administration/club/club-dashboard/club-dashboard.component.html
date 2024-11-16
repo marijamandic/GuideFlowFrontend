@@ -10,12 +10,14 @@
       <table class="dashboard-table">
         <thead>
           <tr>
-            <th>Member ID</th>
+            <th>ID</th>
+            <th>Date</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let member of members">
-            <td>{{ member.userId }}</td>
+            <td> {{ member.userId }} </td>
+            <td> {{member.joinedDate }}</td>
           </tr>
         </tbody>
       </table>
