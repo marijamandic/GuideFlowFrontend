@@ -11,7 +11,7 @@ import { ProfileInfoFormComponent } from './profile-info-form/profile-info-form.
 import { ProblemComponent } from './problem/problem.component';
 import { AdminProblemComponent } from './admin-problem/admin-problem.component';
 import { ClubFormComponent } from './club/club-form/club-form.component';
-import { ClubComponent } from './club/club-overview/club.component';
+import { ClubComponent } from './club/club-overview/club.component';  
 import { AllAppRatingsComponent } from './all-app-ratings/all-app-ratings.component';
 import { LayoutModule } from '../layout/layout.module';
 import { AccountComponent } from './account/account.component';

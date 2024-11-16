@@ -156,7 +156,6 @@ export class AdministrationService {
 	getProfileInfo(): Observable<PagedResults<ProfileInfo>> {
 		return this.http.get<PagedResults<ProfileInfo>>(environment.apiHost + 'administration/profileInfo');
 	}  
-
 	addClubPost(clubPost: ClubPost): Observable<ClubPost> {
 		return this.http.post<ClubPost>(environment.apiHost + 'administration/clubpost', clubPost);
 	}
