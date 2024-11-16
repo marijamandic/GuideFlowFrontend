@@ -18,6 +18,7 @@ import { LayoutModule } from '../layout/layout.module';
 import { AccountComponent } from './account/account.component';
 import { ClubPostComponent } from './club/club-post/club-post.component';
 import { ClubInfoComponent } from './club/club-info/club-info.component';
+import { ClubDashboardComponent } from './club/club-dashboard/club-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { ClubInfoComponent } from './club/club-info/club-info.component';
     AdminProblemComponent,
     AccountComponent,
     ClubPostComponent,
-    ClubInfoComponent
+    ClubInfoComponent,
+    ClubDashboardComponent
   ],
   imports: [
     CommonModule,

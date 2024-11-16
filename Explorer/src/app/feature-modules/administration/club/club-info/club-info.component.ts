@@ -179,6 +179,14 @@ export class ClubInfoComponent implements OnInit {
     this.router.navigate(['new-club'], { state: { club: this.club, shouldEdit: this.shouldEdit } });
   }
 
+  onDashboard(): void {
+    if (this.club?.id) {
+      this.router.navigate([`/club-dashboard/${this.club.id}`]);
+    } else {
+      console.error("Club ID is undefined. Cannot navigate to dashboard.");
+    }
+  }  
+
   onRequestClub(): void {
     if (!this.isMember && !this.isPending && this.club?.id && this.ownerId) {
       const clubRequest: ClubRequest = {

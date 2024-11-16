@@ -1,0 +1,67 @@
+<div class="main-column">
+    <!-- Section for editing (empty for now) -->
+    <div class="dashboard-card">
+      <h3>Make the form for editing club here. Like a profile page. <b>Thanks Kaleb</b></h3>
+    </div>
+  
+    <!-- Club Members Section -->
+    <div class="dashboard-card">
+      <h3>Members</h3>
+      <table class="dashboard-table">
+        <thead>
+          <tr>
+            <th>Member ID</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let member of members">
+            <td>{{ member.userId }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    <!-- Membership Requests Section -->
+    <div class="dashboard-card">
+      <h3>Requests</h3>
+      <table class="dashboard-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let request of requests">
+            <td>{{ request.touristId }}</td>
+            <td>{{ getRequestStatus(request.status) }}</td>
+            <td>
+                <button class="action-button accept" (click)="request.id ? acceptRequest(request.id) : null" *ngIf="request.status === 0">Accept</button>
+                <button class="action-button decline" (click)="request.id ? declineRequest(request.id) : null" *ngIf="request.status === 0">Decline</button>
+              </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    <!-- Invitations Section -->
+    <div class="dashboard-card">
+      <h3>Invites</h3>
+      <table class="dashboard-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let invitation of invitations">
+            <td>{{ invitation.touristId }}</td>
+            <td>{{ getInvitationStatus(invitation.status) }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  

@@ -39,6 +39,7 @@ import { PositionsimComponent } from 'src/app/feature-modules/tour-authoring/pos
 import { TourExecutionDetailsComponent } from 'src/app/feature-modules/tour-execution/tour-execution-details/tour-execution-details.component';
 import { PurchasedToursComponent } from 'src/app/feature-modules/tour-execution/purchased-tours/purchased-tours.component';
 import { PublicPointNotificationsComponent } from 'src/app/feature-modules/tour-authoring/public-point-notifications/public-point-notifications.component';
+import { ClubDashboardComponent } from 'src/app/feature-modules/administration/club/club-dashboard/club-dashboard.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -52,6 +53,7 @@ const routes: Routes = [
   { path: 'club', component: ClubComponent, canActivate: [AuthGuard] },
   { path: 'club-members/:id', component: ClubMemberListComponent, canActivate: [AuthGuard] },
   { path: 'club-info/:id', component: ClubInfoComponent, canActivate: [AuthGuard] },
+  { path: 'club-dashboard/:id', component: ClubDashboardComponent, canActivate: [AuthGuard] },
   { path: 'new-club', component: ClubFormComponent, canActivate: [AuthGuard]},
   { path: 'blog', component: PostComponent, canActivate: [AuthGuard] },
   { path: 'blog/:id', component: PostInfoComponent, canActivate: [AuthGuard] },
