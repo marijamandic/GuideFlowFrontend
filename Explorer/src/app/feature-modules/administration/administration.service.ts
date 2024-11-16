@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Equipment } from './model/equipment.model';
 import { ProfileInfo } from './model/profile-info.model';
 import { environment } from 'src/env/environment';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
 import { Problem } from 'src/app/shared/model/problem.model';
 import { Club } from './model/club.model';
@@ -51,11 +51,13 @@ export class AdministrationService {
 		return this.http.put<Problem>(environment.apiHost + 'administrator/problems/' + id + '/deadline',{ Date: date });
 	}
 
-
 	//  ##### Club ##### 
 	getClubs(): Observable<PagedResults<Club>> {
 		return this.http.get<PagedResults<Club>>(environment.apiHost + 'manageclub/club');
 	}
+	getClubById(clubId: number): Observable<Club> {
+		return this.http.get<Club>(environment.apiHost + 'manageclub/club/' + clubId);
+	}	  
 	addClub(club: Club): Observable<Club> {
 		return this.http.post<Club>(environment.apiHost + 'manageclub/club', club);
 	}
@@ -106,7 +108,6 @@ export class AdministrationService {
 		);
 	}
 			  
-	  
 	cancelClubRequest(id: number): Observable<ClubRequest> {
 		return this.http.put<ClubRequest>(environment.apiHost + `request/clubRequest/${id}/cancel`, {});
 	}
@@ -118,7 +119,6 @@ export class AdministrationService {
 	acceptClubRequest(id: number): Observable<ClubRequest> {
 		return this.http.put<ClubRequest>(environment.apiHost + `request/clubRequest/${id}/accept`, {});
 	}	  
-
 
 	// ##### Club membership ##### 
 	getAllClubMembers(clubId: number): Observable<ClubMemberList[]> {
@@ -163,4 +163,12 @@ export class AdministrationService {
 	getAllUsers(): Observable<User[]> {
 		return this.http.get<User[]>(`${environment.apiHost}user/all`);
 	}  
+
+	// ##### User #####
+	getUsername(userId: number): Observable<string> {
+		return this.http.get<{ username: string }>(`${environment.apiHost}user/username/${userId}`)
+		  .pipe(map(response => response.username));
+	}
+	  
+	  
 }

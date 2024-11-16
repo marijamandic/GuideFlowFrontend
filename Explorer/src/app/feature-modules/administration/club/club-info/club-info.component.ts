@@ -29,7 +29,7 @@ export class ClubInfoComponent implements OnInit {
   invitations: ClubInvitation[] = [];
   isMember: boolean = false;
   isPending: boolean = false;
-
+  ownerUsername: string | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -56,6 +56,7 @@ export class ClubInfoComponent implements OnInit {
       this.loadClubInvitations(clubId);
       this.loadMembershipStatus(clubId);
       this.checkPendingRequest(clubId, this.ownerId);
+      this.loadOwnerUsername();
     }
   }
 
@@ -65,6 +66,22 @@ export class ClubInfoComponent implements OnInit {
     });
   }
 
+  loadOwnerUsername(): void {
+    if (this.club?.ownerId) {
+      this.administrationService.getUsername(this.club.ownerId).subscribe({
+        next: (username) => {
+          this.ownerUsername = username;
+          console.log("Owner's username loaded:", username);
+        },
+        error: (err) => {
+          console.error("Error fetching owner's username:", err);
+        }
+      });
+    } else {
+      console.error("Club or Club owner ID is undefined.");
+    }
+  }  
+  
   checkPendingRequest(clubId: number, userId: number): void {
     this.administrationService.getClubRequestByUser(userId).subscribe({
       next: (requests) => {
@@ -83,9 +100,6 @@ export class ClubInfoComponent implements OnInit {
       }
     });
   }
-  
-    
-  
 
   loadClubInvitations(clubId: number): void {
     this.administrationService.getClubInvitationsByClubId(clubId).subscribe((invitations: ClubInvitation[]) => {
@@ -95,28 +109,30 @@ export class ClubInfoComponent implements OnInit {
   }
 
   filterUsers(): void {
-    // console.log('Filtering users...');
-    // console.log('this.invitations:', this.invitations);
     const pendingUserIds: number[] = this.invitations.map(invite => invite.touristId);
-    // console.log('pendingUserIds:', pendingUserIds);
-    // console.log('this.ownerId:', this.ownerId);
     this.filteredUsers = this.users.filter(user => {
         const shouldInclude = 
             user.id !== this.ownerId &&
             !pendingUserIds.includes(user.id) &&
             user.username.toLowerCase().includes(this.searchTerm.toLowerCase());
-        // console.log(`Should include user ${user.username}? ${shouldInclude}`);
         return shouldInclude;
     });
-    // console.log('this.filteredUsers:', this.filteredUsers);
   }
-  
 
   loadClubData(clubId: number): void {
-    this.administrationService.getClubs().subscribe((data) => {
-      this.club = data.results.find(club => club.id === clubId) || {} as Club;
+    this.administrationService.getClubById(clubId).subscribe({
+      next: (data) => {
+        this.club = data;
+        console.log('Club data loaded:', this.club);
+        
+        // Load the owner's username
+        this.loadOwnerUsername();
+      },
+      error: (err) => {
+        console.error('Error loading club data:', err);
+      }
     });
-  }
+  }  
 
   loadClubPosts(): void {
     this.administrationService.getClubPosts().subscribe((posts) => {

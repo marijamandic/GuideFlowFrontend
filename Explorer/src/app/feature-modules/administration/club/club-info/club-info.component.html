@@ -1,8 +1,10 @@
 <div class="main-column">
   <!-- Club Header Section -->
   <div class="club-info-header">
-    <!-- Club Name (if available) -->
-    <div *ngIf="club?.name" class="club-name">{{ club.name }}</div>
+    <p *ngIf="ownerUsername"> {{ ownerUsername }}</p>
+    <div *ngIf="club?.name" class="club-name">
+      {{ club.name }} 
+    </div>    
     
     <!-- Club Image (if available) -->
     <img *ngIf="club?.imageUrl" [src]="getImagePath(club.imageUrl)" alt="Club image" class="club-image" />

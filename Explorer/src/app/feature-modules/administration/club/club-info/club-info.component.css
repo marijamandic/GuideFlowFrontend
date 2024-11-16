@@ -28,7 +28,11 @@
     font-size: 24px;
     font-weight: bold;
     color: var(--accent-color);
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
+  
   
   .club-image {
     width: 100%;
@@ -165,6 +169,12 @@
   .cta-button.pending {
     background-color: #9b9b9b;
     color: #fff;
+  }
+
+  .ownerUsername{
+    font-size: 14px;
+    font-weight: lighter;
+    padding-bottom: 5px;
   }
   
   
