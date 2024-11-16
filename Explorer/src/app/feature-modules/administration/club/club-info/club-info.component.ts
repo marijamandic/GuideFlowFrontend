@@ -77,8 +77,6 @@ export class ClubInfoComponent implements OnInit {
           console.error("Error fetching owner's username:", err);
         }
       });
-    } else {
-      console.error("Club or Club owner ID is undefined.");
     }
   }  
   
