@@ -12,7 +12,6 @@ import { ProblemComponent } from './problem/problem.component';
 import { AdminProblemComponent } from './admin-problem/admin-problem.component';
 import { ClubFormComponent } from './club/club-form/club-form.component';
 import { ClubComponent } from './club/club-overview/club.component';
-import { ClubMemberListComponent } from 'src/app/feature-modules/administration/club/club-member-list/club-member-list.component';
 import { AllAppRatingsComponent } from './all-app-ratings/all-app-ratings.component';
 import { LayoutModule } from '../layout/layout.module';
 import { AccountComponent } from './account/account.component';
@@ -28,7 +27,6 @@ import { ClubDashboardComponent } from './club/club-dashboard/club-dashboard.com
     ProfileInfoFormComponent,
     ClubFormComponent,
     ClubComponent,
-    ClubMemberListComponent,
     ProblemComponent,
     AllAppRatingsComponent,
     ProblemComponent,
@@ -52,7 +50,6 @@ import { ClubDashboardComponent } from './club/club-dashboard/club-dashboard.com
     ProfileInfoComponent,
     ClubFormComponent,
     ClubComponent,
-    ClubMemberListComponent,
     ProblemComponent,
     AllAppRatingsComponent,
     AdminProblemComponent,

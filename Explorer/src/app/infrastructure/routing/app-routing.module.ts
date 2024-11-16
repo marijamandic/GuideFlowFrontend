@@ -14,7 +14,6 @@ import { CheckpointListComponent } from 'src/app/feature-modules/tour-authoring/
 import { TourComponent } from 'src/app/feature-modules/tour-authoring/tour/tour.component';
 import { TourEquipmentComponent } from 'src/app/feature-modules/tour-authoring/tour-equipment/tour-equipment.component';
 import { ClubComponent } from 'src/app/feature-modules/administration/club/club-overview/club.component';
-import { ClubMemberListComponent } from 'src/app/feature-modules/administration/club/club-member-list/club-member-list.component';
 import { CommentComponent } from 'src/app/feature-modules/blog/comment/comment.component';
 import { PostComponent } from 'src/app/feature-modules/blog/post/post.component';
 import { CreateBlogComponent } from 'src/app/feature-modules/blog/create-blog/create-blog.component';
@@ -51,7 +50,6 @@ const routes: Routes = [
   //{ path: 'problem', component: ProblemComponent },
   { path: 'report', component: ReportProblemComponent },
   { path: 'club', component: ClubComponent, canActivate: [AuthGuard] },
-  { path: 'club-members/:id', component: ClubMemberListComponent, canActivate: [AuthGuard] },
   { path: 'club-info/:id', component: ClubInfoComponent, canActivate: [AuthGuard] },
   { path: 'club-dashboard/:id', component: ClubDashboardComponent, canActivate: [AuthGuard] },
   { path: 'new-club', component: ClubFormComponent, canActivate: [AuthGuard]},
