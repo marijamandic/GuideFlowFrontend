@@ -2,7 +2,13 @@
     <form [formGroup]="clubForm" (ngSubmit)="updateClub()" class="club-form">
       <table>
         <tr>
-          <td><h2>{{ "Club data" }}</h2></td>
+          <td><h2 class="subtitle">{{ "Club Data" }}</h2></td>
+        </tr>
+        <tr>
+          <label>Image</label>
+        </tr>
+        <tr>
+          <td><img [src]="getImagePath(imageUrl)" alt="Club image" class="club-image" /></td>
         </tr>
         <tr>
           <td><label for="name" >Name</label></td>
