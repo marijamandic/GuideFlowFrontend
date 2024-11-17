@@ -103,6 +103,7 @@ updateTour(): void {
       next: () => {
           console.log('update ture',tour)
           this.isForEdit=false;
+          this.ngOnInit();
       }
     });
   }
