@@ -164,7 +164,7 @@
     margin-top: 20px;
 }
 
-.tour-form .form-actions button {
+.tour-form button {
     background-color: #28a745;
     color: #fff;
     border: none;
@@ -175,7 +175,7 @@
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.tour-form .form-actions button:hover {
+.tour-form button:hover {
     background-color: #218838;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }

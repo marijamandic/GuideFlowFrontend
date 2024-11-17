@@ -72,7 +72,7 @@ const routes: Routes = [
   { path: 'checkpoints/:tourId', component: CheckpointListComponent },
   { path: 'tour-execution/:id', component: TourExecutionDetailsComponent},
   { path: 'tour', component: TourComponent },
-  { path: 'tourEquipment', component: TourEquipmentComponent },
+  { path: 'tourEquipment/:id', component: TourEquipmentComponent },
   { path: 'ratingTheApp', component: RatingTheAppComponent },
   { path: 'allAppRatings', component: AllAppRatingsComponent },
   { path: 'specification', component: TourSpecificationComponent },

@@ -31,7 +31,11 @@
           <input id="tag{{i}}" [(ngModel)]="tags[i]" placeholder="Tag {{i + 1}}" class="tag"/>
         </div>
       </div>
-      <button (click)="addTag()">Add Tag</button>
+      <button class="add-tag-button" (click)="addTag()">Add Tag</button>
+
+      <div class="tour-form-container">
+        <xp-tour-equipment></xp-tour-equipment>
+      </div>
 
       <div class="tour-form-container" >
         <xp-checkpoint-list [forUpdating]="isForEdit"></xp-checkpoint-list>
