@@ -1,0 +1,49 @@
+<div class="form-container">
+  
+  <form class="encounter-form">
+    <h2>{{ encounter.id ? 'Edit Encounter' : 'Add Encounter' }}</h2>
+
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input type="text" id="name" [(ngModel)]="encounter.name" name="name" required placeholder="Encounter name"/>
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea id="description" [(ngModel)]="encounter.description" name="description" required placeholder="Encounter description"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="status">Status</label>
+      <select id="status" [(ngModel)]="encounter.encounterStatus" name="status" class="form-control">
+        <option value="Active">Active</option>
+        <option value="Draft">Draft</option>
+        <option value="Archieved">Archived</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="latitude">Latitude</label>
+      <input type="number" id="latitude" [(ngModel)]="encounter.encounterLocationDto.latitude" name="latitude" required />
+    </div>
+
+    <div class="form-group">
+      <label for="longitude">Longitude</label>
+      <input type="number" id="longitude" [(ngModel)]="encounter.encounterLocationDto.longitude" name="longitude" required />
+    </div>
+
+    <div class="form-group">
+      <label for="experiencePoints">Experience Points</label>
+      <input type="number" id="experiencePoints" [(ngModel)]="encounter.experiencePoints" name="experiencePoints" required />
+    </div>
+
+    <div class="map-container">
+      <xp-map (coordinatesSelected)="onCoordinatesSelected($event)" [encounters]="encounterCoordinates"></xp-map>
+    </div>
+
+    <button type="submit" class="cta-button" type="submit" (click)="onSubmit()">
+      {{ encounter.id ? 'Update Encounter' : 'Add Encounter' }}
+    </button>
+  </form>
+</div>
+  

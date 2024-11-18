@@ -1,0 +1,72 @@
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-color: #f2f2f2;
+}
+
+.encounter-form {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 700px;
+}
+
+.encounter-form h2 {
+    text-align: center;
+    color: #333;
+}
+
+.encounter-form input,
+.encounter-form textarea,
+.encounter-form select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.encounter-form input:focus,
+.encounter-form textarea:focus,
+.encounter-form select:focus {
+    border-color: #84dcc6;  
+    outline: none;
+}
+
+.cta-button {
+    background-color: #2b4f46;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 4px;
+    margin-top: 20px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.cta-button:hover:not(:disabled) {
+    background-color: #66c5af;
+}
+
+.cta-button:disabled {
+    background-color: #2b4f46;
+    cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+    .tour-form {
+        width: 100%;
+        padding: 15px;
+    }
+}
+.encounter-form label {
+    display: block; /* Podesi da se labela prikazuje kao blok */
+    margin-top: 15px; /* Razmak iznad labela */
+    font-weight: bold; /* Podebljaj tekst */
+    color: #333; /* Boja teksta */
+}
