@@ -6,6 +6,8 @@ import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { environment } from 'src/env/environment';
 import { ClubRequest } from '../../model/club-request.model';
 import { Router } from '@angular/router';
+import { ClubMemberList } from '../../model/club-member-list.model';
+import { ClubInvitation } from '../../model/club-invitation.model';
 
 @Component({
   selector: 'xp-club',
@@ -13,8 +15,10 @@ import { Router } from '@angular/router';
   styleUrls: ['./club.component.css']
 })
 export class ClubComponent implements OnInit {
-
   club: Club[] = [];
+  members: ClubMemberList[] = [];
+  invitations: ClubInvitation[] = [];
+  potentialInvitees: Club[] = [];
   selectedClub: Club;
   shouldRenderClubForm: boolean = false;
   shouldEdit: boolean = false;
@@ -33,9 +37,9 @@ export class ClubComponent implements OnInit {
     this.authSerivce.user$.subscribe(user => {
       this.loggedTouristId = user.id;
     })
-    
-    
+
   }
+
   getClub() : void{
     this.shouldRenderClubForm = false;
     this.service.getClubs().subscribe({
@@ -55,11 +59,7 @@ export class ClubComponent implements OnInit {
       }
     })
   }
-  /*onEditClicked(club: Club): void {
-    this.selectedClub = club;
-    this.shouldEdit = true;
-    this.router.navigate(['new-club'], { state: { club: club, shouldEdit: true } });
-  }*/
+
   onAddClicked(): void {
     this.router.navigate(['new-club']);
   }

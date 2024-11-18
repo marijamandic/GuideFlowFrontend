@@ -18,7 +18,6 @@ import { AccountComponent } from './account/account.component';
 import { ClubPostComponent } from './club/club-post/club-post.component';
 import { ClubInfoComponent } from './club/club-info/club-info.component';
 import { ClubDashboardComponent } from './club/club-dashboard/club-dashboard.component';
-import { ClubEditComponent } from './club/club-edit/club-edit.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +35,6 @@ import { ClubEditComponent } from './club/club-edit/club-edit.component';
     ClubPostComponent,
     ClubInfoComponent,
     ClubDashboardComponent,
-    ClubEditComponent
   ],
   imports: [
     CommonModule,

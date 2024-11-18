@@ -104,15 +104,35 @@ export class ClubInfoComponent implements OnInit {
   }
 
   filterUsers(): void {
+    if (!this.club || !this.club.id) {
+      console.error("Club data is not loaded yet.");
+      return;
+    }
+  
+    const memberIds: number[] = [];
     const pendingUserIds: number[] = this.invitations.map(invite => invite.touristId);
-    this.filteredUsers = this.users.filter(user => {
-        const shouldInclude = 
-            user.id !== this.ownerId &&
+  
+    this.administrationService.getAllClubMembers(this.club.id).subscribe({
+      next: (members) => {
+        memberIds.push(...members.map(member => member.userId));
+  
+        this.filteredUsers = this.users.filter(user => {
+          const shouldInclude =
+            user.id !== this.ownerId && 
+            !memberIds.includes(user.id) && 
             !pendingUserIds.includes(user.id) &&
-            user.username.toLowerCase().includes(this.searchTerm.toLowerCase());
-        return shouldInclude;
+            user.username.toLowerCase().includes(this.searchTerm.toLowerCase()); 
+  
+          return shouldInclude;
+        });
+      },
+      error: (err) => {
+        console.error("Error loading members for filtering:", err);
+      }
     });
   }
+  
+  
 
   loadClubData(clubId: number): void {
     this.administrationService.getClubById(clubId).subscribe({
