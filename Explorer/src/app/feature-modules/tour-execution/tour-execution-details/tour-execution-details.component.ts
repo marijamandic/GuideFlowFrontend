@@ -185,21 +185,17 @@ isLessThanThirtyFivePercent(): void {
   if (this.percentageSubject.value !== null) {
     this.isBelowThirtyFivePercent = this.percentageSubject.value <= 35;
     this.percentageCompleted = this.percentageSubject.value;
-    console.log(`Prethodni procent: ${this.percentageSubject.value}, Disabled: ${this.isBelowThirtyFivePercent}`);
     return; 
   }
 
   this.tourExecutionService.getPercentage(this.tourExecution?.id || 0).subscribe({
     next: (percent: number) => {
-      console.log(`Pređeni procenat: ${percent}`);
       this.percentageSubject.next(percent);
       this.percentageCompleted = percent;
 
       const isDisabled = percent <= 35;
-      console.log(`Disabled dugme? ${isDisabled}`);
     },
     error: (err: any) => {
-      console.error('Greška prilikom dobijanja procenta:', err);
       this.percentageSubject.next(0); 
     }
   });
@@ -208,20 +204,15 @@ isLessThanThirtyFivePercent(): void {
 isDisabled(): boolean {
   this.isLessThanThirtyFivePercent();
   if(this.isBelowThirtyFivePercent) {
-    console.log("IsDisabled1: ", this.isBelowThirtyFivePercent)
     return true;
   } else if(!this.isMoreThanSevenDaysAgo()) {
-    console.log("IsDisabled2: ", this.isBelowThirtyFivePercent)
     return true;
   }
-  console.log("IsDisabled3: falsee")
   return false;
 }
 
 getReviewMessage(): string {
   const isPastSevenDays = !this.isMoreThanSevenDaysAgo();
-  console.log("Manje od 7 dana:", isPastSevenDays)
-  console.log("Manje od 35:", this.isBelowThirtyFivePercent)
   if (isPastSevenDays && this.isBelowThirtyFivePercent) {
     return "Review cannot be submitted because more than 7 days have passed since the last activity and less than 35% of the tour has been completed.";
   } else if (isPastSevenDays) {

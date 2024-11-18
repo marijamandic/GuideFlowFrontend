@@ -1,205 +1,310 @@
-.title {
-    display: flex;
-    justify-content: center;
+.map-background {
+  width: 73%;
+  right: 0;            /* Pozicioniramo mapu sa desne strane */
+  margin-left: 27%;
 }
-.tourExecutionContainer{
-    display: flex;
-}
-.tourDetails{
-    width: 40%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-.mapDetails{
-    width: 60%;
-    display: flex;
-    flex-direction: column;
+.map-background xp-tour-execution-map {
+  position: relative;  /* Dodajemo poziciju */
+  top: 0;              /* Postavljamo mapu na vrh */
+  right: 0;            /* Pozicioniramo mapu sa desne strane */
+  width: 100vw;         /* Mapa će zauzeti polovinu širine ekrana */
+  height: 96vh;       /* Mapa će zauzeti celu visinu ekrana */
+  object-fit: cover;   /* Zadrži proporcije slike i popuni prostor */
+  margin-right: 15px;
 }
 
-.tourExecution-card {
+/* Leva kolona sa skrolom */
+.left-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 25vw;
+  max-height: 87.5vh; /* Ograničava maksimalnu visinu na visinu ekrana */
+  overflow-y: scroll; /* Uvek omogućava vertikalni skrol */
+  padding: 15px;
+  background-color: rgba(255, 255, 255, 0.9);
+  z-index: 1000;
+  margin-top: 3.6%;
+}
+/* Custom scrollbar styling for #style-14 */
+.left-container::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(46, 41, 50, 0.6); /* Soft shadow inside the track */
+  background-color: #CCCCCC; /* Track background color */
+}
+
+.left-container::-webkit-scrollbar {
+  width: 10px; /* Width of the scrollbar */
+  background-color: #F5F5F5; /* Background color of the scrollbar */
+}
+
+.left-container::-webkit-scrollbar-thumb {
+  background-color: #FFF; /* Thumb color */
+  background-image: -webkit-linear-gradient(90deg,
+                                            rgb(68, 53, 74) 0%, 
+                                            rgba(68, 53, 74, 1) 25%, 
+                                            transparent 100%, 
+                                            rgba(68, 54, 74, 0.907) 75%, 
+                                            transparent); /* Gradient effect on thumb */
+}
+
+
+/* Stilizacija kontejnera sa osnovnim informacijama */
+.info-container {
+  background-color: rgba(182, 226, 245, 0.722);
+  border-radius: 15px;
+  padding: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s;
+  border: 1px solid #e0e0e0;
+  margin-bottom: 20px;
+}
+
+/* Naslov za Osnovne Informacije */
+.info-container h3 {
+  font-size: 18px;
+  color: #444;
+  margin-bottom: 15px;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* Stilizacija za osnovne informacije */
+.basicInfo {
+  font-size: 14px;
+  color: #666;
+}
+
+.basicInfo p {
+  margin: 8px 0;
+}
+
+/* Stil za oznaku informacije */
+.basicInfo p strong {
+  color: #333;
+}
+
+/* Checkpoint kartica */
+.checkpoint-container {
+  margin-bottom: 20px;
+}
+
+/* Dugmad za akcije */
+.button-container {
   display: flex;
-  flex-direction: column;
-  background-color: #84dcc6;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  max-width: 400px;
-  width: 70%;
-  margin: 16px auto;
-  font-family: Arial, sans-serif;
+  flex-direction: row;
+  gap: 10px;
 }
-.tourExecution-card h3{
-  font-size: x-large;
-  color: #000;
-  margin-bottom: 1px;
+
+/* Dugmad stilizacija */
+.button {
+  padding: 10px;
+  border-radius: 25px;
+  color: #fff;
+  border: none;
+  cursor: pointer;
 }
-.basicInfo{
-  padding-left: 16px;
+
+.abandon-button {
+  background-color: #ff5c5c;
 }
-.checkpoint-card h3{
-  font-size: x-large;
-  color: #000;
-  margin-bottom: 1px;
+
+.complete-button {
+  background-color: #4caf50;
 }
+
+/* Kontejner za desnu kolonu - Checkpoint Details */
+.right-container {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 3000;
+  max-width: 250px; /* Smanjeno sa 300px */
+  height: 0px;
+  width: 0px;
+  width: 80%; /* Smanjeno sa 90% */
+  background-color: #9a0e0e82;
+  padding: 15px;
+  border-radius: 10px;
+  margin: 3% 52% 0% 0%;
+}
+
+/* Stilizacija za Checkpoint kartice */
 .checkpoint-card {
-    background-color: #84dcc6;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    
-    max-width: 400px;
-    width: 70%;
-    margin: 16px auto;
-    font-family: Arial, sans-serif;
-  }
-  
-  .checkpoint-header {
-    padding: 16px;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 8px;
-    margin-bottom: 8px;
-  }
-  
-  .checkpoint-info {
-    padding: 16px;
-  }
-  
-  .checkpoint-image-wrapper {
-    overflow: hidden;
-    border-radius: 8px 8px 0 0; 
-    max-height: 250px; 
-    margin-bottom: 10px;
-  }
-  
-  .checkpoint-image {
-    width: 100%;
-    height: auto;
-    display: block;
-  }
+  background-color: rgba(196, 146, 224, 0.375);
+  border-radius: 15px;
+  padding: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s;
+  border: 1px solid #e0e0e0;
+}
 
-  .checkpoint-dots {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-  
-  .checkpoint-dots div {
-    width: 10px;
-    height: 10px;
-    background-color: #ddd;
-    border-radius: 50%;
-    margin: 0 5px;
-    transition: background-color 0.3s ease;
-  }
-  
-  .checkpoint-dots div.active {
-    background-color: #007bff; /* Možete promeniti boju za aktivni checkpoint */
-  }
-  
-  
-  /* Marija i Ivan css*/
-  
-  .overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.6);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-  }
+.checkpoint-card:hover {
+  transform: translateY(-2px);
+}
 
-  .review-popup {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    width: 400px;
-    position: relative;
-    text-align: center;
-  }
+/* Zaglavlje kartice */
+.checkpoint-header h3 {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 10px;
+  text-align: center;
+  font-weight: bold;
+}
 
-  .close-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    border: none;
-    background: transparent;
-    font-size: 18px;
-    cursor: pointer;
-  }
+/* Informacije o Checkpoint-u */
+.checkpoint-info {
+  padding: 10px;
+  font-size: 13px;
+  color: #666;
+}
 
-  /* Optional: Add styling for review button */
-  .review-button {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  .expired-message {
-    color: red;
-    font-weight: bold;
-    margin-top: 10px;
-  }
+.checkpoint-info p {
+  margin: 5px 0;
+  color: #333;
+}
 
-  .progress-container {
-    width: 100%;
-    background-color: #e0e0e0;
-    border-radius: 25px;
-    height: 20px;
-    margin: 10px 0;
-  }
+/* Omotač slike */
+.checkpoint-image-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+}
 
-  .progress-bar {
-    height: 100%;
-    border-radius: 25px;
-    transition: width 0.3s ease-in-out;
-  }
+/* Slika Checkpoint-a */
+.checkpoint-image {
+  max-width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+}
 
-  .low {
-    background-color: red;
-  }
+/* Dugme za recenziju */
+.review-button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 25px;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: 600;
+}
 
-  .medium {
-    background-color: orange;
-  }
+/* Kontejner za progres bar */
+.progress-bar-container {
+  position: absolute;
+  bottom: 20px;
+  left: 63.5%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 1000px;
+  z-index: 1000;
+}
 
-  .high {
-    background-color: green;
-  }
+/* Stil progres bara */
+.progress-bar-wrapper {
+  width: 100%;
+  background-color: #e0e0e0;
+  border-radius: 20px;
+  height: 20px;
+}
 
-  .button {
-    display: inline-block;
-    background-color: var(--primary-color);
-    color: white;
-    padding: 12px 25px;
-    border-radius: 30px;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    text-align: center;
-    margin: 20px auto;
-    display: block;
-    width: fit-content;
-    outline: none;
-    border: none;
-  }
+.progress-bar {
+  height: 100%;
+  width: 1000px;
+  border-radius: 20px;
+  transition: width 0.3s;
+}
+.progress-bar-container p {
+  font-size: 17px;
+  margin-left: 1%;
+  margin-top: 1%;
+  font-weight: 500;
+}
+.low {
+  background-color: red;
+}
 
-  .button:focus {
-    outline: none;
-  }
+.medium {
+  background-color: orange;
+}
 
-  .button:hover {
-    background-color: var(--hover-color);
-    transform: scale(1.05);
-  }
+.high {
+  background-color: green;
+}
+/* Stil dugmeta za minimizaciju */
+.minimize-button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 25px;
+  text-align: center;
+}
 
-  .button-container {
-    display: flex;
-    /* gap: 20px; */
-    justify-content: center;
-  }
+/* Stil dugmeta za prikazivanje kontejnera */
+.show-button {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 16px;
+  cursor: pointer;
+  z-index: 3000;
+}
+
+.show-button.right {
+  left: auto;
+  right: 10px;
+}
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.review-popup {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+  position: relative;
+  text-align: center;
+  z-index: 4000;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: none;
+  background: transparent;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.expired-message {
+  color: red;
+  font-weight: bold;
+  margin-top: 10px;
+}
