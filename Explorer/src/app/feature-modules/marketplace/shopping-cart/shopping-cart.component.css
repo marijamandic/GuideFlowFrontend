@@ -32,7 +32,7 @@
 	margin-bottom: 10px;
 }
 
-button {
+.checkout-button {
 	background-color: #84dcc6;
 	border: none;
 	outline: none;
@@ -43,6 +43,23 @@ button {
 	width: 100%;
 }
 
-button:hover {
+.checkout-button:hover {
 	transform: scale(0.9);
+}
+
+.remove {
+	display: flex;
+	align-items: center;
+}
+
+.remove > button {
+	border: none;
+	outline: none;
+	background-color: transparent;
+	margin-right: 25px;
+	height: 20px;
+}
+
+.remove > button:hover {
+	cursor: pointer;
 }

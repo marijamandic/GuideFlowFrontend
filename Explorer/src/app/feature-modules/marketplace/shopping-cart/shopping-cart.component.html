@@ -8,13 +8,16 @@
 					<div>
 						<b> {{ item.tourName }} </b>
 					</div>
-					<div>{{ item.adventureCoin }} AC</div>
+					<div class="remove">
+						<button type="button" (click)="handleRemoveClick(item.id)">Remove</button>
+						<div>{{ item.adventureCoin }} AC</div>
+					</div>
 				</div>
 			</div>
 			<div class="checkout">
 				<h3>Total price:</h3>
-				<h2>{{ calculateTotalPrice() }} AC</h2>
-				<button type="button">Checkout</button>
+				<h2>{{ totalAdventureCoins }} AC</h2>
+				<button type="button" class="checkout-button">Checkout</button>
 			</div>
 		</div>
 		<ng-template #cartEmpty>
