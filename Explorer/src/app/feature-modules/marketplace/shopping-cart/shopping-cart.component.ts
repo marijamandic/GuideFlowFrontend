@@ -9,14 +9,18 @@ import { HttpErrorResponse } from '@angular/common/http';
 	styleUrls: ['./shopping-cart.component.css']
 })
 export class ShoppingCartComponent implements OnInit {
-	cart: ShoppingCart;
+	cart: ShoppingCart = {
+		id: 0,
+		touristId: 0,
+		singleItems: []
+	};
 
 	constructor(private marketplaceService: MarketplaceService) {}
 
 	calculateTotalPrice(): number {
-		let price = 0;
-		for (let item of this.cart.singleItems) price += item.price;
-		return price;
+		let adventureCoin = 0;
+		for (let item of this.cart.singleItems) adventureCoin += item.adventureCoin;
+		return adventureCoin;
 	}
 
 	ngOnInit(): void {

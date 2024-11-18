@@ -3,5 +3,5 @@ export interface SingleItem {
 	shoppingCartId: number;
 	tourId: number;
 	tourName: string;
-	price: number;
+	adventureCoin: number;
 }

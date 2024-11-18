@@ -24,7 +24,25 @@
 }
 
 .cart-item {
-	background-color: lightblue;
+	display: flex;
+	justify-content: space-between;
+	background-color: #84dcc6;
 	border-radius: 15px;
-	padding: 10px;
+	padding: 20px;
+	margin-bottom: 10px;
+}
+
+button {
+	background-color: #84dcc6;
+	border: none;
+	outline: none;
+	text-align: center;
+	border-radius: 30px;
+	padding: 12px 25px;
+	transition: transform 0.3s ease;
+	width: 100%;
+}
+
+button:hover {
+	transform: scale(0.9);
 }
