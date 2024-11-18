@@ -1,27 +1,21 @@
-<div class="shopping-cart" *ngIf="shoppingCart">
-    <h2>Your Shopping Cart</h2>
-    <div *ngIf="shoppingCart.items && shoppingCart.items.length > 0; else emptyCart">
-        <div *ngFor="let item of shoppingCart.items" class="order-item">
-            <div class="item-details">
-                <h3 class="tour-name">{{ item.tourName }}</h3>
-                <p class="tour-id">ID: {{ item.tourID }}</p>
-            </div>
-            <div class="item-quantity">
-                <button class="quantity-btn" (click)="decreaseQuantity(item)" [disabled]="item.quantity < 1">-</button>
-                <span class="quantity">{{ item.quantity }}</span>
-                <button class="quantity-btn" (click)="increaseQuantity(item)">+</button>
-            </div>
-            <div class="item-price">
-                <p class="price">${{ item.price * item.quantity }}</p>
-            </div>
-            <button class="remove-btn" (click)="removeItem(item.tourID)">Remove</button>
-        </div>
-        <div class="total">
-            <h3>Total: ${{ getTotalPrice() }}</h3>
-        </div>
-        <button class="checkout-btn" (click)="checkout()">Proceed to Checkout</button>
-    </div>
-    <ng-template #emptyCart>
-        <p>Your cart is empty. Add some tours to get started!</p>
-    </ng-template>
+<div class="main">
+	<div class="container">
+		<h1>Shopping cart</h1>
+		<div class="items-checkout">
+			<div class="items">
+				<hr />
+				<div *ngFor="let item of cart.singleItems" class="cart-item">
+					<div>
+						<b> {{ item.tourName }} </b>
+					</div>
+					<div>{{ item.price }} rsd</div>
+				</div>
+			</div>
+			<div class="checkout">
+				<h3>Total price:</h3>
+				<h2>{{ calculateTotalPrice() }} rsd</h2>
+				<button type="button">Checkout</button>
+			</div>
+		</div>
+	</div>
 </div>
