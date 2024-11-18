@@ -1,8 +1,31 @@
 <div class="main-column">
-    <div class="dashboard-card">
-      <h3>Make the form for editing club here. Like a profile page. <b>Thanks Kaleb</b></h3>
-      <xp-club-edit [clubId]="clubId"></xp-club-edit>
-    </div>
+  <div class="dashboard-card">
+    <form [formGroup]="clubForm">
+      <div class="edit-layout">
+        <!-- Left Section: Image -->
+        <div class="image-section">
+          <img [src]="getImagePath(imageUrl)" alt="Club image" class="club-image" />
+          <input type="file" id="fileUpload" (change)="onFileSelected($event)" class="form-control" [disabled]="!isEditingEnabled" />
+        </div>
+
+        <!-- Right Section: Form -->
+        <div class="form-section">
+          <label for="name">Name</label>
+          <input id="name" formControlName="name" class="form-control" type="text" [readonly]="!isEditingEnabled"/>
+          <label for="description">Description</label>
+          <textarea id="description" formControlName="description" class="form-control" [readonly]="!isEditingEnabled"></textarea>
+        </div>
+      </div>
+
+      <!-- Bottom Right: Buttons -->
+      <div class="button-section">
+        <button type="button" class="cta-button" (click)="toggleEditing()">
+          {{ isEditingEnabled ? 'Cancel' : 'Edit' }}
+        </button>
+        <button *ngIf="isEditingEnabled" type="submit" class="cta-button form-button" [disabled]="!isFormValid()">Confirm</button>
+      </div>
+    </form>
+  </div>
   
     <!-- Club Members Section -->
     <div class="dashboard-card">

@@ -47,6 +47,7 @@ export class ClubComponent implements OnInit {
       }
     })
   }
+  
   deleteClub(id: number) : void{
     this.service.deleteClub(id).subscribe({
       next: () => {
