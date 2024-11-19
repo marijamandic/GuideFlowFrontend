@@ -6,17 +6,36 @@
 
 <!-- Leva kolona - Informacije i Checkpoint Details sa skrolom -->
 <div class="left-container">
-  <!-- Osnovne informacije -->
   <div class="info-container">
-    <h3>Tour Execution Details</h3>
-    <div class="basicInfo">
-      <p><strong>User Name:</strong> {{ tourist?.username }}</p>
-      <p><strong>Tour Range:</strong> {{ tourExecution?.tourRange }} km</p>
-      <p><strong>Execution Status:</strong> {{ mapToTourExecutionStatus(tourExecution?.executionStatus ?? 0) }}</p>
-      <p><strong>Start Time:</strong> {{ tourExecution?.startTime | date: 'short' }}</p>
-      <p><strong>Number of Checkpoints:</strong> {{ tourExecution?.checkpointsStatus?.length }}</p>
+    <h3 class="title">{{ tourName }}</h3>
+    <div class="info-grid">
+      <!-- Gornji levi ugao: User -->
+      <div class="user-info">
+        <img src="assets/images/user.png" alt="User Icon" class="icon" /> 
+        <strong>{{ tourist?.username }}</strong>
+      </div>
+      
+      <!-- Gornji desni ugao: Status -->
+      <div class="status-info">
+        <span class="status-dot {{ mapToTourExecutionStatus(tourExecution?.executionStatus ?? 0) }}"></span>
+        {{ mapToTourExecutionStatus(tourExecution?.executionStatus ?? 0) }}
+      </div>
+      
+      <!-- Donji levi ugao: Range -->
+      <div class="range-info">
+        <strong>{{ tourExecution?.tourRange }}</strong>
+        <img src="assets/images/range.png" alt="Range Icon" class="icon-range" />
+      </div>
+      
+      <!-- Donji desni ugao: Datum -->
+      <div class="date-info">
+        <img src="assets/images/date.png" alt="Start Icon" class="icon" />
+        {{ tourExecution?.startTime | date: 'short' }}
+      </div>
     </div>
   </div>
+  
+
 
 
   <!-- Kartica za Checkpoint -->
@@ -32,6 +51,14 @@
         <p><strong>Description:</strong> {{ currentCheckpoint.checkpoint.description }}</p>
         <p><strong>Completion Time:</strong> {{ mapToCompletionTime(currentCheckpoint.completionTime) }}</p>
         <p><strong>Secret:</strong> {{ currentCheckpoint.checkpoint.secret }}</p>
+      </div>
+      <div class="checkpoint-dots">
+        <!-- Proveravamo da li 'tourExecution' postoji i da 'checkpointsStatus' nije null ili undefined -->
+        <div 
+          *ngFor="let checkpoint of tourExecution?.checkpointsStatus || []; let i = index" 
+          [class.active]="i === getCurrentCheckpointIndex()" 
+          (click)="setCurrentCheckpoint(i)">
+        </div>
       </div>
       <button class="review-button" (click)="openReviewForm()" [disabled]="isDisabled()">Leave Review</button>
       <p *ngIf="getReviewMessage()" class="expired-message">

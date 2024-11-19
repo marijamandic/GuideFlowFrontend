@@ -13,6 +13,7 @@ import { Tourist } from '../../tour-authoring/model/tourist';
 import { DatePipe } from '@angular/common';
 import { CheckpointStatus } from '../model/checkpoint-status.model';
 import { Checkpoint } from '../../tour-authoring/model/tourCheckpoint.model';
+import { Tour } from '../../tour-authoring/model/tour.model';
 
 @Component({
   selector: 'xp-tour-execution-details',
@@ -35,6 +36,7 @@ export class TourExecutionDetailsComponent implements OnInit{
   private intervalId: any;
   isReviewFormOpen = false;
   isBelowThirtyFivePercent = false;
+  tourName = "";
 
   checkpoints: Checkpoint[] = [];
   checkpointCoordinates: { latitude: number, longitude: number }[] = [];
@@ -72,7 +74,7 @@ export class TourExecutionDetailsComponent implements OnInit{
             console.log(err);
           }
         })
-      }) 
+      })
   }
 
   ngOnDestroy(): void {
@@ -104,6 +106,11 @@ export class TourExecutionDetailsComponent implements OnInit{
         this.tourExecution = result;
         this.currentCheckpoint = result.checkpointsStatus[this.currentIndex];
         this.loadCheckpoints();
+        this.tourService.getTourById(this.tourExecution?.tourId || 1).subscribe({
+        next: (result: Tour) => {
+          this.tourName = result.name;
+        }
+      }) 
       },
       error: (err: any) => {
         console.log(err);
@@ -132,6 +139,7 @@ export class TourExecutionDetailsComponent implements OnInit{
       return "Abandoned"
     }
   }
+  
  mapToCompletionTime(date: any) {
   // Ensure date is a valid Date object
   const validDate = new Date(date);

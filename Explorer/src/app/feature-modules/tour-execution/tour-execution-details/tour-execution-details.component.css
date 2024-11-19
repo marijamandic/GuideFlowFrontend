@@ -50,19 +50,104 @@
 
 /* Stilizacija kontejnera sa osnovnim informacijama */
 .info-container {
-  background-color: rgba(182, 226, 245, 0.722);
-  border-radius: 15px;
-  padding: 15px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  transition: transform 0.2s;
-  border: 1px solid #e0e0e0;
-  margin-bottom: 20px;
+  background-color: #f6e5e588;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  max-width: 500px;
+  font-family: Arial, sans-serif;
+  color: #1d1c1c;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.37);
+  position: relative;
+  margin-bottom: 10px;
 }
+
+.title {
+  font-size: 18px;
+  margin-bottom: 15px;
+  color: #1d1c1c;
+  text-align: center;
+  border-bottom: 2px solid #333;
+  padding-bottom: 10px;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-areas: 
+    "user status"
+    "range date";
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 10px;
+}
+
+.user-info {
+  grid-area: user;
+  display: flex;
+  align-items: center;
+  font-size: 20px;
+}
+
+.status-info {
+  grid-area: status;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  font-weight: bold;
+}
+
+.range-info {
+  grid-area: range;
+  display: flex;
+  align-items: center;
+  color: #1d1c1c;
+  font-size: 20px;
+}
+
+.date-info {
+  grid-area: date;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  font-weight: bold;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+}
+.icon-range {
+  width: 25px;
+  height: 26px;
+  margin-right: 8px;
+  margin-left: 5px;
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 8px;
+  display: inline-block;
+}
+
+.status-dot.Active {
+  background-color: #007bff; /* Plava za aktivan */
+}
+
+.status-dot.Completed {
+  background-color: #28a745; /* Zelena za završeno */
+}
+
+.status-dot.Abandoned {
+  background-color: #dc3545; /* Crvena za napušteno */
+}
+
 
 /* Naslov za Osnovne Informacije */
 .info-container h3 {
   font-size: 18px;
-  color: #444;
+  color: #1d1c1c;
   margin-bottom: 15px;
   text-align: center;
   font-weight: bold;
@@ -130,12 +215,13 @@
 
 /* Stilizacija za Checkpoint kartice */
 .checkpoint-card {
-  background-color: rgba(196, 146, 224, 0.375);
+  background-color: #f6e5e59e;
   border-radius: 15px;
   padding: 15px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
   transition: transform 0.2s;
   border: 1px solid #e0e0e0;
+  color: #1d1c1c;
 }
 
 .checkpoint-card:hover {
@@ -145,7 +231,7 @@
 /* Zaglavlje kartice */
 .checkpoint-header h3 {
   font-size: 16px;
-  color: #333;
+  color: #1d1c1c;
   margin-bottom: 10px;
   text-align: center;
   font-weight: bold;
@@ -155,12 +241,12 @@
 .checkpoint-info {
   padding: 10px;
   font-size: 13px;
-  color: #666;
+  color: #333;
 }
 
 .checkpoint-info p {
   margin: 5px 0;
-  color: #333;
+  color: #1d1c1c;
 }
 
 /* Omotač slike */
@@ -180,6 +266,29 @@
   border: 1px solid #ddd;
 }
 
+.checkpoint-dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.checkpoint-dots div {
+  width: 10px;
+  height: 10px;
+  background-color: #ffffff;
+  border: 2px solid #333;
+  border-radius: 50%;
+  margin: 0 5px;
+  transition: background-color 0.3s ease;
+}
+
+.checkpoint-dots div.active {
+  background-color: #007bff; /* Možete promeniti boju za aktivni checkpoint */
+}
+
+/* Dugme za recenziju */
 /* Dugme za recenziju */
 .review-button {
   background-color: #007bff;
@@ -191,6 +300,14 @@
   margin-top: 10px;
   font-size: 14px;
   font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease; /* Animacija za efekte */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Osnovni blagi shadow */
+}
+
+.review-button:hover {
+  background-color: #0056b3; /* Tamnija nijansa plave */
+  transform: scale(1.05); /* Blago povećanje veličine */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Intenzivniji shadow pri hoveru */
 }
 
 /* Kontejner za progres bar */
