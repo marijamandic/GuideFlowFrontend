@@ -41,10 +41,10 @@ export class TourExecutionService {
 		return this.http.post<Problem>(`${environment.apiHost}tourist/problems`, problem, { headers });
 	}
 	getUserProblems(userId : number) : Observable<PagedResults<Problem>>{
-		return this.http.get<PagedResults<Problem>>(environment.apiHost + 'problems/' + userId);
+		return this.http.get<PagedResults<Problem>>(environment.apiHost + 'tourist/problems');
 	}
 	changeProblemStatus(id : number, changedStatus : ProblemStatus) : Observable<Problem>{
-		return this.http.put<Problem>(environment.apiHost + 'problems/' + id,changedStatus);
+		return this.http.put<Problem>(environment.apiHost + 'tourist/problems/' + id,changedStatus);
 	}
 
 	getReviews(): Observable<PagedResults<TourReview>> {

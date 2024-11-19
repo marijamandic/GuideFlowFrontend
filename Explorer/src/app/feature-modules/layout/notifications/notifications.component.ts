@@ -32,8 +32,17 @@ export class NotificationsComponent implements OnInit {
 		});
 	}
 
-	handleNotificationClick(problemId: number) {
-		// change isOpened to true
+	handleNotificationClick(id: number) {
+		this.layoutService.patchIsOpened(id).subscribe({
+			next: (result: ProblemNotification) => {
+				let idx = this.notifications.findIndex(n => n.id === id);
+				this.notifications[idx] = result;
+			}
+		});
+	}
+
+	handleOpenProblem(id: number, problemId: number) {
+		this.handleNotificationClick(id);
 		this.router.navigate(['/author-problems'], { state: { problemId: problemId } });
 	}
 

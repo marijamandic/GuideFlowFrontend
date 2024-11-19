@@ -30,4 +30,13 @@ export class LayoutService {
 		});
 		return this.http.get<PagedResults<ProblemNotification>>(`${environment.apiHost}notifications/${role}/problem`, { headers });
 	}
+
+	patchIsOpened(id: number) {
+		const headers = new HttpHeaders({
+			Authorization: `Bearer ${localStorage.getItem('access-token')}`,
+			'Content-Type': 'application-json'
+		});
+
+		return this.http.patch<ProblemNotification>(`${environment.apiHost}notifications/author/problem?id=${id}&isOpened=${true}`, { headers });
+	}
 }

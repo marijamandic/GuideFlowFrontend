@@ -1,0 +1,27 @@
+<div class="main">
+	<div class="container">
+		<h1>Shopping cart</h1>
+		<div *ngIf="cart && cart.singleItems.length > 0; else cartEmpty" class="items-checkout">
+			<div class="items">
+				<hr />
+				<div *ngFor="let item of cart.singleItems" class="cart-item">
+					<div>
+						<b> {{ item.tourName }} </b>
+					</div>
+					<div class="remove">
+						<button type="button" (click)="handleRemoveClick(item.id)">Remove</button>
+						<div>{{ item.adventureCoin }} AC</div>
+					</div>
+				</div>
+			</div>
+			<div class="checkout">
+				<h3>Total price:</h3>
+				<h2>{{ totalAdventureCoins }} AC</h2>
+				<button type="button" class="checkout-button">Checkout</button>
+			</div>
+		</div>
+		<ng-template #cartEmpty>
+			<h3>Shopping cart empty</h3>
+		</ng-template>
+	</div>
+</div>

@@ -74,6 +74,12 @@
     margin-right: 21px;
     position: relative;
 }
+.shopping-cart-icon {
+    cursor: pointer;
+    margin-left: 21px;
+    position: relative;
+}
+
 
 .notification-badge {
     position: absolute;
@@ -137,6 +143,12 @@ mat-icon {
 
 mat-icon:hover{
     color: #585858
+}
+
+.shopping-cart{
+    display: flex;
+    align-items: center;
+    cursor: pointer;
 }
 
 /* Media queries for responsiveness */

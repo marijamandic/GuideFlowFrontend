@@ -7,11 +7,15 @@ import { MaterialModule } from 'src/app/infrastructure/material/material.module'
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
+import { TourPreviewComponent } from './tour-preview/tour-preview.component';
+import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
 
 @NgModule({
   declarations: [
     TourSpecificationComponent,
-    TourSpecificationFormComponent
+    TourSpecificationFormComponent,
+    TourPreviewComponent,
+    ShoppingCartComponent
   ],
   imports: [
     MatRadioModule,
@@ -23,7 +27,9 @@ import { MatRadioModule } from '@angular/material/radio';
   ],
   exports: [
     TourSpecificationComponent,
-    TourSpecificationFormComponent
+    TourSpecificationFormComponent,
+    TourPreviewComponent,
+    ShoppingCartComponent
   ]
 })
 export class MarketplaceModule { }
