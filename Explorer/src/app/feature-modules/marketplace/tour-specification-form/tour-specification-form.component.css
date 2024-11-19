@@ -1,91 +1,189 @@
-/* div {
-    width: 400px;
-    display: flex;
-    gap: 20px;
-    flex-direction: column;
-} */
-
-#equipment {
-    margin-top: 20px;
-    margin-left: 20px;
+.tour-details-container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #fefefe;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
 }
 
-#equipment-details {
-    display: flex;
-    flex-direction: row;
-    gap: 50px;
-    align-items: flex-start;
+.tour-details-container h2 {
+    margin-bottom: 20px;
+    color: #444;
+    text-align: center;
+    font-size: 24px;
 }
 
-p {
-    font-size: 20px;
-}
-
-table {
-    border-collapse: collapse;
-    font-size: 0.9em;
-    font-family: sans-serif;
-    min-width: 300px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-}
-
-thead tr {
-    background-color: #3f51b5;
-    color: #ffffff;
-    text-align: left;
-}
-
-th, td {
-    padding: 12px 15px;
-}
-
-tbody tr {
-    border-bottom: 1px solid #dddddd;
-}
-
-tbody tr:nth-of-type(even) {
-    background-color: #f3f3f3;
-}
-
-tbody tr:last-of-type {
-    border-bottom: 2px solid #3f51b5;
-}
-
-tbody tr.active-row {
+.tour-details-container label {
+    display: block;
+    margin-top: 15px;
     font-weight: bold;
-    color: #3f51b5;
+    font-size: 14px;
+    color: #555;
 }
 
-.form-group {
-    margin-bottom: 15px;
-}
-
-.radio-group {
-    display: inline-block;
-    margin-left: 10px;
-}
-
-label {
-    margin-right: 10px; /* Razmak između labela i radio dugmadi */
-}
-
-button {
-    margin-top: 20px;
-    padding: 10px 15px;
-    background-color: #3f51b5;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-button:hover {
-    background-color: #2c387e;
-}
-
-div {
+.tour-details-container input,
+.tour-details-container textarea,
+.tour-details-container select {
     width: 100%;
+    max-width: 800px;
+    padding: 12px;
+    margin-top: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: #f9f9f9;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.tour-details-container input:focus,
+.tour-details-container textarea:focus,
+.tour-details-container select:focus {
+    border-color: #007bff;
+    outline: none;
+    background-color: #fff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.tour-details-container textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.tour-details-container .tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.tour-details-container .tag {
+    padding: 8px 12px;
+    background-color: #e9f5ff;
+    border: 1px solid #cce7ff;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #0056b3;
+}
+
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.checkpoint-card {
+    width: 300px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.checkpoint-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.checkpoint-image img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-bottom: 1px solid #ddd;
+}
+
+.checkpoint-info {
+    padding: 15px;
+}
+
+.actions {
     display: flex;
     gap: 10px;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+/* Dugmad za edit i delete ostaju ista */
+.actions button {
+    background-color: var(--primary-color);
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.actions button:hover {
+    background-color: var(--hover-color);
+}
+
+.tour-form {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.tour-form input,
+.tour-form textarea,
+.tour-form select {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: #fafafa;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.tour-form input:focus,
+.tour-form textarea:focus,
+.tour-form select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.tour-form textarea {
+    resize: vertical;
+}
+
+.tour-form .form-actions {
+    text-align: right;
+    margin-top: 20px;
+}
+
+.tour-form button {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.tour-form button:hover {
+    background-color: #218838;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+.tour-form .tag{
+    padding: 8px 12px;
+    background-color: #e9f5ff;
+    border: 1px solid #cce7ff;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #0056b3;
 }

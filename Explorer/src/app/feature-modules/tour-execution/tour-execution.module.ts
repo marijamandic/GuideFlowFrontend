@@ -14,6 +14,8 @@ import { ProblemStatusComponent } from './problem-status/problem-status.componen
 import { TourExecutionDetailsComponent } from './tour-execution-details/tour-execution-details.component';
 import { PurchasedToursComponent } from './purchased-tours/purchased-tours.component';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { TourSpecificationComponent } from '../marketplace/tour-specification/tour-specification.component';
+import { MarketplaceModule } from '../marketplace/marketplace.module';
 
 @NgModule({
   providers:[DatePipe],
@@ -26,7 +28,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
  TourExecutionDetailsComponent,
  PurchasedToursComponent,
  ProblemStatusComponent,
- TourViewComponent
+ TourViewComponent,
   ],
   imports: [
     CommonModule,
@@ -35,7 +37,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
     MatInputModule,
     ReactiveFormsModule,
     MatIconModule,
-    CommonModule
+    CommonModule,
+    MarketplaceModule
   ],
   exports:
   [

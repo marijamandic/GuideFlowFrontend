@@ -28,16 +28,16 @@ export class TourSpecificationFormComponent implements OnChanges {
 
   ngOnChanges(changes : SimpleChanges): void {
     this.tourspecifForm.reset();
-    if (this.shouldEdit && this.tourSpecification) {
-      this.tourspecifForm.patchValue({
-        tourDifficulty: String(this.tourSpecification.tourDifficulty),
-        walkRating: String(this.tourSpecification.walkRating),
-        bikeRating: String(this.tourSpecification.bikeRating),
-        carRating: String(this.tourSpecification.carRating),
-        boatRating: String(this.tourSpecification.boatRating),
-        tags: this.tourSpecification.tags.join(', ')
-      });
-    }
+    // if (this.shouldEdit && this.tourSpecification) {
+    //   this.tourspecifForm.patchValue({
+    //     tourDifficulty: String(this.tourSpecification.tourDifficulty),
+    //     walkRating: String(this.tourSpecification.walkRating),
+    //     bikeRating: String(this.tourSpecification.bikeRating),
+    //     carRating: String(this.tourSpecification.carRating),
+    //     boatRating: String(this.tourSpecification.boatRating),
+    //     tags: this.tourSpecification.tags.join(', ')
+    //   });
+    // }
   }
   
   tourspecifForm = new FormGroup({
@@ -49,52 +49,52 @@ export class TourSpecificationFormComponent implements OnChanges {
     tags: new FormControl('', [Validators.required, Validators.maxLength(200)])
   });
 
-  addSpecification(): void{
-    if(this.tourspecifForm.valid){
-      const newSpecification : TourSpecification = {
-        userId: this.userId || 0,
-        tourDifficulty: Number(this.tourspecifForm.value.tourDifficulty) || 0,
-        walkRating: Number(this.tourspecifForm.value.walkRating) || 0,
-        bikeRating: Number(this.tourspecifForm.value.bikeRating) || 0,
-        carRating: Number(this.tourspecifForm.value.carRating) || 0,
-        boatRating: Number(this.tourspecifForm.value.boatRating) || 0,
-        tags: this.tourspecifForm.value.tags 
-        ? this.tourspecifForm.value.tags.split(',').map(tag => tag.trim())
-        : [] 
-       // tags: this.tourspecifForm.value.tags.split(',').map(tag => tag.trim()) || []
-      };
+  // addSpecification(): void{
+  //   if(this.tourspecifForm.valid){
+  //     const newSpecification : TourSpecification = {
+  //       userId: this.userId || 0,
+  //       level: Number(this.tourspecifForm.value.tourDifficulty) || 0,
+  //       // walkRating: Number(this.tourspecifForm.value.walkRating) || 0,
+  //       // bikeRating: Number(this.tourspecifForm.value.bikeRating) || 0,
+  //       // carRating: Number(this.tourspecifForm.value.carRating) || 0,
+  //       // boatRating: Number(this.tourspecifForm.value.boatRating) || 0,
+  //       tags: this.tourspecifForm.value.tags 
+  //       ? this.tourspecifForm.value.tags.split(',').map(tag => tag.trim())
+  //       : [] 
+  //      // tags: this.tourspecifForm.value.tags.split(',').map(tag => tag.trim()) || []
+  //     };
 
-      console.log("specifikacija za kreiranje: ", newSpecification);
+  //     console.log("specifikacija za kreiranje: ", newSpecification);
 
-      this.service.addTourSpecification(newSpecification).subscribe({
-        next: () => { this.tourSpecificationUpdated.emit()
-        }
-      });
-    }
-  }
+  //     this.service.addTourSpecification(newSpecification).subscribe({
+  //       next: () => { this.tourSpecificationUpdated.emit()
+  //       }
+  //     });
+  //   }
+  // }
 
-  updateSpecification() : void{
-    //console.log("Updating specification with ID:", this.tourSpecification.id);
-    const tourSpecification : TourSpecification = {
-      userId: this.userId || 0,
-      tourDifficulty: Number(this.tourspecifForm.value.tourDifficulty) || 0,
-      walkRating: Number(this.tourspecifForm.value.walkRating) || 0,
-      bikeRating: Number(this.tourspecifForm.value.bikeRating) || 0,
-      carRating: Number(this.tourspecifForm.value.carRating) || 0,
-      boatRating: Number(this.tourspecifForm.value.boatRating) || 0,
-      tags: this.tourspecifForm.value.tags 
-      ? this.tourspecifForm.value.tags.split(',').map(tag => tag.trim())
-      : [] 
-     // tags: this.tourspecifForm.value.tags.split(',').map(tag => tag.trim()) || []
-    };
-    tourSpecification.id = this.tourSpecification.id;
+  // updateSpecification() : void{
+  //   //console.log("Updating specification with ID:", this.tourSpecification.id);
+  //   const tourSpecification : TourSpecification = {
+  //     userId: this.userId || 0,
+  //     level: Number(this.tourspecifForm.value.tourDifficulty) || 0,
+  //     // walkRating: Number(this.tourspecifForm.value.walkRating) || 0,
+  //     // bikeRating: Number(this.tourspecifForm.value.bikeRating) || 0,
+  //     // carRating: Number(this.tourspecifForm.value.carRating) || 0,
+  //     // boatRating: Number(this.tourspecifForm.value.boatRating) || 0,
+  //     tags: this.tourspecifForm.value.tags 
+  //     ? this.tourspecifForm.value.tags.split(',').map(tag => tag.trim())
+  //     : [] 
+  //    // tags: this.tourspecifForm.value.tags.split(',').map(tag => tag.trim()) || []
+  //   };
+  //   tourSpecification.id = this.tourSpecification.id;
 
-    console.log("specifikacija za azuriranje: ", tourSpecification);
-    this.service.updateTourSpecification(tourSpecification).subscribe({
-      next: () => { this.tourSpecificationUpdated.emit();
-      }
-    })
-  }
+  //   console.log("specifikacija za azuriranje: ", tourSpecification);
+  //   this.service.updateTourSpecification(tourSpecification).subscribe({
+  //     next: () => { this.tourSpecificationUpdated.emit();
+  //     }
+  //   })
+  // }
 }
 
 

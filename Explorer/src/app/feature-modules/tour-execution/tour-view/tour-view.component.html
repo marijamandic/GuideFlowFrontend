@@ -1,3 +1,10 @@
+<xp-tour-specification #tourSpec></xp-tour-specification>
+
+<div class="button-container">
+  <button (click)="onFilterClicked(tourSpec)" class="button">Filter by my preference</button>
+  <button (click)="ngOnInit()" class="button">Reset filter</button>
+</div>
+
 <div *ngIf="allTours && allTours.length > 0; else noTours">
     <div *ngFor="let tour of allTours" class="tour-card">
       <h3>{{ tour.name }}</h3>
