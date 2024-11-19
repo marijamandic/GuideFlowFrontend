@@ -7,6 +7,8 @@ import { SingleItemInput } from './model/shopping-carts/single-item-input';
 import { SingleItem } from './model/shopping-carts/single-item';
 import { ShoppingCart } from './model/shopping-carts/shopping-cart';
 import Headers from 'src/app/shared/utils/headers';
+import { PagedResults } from 'src/app/shared/model/paged-results.model';
+import { TourPurchaseToken } from './model/purchase-tokens/tour-purchase-token';
 
 @Injectable({
 	providedIn: 'root'
@@ -44,6 +46,10 @@ export class MarketplaceService {
 		return this.http.get<ShoppingCart>(`${environment.apiHost}shopping-cart`, { headers: Headers });
 	}
 
+	//purchase tokens endpoints
+	generateTokens():Observable<PagedResults<TourPurchaseToken>>{
+		return this.http.post<PagedResults<TourPurchaseToken>>(environment.apiHost + "shopping/tourPurchaseToken",{});
+	}
 	//
 
 	// getShoppingCartById(userId: number): Observable<ShoppingCart> {
