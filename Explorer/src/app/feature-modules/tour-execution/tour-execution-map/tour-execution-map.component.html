@@ -5,7 +5,12 @@
 <div class="search-container" *ngIf="showSearchBar">
   <div class="input-wrapper">
     <input type="text" [(ngModel)]="searchAddress" placeholder="Unesite adresu" />
-    <button (click)="search()" class="search-button">Search</button>
+    <img 
+      (click)="search()" 
+      src="assets/images/search.png" 
+      alt="Search" 
+      class="search-icon" 
+    />
   </div>
   <button (click)="saveCoordinates()" class="add-button">Update My Location</button>
 </div>

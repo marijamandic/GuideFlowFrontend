@@ -1,7 +1,9 @@
 .map-background {
-  width: 73%;
+  width: 68%;
   right: 0;            /* Pozicioniramo mapu sa desne strane */
-  margin-left: 27%;
+  margin-left: 32%;
+  background-color: #FFF;
+  padding-top: 0.65%;
 }
 .map-background xp-tour-execution-map {
   position: relative;  /* Dodajemo poziciju */
@@ -18,138 +20,114 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 25vw;
-  max-height: 87.5vh; /* Ograničava maksimalnu visinu na visinu ekrana */
-  overflow-y: scroll; /* Uvek omogućava vertikalni skrol */
+  width: 30vw;
+  max-height: 91.5vh; /* Ograničava maksimalnu visinu na visinu ekrana */
+  overflow-y: auto; /* Omogućava vertikalni skrol, ali neće prikazivati scrollbar */
   padding: 15px;
   background-color: rgba(255, 255, 255, 0.9);
   z-index: 1000;
   margin-top: 3.6%;
 }
-/* Custom scrollbar styling for #style-14 */
-.left-container::-webkit-scrollbar-track {
-  -webkit-box-shadow: inset 0 0 6px rgba(46, 41, 50, 0.6); /* Soft shadow inside the track */
-  background-color: #CCCCCC; /* Track background color */
-}
 
+/* Sakrivanje skrola na svim preglednicima */
 .left-container::-webkit-scrollbar {
-  width: 10px; /* Width of the scrollbar */
-  background-color: #F5F5F5; /* Background color of the scrollbar */
+  display: none; /* Skriva scroll bar */
 }
 
-.left-container::-webkit-scrollbar-thumb {
-  background-color: #FFF; /* Thumb color */
-  background-image: -webkit-linear-gradient(90deg,
-                                            rgb(68, 53, 74) 0%, 
-                                            rgba(68, 53, 74, 1) 25%, 
-                                            transparent 100%, 
-                                            rgba(68, 54, 74, 0.907) 75%, 
-                                            transparent); /* Gradient effect on thumb */
+.left-container {
+  -ms-overflow-style: none;  /* Za Internet Explorer */
+  scrollbar-width: none;  /* Za Firefox */
 }
 
 
 /* Stilizacija kontejnera sa osnovnim informacijama */
 .info-container {
-  background-color: #f6e5e588;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 20px;
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  width: 100%; 
+  box-sizing: border-box;
   max-width: 500px;
   font-family: Arial, sans-serif;
   color: #1d1c1c;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.37);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   position: relative;
   margin-bottom: 10px;
 }
 
-.title {
-  font-size: 18px;
-  margin-bottom: 15px;
-  color: #1d1c1c;
-  text-align: center;
-  border-bottom: 2px solid #333;
-  padding-bottom: 10px;
-}
-
 .info-grid {
-  display: grid;
-  grid-template-areas: 
-    "user status"
-    "range date";
-  grid-template-columns: 1fr 1fr;
-  grid-gap: 10px;
+  display: flex;
+  flex-direction: column; /* Postavite sve u vertikalni raspored */
+  gap: 15px; /* Razmak između elemenata */
 }
 
-.user-info {
-  grid-area: user;
-  display: flex;
-  align-items: center;
-  font-size: 20px;
+.date-range-container {
+  display: flex; /* Postavite datum i range u red */
+  align-items: center; /* Poravnajte elemente vertikalno */
 }
 
-.status-info {
-  grid-area: status;
+.date-info, .range-info {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  font-weight: bold;
+  font-weight: 100;
+  font-size: 15px;
 }
 
 .range-info {
-  grid-area: range;
-  display: flex;
-  align-items: center;
-  color: #1d1c1c;
-  font-size: 20px;
-}
-
-.date-info {
-  grid-area: date;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  font-weight: bold;
+  font-size: 17px;
+  font-weight: 200;
+  margin-left: 40px;
 }
 
 .icon {
+  width: 15px;
+  height: 15px;
+  margin-right: 5px;
+}
+
+.icon-lock {
   width: 20px;
   height: 20px;
-  margin-right: 8px;
+  margin-right: 5px;
+  margin-bottom: -3px;
 }
+
+.icon-date {
+  width: 15px;
+  height: 15px;
+  margin-right: 5px;
+  margin-left: 10px;
+}
+
 .icon-range {
   width: 25px;
-  height: 26px;
-  margin-right: 8px;
+  height: 25px;
+  margin-right: 5px;
   margin-left: 5px;
+  margin-top: -5px;
 }
 
-.status-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  margin-right: 8px;
-  display: inline-block;
+.icon-time {
+  width: 25px;
+  height: 25px;
+  margin-bottom: -7px;
 }
 
-.status-dot.Active {
-  background-color: #007bff; /* Plava za aktivan */
+.description {
+  font-size: 13px;
+  color: #333 ;
+  margin-bottom: 10px;
+  text-align: left;
+  width: 320px;
 }
-
-.status-dot.Completed {
-  background-color: #28a745; /* Zelena za završeno */
-}
-
-.status-dot.Abandoned {
-  background-color: #dc3545; /* Crvena za napušteno */
-}
-
 
 /* Naslov za Osnovne Informacije */
 .info-container h3 {
-  font-size: 18px;
-  color: #1d1c1c;
-  margin-bottom: 15px;
-  text-align: center;
+  font-size: 20px;
+  color: #333 ;
+  margin-bottom: 11px;
+  text-align: left;
   font-weight: bold;
 }
 
@@ -215,10 +193,10 @@
 
 /* Stilizacija za Checkpoint kartice */
 .checkpoint-card {
-  background-color: #f6e5e59e;
+  background-color: #ffffff;
   border-radius: 15px;
   padding: 15px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s;
   border: 1px solid #e0e0e0;
   color: #1d1c1c;
@@ -228,12 +206,22 @@
   transform: translateY(-2px);
 }
 
+.checkpoint-time {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-size: 13px;
+}
+
+.checkpoint-secret {
+  margin-top: 15px;
+
+}
 /* Zaglavlje kartice */
 .checkpoint-header h3 {
-  font-size: 16px;
-  color: #1d1c1c;
-  margin-bottom: 10px;
-  text-align: center;
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 7px;
+  text-align: left;
   font-weight: bold;
 }
 
@@ -259,8 +247,8 @@
 
 /* Slika Checkpoint-a */
 .checkpoint-image {
-  max-width: 100%;
-  height: 200px;
+  max-width: 410px;
+  height: 100%;
   object-fit: cover;
   border-radius: 10px;
   border: 1px solid #ddd;
@@ -270,15 +258,15 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 0px;
   cursor: pointer;
+  margin-top: 20px;
 }
 
 .checkpoint-dots div {
   width: 10px;
   height: 10px;
-  background-color: #ffffff;
-  border: 2px solid #333;
+  background-color: #dbc8c8;
   border-radius: 50%;
   margin: 0 5px;
   transition: background-color 0.3s ease;
@@ -301,7 +289,6 @@
   font-size: 14px;
   font-weight: 600;
   transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease; /* Animacija za efekte */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Osnovni blagi shadow */
 }
 
 .review-button:hover {
@@ -313,7 +300,6 @@
 /* Kontejner za progres bar */
 .progress-bar-container {
   position: absolute;
-  bottom: 20px;
   left: 63.5%;
   transform: translateX(-50%);
   width: 90%;
@@ -323,10 +309,19 @@
 
 /* Stil progres bara */
 .progress-bar-wrapper {
-  width: 100%;
+  width: 93%;
   background-color: #e0e0e0;
-  border-radius: 20px;
-  height: 20px;
+  border-radius: 16px;
+  height: 12px;
+  margin-top: 10px;
+}
+.progres-p {
+  font-size: 12px;
+  margin-top: -16px;
+  margin-left: 405px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 600;
+  margin-bottom: -8px;
 }
 
 .progress-bar {
@@ -336,10 +331,9 @@
   transition: width 0.3s;
 }
 .progress-bar-container p {
-  font-size: 17px;
+  font-size: 16px;
   margin-left: 1%;
   margin-top: 1%;
-  font-weight: 500;
 }
 .low {
   background-color: red;
@@ -424,4 +418,43 @@
   color: red;
   font-weight: bold;
   margin-top: 10px;
+}
+
+.button-group {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Razmak između dugmića */
+  margin-top: 15px; /* Razmak od ostalih elemenata */
+}
+
+.navigation-button {
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease;
+}
+
+.button-group {
+  display: flex;
+  align-items: center; /* Poravnava dugmad vertikalno */
+}
+
+.navigation-buttons {
+  margin-left: 50px; /* Pomerite navigacione dugmiće udesno */
+  display: flex;
+  gap: 10px; /* Razmak između Back i Next dugmeta */
+}
+
+.navigation-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.navigation-button:hover:not(:disabled) {
+  background-color: #0056b3;
 }

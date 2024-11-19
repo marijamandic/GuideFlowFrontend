@@ -9,49 +9,73 @@
   <div class="info-container">
     <h3 class="title">{{ tourName }}</h3>
     <div class="info-grid">
-      <!-- Gornji levi ugao: User -->
-      <div class="user-info">
-        <img src="assets/images/user.png" alt="User Icon" class="icon" /> 
-        <strong>{{ tourist?.username }}</strong>
+      <div>
+        <h5 class="description">{{ tourDescription }}</h5>
       </div>
       
-      <!-- Gornji desni ugao: Status -->
-      <div class="status-info">
-        <span class="status-dot {{ mapToTourExecutionStatus(tourExecution?.executionStatus ?? 0) }}"></span>
-        {{ mapToTourExecutionStatus(tourExecution?.executionStatus ?? 0) }}
+      <div class="date-range-container">
+        <div class="date-info">
+          <img src="assets/images/clock.png" alt="Clock Icon" class="icon" />
+          {{ tourExecution?.startTime | date: 'hh:mm a' }}
+          <img src="assets/images/date.png" alt="Date Icon" class="icon-date" />
+          {{ tourExecution?.startTime | date: 'MM/dd/yyyy' }}
+        </div>
+  
+        <div class="range-info">
+          <img src="assets/images/range.png" alt="Range Icon" class="icon-range" />
+          {{ tourExecution?.tourRange }} km
+        </div>
       </div>
-      
-      <!-- Donji levi ugao: Range -->
-      <div class="range-info">
-        <strong>{{ tourExecution?.tourRange }}</strong>
-        <img src="assets/images/range.png" alt="Range Icon" class="icon-range" />
-      </div>
-      
-      <!-- Donji desni ugao: Datum -->
-      <div class="date-info">
-        <img src="assets/images/date.png" alt="Start Icon" class="icon" />
-        {{ tourExecution?.startTime | date: 'short' }}
+      <div class="progress-bar-wrapper">
+        <div
+          class="progress-bar"
+          [style.width.%]="percentageCompleted"
+          [class.low]="percentageCompleted < 35"
+          [class.medium]="percentageCompleted >= 35 && percentageCompleted < 70"
+          [class.high]="percentageCompleted >= 70">
+        </div>
+        <p class="progres-p">{{ percentageCompleted }}%</p>
       </div>
     </div>
   </div>
   
+  
 
 
 
-  <!-- Kartica za Checkpoint -->
   <div class="checkpoint-container">
     <div class="checkpoint-card">
-      <div class="checkpoint-image-wrapper">
-        <img [src]="getImagePath(currentCheckpoint.checkpoint.imageUrl)" alt="Checkpoint Image" class="checkpoint-image" />
-      </div>
       <div class="checkpoint-header">
         <h3>{{ currentCheckpoint.checkpoint.name }}</h3>
       </div>
-      <div class="checkpoint-info">
-        <p><strong>Description:</strong> {{ currentCheckpoint.checkpoint.description }}</p>
-        <p><strong>Completion Time:</strong> {{ mapToCompletionTime(currentCheckpoint.completionTime) }}</p>
-        <p><strong>Secret:</strong> {{ currentCheckpoint.checkpoint.secret }}</p>
+      <div class="checkpoint-image-wrapper">
+        <img [src]="getImagePath(currentCheckpoint.checkpoint.imageUrl)" alt="Checkpoint Image" class="checkpoint-image" />
       </div>
+      <div class="checkpoint-info">
+        <p>{{ currentCheckpoint.checkpoint.description }}</p>
+        <div class="checkpoint-time">
+          <img src="assets/images/time.png" alt="Time Icon" class="icon-time" />
+          {{ mapToCompletionTime(currentCheckpoint.completionTime) }}
+        </div>
+        <div class="checkpoint-secret" *ngIf="isSecretUnlocked(currentCheckpoint.completionTime)">
+          <img src="assets/images/unlock.png" alt="Unlock Icon" class="icon-lock" />
+          {{ currentCheckpoint.checkpoint.secret }}
+        </div>
+        <div class="checkpoint-secret" *ngIf="!isSecretUnlocked(currentCheckpoint.completionTime)">
+          <img src="assets/images/lock.png" alt="Lock Icon" class="icon-lock" />
+          secret will unlock once you complete this checkpoint.
+        </div>          
+      </div>
+      
+  
+      <!-- Dugmići za Back, Next i Recenziju -->
+      <div class="button-group">
+        <button class="cta-button" (click)="openReviewForm()" [disabled]="isDisabled()">Leave Review</button>
+        <div class="navigation-buttons">
+          <button class="cta-button" (click)="goToPreviousCheckpoint()" [disabled]="isFirstCheckpoint()">Back</button>
+          <button class="cta-button" (click)="goToNextCheckpoint()" [disabled]="isLastCheckpoint()">Next</button>
+        </div>
+      </div>      
       <div class="checkpoint-dots">
         <!-- Proveravamo da li 'tourExecution' postoji i da 'checkpointsStatus' nije null ili undefined -->
         <div 
@@ -60,11 +84,13 @@
           (click)="setCurrentCheckpoint(i)">
         </div>
       </div>
-      <button class="review-button" (click)="openReviewForm()" [disabled]="isDisabled()">Leave Review</button>
+      <!-- Poruka ako postoji -->
       <p *ngIf="getReviewMessage()" class="expired-message">
         {{ getReviewMessage() }}
-        </p>
+      </p>
     </div>
+  
+    <!-- Popup za recenziju -->
     <div *ngIf="isReviewFormOpen" class="overlay">
       <div class="review-popup">
         <xp-tour-review 
@@ -78,7 +104,7 @@
         <button class="close-button" (click)="closeReviewForm()">X</button>
       </div>
     </div>
-  </div>
+  </div>  
 
 
   <!-- Dugmad za akcije -->
@@ -86,20 +112,5 @@
     <button class="button abandon-button" (click)="abandonSession()">Abandon Session</button>
     <button class="button complete-button" (click)="completeSession()">Complete Session</button>
   </div>
-</div>
-
-
-<!-- Kontejner za progres bar -->
-<div class="progress-bar-container">
-  <div class="progress-bar-wrapper">
-    <div
-      class="progress-bar"
-      [style.width.%]="percentageCompleted"
-      [class.low]="percentageCompleted < 35"
-      [class.medium]="percentageCompleted >= 35 && percentageCompleted < 70"
-      [class.high]="percentageCompleted >= 70">
-    </div>
-  </div>
-  <p><strong>Progress:</strong> {{ percentageCompleted }}%</p>
 </div>
 </div>

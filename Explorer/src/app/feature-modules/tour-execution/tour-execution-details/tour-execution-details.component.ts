@@ -37,6 +37,7 @@ export class TourExecutionDetailsComponent implements OnInit{
   isReviewFormOpen = false;
   isBelowThirtyFivePercent = false;
   tourName = "";
+  tourDescription = "";
 
   checkpoints: Checkpoint[] = [];
   checkpointCoordinates: { latitude: number, longitude: number }[] = [];
@@ -100,6 +101,28 @@ export class TourExecutionDetailsComponent implements OnInit{
     }
   }
 
+  isSecretUnlocked(completionTime: any): boolean {
+    console.log("USLO!: ", completionTime);
+    const fortyYearsInMilliseconds = 40 * 365.25 * 24 * 60 * 60 * 1000; 
+    const now = Date.now(); 
+  
+    let completionTimestamp: number;
+  
+    // Proveravamo i konvertujemo u Date ako nije već Date objekat
+    if (completionTime instanceof Date) {
+      completionTimestamp = completionTime.getTime();
+    } else {
+      completionTimestamp = new Date(completionTime).getTime();
+    }
+  
+    console.log("PROSLO1:", completionTimestamp);
+    const isUnlocked = (now - completionTimestamp) < fortyYearsInMilliseconds;
+    console.log("I:", isUnlocked);
+  
+    return isUnlocked;
+  }
+  
+
   fetchTourExecution(): void {
     this.tourExecutionService.getTourExecution(this.tourExecutionId!).subscribe({
       next: (result: TourExecution) => {
@@ -109,6 +132,7 @@ export class TourExecutionDetailsComponent implements OnInit{
         this.tourService.getTourById(this.tourExecution?.tourId || 1).subscribe({
         next: (result: Tour) => {
           this.tourName = result.name;
+          this.tourDescription = result.description;
         }
       }) 
       },
@@ -177,6 +201,28 @@ setCurrentCheckpoint(index: number): void {
 
   closeReviewForm(): void {
     this.isReviewFormOpen = false;
+  }
+
+  isFirstCheckpoint(): boolean {
+    return this.getCurrentCheckpointIndex() === 0;
+  }
+
+  isLastCheckpoint(): boolean {
+    return this.getCurrentCheckpointIndex() === (this.tourExecution?.checkpointsStatus?.length ?? 1) - 1;
+  }
+
+  goToPreviousCheckpoint(): void {
+    const currentIndex = this.getCurrentCheckpointIndex();
+    if (currentIndex > 0) {
+      this.setCurrentCheckpoint(currentIndex - 1);
+    }
+  }
+
+  goToNextCheckpoint(): void {
+    const currentIndex = this.getCurrentCheckpointIndex();
+    if (currentIndex < (this.tourExecution?.checkpointsStatus?.length ?? 1) - 1) {
+      this.setCurrentCheckpoint(currentIndex + 1);
+    }
   }
 
 isMoreThanSevenDaysAgo(): boolean {
