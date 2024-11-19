@@ -1,0 +1,51 @@
+.alert {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 300px;
+  padding: 15px;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  color: #fff;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+}
+
+
+
+.alert.success {
+  background-color: #84dcc4; /*Mozda ce se menjati*/
+}
+
+.alert.error {
+  background-color: #84dcc4; /*Mozda ce se menjati*/
+}
+
+.alert.info {
+  background-color: #84dcc4; /*Mozda ce se menjati*/
+}
+
+.alert.warning {
+  background-color: #84dcc4; /*Mozda ce se menjati*/
+}
+
+.label {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 16px;
+  margin-left: auto;
+  cursor: pointer;
+}
+
+.message {
+  flex: 1;
+}
