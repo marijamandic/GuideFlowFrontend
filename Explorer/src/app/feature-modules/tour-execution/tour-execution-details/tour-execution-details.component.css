@@ -1,7 +1,7 @@
 .map-background {
   width: 68%;
   right: 0;            /* Pozicioniramo mapu sa desne strane */
-  margin-left: 32%;
+  margin-left: 32.2%;
   background-color: #FFF;
   padding-top: 0.65%;
 }
@@ -13,6 +13,7 @@
   height: 96vh;       /* Mapa će zauzeti celu visinu ekrana */
   object-fit: cover;   /* Zadrži proporcije slike i popuni prostor */
   margin-right: 15px;
+  background-color: #FFF;
 }
 
 /* Leva kolona sa skrolom */
