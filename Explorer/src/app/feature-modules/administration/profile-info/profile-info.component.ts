@@ -61,12 +61,4 @@ export class ProfileInfoComponent implements OnInit{
       return environment.webRootHost+imageUrl;
     }
 
-  getFollowers(): void {
-    this.service.getFollower(this.userId).subscribe({
-      next: (result: PagedResults<Follower>) => {
-        this.followers = result.results
-      }
-    })
-    
-  }
 }

@@ -69,6 +69,34 @@
     color: #585858;
 }
 
+.notification-icon {
+    cursor: pointer;
+    margin-right: 21px;
+    position: relative;
+}
+.shopping-cart-icon {
+    cursor: pointer;
+    margin-left: 21px;
+    position: relative;
+}
+
+
+.notification-badge {
+    position: absolute;
+    top: -10px; /* You can keep or adjust this value to control the vertical position */
+    right: 45px; /* You can adjust this for horizontal positioning */
+    background-color: rgba(255, 0, 0, 0.975);
+    color: white;
+    border-radius: 50%; /* Keeps the circular shape */
+    padding: 2px 4px; /* Reduces the size by lowering padding */
+    font-size: 9px; /* Smaller font size for a smaller badge */
+    height: 16px; /* Control the height of the circle */
+    min-width: 16px; /* Ensure it remains circular */
+    line-height: 16px; /* Vertically center the text within the circle */
+    text-align: center;
+}
+
+
 .dropdown-content {
     display: flex;
     flex-direction: column;
@@ -77,20 +105,27 @@
     right: 0;
     background-color: white;
     box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-    border-radius: 4px;
+    border-radius: 15px;
     z-index: 1;
     min-width: 150px;
 }
 
 .dropdown-content a {
     color: #222222;
-    padding: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 20px;
     text-decoration: none;
     font-size: 14px;
 }
 
+.dropdown-content i{
+    padding-right: 5px;
+}
+
 .dropdown-content a:hover {
     background-color: #f0f0f0;
+    border-radius: 15px;
 }
 
 .menu-icon {
@@ -125,4 +160,22 @@ mat-icon:hover{
     .menu-icon {
         display: flex;
     }
+}
+.notification-dropdown {
+    position: fixed;
+    top: 55px;
+    right: 120px;
+    width: 350px;
+    max-height: 400px;
+    overflow-y: auto;
+    background-color: #bc1616ad;
+    border-radius: 10px;
+    padding: 0px;
+    z-index: 1000;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+  
+.notification-dropdown::-webkit-scrollbar {
+    display: none;
 }

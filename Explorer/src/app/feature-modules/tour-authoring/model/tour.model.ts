@@ -1,47 +1,24 @@
 
+import { Price } from "./price.model";
 import { Checkpoint } from "./tourCheckpoint.model";
 import { TourReview } from "./tourReview";
+import { TransportDuration } from "./transportDuration.model";
 
 export interface Tour {
-    id: number;
+    id?: number;
     authorId: number;
     name: string;
     description: string;
     price: Price;
     level: Level;
     status: TourStatus;
+    StatusChangeDate?:Date;
     lengthInKm: number;
     averageGrade: number;
     taggs: string[];
     checkpoints: Checkpoint[];
     transportDurations: TransportDuration[];
     reviews: TourReview[];
-}
-
-export interface Price {
-    cost: number;
-    currency: Currency;
-}
-export enum Currency {
-    RSD = 0,
-    EUR = 1,
-    USD = 2
-}
-
-export interface TransportDuration {
-    time: TimeSpan;
-    transportType: TransportType;
-}
-export class TimeSpan {
-    hours: number;
-    minutes: number;
-}
-
-export enum TransportType {
-    Car = 0,
-    Bicycle = 1,
-    Walking = 2
-
 }
 
 export enum TourStatus {

@@ -27,136 +27,119 @@
     max-width: 800px; /* Maksimalna širina tabele */
     margin: 20px 0;
     border-collapse: collapse; /* Uklanja razmake između ćelija */
+    max-width: 1000px; /* Maksimalna širina stranice */
+    margin: 0 auto; /* Centriranje stranice */
 }
 
-.table th, .table td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid #cccccc;
+.card-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%; /* Širina kartica */
+    gap: 20px;
+    position: relative; /* Omogućava pozicioniranje unutar kontejnera */
+    padding-bottom: 50px; /* Prostor za dugme */
 }
 
-.table th {
-    background-color: #f9f9f9; /* Pozadina za zaglavlja */
-    font-weight: bold;
+.tabs {
+    margin-bottom: 20px;
 }
 
-.table tr:hover {
-    background-color: #f1f1f1; /* Promena pozadine prilikom hover-a */
+.tour-card {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 95%;
 }
 
-.table button {
-    border: none;
-    background: transparent;
-    cursor: pointer;
+.tour-card h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
 }
 
-.table button:hover {
-    color: #007BFF; /* Plava boja prilikom hover-a */
+.tour-card p {
+    margin: 5px 0;
+}
+
+.actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
 }
 
 .add-button {
-    background-color: #66c5af;
+    background-color: #84dcc6; /* Boja dugmeta */
     border: none;
     color: white;
-    padding: 10px 20px;
+    padding: 12px 25px;
     border-radius: 4px;
-    margin-top: 20px;
+    margin-right: 50px;
     cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s, transform 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .add-button:hover {
-    background-color: #5ba99a; /* Tamnija nijansa pri hover-u */
+    background-color: #66c5af;
+    transform: translateY(-2px);
+}
+
+.add-button.fixed-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    margin: 10px; /* Mali razmak od ivice */
+    padding: 8px 16px; /* Smanjen padding za manje dugme */
+    font-size: 14px; /* Manja veličina fonta */
+    background-color: #84dcc6;
+    border: none;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Manja senka */
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.add-button.fixed-bottom:hover {
+    background-color: #66c5af;
+    transform: translateY(-2px);
 }
 
 .tour-form-container {
     width: 100%;
-    max-width: 600px; /* Maksimalna širina forme */
+    max-width: 600px;
     background-color: #ffffff;
     padding: 30px;
     border-radius: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin: 20px 0; /* Razmak između tabele i forme */
+    margin: 20px auto;
 }
 
-.tour-form-container h2 {
-    text-align: center;
-    color: #333;
-}
 
-.tour-form-container label {
-    display: block;
-    margin-top: 15px;
-    font-weight: bold;
-}
+.tabs button {
 
-.tour-form-container input,
-.tour-form-container textarea,
-.tour-form-container select {
-    width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    border: 1px solid #cccccc;
-    border-radius: 4px;
-    font-size: 16px;
-}
-
-.tour-form-container input:focus,
-.tour-form-container textarea:focus,
-.tour-form-container select:focus {
-    border-color: #84dcc6;
-    outline: none;
-}
-
-.cta-button {
-    background-color: #2b4f46;
-    border: none;
-    color: white;
     padding: 10px 20px;
-    border-radius: 4px;
-    margin-top: 20px;
+
+    margin-right: 5px;
+
     cursor: pointer;
-    width: 100%;
-}
 
-.cta-button:hover:not(:disabled) {
-    background-color: #66c5af;
-}
-
-.cta-button:disabled {
-    background-color: #2b4f46;
-    cursor: not-allowed;
-}
-
-.tags-container {
-    margin-top: 15px;
-}
-
-.tags-container input {
-    margin-top: 10px;
-    border: 1px solid #cccccc;
-    border-radius: 4px;
-    padding: 10px;
-    width: calc(100% - 22px);
-}
-.add-button {
-    background-color: #84dcc6; /* Koristi novu boju */
     border: none;
+
+    background-color: #f0f0f0;
+
+    border-radius: 5px;
+
+}
+
+.tabs .active {
+    background-color: #2196F3;
     color: white;
-    padding: 12px 25px; /* Povećan padding za veći efekt */
-    border-radius: 4px;
-    margin-top: 20px;
-    cursor: pointer;
-    font-size: 16px; /* Povećaj veličinu fonta */
-    transition: background-color 0.3s, transform 0.3s; /* Dodaj tranziciju */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Senka oko dugmeta */
 }
 
-.add-button:hover {
-    background-color: #66c5af; /* Tamnija nijansa prilikom hover-a */
-    transform: translateY(-2px); /* Lagano pomeranje na hover */
-}
 
-.add-button:focus {
-    outline: none; /* Ukloni outline prilikom fokusa */
-    box-shadow: 0 0 5px rgba(132, 220, 198, 0.5); /* Dodaj sjaj prilikom fokusa */
-}
+
+
+

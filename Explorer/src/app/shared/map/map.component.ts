@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, AfterViewInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import * as L from 'leaflet';
 import { MapService } from './map.service';
 import 'leaflet-routing-machine';
@@ -8,24 +8,42 @@ import 'leaflet-routing-machine';
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css'],
 })
-export class MapComponent implements AfterViewInit {
+export class MapComponent implements AfterViewInit,OnChanges {
   private map: any;
   private markers: L.Marker[] = [];
-  private singleMarker: L.Marker | null = null;
   searchAddress: string = '';
   private routeControl: any = null;
 
   @Input() initialMarkers: L.LatLng[] = [];
-  @Input() checkpoints: { latitude: number; longitude: number }[] = []; // Input za koordinate
   @Input() allowMultipleMarkers: boolean = true;
-
+  @Input() checkpoints: { latitude: number; longitude: number }[] = [];
+  @Input() showSearchBar: boolean = true;
   @Output() markerAdded = new EventEmitter<L.LatLng>();
   @Output() mapReset = new EventEmitter<void>();
   @Output() coordinatesSelected = new EventEmitter<{ latitude: number; longitude: number }>();
+  @Output() distanceCalculated = new EventEmitter<{ transportType: string; time: number; distance: number }>();
 
   constructor(private mapService: MapService) {}
 
+  ngAfterViewInit(): void {
+    let DefaultIcon = L.icon({
+      iconUrl: 'https://unpkg.com/leaflet@1.6.0/dist/images/marker-icon.png',
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+    });
+
+    L.Marker.prototype.options.icon = DefaultIcon;
+    if (!this.map) {
+      this.initMap(); 
+    }
+  }
+
   private initMap(): void {
+    if (this.map) {
+      console.log('Mapa je već inicijalizovana');
+      return; // Sprečite ponovnu inicijalizaciju
+    }
+
     this.map = L.map('map', {
       center: [45.2396, 19.8227],
       zoom: 13,
@@ -44,13 +62,11 @@ export class MapComponent implements AfterViewInit {
 
     this.registerOnClick();
 
-    // Dodajemo inicijalne markere ako ih ima
     this.initialMarkers.forEach((latLng) => {
       const marker = L.marker(latLng).addTo(this.map);
       this.addMarker(marker);
     });
 
-    // Add checkpoint markers
     this.checkpoints.forEach((checkpoint) => {
       const latLng = new L.LatLng(checkpoint.latitude, checkpoint.longitude);
       const marker = L.marker(latLng).addTo(this.map);
@@ -61,7 +77,10 @@ export class MapComponent implements AfterViewInit {
   setRoute(waypoints: L.LatLng[]): void {
     if (waypoints.length > 1) {
       if (this.routeControl) {
-        this.map.removeControl(this.routeControl);
+        if (this.map.hasLayer(this.routeControl)) {
+          this.map.removeControl(this.routeControl);
+        }
+        this.routeControl = null; // Resetujte kontroler da biste osigurali da nije `null`
       }
 
       this.routeControl = L.Routing.control({
@@ -72,35 +91,41 @@ export class MapComponent implements AfterViewInit {
       this.routeControl.on('routesfound', (e: { routes: any; }) => {
         const routes = e.routes;
         const summary = routes[0].summary;
-        alert('Total distance is ' + (summary.totalDistance / 1000).toFixed(2) + ' km and total time is ' + Math.round(summary.totalTime / 60) + ' minutes');
+        const totalDistanceKm = (summary.totalDistance / 1000).toFixed(2);
+        const totalTimeMinutes = Math.round(summary.totalTime / 60);
+        alert(`Total distance is ${totalDistanceKm} km and total time is ${totalTimeMinutes} minutes for walking`);
+        this.distanceCalculated.emit({
+          transportType: 'walking',
+          time: totalTimeMinutes,
+          distance: parseFloat(totalDistanceKm)
+        });
       });
     }
   }
 
   ngOnChanges(): void {
-    this.addCheckpointMarkers(); // Pozovi ovu metodu kad se koordinate promene
+    if (this.map) {
+      this.updateCheckpointMarkers();
+    }
   }
-  private addCheckpointMarkers(): void {
-    // Logika za dodavanje markera na mapu, koristeći this.checkpoints
+
+  private updateCheckpointMarkers(): void {
+    this.resetMap();
+
     this.checkpoints.forEach(checkpoint => {
       const latLng = new L.LatLng(checkpoint.latitude, checkpoint.longitude);
       const marker = L.marker(latLng).addTo(this.map);
       this.addMarker(marker);
     });
-  }
 
-  ngAfterViewInit(): void {
-    let DefaultIcon = L.icon({
-      iconUrl: 'https://unpkg.com/leaflet@1.6.0/dist/images/marker-icon.png',
-      iconSize: [25, 41],
-      iconAnchor: [12, 41],
-    });
-
-    L.Marker.prototype.options.icon = DefaultIcon;
-    this.initMap();
+    if (this.markers.length > 1) {
+      const waypoints = this.markers.map(m => m.getLatLng());
+      this.setRoute(waypoints);
+    }
   }
 
   search(): void {
+
     this.mapService.search(this.searchAddress).subscribe({
       next: (result) => {
         const marker = L.marker([result[0].lat, result[0].lon])
@@ -112,57 +137,38 @@ export class MapComponent implements AfterViewInit {
       },
       error: () => {},
     });
+
   }
 
   registerOnClick(): void {
     this.map.on('click', (e: any) => {
+      if (!this.showSearchBar) {
+        return;
+      }
+      this.markers.forEach(marker => {
+        this.map.removeLayer(marker);
+      });
+      this.markers = [];
       const coord = e.latlng;
       const marker = new L.Marker([coord.lat, coord.lng]).addTo(this.map);
-      
-      if (!this.allowMultipleMarkers && this.singleMarker) {
-        // If only one marker is allowed, remove the existing marker
-        this.map.removeLayer(this.singleMarker);
-        this.singleMarker = marker.addTo(this.map);
-      } else if (this.allowMultipleMarkers) {
-        marker.addTo(this.map);
-      }
-      
-      this.addMarker(marker);
-      this.markerAdded.emit(coord); // Emitujemo događaj kada se marker doda
+      this.markers.push(marker); 
+      this.coordinatesSelected.emit({ latitude: coord.lat, longitude: coord.lng });
     });
   }
 
   addMarker(marker: L.Marker): void {
-    if (this.allowMultipleMarkers) {
-      this.markers.push(marker);
-    } else {
-      this.singleMarker = marker;
-    }
-
-    // Emitujemo događaj kada korisnik klikne marker
-    marker.on('click', () => {
-      const latLng = marker.getLatLng();
-      this.coordinatesSelected.emit({ latitude: latLng.lat, longitude: latLng.lng });
-      console.log(this.coordinatesSelected)
-    });
+    this.markers.push(marker);
     const latLng = marker.getLatLng();
     this.coordinatesSelected.emit({ latitude: latLng.lat, longitude: latLng.lng });
-
-    // Ako su postavljeni više od 2 markera, crtamo rutu između svih
-    if (this.allowMultipleMarkers && this.markers.length > 1) {
-      const waypoints = this.markers.map(m => m.getLatLng());
-      this.setRoute(waypoints);
-    }
   }
 
   resetMap(): void {
-    this.markers.forEach(marker => this.map.removeLayer(marker));
-    this.markers = [];
+    this.searchAddress="";
 
-    if (this.singleMarker) {
-      this.map.removeLayer(this.singleMarker);
-      this.singleMarker = null;
-    }
+    this.markers.forEach(marker => {
+      this.map.removeLayer(marker);
+    });
+    this.markers = [];
 
     if (this.routeControl) {
       this.map.removeControl(this.routeControl);

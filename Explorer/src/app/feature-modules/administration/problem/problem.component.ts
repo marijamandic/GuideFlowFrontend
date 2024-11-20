@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Problem, Category, Priority } from 'src/app/shared/model/problem.model';
+import { Problem } from 'src/app/shared/model/problem.model';
 import { AdministrationService } from '../administration.service';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
+import { convertEnumToString } from 'src/app/shared/utils/enumToStringConverter';
+import { toDateOnly } from 'src/app/shared/utils/dateToDateOnlyConverter';
+import { adjustProblemsArrayResponse } from 'src/app/shared/utils/adjustResponse';
 
 @Component({
 	selector: 'xp-problem',
@@ -10,19 +13,21 @@ import { PagedResults } from 'src/app/shared/model/paged-results.model';
 })
 export class ProblemComponent implements OnInit {
 	problems: Problem[] = [];
-	category = 'category';
-	priority = 'priority';
 
 	constructor(private service: AdministrationService) {}
 
-	getEnumtring(enumValue: number, type: string): string {
-		return type === this.category ? Category[enumValue] : Priority[enumValue];
+	toString(value: number, type: string): string {
+		return convertEnumToString(value, type);
+	}
+
+	toDateOnly(date: Date) {
+		return toDateOnly(date);
 	}
 
 	ngOnInit(): void {
 		this.service.getAllProblems().subscribe({
 			next: (result: PagedResults<Problem>) => {
-				this.problems = [...result.results];
+				this.problems = adjustProblemsArrayResponse(result.results);
 			}
 		});
 	}

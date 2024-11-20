@@ -1,54 +1,78 @@
 import { Injectable } from '@angular/core';
 import { TourSpecification } from '../marketplace/model/tour-specification.model';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { PagedResults } from 'src/app/shared/model/paged-results.model';
 import { environment } from 'src/env/environment';
-import { ShoppingCart } from './model/shoppingCart.model';
+
+import { SingleItemInput } from './model/shopping-carts/single-item-input';
+import { SingleItem } from './model/shopping-carts/single-item';
+import { ShoppingCart } from './model/shopping-carts/shopping-cart';
+import Headers from 'src/app/shared/utils/headers';
+import { PagedResults } from 'src/app/shared/model/paged-results.model';
+import { TourPurchaseToken } from './model/purchase-tokens/tour-purchase-token';
+
 import { Action } from 'rxjs/internal/scheduler/Action';
-import { OrderItem } from './model/orderItem.model';
 import { Tour } from '../tour-authoring/model/tour.model';
 
 
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root'
 })
 export class MarketplaceService {
+	constructor(private http: HttpClient) {}
 
-  constructor(private http: HttpClient) { }
+	getTourSpecification(userId: number): Observable<TourSpecification> {
+		return this.http.get<TourSpecification>(environment.apiHost + 'tourist/tourspecifications/' + userId);
+	}
 
-  getTourSpecification (userId : number) : Observable<TourSpecification>{
-    return this.http.get<TourSpecification>(environment.apiHost + 'tourist/tourspecifications/' + userId);
-  }
+	addTourSpecification(tourSpecification: TourSpecification): Observable<TourSpecification> {
+		return this.http.post<TourSpecification>(environment.apiHost + 'tourist/tourspecifications', tourSpecification);
+	}
 
-  addTourSpecification(tourSpecification: TourSpecification): Observable<TourSpecification> {
-    return this.http.post<TourSpecification>(environment.apiHost + 'tourist/tourspecifications', tourSpecification);
-  }
+	updateTourSpecification(tourSpecification: TourSpecification): Observable<TourSpecification> {
+		return this.http.put<TourSpecification>(environment.apiHost + 'tourist/tourspecifications/' + tourSpecification.id, tourSpecification);
+	}
 
-  updateTourSpecification(tourSpecification: TourSpecification): Observable<TourSpecification>{
-    return this.http.put<TourSpecification>(environment.apiHost + 'tourist/tourspecifications/' + tourSpecification.id, tourSpecification);
-  }
+	deleteTourSpecification(tourSpecification: TourSpecification): Observable<TourSpecification> {
+		return this.http.delete<TourSpecification>(environment.apiHost + 'tourist/tourspecifications/' + tourSpecification.id);
+	}
 
-  deleteTourSpecification(tourSpecification: TourSpecification): Observable<TourSpecification>{
-    return this.http.delete<TourSpecification>(environment.apiHost + 'tourist/tourspecifications/' + tourSpecification.id);
-  }
+	// shopping cart endpoints
 
-  getShoppingCartById (userId: number): Observable<ShoppingCart> {
-    return this.http.get<ShoppingCart>(environment.apiHost + 'shoppingCart/' + userId)
-  }
+	addToCart(item: SingleItemInput): Observable<SingleItem[]> {
+		return this.http.post<SingleItem[]>(`${environment.apiHost}shopping-cart/single-items`, item, { headers: Headers });
+	}
 
-  addItemToCart(userId: number, orderItem: OrderItem) : Observable<void> {
-    return this.http.post<void>(environment.apiHost + 'shoppingCart/' + userId + '/items', orderItem)
-  }
+	removeFromCart(singleItemId: number): Observable<null> {
+		return this.http.delete<null>(`${environment.apiHost}shopping-cart/single-items/${singleItemId}`, { headers: Headers });
+	}
 
-  removeItemFromCart(userId: number, tourId: number) : Observable<void>  {
-    return this.http.delete<void>(environment.apiHost + 'shoppingCart/' + userId + '/items/' + tourId )
-  }
+	getShoppingCartByTouristId(): Observable<ShoppingCart> {
+		return this.http.get<ShoppingCart>(`${environment.apiHost}shopping-cart`, { headers: Headers });
+	}
 
-  clearCart(userId: number) : Observable<void> {
-    return this.http.delete<void>(environment.apiHost + 'shoppingCart/' + userId + '/clear')
-  }
+	//purchase tokens endpoints
+	generateTokens():Observable<PagedResults<TourPurchaseToken>>{
+		return this.http.post<PagedResults<TourPurchaseToken>>(environment.apiHost + "shopping/tourPurchaseToken",{});
+	}
+	//
+
+	// getShoppingCartById(userId: number): Observable<ShoppingCart> {
+	// 	return this.http.get<ShoppingCart>(environment.apiHost + 'shoppingCart/' + userId);
+	// }
+
+	// addItemToCart(userId: number, orderItem: OrderItem): Observable<void> {
+	// 	return this.http.post<void>(environment.apiHost + 'shoppingCart/' + userId + '/items', orderItem);
+	// }
+
+	// removeItemFromCart(userId: number, tourId: number): Observable<void> {
+	// 	return this.http.delete<void>(environment.apiHost + 'shoppingCart/' + userId + '/items/' + tourId);
+	// }
+
+	// clearCart(userId: number): Observable<void> {
+	// 	return this.http.delete<void>(environment.apiHost + 'shoppingCart/' + userId + '/clear');
+	// }
 
   updateCart(shoppingCart: ShoppingCart) : Observable<ShoppingCart> {
     return this.http.put<ShoppingCart>(environment.apiHost + 'shoppingCart/', shoppingCart)
@@ -57,4 +81,8 @@ export class MarketplaceService {
   checkToken(userId: number, tourId: number) : Observable<Tour> {
     return this.http.get<Tour>(environment.apiHost + 'execution/tourExecution/purchased/'+ userId + '/' + tourId)
   }
+
+	// updateCart(shoppingCart: ShoppingCart): Observable<ShoppingCart> {
+	// 	return this.http.put<ShoppingCart>(environment.apiHost + 'shoppingCart/', shoppingCart);
+	// }
 }

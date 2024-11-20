@@ -16,7 +16,7 @@ export class TourPreviewComponent implements OnInit {
   tourId: number;
   currentTour: Tour;
   user: User;
-  isPurchased: boolean = false;  // Početna vrednost je false, dok se ne utvrdi
+  isPurchased: boolean = false;  
   isArchived: boolean = false; 
 
   constructor(private route: ActivatedRoute, private tourService: TourService,
@@ -45,26 +45,25 @@ export class TourPreviewComponent implements OnInit {
   ngOnInit(): void {
     this.tourId = Number(this.route.snapshot.paramMap.get('id'));
     
-    // Prvo preuzimamo korisnika
+
     this.authService.user$.subscribe({
       next: (user: User) => {
         this.user = user;
 
-        // Pozivamo getToken da sačekamo da se stanje tokena učita pre nego što nastavimo
+
         this.getToken(this.user.id, this.tourId).then((isPurchased) => {
-          this.isPurchased = isPurchased; // Postavljamo isPurchased na osnovu rezultata
-          
-          // Ručno pokrećemo detekciju promena
-          this.cdr.detectChanges();  // Dodato za osvežavanje stranice
+          this.isPurchased = isPurchased; 
 
-          this.getCurrentTour(); // Pozivamo getCurrentTour nakon što je isPurchased postavljen
+          this.cdr.detectChanges();  
+
+          this.getCurrentTour(); 
         }).catch(() => {
-          this.isPurchased = false; // Ako dođe do greške, postavimo isPurchased na false
+          this.isPurchased = false; 
           
-          // Ručno pokrećemo detekciju promena
-          this.cdr.detectChanges();  // Dodato za osvežavanje stranice
 
-          this.getCurrentTour(); // Pozivamo getCurrentTour čak i u slučaju greške
+          this.cdr.detectChanges(); 
+
+          this.getCurrentTour(); 
         });
       }
     });
@@ -86,13 +85,13 @@ export class TourPreviewComponent implements OnInit {
       this.marketService.checkToken(userId, tourId).subscribe({
         next: (tour) => {
           if (tour !== null) {
-            resolve(true); // Ako postoji token
+            resolve(true); 
           } else {
-            resolve(false); // Ako ne postoji token
+            resolve(false);
           }
         },
         error: () => {
-          reject(false); // U slučaju greške
+          reject(false); 
         }
       });
     });

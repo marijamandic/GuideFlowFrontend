@@ -1,0 +1,15 @@
+<div class="main-column">
+  <div class="club-container">
+      <div *ngFor="let c of club" class="club-card" (click)="c.id ? navigateToClubInfo(c.id) : null">
+          <img [src]="getImagePath(c.imageUrl)" *ngIf="c.imageUrl" alt="Club image" class="club-image" />
+          <div class="club-overlay">
+              <h2 class="club-title">{{ c.name }}</h2>
+              <div class="limited-description">
+                  <p class="club-desc">{{ c.description }}</p>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+<button class="cta-button floating-add-club-button" (click)="onAddClicked()"><i class="fa fa-plus" aria-hidden="true"></i></button>

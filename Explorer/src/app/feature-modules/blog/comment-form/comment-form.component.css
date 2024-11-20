@@ -1,21 +1,36 @@
-.comment-section {
+.comment-form-container {
+    max-width: 100%; 
+    margin: 0 auto; 
+    padding: 15px;
+    background-color: #ffffff; 
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     display: flex;
-    justify-content: center; /* Centriranje cele sekcije */
+    flex-direction: column;
 }
 
-.comment-form {
+.comment-textarea {
+    width: 95%;
+    min-height: 60px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 16px;
+    resize: vertical;
+}
+
+.form-actions {
     display: flex;
-    justify-content: center; /* Centriranje textarea i dugmeta */
-    align-items: center;      /* Vertikalno poravnanje */
-    gap: 10px;                /* Razmak između textarea i dugmeta */
-    margin-top: 20px;         /* Razmak između forme i komentara */
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 10px;
 }
 
-.comment-form mat-form-field {
-    width: auto;
-    max-width: 300px; /* Ograniči širinu textarea */
-}
-
-.comment-form button {
-    margin-left: 10px; /* Razmak između polja i dugmeta */
+.cancel-btn, .submit-btn {
+    padding: 8px 16px;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
 }
