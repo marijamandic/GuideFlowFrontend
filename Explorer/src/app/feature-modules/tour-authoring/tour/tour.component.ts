@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Currency, Level, Tour, TourStatus } from '../model/tour.model';
+import { Tour, Level, TourStatus } from '../model/tour.model';
+import { Currency } from '../model/price.model';
 import { TourService } from '../tour.service';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
-import { User } from 'src/app/infrastructure/auth/model/user.model';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
+import { User } from 'src/app/infrastructure/auth/model/user.model';
 
 @Component({
   selector: 'xp-tour',
@@ -15,26 +16,31 @@ export class TourComponent implements OnInit {
   tour: Tour[] = [];
   selectedTour: Tour = this.initializeTour();
   shouldRenderTourForm: boolean = false;
-  shouldEdit: boolean = false;
+  shouldEdit: boolean = false; 
+  currentView: string;
+  user:User;
   initialMarkers: L.LatLng[] = [];
   latitude: number | null = null;
   longitude: number | null = null;
   searchDistance: number | null = null;
-  user: User | undefined;
-  forPublish: boolean = false;
 
   constructor(private service: TourService, private authService: AuthService){}
   
   tours: Tour[] = [];
-  filteredTours: Tour[] = [];
   draftTours: Tour[]=[];
   publishedTours: Tour[]=[];
+  archivedTours: Tour[]=[];
 
   ngOnInit(): void {
+      this.getTours();  
       this.authService.user$.subscribe(user => {
-        this.user = user;
+        this.user=user;
+        if(user.role==="tourist"){
+          this.currentView="published";
+        }else{
+          this.currentView="drafts";
+        }
       });
-      this.getTours();
   }
 
   initializeTour(): Tour {
@@ -57,11 +63,14 @@ export class TourComponent implements OnInit {
 
 
   getTours(): void{
+    this.shouldRenderTourForm = false;
+    this.shouldEdit = false;
     this.service.getTour().subscribe({
       next: (result: PagedResults<Tour>) => {
         this.tours = result.results;
         this.getDraftTours();
         this.getPublishedTours();
+        this.getArchivedTours();
       },
       error: (err: any)=>{
         console.log(err)
@@ -71,12 +80,15 @@ export class TourComponent implements OnInit {
   }
 
   getDraftTours():void{
-    
     this.draftTours = this.tours.filter(t=> t.status === TourStatus.Draft);
   }
   getPublishedTours():void{
     this.publishedTours = this.tours.filter(t => t.status === TourStatus.Published)
   }
+  getArchivedTours():void{
+    this.archivedTours = this.tours.filter(t => t.status === TourStatus.Archived)
+  }
+
 
   deleteTour(id: number): void {
     this.service.deleteTour(id).subscribe({
@@ -114,8 +126,7 @@ export class TourComponent implements OnInit {
     if (this.latitude !== null && this.longitude !== null && this.searchDistance !== null) {
       this.service.searchTours(this.latitude, this.longitude, this.searchDistance).subscribe({
         next: (tours: Tour[]) => {
-          this.filteredTours = tours;
-
+          this.publishedTours = tours;
         },
         error: (err: any) => {
           console.error('Error fetching search results:', err);
@@ -127,28 +138,53 @@ export class TourComponent implements OnInit {
   }
    
   onPublish(tour:Tour): void {
-    this.selectedTour = tour;
-    this.shouldEdit = true;
-    this.forPublish = true;
-    this.shouldRenderTourForm = true;
+    if(tour.id !== null && tour.id !== undefined){
+      console.log(tour.id);
+      this.service.changeStatus(tour.id,"Publish").subscribe({
+        next: () => {
+          console.log("promenjeno");
+          this.getTours();
+        },
+        error: (err: any)=>{
+          if(err.status===400){
+            alert("You can't publish this tour!");
+          }
+          console.log(err)
+        }
+      })
+    }
+  }
+  
+  archiveTour(tour:Tour):void{
+    if(tour.id !== null && tour.id !== undefined){
+      this.service.changeStatus(tour.id,"Archive").subscribe({
+        next: () => {
+          this.getTours();
+        },
+        error: (err: any)=>{
+          console.log(err)
+        }
+      })
+    }
   }
 
   CurrencyMap = {
     0: 'RSD',
     1: 'EUR',
     2: 'USD'
-};
+  };
 
-LevelMap = {
-    0: 'Easy',
-    1: 'Advanced',
-    2: 'Expert'
-};
-StatusMap = {
-  0: 'Draft',
-  1: 'Published',
-  2: 'Archived'
-}
+  LevelMap = {
+      0: 'Easy',
+      1: 'Advanced',
+      2: 'Expert'
+  };
+
+  StatusMap = {
+    0: 'Draft',
+    1: 'Published',
+    2: 'Archived'
+  }
 }
 
   

@@ -6,8 +6,14 @@ import { TourReview } from './model/tour-review.model';
 import { EquipmentManagement } from './model/equipment-management.model';
 import { environment } from 'src/env/environment';
 import { Problem } from 'src/app/shared/model/problem.model';
+import { Tour } from '../tour-authoring/model/tour.model';
+import { CreateProblemInput } from './model/create-problem-input.model';
+import { ProblemStatusComponent } from './problem-status/problem-status.component';
+import { ProblemStatus } from './model/problem-status.model';
 import { TourExecution } from './model/tour-execution.model';
 import { UpdateTourExecutionDto } from './model/update-tour-execution.dto';
+import { PurchasedTours } from './model/purchased-tours.model';
+import { CreateTourExecutionDto } from './model/create-tour-execution.dto';
 
 @Injectable({
 	providedIn: 'root'
@@ -27,25 +33,58 @@ export class TourExecutionService {
 		return this.http.delete<EquipmentManagement>(environment.apiHost + 'tourist/equipmentManagement/' + equipment.equipmentId);
 	}
 
-	createProblem(problem: Problem): Observable<Problem> {
+	createProblem(problem: CreateProblemInput): Observable<Problem> {
 		const headers = new HttpHeaders({
 			Authorization: `Bearer ${localStorage.getItem('access-token')}`,
 			'Content-Type': 'application/json'
 		});
-		return this.http.post<Problem>(`${environment.apiHost}problems`, problem, { headers });
+		return this.http.post<Problem>(`${environment.apiHost}tourist/problems`, problem, { headers });
+	}
+	getUserProblems(userId : number) : Observable<PagedResults<Problem>>{
+		return this.http.get<PagedResults<Problem>>(environment.apiHost + 'tourist/problems');
+	}
+	changeProblemStatus(id : number, changedStatus : ProblemStatus) : Observable<Problem>{
+		return this.http.put<Problem>(environment.apiHost + 'tourist/problems/' + id,changedStatus);
 	}
 
 	getReviews(): Observable<PagedResults<TourReview>> {
 		return this.http.get<PagedResults<TourReview>>('https://localhost:44333/api/tourist/tourReview');
 	}
 
+	getAllTours(): Observable<PagedResults<Tour>> {
+		return this.http.get<PagedResults<Tour>>('https://localhost:44333/api/authoring/tour');
+	}
+
 	handleClick(tourReview: TourReview): Observable<TourReview> {
 		return this.http.post<TourReview>('https://localhost:44333/api/tourist/tourReview', tourReview);
-	}
+	}	
+	getPercentage(tourExecutionId: number): Observable<number> {
+		return this.http.get<number>(`https://localhost:44333/api/execution/tourExecution/${tourExecutionId}/completion-percentage`);
+	}		
 	getTourExecution(id:string){
 		return this.http.get<TourExecution>(environment.apiHost+'execution/tourExecution/'+id);
 	}
 	updateTourExecution(updateTourExecutionDto : UpdateTourExecutionDto){
 		return this.http.put<TourExecution>(environment.apiHost+'execution/tourExecution',updateTourExecutionDto)
+	}
+
+	getPurchased(id:number){
+		return this.http.get<PurchasedTours[]>(environment.apiHost + 'execution/tourExecution/purchased/' + id);
+	}
+
+	createSession(createTourExecutionDto: CreateTourExecutionDto){
+		return this.http.post<TourExecution>(environment.apiHost + 'execution/tourExecution', createTourExecutionDto);
+	}
+
+	completeSession(id:number): Observable<any>{
+		return this.http.put<any>(environment.apiHost + 'execution/tourExecution/complete/' + id, null);
+	}
+
+	abandonSession(id:number): Observable<any>{
+		return this.http.put<any>(environment.apiHost + 'execution/tourExecution/abandon/' + id, null);
+	}
+
+	getActiveSessionByUser(id: number){
+		return this.http.get<TourExecution>(environment.apiHost + 'execution/tourExecution/getByUser/' + id);
 	}
 }

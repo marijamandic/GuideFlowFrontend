@@ -1,7 +1,13 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TourAuthoringService } from '../tour-authoring.service';
+import { PublicPointService } from '../tour-public-point.service';
 import { TourObject } from '../model/tourObject.model';
+import { PublicPoint } from '../model/publicPoint.model';
+import { ApprovalStatus } from '../model/publicPoint.model';
+import { PointType } from '../model/publicPoint.model';
+import { User } from 'src/app/infrastructure/auth/model/user.model';
+import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 
 @Component({
   selector: 'xp-tour-object-form',
@@ -21,8 +27,14 @@ export class TourObjectFormComponent {
   @Input() category: number;
   @Input() id: number = 0;
   isEditing: boolean = true;
+  isChecked: boolean = false; 
+  user: User | undefined;
 
-  constructor(private service: TourAuthoringService) {}
+  constructor(
+    private service: TourAuthoringService,
+    private publicPointService: PublicPointService,
+    private authService: AuthService
+  ) {}
 
   categories = [
     { value: 0, label: 'Parking' },
@@ -30,6 +42,12 @@ export class TourObjectFormComponent {
     { value: 2, label: 'Toilet' },
     { value: 3, label: 'Other' }
   ];
+
+  ngOnInit(): void {
+    this.authService.user$.subscribe((user) => {
+      this.user = user;
+    });
+  }
 
   ngOnChanges() {
     console.log('Latitude:', this.latitude, 'Longitude:', this.longitude);
@@ -58,6 +76,11 @@ export class TourObjectFormComponent {
     longitude: new FormControl(0, [Validators.required])
   });
 
+  onIsCheckedChange(event: Event) {
+    const checkbox = event.target as HTMLInputElement;
+    this.isChecked = checkbox.checked; 
+  }
+
   onCoordinatesSelected(coordinates: { latitude: number; longitude: number }): void {
     this.tourObjectForm.patchValue({
       latitude: this.latitude,
@@ -85,31 +108,61 @@ export class TourObjectFormComponent {
       return;
     }
 
-    const tourObject: TourObject = {
-      name: this.tourObjectForm.value.name || "",
-      description: this.tourObjectForm.value.description || "",
-      imageUrl: this.tourObjectForm.value.imageUrl || "",
-      imageBase64: this.tourObjectForm.value.imageBase64 || "",
-      category: Number(this.tourObjectForm.value.category),
-      latitude: this.tourObjectForm.value.latitude || 0,  // Ažuriranje latitude
-      longitude: this.tourObjectForm.value.longitude || 0 // Ažuriranje longitude
-    };
-    console.log(tourObject)
-    if (this.isEditing) {
-      this.service.addTourObject(tourObject).subscribe({
-        next: (_) => {
-          this.tourObjectUpdated.emit();
-          console.log('Tour object successfully added');
-        }
-      });
+    if(this.isChecked) {
+      console.log("JAvna")
+      this.createPublicObject()
     } else {
-      this.service.updateTourObject(tourObject, this.id).subscribe({
-        next: (_) => {
-          this.tourObjectUpdated.emit();
-          console.log('Tour object successfully updated');
-        }
-      });
+      console.log("Nije javna")
+      const tourObject: TourObject = {
+        name: this.tourObjectForm.value.name || "",
+        description: this.tourObjectForm.value.description || "",
+        imageUrl: this.tourObjectForm.value.imageUrl || "",
+        imageBase64: this.tourObjectForm.value.imageBase64 || "",
+        category: Number(this.tourObjectForm.value.category),
+        latitude: this.tourObjectForm.value.latitude || 0,  // Ažuriranje latitude
+        longitude: this.tourObjectForm.value.longitude || 0 // Ažuriranje longitude
+      };
+      console.log(tourObject)
+      if (this.isEditing) {
+        this.service.addTourObject(tourObject).subscribe({
+          next: (_) => {
+            this.tourObjectUpdated.emit();
+            console.log('Tour object successfully added');
+          }
+        });
+      } else {
+        this.service.updateTourObject(tourObject, this.id).subscribe({
+          next: (_) => {
+            this.tourObjectUpdated.emit();
+            console.log('Tour object successfully updated');
+          }
+        });
+      }
     }
-    
   }
+
+  createPublicObject(): void {
+    const publicObject: PublicPoint = {
+        id: 0, 
+        name: this.tourObjectForm.value.name || "",
+        description: this.tourObjectForm.value.description || "",
+        latitude: this.tourObjectForm.value.latitude || 0,
+        longitude: this.tourObjectForm.value.longitude || 0,
+        imageUrl: this.tourObjectForm.value.imageBase64 || "",
+        approvalStatus: ApprovalStatus.Pending, 
+        type: PointType.Object,
+        authorId: this.user?.id || 0
+    };
+
+    this.publicPointService.addPublicPoint(publicObject).subscribe({
+        next: (_) => {
+            this.tourObjectUpdated.emit();
+            console.log('Public object successfully created');
+        },
+        error: (err) => {
+            console.error('Error creating public object:', err);
+        }
+    });
+}
+
 }

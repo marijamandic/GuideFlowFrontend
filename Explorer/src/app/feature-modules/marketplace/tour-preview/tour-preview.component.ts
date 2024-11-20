@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, ChangeDetectorRef } from '@angular/core';
-import { Currency, Level, Tour, TourStatus, TransportType } from '../../tour-authoring/model/tour.model';
+import { Level, Tour, TourStatus} from '../../tour-authoring/model/tour.model';
+import { Price, Currency } from '../../tour-authoring/model/price.model';
 import { ActivatedRoute } from '@angular/router';
 import { TourService } from '../../tour-authoring/tour.service';
 import { MarketplaceService } from '../marketplace.service';

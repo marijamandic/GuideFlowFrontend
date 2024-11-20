@@ -1,27 +1,22 @@
-<form [formGroup]="registrationForm" (ngSubmit)="register()">
-    <div>
-        <mat-form-field>
-            <mat-label>Name</mat-label>
-            <input matInput formControlName="name" type="text"/>
-        </mat-form-field>
-        <mat-form-field>
-            <mat-label>Surname</mat-label>
-            <input matInput formControlName="surname" type="text"/>
-        </mat-form-field>
-        <mat-form-field>
-            <mat-label>Username</mat-label>
-            <input matInput formControlName="username" type="text"/>
-        </mat-form-field>
-        <mat-form-field>
-            <mat-label>Email</mat-label>
-            <input matInput formControlName="email" type="text"/>
-        </mat-form-field>
-        <mat-form-field>
-            <mat-label>Password</mat-label>
-            <input matInput formControlName="password" type="password"/>
-        </mat-form-field>
-    <button color="primary" type="submit" mat-raised-button>Register</button>
-    </div>
-</form>
+<div class="main-column">
+    <form [formGroup]="registrationForm" (ngSubmit)="register()" class="blog-form">
+        <h2>Register</h2>
 
+        <label for="name">Name</label>
+        <input id="name" formControlName="name" class="form-control" type="text"/>
 
+        <label for="surname">Surname</label>
+        <input id="surname" formControlName="surname" class="form-control" type="text"/>
+
+        <label for="username">Username</label>
+        <input id="username" formControlName="username" class="form-control" type="text"/>
+
+        <label for="email">Email</label>
+        <input id="email" formControlName="email" class="form-control" type="text"/>
+
+        <label for="password">Password</label>
+        <input id="password" formControlName="password" class="form-control" type="password"/>
+
+        <button type="submit" class="cta-button form-button" [disabled]="registrationForm.invalid">Register</button>
+    </form>
+</div>

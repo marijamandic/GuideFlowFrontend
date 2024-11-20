@@ -1,0 +1,32 @@
+<div class="main-column">
+  <form [formGroup]="clubRequestForm" (ngSubmit)="addRequest()" class="club-form">
+    <table>
+      <tr>
+        <td><h2>{{ 'Create a Club Request' }}</h2></td>
+      </tr>
+      <tr>
+        <td><label for="status">Status</label></td>
+      </tr>
+      <tr>
+        <td><input id="status" formControlName="status" class="form-control" type="text" /></td>
+      </tr>
+      <tr>
+        <td><label for="clubId">Club ID</label></td>
+      </tr>
+      <tr>
+        <td><input id="clubId" formControlName="clubId" class="form-control" type="number" /></td>
+      </tr>
+      <tr>
+        <td><label for="touristId">Tourist ID</label></td>
+      </tr>
+      <tr>
+        <td><input id="touristId" formControlName="touristId" class="form-control" type="number" /></td>
+      </tr>
+      <tr>
+        <td colspan="2" style="text-align: center;">
+          <button type="submit" class="cta-button form-button">{{ 'Create Request' }}</button>
+        </td>
+      </tr>
+    </table>
+  </form>
+</div>

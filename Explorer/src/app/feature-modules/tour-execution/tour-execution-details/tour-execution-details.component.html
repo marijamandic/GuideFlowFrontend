@@ -1,31 +1,90 @@
 <div *ngIf="tourExecution">
-    <h2>Tour Execution Details</h2>
-    <p><strong>Tour Execution ID:</strong> {{ tourExecution.id }}</p>
-    <p><strong>Tour ID:</strong> {{ tourExecution.tourId }}</p>
-    <p><strong>User ID:</strong> {{ tourExecution.userId }}</p>
-    <p><strong>Tour Range:</strong> {{ tourExecution.tourRange }} km</p>
-    <p><strong>Start Time:</strong> {{ tourExecution.startTime | date: 'short' }}</p>
-    <p><strong>End Time:</strong> {{ tourExecution.endTime | date: 'short' }}</p>
-    <p><strong>Last Activity:</strong> {{ tourExecution.lastActivity | date: 'short' }}</p>
-    <p><strong>Execution Status:</strong> {{ tourExecution.executionStatus }}</p>
-  
-    <!-- Prikaz Checkpoint Status liste -->
-    <h3>Checkpoints Status</h3>
-    <div *ngFor="let checkpointStatus of tourExecution.checkpointsStatus" class="checkpoint-status">
-      <p><strong>Checkpoint Status ID:</strong> {{ checkpointStatus.id }}</p>
-      <p><strong>Checkpoint ID:</strong> {{ checkpointStatus.checkpointId }}</p>
-      <p><strong>Completion Time:</strong> {{ checkpointStatus.completionTime | date: 'short' }}</p>
-  
-      <!-- Prikaz Checkpoint detalja -->
-      <div class="checkpoint-details">
-        <h4>Checkpoint Details</h4>
-        <p><strong>Name:</strong> {{ checkpointStatus.checkpoint.name }}</p>
-        <p><strong>Description:</strong> {{ checkpointStatus.checkpoint.description }}</p>
-        <p><strong>Secret:</strong> {{ checkpointStatus.checkpoint.secret }}</p>
-        <p><strong>Latitude:</strong> {{ checkpointStatus.checkpoint.latitude }}</p>
-        <p><strong>Longitude:</strong> {{ checkpointStatus.checkpoint.longitude }}</p>
-        <img [src]="getImagePath(checkpointStatus.checkpoint.imageUrl)" alt="Checkpoint Image" width="100" />
+    <div class="title">
+      <h2>Mountain ride Tour Execution</h2>
+    </div>
+    <div class="tourExecutionContainer">
+      <div class="tourDetails">
+        <div class="tourExecution-card">
+          <div class="checkpoint-header">
+            <h3>Tour execution details</h3>
+          </div>
+          <div class="basicInfo">
+            <p><strong>User name:</strong> {{ tourist?.username }}</p>
+            <p><strong>Tour Range:</strong> {{ tourExecution.tourRange }} km</p>
+            <p><strong>Execution Status:</strong> {{ mapToTourExecutionStatus( tourExecution.executionStatus) }}</p>
+            <p><strong>Start Time:</strong> {{ tourExecution.startTime | date: 'short' }}</p>
+            <p><strong>Number of checkpoints:</strong> {{tourExecution.checkpointsStatus.length}}</p>
+          </div>
+        </div>
+        <div class="checkpoint-status">
+          <div class="checkpoint-card">
+            <div class="checkpoint-image-wrapper">
+              <img [src]="getImagePath(currentCheckpoint.checkpoint.imageUrl)" alt="Checkpoint Image" class="checkpoint-image" />
+            </div>
+            <div class="checkpoint-header">
+              <h3>{{ currentCheckpoint.checkpoint.name }}</h3>
+            </div>
+            <div class="checkpoint-info">
+              <p><strong>Description:</strong> {{ currentCheckpoint.checkpoint.description }}</p>
+              <p><strong>Completion Time:</strong> {{ mapToCompletionTime(currentCheckpoint.completionTime) }}</p>
+              <p><strong>Secret:</strong> {{ currentCheckpoint.checkpoint.secret }}</p>
+            </div>
+            <div class="checkpoint-dots">
+              <!-- Proveravamo da li 'tourExecution' postoji i da 'checkpointsStatus' nije null ili undefined -->
+              <div 
+                *ngFor="let checkpoint of tourExecution?.checkpointsStatus || []; let i = index" 
+                [class.active]="i === getCurrentCheckpointIndex()" 
+                (click)="setCurrentCheckpoint(i)">
+              </div>
+            </div>
+          </div>
+          <div *ngIf="percentageCompleted !== null">
+            <p><strong>Progress:</strong> {{ percentageCompleted }}%</p>
+            <div class="progress-container">
+              <div 
+                class="progress-bar" 
+                [style.width.%]="percentageCompleted" 
+                [class.low]="percentageCompleted < 35" 
+                [class.medium]="percentageCompleted >= 35 && percentageCompleted < 70" 
+                [class.high]="percentageCompleted >= 70">
+              </div>
+            </div>
+          </div>
+            <button 
+              class="review-button" 
+              (click)="openReviewForm()" 
+              [disabled]="isDisabled()"
+              >
+              Ostavi recenziju
+            </button>
+
+            <p *ngIf="getReviewMessage()" class="expired-message">
+            {{ getReviewMessage() }}
+            </p>
+        </div>
+        <div *ngIf="isReviewFormOpen" class="overlay">
+          <div class="review-popup">
+            <xp-tour-review 
+              [tourId]="tourExecution.tourId"
+              [touristId]="tourExecution.userId"
+              [startDate]="tourExecution.startTime"
+              [percentageCompleted]="percentageCompleted"
+              (tourReviewUpdated)="closeReviewForm()"
+            >
+            </xp-tour-review>
+            <button class="close-button" (click)="closeReviewForm()">X</button>
+          </div>
+        </div>
+      </div>
+      <div class="mapDetails">
+        <div style="margin-top: 30px;" >
+          <xp-map [showSearchBar]="isViewMode" [checkpoints]="checkpointCoordinates" ></xp-map>
+          <div class="button-container">
+            <button class="button" (click)="abandonSession()">Abandon session</button>
+            <button class="button" (click)="completeSession()">Complete session</button>
+          </div>
+        </div>
       </div>
     </div>
+    
 </div>
-  

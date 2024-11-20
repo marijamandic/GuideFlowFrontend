@@ -1,84 +1,71 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { ShoppingCart } from '../model/shoppingCart.model';
-import { AuthService } from 'src/app/infrastructure/auth/auth.service';
+import { Component, OnInit } from '@angular/core';
+import { ShoppingCart } from '../model/shopping-carts/shopping-cart';
 import { MarketplaceService } from '../marketplace.service';
-import { User } from 'src/app/infrastructure/auth/model/user.model';
-import { Currency, OrderItem } from '../model/orderItem.model';
+import { HttpErrorResponse } from '@angular/common/http';
+import { SingleItem } from '../model/shopping-carts/single-item';
+import { PagedResults } from 'src/app/shared/model/paged-results.model';
+import { TourPurchaseToken } from '../model/purchase-tokens/tour-purchase-token';
 
 @Component({
-  selector: 'xp-shopping-cart',
-  templateUrl: './shopping-cart.component.html',
-  styleUrls: ['./shopping-cart.component.css']
+	selector: 'xp-shopping-cart',
+	templateUrl: './shopping-cart.component.html',
+	styleUrls: ['./shopping-cart.component.css']
 })
 export class ShoppingCartComponent implements OnInit {
+	cart: ShoppingCart = {
+		id: 0,
+		touristId: 0,
+		singleItems: []
+	};
 
-  debounceTimer: any
-  user: User
-  shoppingCart: ShoppingCart
-  constructor(private authService: AuthService, private marketPlaceService: MarketplaceService) {
-    this.shoppingCart = {
-      id: 1,  
-      userId: 1,  
-      items: [
-        { tourId: 1, tourName: 'Mountain Adventure', price: {cost: 22, currency: Currency.EUR}, quantity: 1 },
-        { tourId: 2, tourName: 'City Exploration', price: {cost: 32, currency: Currency.EUR}, quantity: 2 },
-        { tourId: 3, tourName: 'Beach Getaway', price: {cost: 12, currency: Currency.EUR}, quantity: 1 }
-      ],
-      totalPrice: 35
-    };
-  }
+	totalAdventureCoins = 0;
 
-  ngOnInit(): void {
-    this.authService.user$.subscribe({
-      next: (user: User) => {
-        this.user = user;  
-        this.marketPlaceService.getShoppingCartById(user.id).subscribe({
-          next: (result: ShoppingCart) => {
-            this.shoppingCart = result;  
-          }
-        });
-      }
-    });
-    this.updateCart = this.debounce(this.updateCart.bind(this), 500)
-  }
+	constructor(private marketplaceService: MarketplaceService) {}
 
-  getTotalPrice() {
-    return this.shoppingCart.items.reduce((total, item) => total + item.price.cost * item.quantity, 0);
-  }
+	calculateAc(items: SingleItem[]): void {
+		this.totalAdventureCoins = 0;
+		items.forEach(i => {
+			this.totalAdventureCoins += i.adventureCoin;
+		});
+	}
 
-  removeItem(itemId: number) {
-    this.shoppingCart.items = this.shoppingCart?.items.filter(item => item.tourId !== itemId);
-    this.marketPlaceService.removeItemFromCart(this.user.id, itemId)
-  }
+	handleRemoveClick(singleItemId: number): void {
+		this.marketplaceService.removeFromCart(singleItemId).subscribe({
+			next: (): void => {
+				this.cart.singleItems = [...this.cart.singleItems.filter(i => i.id !== singleItemId)];
+				this.calculateAc(this.cart.singleItems);
+			},
+			error: (err: HttpErrorResponse): void => {
+				console.log(err.message);
+			}
+		});
+	}
 
-  checkout() {
-    alert('Proceeding to checkout!');
-    this.shoppingCart.items = []
-    this.marketPlaceService.clearCart(this.user.id)
-  }
+	goToCheckout():void{
+		this.marketplaceService.generateTokens().subscribe({
+			next: (result:PagedResults<TourPurchaseToken>): void => {
+				this.loadShoppingCart();
+				alert("You have successfully purchased " + result.totalCount + " tours, and you have received a token for each one!")
+			},
+			error: (err: HttpErrorResponse): void => {
+				console.log(err.message);
+			}
+		});
+	}
 
-  decreaseQuantity(item: OrderItem) {
-    item.quantity = item.quantity -1
-    this.updateCart()
-  }
+	ngOnInit(): void {
+		this.loadShoppingCart();
+	}
 
-  increaseQuantity(item : OrderItem){
-    item.quantity = item.quantity + 1
-    this.updateCart()
-  }
-
-  updateCart() {
-    this.marketPlaceService.updateCart(this.shoppingCart)
-  }
-
-  debounce(func: Function, delay: number) {
-    return (...args: any[]) => {
-      if (this.debounceTimer) {
-        clearTimeout(this.debounceTimer);
-      }
-      this.debounceTimer = setTimeout(() => {
-        func(...args);
-      }, delay);
-    };
-  }
+	loadShoppingCart(){
+		this.marketplaceService.getShoppingCartByTouristId().subscribe({
+			next: (result: ShoppingCart) => {
+				this.cart = result;
+				this.calculateAc(this.cart.singleItems);
+			},
+			error: (err: HttpErrorResponse) => {
+				console.log(err.message);
+			}
+		});
+	}
 }

@@ -1,5 +1,5 @@
 <div class="container">
-  <table>
+  <table *ngIf="!shouldRenderCheckpointForm">
     <thead>
       <tr>
         <th>Name</th>
@@ -18,12 +18,12 @@
         <td>{{ checkpoint.name }}</td>
         <td>{{ checkpoint.description }}</td>
         <td>
-          <img [src]="checkpoint.imageUrl" alt="Checkpoint image" style="max-width: 100px;">
+          <img [src]="getImagePath(checkpoint.imageUrl)" alt="Checkpoint image" style="max-width: 100px;">
         </td>
         <td>{{ checkpoint.latitude }}</td>
         <td>{{ checkpoint.longitude }}</td>
         <td>
-          <button style="background-color: rgb(15, 170, 15);" (click)="editCheckpoint(checkpoint); loadFormData(checkpoint)">Edit</button>
+          <button style="background-color: rgb(15, 170, 15);" (click)="editCheckpoint(checkpoint)">Edit</button>
           <button style="background-color: red;" (click)="deleteCheckpoint(checkpoint)">Delete</button>
         </td>
       </tr>
@@ -32,44 +32,11 @@
 
   <!-- Dugme za dodavanje novog checkpoint-a ispod tabele -->
   <div style="margin-top: 20px;">
-    <button (click)="toggleAddCheckpointForm()" style="background-color: blue; color: white;">+ Add Checkpoint</button>
-  </div>
-
-  <!-- Forma za dodavanje novog checkpoint-a ispod dugmeta -->
-  <div *ngIf="isAddingCheckpoint" class="add-checkpoint-form" style="margin-top: 20px;">
-    <form (ngSubmit)="addCheckpoint()">
-      <div style="display: flex; flex-direction: row; gap: 10px;">
-        <input type="text" placeholder="Name" [(ngModel)]="newCheckpoint.name" name="name" required>
-        <input type="text" placeholder="Description" [(ngModel)]="newCheckpoint.description" name="description" required>
-        <input type="file" (change)="onFileSelected($event)" accept="image/*">
-        <input type="number" placeholder="Latitude" [(ngModel)]="newCheckpoint.latitude" name="latitude" required>
-        <input type="number" placeholder="Longitude" [(ngModel)]="newCheckpoint.longitude" name="longitude" required>
-        <button type="submit" style="background-color: green; color: white;">Add</button>
-      </div>
-    </form>
-  </div>
-  <div>
-    <label for="tourSelect">Select Tour:</label>
-    <select id="tourSelect" [(ngModel)]="selectedTour">
-      <option value="tour1">Tour 1</option>
-      <option value="tour2">Tour 2</option>
-    </select>
-  </div>
-  
-  <button (click)="loadCheckpointsMap()">Load Checkpoints</button>
-  
-  <div class="map-container" style="margin-top: 30px;">
-    <xp-map (coordinatesSelected)="onCoordinatesSelected($event)"
-    [checkpoints]="checkpointCoordinates"></xp-map>
-  </div>
-  
-  <div class="form-container" style="margin-top: 30px;">
-    <xp-tour-checkpoint-form
-        [checkpoint]="editingCheckpoint"
-        (coordinatesSelected)="onCoordinatesSelected($event)"
-        (updatedCheckpoint)="loadCheckpoints()"
-        (checkpointsLoaded)="checkpointsLoaded">
-    </xp-tour-checkpoint-form>
-
+    <button *ngIf="!shouldRenderCheckpointForm" (click)="toggleAddCheckpointForm()" style="background-color: blue; color: white;">+ Add Checkpoint</button>
+    <button *ngIf="!shouldRenderCheckpointForm" (click)="finishCheckpointsAdding()" style="background-color: green; color: white;">+ Submit</button>
+  </div>  
+  <xp-tour-checkpoint-form *ngIf="shouldRenderCheckpointForm" [tourId]="tourId" [checkpoint]="selectedCheckpoint" [shouldEdit]="shouldEdit" (updatedCheckpoint)="loadCheckpoints()"></xp-tour-checkpoint-form>
+  <div style="margin-top: 30px;" [hidden]="shouldRenderCheckpointForm">
+    <xp-map [showSearchBar]="isViewMode" [checkpoints]="checkpointCoordinates" (distanceCalculated)="onDistanceCalculated($event)"></xp-map>
   </div>
 </div>
