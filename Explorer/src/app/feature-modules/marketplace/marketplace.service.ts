@@ -7,6 +7,7 @@ import { environment } from 'src/env/environment';
 import { ShoppingCart } from './model/shoppingCart.model';
 import { Action } from 'rxjs/internal/scheduler/Action';
 import { OrderItem } from './model/orderItem.model';
+import { Tour } from '../tour-authoring/model/tour.model';
 
 
 
@@ -51,5 +52,9 @@ export class MarketplaceService {
 
   updateCart(shoppingCart: ShoppingCart) : Observable<ShoppingCart> {
     return this.http.put<ShoppingCart>(environment.apiHost + 'shoppingCart/', shoppingCart)
+  }
+
+  checkToken(userId: number, tourId: number) : Observable<Tour> {
+    return this.http.get<Tour>(environment.apiHost + 'execution/tourExecution/purchased/'+ userId + '/' + tourId)
   }
 }
