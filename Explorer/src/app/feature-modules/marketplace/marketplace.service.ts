@@ -3,12 +3,18 @@ import { TourSpecification } from '../marketplace/model/tour-specification.model
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/env/environment';
+
 import { SingleItemInput } from './model/shopping-carts/single-item-input';
 import { SingleItem } from './model/shopping-carts/single-item';
 import { ShoppingCart } from './model/shopping-carts/shopping-cart';
 import Headers from 'src/app/shared/utils/headers';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
 import { TourPurchaseToken } from './model/purchase-tokens/tour-purchase-token';
+
+import { Action } from 'rxjs/internal/scheduler/Action';
+import { Tour } from '../tour-authoring/model/tour.model';
+
+
 
 @Injectable({
 	providedIn: 'root'
@@ -67,6 +73,14 @@ export class MarketplaceService {
 	// clearCart(userId: number): Observable<void> {
 	// 	return this.http.delete<void>(environment.apiHost + 'shoppingCart/' + userId + '/clear');
 	// }
+
+  updateCart(shoppingCart: ShoppingCart) : Observable<ShoppingCart> {
+    return this.http.put<ShoppingCart>(environment.apiHost + 'shoppingCart/', shoppingCart)
+  }
+
+  checkToken(userId: number, tourId: number) : Observable<Tour> {
+    return this.http.get<Tour>(environment.apiHost + 'execution/tourExecution/purchased/'+ userId + '/' + tourId)
+  }
 
 	// updateCart(shoppingCart: ShoppingCart): Observable<ShoppingCart> {
 	// 	return this.http.put<ShoppingCart>(environment.apiHost + 'shoppingCart/', shoppingCart);
