@@ -122,7 +122,4 @@ export class HomeComponent implements OnInit {
         container.scrollLeft = scrollLeft - walk;
     });
   }
-  nice(){
-    this.a.showAlert('gas', 'info');
-  }
 }

@@ -1,16 +1,16 @@
-<div
-  *ngFor="let alert of alerts; let i = index"
-  class="alert"
-  [class]="alert.alertType"
-  [style.top.px]="20 + i * 60"
->
-  <strong class="label">{{ getAlertLabel(alert.alertType) }}</strong>
-  <span class="message">{{ alert.message }}</span>
+<div class="alert-container">
+  <div
+    *ngFor="let alert of alerts"
+    class="alert"
+    [class]="alert.alertType"
+  >
   <button
-    *ngIf="alert.dismissable"
     class="close-btn"
     (click)="closeAlert(alert.id)"
   >
     ×
   </button>
+    <strong class="label">{{ getAlertLabel(alert.alertType) }}</strong>
+    <span class="message">{{ alert.message }}</span>
+  </div>
 </div>

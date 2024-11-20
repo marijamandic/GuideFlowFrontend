@@ -11,7 +11,6 @@ export class CustomAlertComponent {
     id: number;
     message: string;
     alertType: 'success' | 'error' | 'info' | 'warning';
-    dismissable: boolean;
   }> = [];
 
   constructor(private alertService: AlertService) {
