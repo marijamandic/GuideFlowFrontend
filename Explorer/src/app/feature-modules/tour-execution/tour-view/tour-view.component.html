@@ -1,8 +1,40 @@
-<xp-tour-specification #tourSpec></xp-tour-specification>
+<div class="filter-container">
+  <h3>Filter by:</h3>
 
-<div class="button-container">
-  <button (click)="onFilterClicked(tourSpec)" class="button">Filter by my preference</button>
-  <button (click)="ngOnInit()" class="button">Reset filter</button>
+  <div class="slider-container">
+    <label for="level">Level</label>
+    <input type="range" id="level" name="level" min="0" max="2" [(ngModel)]="ts.level" />
+  </div>
+
+  <div class="slider-container">
+    <label for="car">Car</label>
+    <input type="range" id="car" name="car" min="0" max="3" [(ngModel)]="ts.transportRatings[2].rating" />
+  </div>
+
+  <div class="slider-container">
+    <label for="boat">Boat</label>
+    <input type="range" id="boat" name="boat" min="0" max="3" [(ngModel)]="ts.transportRatings[3].rating" />
+  </div>
+
+  <div class="slider-container">
+    <label for="walk">Walk</label>
+    <input type="range" id="walk" name="walk" min="0" max="3" [(ngModel)]="ts.transportRatings[0].rating" />
+  </div>
+
+  <div class="slider-container">
+    <label for="bike">Bike</label>
+    <input type="range" id="bike" name="bike" min="0" max="3" [(ngModel)]="ts.transportRatings[1].rating" />
+  </div>
+
+  <div class="tags-container">
+    <label for="tagsInput">Tags</label>
+    <textarea [(ngModel)]="tagsInputValue" type="text" id="tagsInput" placeholder="Enter tags separeted by comma"></textarea>
+  </div>
+
+  <div class="button-container">
+    <button id="reset" class="button" (click)="deleteTourSpecification()">Reset</button>
+    <button id="apply" class="button" (click)="applyChanges()">Apply</button>
+  </div>
 </div>
 
 <div *ngIf="allTours && allTours.length > 0; else noTours">

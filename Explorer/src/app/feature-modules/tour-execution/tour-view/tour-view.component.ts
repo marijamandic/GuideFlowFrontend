@@ -3,8 +3,10 @@ import { TourExecutionService } from '../tour-execution.service';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
 import { Tour } from '../../tour-authoring/model/tour.model';
 import { TourStatus } from '../../tour-authoring/model/tour.model';
-import { TourSpecification } from '../../marketplace/model/tour-specification.model';
-import { TourSpecificationComponent } from '../../marketplace/tour-specification/tour-specification.component';
+import { TransportMode } from '../model/transportRating.model';
+import { Level, TourSpecification } from '../model/tour-specification.model';
+import { AuthService } from 'src/app/infrastructure/auth/auth.service';
+import { User } from 'src/app/infrastructure/auth/model/user.model';
 
 @Component({
   selector: 'xp-tour-view',
@@ -15,9 +17,33 @@ export class TourViewComponent implements OnInit {
 
   allTours: Tour[] = [];
 
-  constructor(private service: TourExecutionService) { }
+ tourSpecification: TourSpecification[] = [];
+  public TransportMode = TransportMode;
+ public userId: number;
+  ts = {
+   id: 0,
+   userId: 0,
+   level: Level.Easy,
+   taggs: [] as string[],
+   transportRatings: [
+     { rating: 0, transportMode: TransportMode.Walk },
+     { rating: 0, transportMode: TransportMode.Bike },
+     { rating: 0, transportMode: TransportMode.Car },
+     { rating: 0, transportMode: TransportMode.Boat }
+   ]
+   };
+  levels = Level;
+  tagsInputValue: string = '';
+  currentTourSpecId: number | undefined;
+
+  constructor(private service: TourExecutionService, authService: AuthService) {
+    authService.user$.subscribe((user: User) => {
+      this.userId = user.id;
+    })
+   }
 
   ngOnInit(): void {
+    this.getTourSpecificationPromise();  
     this.service.getAllTours().subscribe({
       next: (result: PagedResults<Tour>) => {
         this.allTours = result.results.filter(tour => tour.status === TourStatus.Published);
@@ -43,14 +69,142 @@ export class TourViewComponent implements OnInit {
     });
   }
   
-  onFilterClicked(tourSpecComponent: TourSpecificationComponent): void {
-    tourSpecComponent.getTourSpecification();
-    console.log("Tour specification retrieved for filtering:", tourSpecComponent.tourSpecification);
+  onFilterClicked(): void {
+    this.createTourSpecification().then(() => {
+      if (this.tourSpecification && this.tourSpecification.length > 0) {
+        const userSpec = this.tourSpecification[0];
+        this.allTours = this.getFilteredTours(userSpec);
+        console.log("Filtered Tours:", this.allTours);
+      }
+    }).catch((err) => {
+      console.error('Error creating tour specification:', err);
+    });
+  }
+
+  async deleteTourSpecification(): Promise<void> {
+    if (!this.currentTourSpecId) {
+      console.error("Invalid tourSpecification id, cannot delete.");
+      return;
+    }
   
-    if (tourSpecComponent.tourSpecification && tourSpecComponent.tourSpecification.length > 0) {
-      const userSpec = tourSpecComponent.tourSpecification[0];
+    console.log("Deleting tourSpecification with id:", this.currentTourSpecId);
+  
+    this.service.deleteTourSpecification({ id: this.currentTourSpecId } as TourSpecification).subscribe({
+      next: (_) => {
+        console.log('Tour specification successfully deleted');
+        this.tourSpecification = this.tourSpecification.filter(ts => ts.id !== this.currentTourSpecId);
+        this.resetForm();
+        this.ngOnInit();
+      },
+      error: (err) => {
+        console.error('Error deleting tour specification:', err);
+      }
+    });
+  }
+  
+
+  getTourSpecificationPromise(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.service.getTourSpecification(this.userId).subscribe({
+        next: (result: TourSpecification) => {
+          console.log("API response:", result);
+          this.tourSpecification = [result];
+          this.ts = {
+            id: result.id ?? 0,
+            userId: result.userId,
+            level: result.level,
+            taggs: result.taggs,
+            transportRatings: result.transportRatings
+          };
+          this.currentTourSpecId = result.id;
+          console.log('Tour Specification assigned:', this.tourSpecification);
+  
+          this.tagsInputValue = this.ts.taggs.join(', ');
+          resolve(); // Ovaj resolve se poziva kada se uspešno učitaju podaci
+        },
+        error: (err: any) => {
+          console.error("Error fetching tour specification:", err);
+          reject(err); // Ako se dogodi greška, odbacujemo Promise
+        }
+      });
+    });
+  }
+  
+
+  getRatingByTransportMode(ratings: any[], mode: number): number {
+    const rating = ratings.find(r => r.transportMode === mode);
+    return rating ? rating.rating : 'No rating';
+  }
+
+  createTourSpecification(): Promise<void> {
+    this.ts.userId = this.userId;
+    const tagsArray = this.tagsInputValue.split(',').map(tag => tag.trim());
+    this.ts.taggs = tagsArray;
+  
+    return new Promise((resolve, reject) => {
+      this.service.addTourSpecification(this.ts).subscribe({
+        next: (response: TourSpecification) => {
+          console.log('TourSpecification successfully created:', response);
+          this.tourSpecification.push(response);
+          this.currentTourSpecId = response.id; // Ažuriraj trenutni ID
+          resolve();
+        },
+        error: (err) => {
+          console.error('Error creating TourSpecification:', err);
+          reject(err);
+        }
+      });
+    });
+  }
+  
+  
+
+  trackByIndex(index: number, item: any): number {
+    return index;
+  }
+
+  resetForm(): void {
+    this.ts = {
+      id: 0,
+      userId: this.userId,
+      level: Level.Easy,
+      taggs: [],
+      transportRatings: [
+        { rating: 0, transportMode: TransportMode.Walk },
+        { rating: 0, transportMode: TransportMode.Bike },
+        { rating: 0, transportMode: TransportMode.Car },
+        { rating: 0, transportMode: TransportMode.Boat }
+      ]
+    };
+  
+    this.tagsInputValue = '';
+  }
+ 
+  isFormEmpty(): boolean {
+    return !this.ts.taggs.length || 
+           this.ts.level === Level.Easy;
+  }
+
+  filterTours(): void {
+    if (this.tourSpecification && this.tourSpecification.length > 0) {
+      const userSpec = this.tourSpecification[0];
       this.allTours = this.getFilteredTours(userSpec);
       console.log("Filtered Tours:", this.allTours);
+    }
+  }
+  
+
+  applyChanges(): void {
+    if (this.currentTourSpecId) {
+      this.deleteTourSpecification().then(() => {
+        this.createTourSpecification().then(() => {
+          this.filterTours();
+        });
+      });
+    } else {
+      this.createTourSpecification().then(() => {
+        this.filterTours();
+      });
     }
   }
   

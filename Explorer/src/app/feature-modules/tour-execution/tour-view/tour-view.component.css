@@ -6,6 +6,71 @@
     padding-bottom: 5px;  /* Optional: adds some space between the text and the underline */
   }
 
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f7f7f7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .filter-container {
+    width: 300px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0);
+  }
+  
+  h3 {
+    margin-bottom: 20px;
+    font-size: 18px;
+    color: #333;
+  }
+  
+  .slider-container {
+    margin-bottom: 20px;
+  }
+  
+  .slider-container label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #666;
+  }
+  
+  input[type="range"] {
+    width: 100%;
+    accent-color: #45d9c2;
+  }
+  
+  .tags-container {
+    margin-bottom: 20px;
+  }
+  
+  .tags-container label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #666;
+  }
+  
+  textarea {
+    width: 100%;
+    height: 60px;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: none;
+  }
+  
+  .button-container {
+    display: flex;
+    justify-content: space-between;
+  }
+  
   .button {
     display: inline-block;
     background-color: var(--primary-color);
@@ -29,9 +94,8 @@
     background-color: var(--hover-color);
     transform: scale(1.05);
   }
-
-  .button-container {
-    display: flex;
-    /* gap: 20px; */
-    justify-content: center;
+  
+  button[disabled] {
+    background-color: #d3d3d3;
+    cursor: not-allowed;
   }
