@@ -4,8 +4,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/env/environment';
 
-import { SingleItemInput } from './model/shopping-carts/single-item-input';
-import { SingleItem } from './model/shopping-carts/single-item';
+import { Item } from './model/shopping-carts/item';
+import { ItemInput } from './model/shopping-carts/item-input';
 import { ShoppingCart } from './model/shopping-carts/shopping-cart';
 import Headers from 'src/app/shared/utils/headers';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
@@ -13,8 +13,6 @@ import { TourPurchaseToken } from './model/purchase-tokens/tour-purchase-token';
 
 import { Action } from 'rxjs/internal/scheduler/Action';
 import { Tour } from '../tour-authoring/model/tour.model';
-
-
 
 @Injectable({
 	providedIn: 'root'
@@ -40,12 +38,12 @@ export class MarketplaceService {
 
 	// shopping cart endpoints
 
-	addToCart(item: SingleItemInput): Observable<SingleItem[]> {
-		return this.http.post<SingleItem[]>(`${environment.apiHost}shopping-cart/single-items`, item, { headers: Headers });
+	addToCart(item: ItemInput): Observable<Item[]> {
+		return this.http.post<Item[]>(`${environment.apiHost}shopping-cart/items`, item, { headers: Headers });
 	}
 
-	removeFromCart(singleItemId: number): Observable<null> {
-		return this.http.delete<null>(`${environment.apiHost}shopping-cart/single-items/${singleItemId}`, { headers: Headers });
+	removeFromCart(itemId: number): Observable<null> {
+		return this.http.delete<null>(`${environment.apiHost}shopping-cart/items/${itemId}`, { headers: Headers });
 	}
 
 	getShoppingCartByTouristId(): Observable<ShoppingCart> {
@@ -53,8 +51,8 @@ export class MarketplaceService {
 	}
 
 	//purchase tokens endpoints
-	generateTokens():Observable<PagedResults<TourPurchaseToken>>{
-		return this.http.post<PagedResults<TourPurchaseToken>>(environment.apiHost + "shopping/tourPurchaseToken",{});
+	generateTokens(): Observable<PagedResults<TourPurchaseToken>> {
+		return this.http.post<PagedResults<TourPurchaseToken>>(environment.apiHost + 'shopping/tourPurchaseToken', {});
 	}
 	//
 
@@ -74,13 +72,13 @@ export class MarketplaceService {
 	// 	return this.http.delete<void>(environment.apiHost + 'shoppingCart/' + userId + '/clear');
 	// }
 
-  updateCart(shoppingCart: ShoppingCart) : Observable<ShoppingCart> {
-    return this.http.put<ShoppingCart>(environment.apiHost + 'shoppingCart/', shoppingCart)
-  }
+	updateCart(shoppingCart: ShoppingCart): Observable<ShoppingCart> {
+		return this.http.put<ShoppingCart>(environment.apiHost + 'shoppingCart/', shoppingCart);
+	}
 
-  checkToken(userId: number, tourId: number) : Observable<Tour> {
-    return this.http.get<Tour>(environment.apiHost + 'execution/tourExecution/purchased/'+ userId + '/' + tourId)
-  }
+	checkToken(userId: number, tourId: number): Observable<Tour> {
+		return this.http.get<Tour>(environment.apiHost + 'execution/tourExecution/purchased/' + userId + '/' + tourId);
+	}
 
 	// updateCart(shoppingCart: ShoppingCart): Observable<ShoppingCart> {
 	// 	return this.http.put<ShoppingCart>(environment.apiHost + 'shoppingCart/', shoppingCart);

@@ -1,12 +1,12 @@
 <div class="main">
 	<div class="container">
 		<h1>Shopping cart</h1>
-		<div *ngIf="cart && cart.singleItems.length > 0; else cartEmpty" class="items-checkout">
+		<div *ngIf="cart && cart.items.length > 0; else cartEmpty" class="items-checkout">
 			<div class="items">
 				<hr />
-				<div *ngFor="let item of cart.singleItems" class="cart-item">
+				<div *ngFor="let item of cart.items" class="cart-item">
 					<div>
-						<b> {{ item.tourName }} </b>
+						<b> {{ item.productName }} </b>
 					</div>
 					<div class="remove">
 						<button type="button" (click)="handleRemoveClick(item.id)">Remove</button>

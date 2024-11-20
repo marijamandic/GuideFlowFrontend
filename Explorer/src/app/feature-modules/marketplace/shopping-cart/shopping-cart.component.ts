@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ShoppingCart } from '../model/shopping-carts/shopping-cart';
 import { MarketplaceService } from '../marketplace.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { SingleItem } from '../model/shopping-carts/single-item';
+import { Item } from '../model/shopping-carts/item';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
 import { TourPurchaseToken } from '../model/purchase-tokens/tour-purchase-token';
 
@@ -15,25 +15,25 @@ export class ShoppingCartComponent implements OnInit {
 	cart: ShoppingCart = {
 		id: 0,
 		touristId: 0,
-		singleItems: []
+		items: []
 	};
 
 	totalAdventureCoins = 0;
 
 	constructor(private marketplaceService: MarketplaceService) {}
 
-	calculateAc(items: SingleItem[]): void {
+	calculateAc(items: Item[]): void {
 		this.totalAdventureCoins = 0;
 		items.forEach(i => {
 			this.totalAdventureCoins += i.adventureCoin;
 		});
 	}
 
-	handleRemoveClick(singleItemId: number): void {
-		this.marketplaceService.removeFromCart(singleItemId).subscribe({
+	handleRemoveClick(itemId: number): void {
+		this.marketplaceService.removeFromCart(itemId).subscribe({
 			next: (): void => {
-				this.cart.singleItems = [...this.cart.singleItems.filter(i => i.id !== singleItemId)];
-				this.calculateAc(this.cart.singleItems);
+				this.cart.items = [...this.cart.items.filter(i => i.id !== itemId)];
+				this.calculateAc(this.cart.items);
 			},
 			error: (err: HttpErrorResponse): void => {
 				console.log(err.message);
@@ -41,13 +41,25 @@ export class ShoppingCartComponent implements OnInit {
 		});
 	}
 
-	goToCheckout():void{
+	goToCheckout(): void {
 		this.marketplaceService.generateTokens().subscribe({
-			next: (result:PagedResults<TourPurchaseToken>): void => {
+			next: (result: PagedResults<TourPurchaseToken>): void => {
 				this.loadShoppingCart();
-				alert("You have successfully purchased " + result.totalCount + " tours, and you have received a token for each one!")
+				alert('You have successfully purchased ' + result.totalCount + ' tours, and you have received a token for each one!');
 			},
 			error: (err: HttpErrorResponse): void => {
+				console.log(err.message);
+			}
+		});
+	}
+
+	loadShoppingCart() {
+		this.marketplaceService.getShoppingCartByTouristId().subscribe({
+			next: (result: ShoppingCart) => {
+				this.cart = { ...result };
+				this.calculateAc(this.cart.items);
+			},
+			error: (err: HttpErrorResponse) => {
 				console.log(err.message);
 			}
 		});
@@ -55,17 +67,5 @@ export class ShoppingCartComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.loadShoppingCart();
-	}
-
-	loadShoppingCart(){
-		this.marketplaceService.getShoppingCartByTouristId().subscribe({
-			next: (result: ShoppingCart) => {
-				this.cart = result;
-				this.calculateAc(this.cart.singleItems);
-			},
-			error: (err: HttpErrorResponse) => {
-				console.log(err.message);
-			}
-		});
 	}
 }
