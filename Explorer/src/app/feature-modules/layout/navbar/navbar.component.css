@@ -74,6 +74,12 @@
     margin-right: 21px;
     position: relative;
 }
+.shopping-cart-icon {
+    cursor: pointer;
+    margin-left: 21px;
+    position: relative;
+}
+
 
 .notification-badge {
     position: absolute;

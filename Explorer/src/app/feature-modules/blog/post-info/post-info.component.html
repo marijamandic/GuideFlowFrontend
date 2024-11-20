@@ -34,7 +34,7 @@
     
     <div class="comments-section">
         <!-- Comment Form Section -->
-        <div *ngIf="user && user.role !== 'author'" class="comment-input-container card">
+        <div *ngIf="user" class="comment-input-container card">
           <div *ngIf="!isCommenting" (click)="toggleCommentForm()" class="collapsed-comment-input">
             <input type="text" placeholder="Add a comment" readonly />
           </div>
