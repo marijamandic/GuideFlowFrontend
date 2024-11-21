@@ -21,6 +21,7 @@
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0);
+    height: 100%;
   }
   
   h3 {
@@ -42,9 +43,9 @@
   
   input[type="range"] {
     width: 100%;
-    accent-color: #45d9c2;
+    accent-color: var(--primary-color);
   }
-  
+
   .tags-container {
     margin-bottom: 20px;
   }
@@ -98,4 +99,10 @@
   button[disabled] {
     background-color: #d3d3d3;
     cursor: not-allowed;
+  }
+
+  .layout{
+    display: flex;
+    gap: 30px;
+    justify-content: center;
   }
