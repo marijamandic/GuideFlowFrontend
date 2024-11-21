@@ -40,10 +40,11 @@
     font-size: 14px;
     color: #666;
   }
-  
+
   input[type="range"] {
     width: 100%;
     accent-color: var(--primary-color);
+    background-color: var(--value);
   }
 
   .tags-container {
@@ -106,3 +107,4 @@
     gap: 30px;
     justify-content: center;
   }
+  

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { TourExecutionService } from '../tour-execution.service';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
 import { Tour } from '../../tour-authoring/model/tour.model';
@@ -36,7 +36,7 @@ export class TourViewComponent implements OnInit {
   tagsInputValue: string = '';
   currentTourSpecId: number | undefined;
 
-  constructor(private service: TourExecutionService, authService: AuthService) {
+  constructor(private service: TourExecutionService, authService: AuthService, private cdr: ChangeDetectorRef) {
     authService.user$.subscribe((user: User) => {
       this.userId = user.id;
     })
@@ -120,11 +120,11 @@ export class TourViewComponent implements OnInit {
           console.log('Tour Specification assigned:', this.tourSpecification);
   
           this.tagsInputValue = this.ts.taggs.join(', ');
-          resolve(); // Ovaj resolve se poziva kada se uspešno učitaju podaci
+          resolve();
         },
         error: (err: any) => {
           console.error("Error fetching tour specification:", err);
-          reject(err); // Ako se dogodi greška, odbacujemo Promise
+          reject(err);
         }
       });
     });
@@ -146,7 +146,7 @@ export class TourViewComponent implements OnInit {
         next: (response: TourSpecification) => {
           console.log('TourSpecification successfully created:', response);
           this.tourSpecification.push(response);
-          this.currentTourSpecId = response.id; // Ažuriraj trenutni ID
+          this.currentTourSpecId = response.id;
           resolve();
         },
         error: (err) => {
@@ -185,27 +185,23 @@ export class TourViewComponent implements OnInit {
            this.ts.level === Level.Easy;
   }
 
-  filterTours(): void {
-    if (this.tourSpecification && this.tourSpecification.length > 0) {
-      const userSpec = this.tourSpecification[0];
-      this.allTours = this.getFilteredTours(userSpec);
-      console.log("Filtered Tours:", this.allTours);
-    }
+  async filterTours(): Promise<void> {
+    const userSpec = this.tourSpecification[0];
+    this.allTours = await this.getFilteredTours(userSpec);
+    this.cdr.detectChanges();
   }
-  
 
-  applyChanges(): void {
-    if (this.currentTourSpecId) {
-      this.deleteTourSpecification().then(() => {
-        this.createTourSpecification().then(() => {
-          this.filterTours();
-        });
-      });
-    } else {
-      this.createTourSpecification().then(() => {
-        this.filterTours();
-      });
+  async applyChanges(): Promise<void> {
+    try {
+      if (this.currentTourSpecId) {
+        await this.deleteTourSpecification();
+      }
+      await this.createTourSpecification();
+      await this.getTourSpecificationPromise();
+      this.allTours = this.getFilteredTours(this.tourSpecification[0]);
+      this.cdr.detectChanges();
+    } catch (error) {
+      console.error('Error applying changes:', error);
     }
   }
-  
 }
