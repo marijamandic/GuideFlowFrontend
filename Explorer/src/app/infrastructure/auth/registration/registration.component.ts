@@ -31,6 +31,10 @@ export class RegistrationComponent {
       email: this.registrationForm.value.email || "",
       username: this.registrationForm.value.username || "",
       password: this.registrationForm.value.password || "",
+      location: {
+        latitude: 45.2671, // Latitude of Novi Sad
+        longitude: 19.8335, // Longitude of Novi Sad
+      }
     };
 
     if (this.registrationForm.valid) {
