@@ -39,6 +39,8 @@ import { TourExecutionDetailsComponent } from 'src/app/feature-modules/tour-exec
 import { PurchasedToursComponent } from 'src/app/feature-modules/tour-execution/purchased-tours/purchased-tours.component';
 import { PublicPointNotificationsComponent } from 'src/app/feature-modules/tour-authoring/public-point-notifications/public-point-notifications.component';
 import { ClubDashboardComponent } from 'src/app/feature-modules/administration/club/club-dashboard/club-dashboard.component';
+import { EncounterComponent } from 'src/app/feature-modules/encounter-execution/encounter/encounter.component';
+import { EncounterFormComponent } from 'src/app/feature-modules/encounter-execution/encounter-form/encounter-form.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -81,6 +83,9 @@ const routes: Routes = [
 	{ path: '', redirectTo: '/home', pathMatch: 'full' },
   {path: 'tourPreview/:id', component: TourPreviewComponent},
   {path: 'shoppingCart', component: ShoppingCartComponent},
+  {path: 'encounters', component: EncounterComponent},
+  { path: 'encounter-add', component: EncounterFormComponent },
+  { path: 'encounter-update/:id', component: EncounterFormComponent },
 
 ];
 

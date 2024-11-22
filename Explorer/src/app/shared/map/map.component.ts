@@ -17,6 +17,7 @@ export class MapComponent implements AfterViewInit,OnChanges {
   @Input() initialMarkers: L.LatLng[] = [];
   @Input() allowMultipleMarkers: boolean = true;
   @Input() checkpoints: { latitude: number; longitude: number }[] = [];
+  @Input() encounters: { latitude: number; longitude: number }[] = [];
   @Input() showSearchBar: boolean = true;
   @Output() markerAdded = new EventEmitter<L.LatLng>();
   @Output() mapReset = new EventEmitter<void>();
@@ -33,6 +34,7 @@ export class MapComponent implements AfterViewInit,OnChanges {
     });
 
     L.Marker.prototype.options.icon = DefaultIcon;
+    
     if (!this.map) {
       this.initMap(); 
     }
@@ -106,6 +108,9 @@ export class MapComponent implements AfterViewInit,OnChanges {
   ngOnChanges(): void {
     if (this.map) {
       this.updateCheckpointMarkers();
+      this.updateEncounterMarkers();
+    } else {
+      this.map.invalidateSize();
     }
   }
 
@@ -123,6 +128,17 @@ export class MapComponent implements AfterViewInit,OnChanges {
       this.setRoute(waypoints);
     }
   }
+
+  private updateEncounterMarkers(): void {
+    this.resetMap();
+
+    this.encounters.forEach((encounter) => {
+      const latLng = new L.LatLng(encounter.latitude, encounter.longitude);
+      const marker = L.marker(latLng).addTo(this.map);
+      this.addMarker(marker);
+    });
+  }
+
 
   search(): void {
 
