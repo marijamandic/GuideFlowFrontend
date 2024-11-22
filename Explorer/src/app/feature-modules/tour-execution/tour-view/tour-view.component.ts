@@ -7,6 +7,7 @@ import { TransportMode } from '../model/transportRating.model';
 import { Level, TourSpecification } from '../model/tour-specification.model';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { User } from 'src/app/infrastructure/auth/model/user.model';
+import { AdministrationService } from '../../administration/administration.service';
 
 @Component({
   selector: 'xp-tour-view',
@@ -16,6 +17,7 @@ import { User } from 'src/app/infrastructure/auth/model/user.model';
 export class TourViewComponent implements OnInit {
 
   allTours: Tour[] = [];
+  allUsers: User[] = [];  
 
  tourSpecification: TourSpecification[] = [];
   public TransportMode = TransportMode;
@@ -36,7 +38,7 @@ export class TourViewComponent implements OnInit {
   tagsInputValue: string = '';
   currentTourSpecId: number | undefined;
 
-  constructor(private service: TourExecutionService, authService: AuthService, private cdr: ChangeDetectorRef) {
+  constructor(private service: TourExecutionService, authService: AuthService, private cdr: ChangeDetectorRef, private adminService: AdministrationService) {
     authService.user$.subscribe((user: User) => {
       this.userId = user.id;
     })
@@ -44,6 +46,7 @@ export class TourViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.getTourSpecificationPromise();  
+
     this.service.getAllTours().subscribe({
       next: (result: PagedResults<Tour>) => {
         this.allTours = result.results.filter(tour => tour.status === TourStatus.Published);
@@ -53,6 +56,28 @@ export class TourViewComponent implements OnInit {
         console.log(err);
       }
     });
+
+    this.adminService.getAllUsers().subscribe({
+      next: (users: User[]) => {
+        this.allUsers = users;
+      },
+      error: (err: any) => {
+        console.log(err);
+      }
+    });
+  }
+
+  onViewDetails(tour: Tour): void {
+    console.log('View Details clicked for tour:', tour.name);
+  }  
+
+  onEditTour(tour: Tour): void {
+    console.log('Edit clicked for tour:', tour.name);
+  }  
+
+  getUsernameByTouristId(touristId: number): string {
+    const user = this.allUsers.find(u => u.id === touristId);
+    return user ? user.username : 'Unknown User';  
   }
 
   calculateAverageRating(reviews: { rating: number }[]): number {

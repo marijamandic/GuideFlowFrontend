@@ -39,35 +39,51 @@
   </div>
 </div>
 
-<div *ngIf="allTours && allTours.length > 0; else noTours">
-    <div *ngFor="let tour of allTours" class="tour-card">
-      <h3>{{ tour.name }}</h3>
-      <p><strong>Description:</strong> {{ tour.description }}</p>
-      <p><strong>Price:</strong> {{ tour.price.cost }} 
-        {{ tour.price.currency === 0 ? 'RSD' : (tour.price.currency === 1 ? 'EUR' : 'USD') }}
-      </p>
-      <p><strong>Average Grade:</strong> {{ calculateAverageRating(tour.reviews) | number:'1.1-1' }}</p> <!-- Calculate Average -->
-      <p><strong>Length:</strong> {{ tour.lengthInKm }} km</p>
-      <p><strong>Tags:</strong> {{ tour.taggs.join(', ') }}</p>
+<div class="tour-container">
+  <div *ngFor="let tour of allTours" class="tour-card">
+    <button class="top-right-button" (click)="onEditTour(tour)">⋮</button>
+      
+    <h3>{{ tour.name }}</h3>
+    <p><strong>Description:</strong> {{ tour.description }}</p>
+    <p><strong>Price:</strong> {{ tour.price.cost }} 
+      {{ tour.price.currency === 0 ? 'RSD' : (tour.price.currency === 1 ? 'EUR' : 'USD') }}
+    </p>
+    <p><strong>Average Grade:</strong> {{ calculateAverageRating(tour.reviews) | number:'1.1-1' }}</p>
+    <p><strong>Length:</strong> {{ tour.lengthInKm }} km</p>
+    <p><strong>Tags:</strong> {{ tour.taggs.join(', ') }}</p>
   
-      <div *ngIf="tour.checkpoints.length > 0">
-        <h4>Checkpoints</h4>
-        <ul>
-          <li>{{ tour.checkpoints[0].name }} - {{ tour.checkpoints[0].description }}</li>
-        </ul>
-      </div>
+    <div *ngIf="tour.checkpoints.length > 0" class="tour-checkpoints">
+      <h4>Checkpoints</h4>
+      <ul>
+        <li>{{ tour.checkpoints[0].name }} - {{ tour.checkpoints[0].description }}</li>
+      </ul>
+    </div>
   
-      <div *ngIf="tour.reviews.length > 0">
-        <h4>Reviews</h4>
-        <ul>
-          <li *ngFor="let review of tour.reviews">
-            <p><strong>Rating:</strong> {{ review.rating }}</p>
-            <p>{{ review.comment }}</p>
-          </li>
-        </ul>
-      </div>
+    <div *ngIf="tour.reviews.length > 0" class="tour-reviews">
+      <h4>Reviews</h4>
+      <ul>
+        <li *ngFor="let review of tour.reviews">
+          <p><strong>Review by:</strong> {{ getUsernameByTouristId(review.touristId) }}</p>
+          <p><strong>Rating:</strong> {{ review.rating }}</p>
+          <p>{{ review.comment }}</p>
+        </li>
+      </ul>
+    </div>
+  
+
+    <div class="buy-button-container">
+      <button class="buy-button">Buy</button>
     </div>
   </div>
+  
+  <div class="tour-card-empty">
+    <span class="plus-icon">
+      <i class="fas fa-plus"></i> 
+    </span>
+  </div>
+
+
+</div>
   
   <ng-template #noTours>
     <p>No tours available.</p>
