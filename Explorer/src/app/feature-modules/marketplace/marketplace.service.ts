@@ -13,6 +13,7 @@ import { TourPurchaseToken } from './model/purchase-tokens/tour-purchase-token';
 
 import { Action } from 'rxjs/internal/scheduler/Action';
 import { Tour } from '../tour-authoring/model/tour.model';
+import { Payment } from './model/payments/payment';
 
 @Injectable({
 	providedIn: 'root'
@@ -51,8 +52,8 @@ export class MarketplaceService {
 	}
 
 	//purchase tokens endpoints
-	generateTokens(): Observable<PagedResults<TourPurchaseToken>> {
-		return this.http.post<PagedResults<TourPurchaseToken>>(environment.apiHost + 'shopping/tourPurchaseToken', {});
+	pay(): Observable<Payment> {
+		return this.http.post<Payment>(environment.apiHost + 'shopping/payment', {});
 	}
 	//
 
