@@ -46,7 +46,6 @@ export class TourViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.getTourSpecificationPromise();  
-
     this.service.getAllTours().subscribe({
       next: (result: PagedResults<Tour>) => {
         this.allTours = result.results.filter(tour => tour.status === TourStatus.Published);
@@ -126,7 +125,6 @@ export class TourViewComponent implements OnInit {
       }
     });
   }
-  
 
   getTourSpecificationPromise(): Promise<void> {
     return new Promise((resolve, reject) => {
@@ -148,13 +146,17 @@ export class TourViewComponent implements OnInit {
           resolve();
         },
         error: (err: any) => {
-          console.error("Error fetching tour specification:", err);
-          reject(err);
+          if (err.status === 404) {
+            console.log("No tour specification found for this user.");
+            resolve();
+          } else {
+            console.error("Error fetching tour specification:", err);
+            reject(err);
+          }
         }
       });
     });
-  }
-  
+  }  
 
   getRatingByTransportMode(ratings: any[], mode: number): number {
     const rating = ratings.find(r => r.transportMode === mode);
@@ -182,8 +184,6 @@ export class TourViewComponent implements OnInit {
     });
   }
   
-  
-
   trackByIndex(index: number, item: any): number {
     return index;
   }
@@ -229,4 +229,5 @@ export class TourViewComponent implements OnInit {
       console.error('Error applying changes:', error);
     }
   }
+  
 }
