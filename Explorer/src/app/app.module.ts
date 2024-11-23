@@ -23,11 +23,8 @@ import { FooterComponent } from './feature-modules/layout/footer/footer.componen
 import { FormsModule } from '@angular/forms';
 
 @NgModule({
-	declarations: [
-		AppComponent,
+	declarations: [AppComponent],
 
-	],
-		
 	imports: [
 		BrowserModule,
 		AppRoutingModule,
