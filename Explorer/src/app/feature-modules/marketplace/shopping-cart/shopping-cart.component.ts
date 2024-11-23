@@ -5,6 +5,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Item } from '../model/shopping-carts/item';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
 import { TourPurchaseToken } from '../model/purchase-tokens/tour-purchase-token';
+import { Payment } from '../model/payments/payment';
 
 @Component({
 	selector: 'xp-shopping-cart',
@@ -42,10 +43,10 @@ export class ShoppingCartComponent implements OnInit {
 	}
 
 	goToCheckout(): void {
-		this.marketplaceService.generateTokens().subscribe({
-			next: (result: PagedResults<TourPurchaseToken>): void => {
+		this.marketplaceService.pay().subscribe({
+			next: (result: Payment ): void => {
 				this.loadShoppingCart();
-				alert('You have successfully purchased ' + result.totalCount + ' tours, and you have received a token for each one!');
+				alert('You have successfully purchased ' + result.paymentItems.length + ' tours, and you have received a token for each one!');
 			},
 			error: (err: HttpErrorResponse): void => {
 				console.log(err.message);

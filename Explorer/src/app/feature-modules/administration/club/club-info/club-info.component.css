@@ -1,5 +1,5 @@
 .main-column {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
     padding: 20px;
     display: flex;
@@ -28,7 +28,11 @@
     font-size: 24px;
     font-weight: bold;
     color: var(--accent-color);
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
+  
   
   .club-image {
     width: 100%;
@@ -96,6 +100,7 @@
     align-items: center;
     justify-content: center;
     z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
   
   .modal-content {
@@ -156,4 +161,21 @@
     text-align: center;
     width: 70%;
   }
+
+  .cta-button[disabled] {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  .cta-button.pending {
+    background-color: #9b9b9b;
+    color: #fff;
+  }
+
+  .ownerUsername{
+    font-size: 14px;
+    font-weight: lighter;
+    padding-bottom: 5px;
+  }
+  
   
