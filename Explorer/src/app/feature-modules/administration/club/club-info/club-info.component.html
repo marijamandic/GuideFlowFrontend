@@ -1,8 +1,10 @@
 <div class="main-column">
   <!-- Club Header Section -->
   <div class="club-info-header">
-    <!-- Club Name (if available) -->
-    <div *ngIf="club?.name" class="club-name">{{ club.name }}</div>
+    <p *ngIf="ownerUsername"> {{ ownerUsername }}</p>
+    <div *ngIf="club?.name" class="club-name">
+      {{ club.name }} 
+    </div>    
     
     <!-- Club Image (if available) -->
     <img *ngIf="club?.imageUrl" [src]="getImagePath(club.imageUrl)" alt="Club image" class="club-image" />
@@ -13,8 +15,10 @@
     </div>
     <div class="edit-club-container">
       <button class="cta-button" *ngIf="club?.ownerId === ownerId" (click)="openInviteModal()">Invite</button>
-      <button class="cta-button" *ngIf="club?.ownerId === ownerId" (click)="onEditClub()">Edit</button>
-      <button class="cta-button" *ngIf="role === 'tourist' && club?.ownerId !== ownerId" (click)="onRequestClub()">Join</button>
+      <!-- <button class="cta-button" *ngIf="club?.ownerId === ownerId" (click)="onEditClub()">Edit</button> Ovo možda da premestimo u dashboard? -->
+      <button class="cta-button" *ngIf="club?.ownerId === ownerId" (click)="onDashboard()">Dashboard</button>
+      <button class="cta-button" [class.pending]="isPending"  *ngIf="role === 'tourist' && club?.ownerId !== ownerId" [disabled]="isMember || isPending" (click)="onRequestClub()" > {{ isMember ? 'Already a Member' : (isPending ? 'Pending Approval' : 'Join') }} </button>
+
     </div>
   </div>
 
@@ -42,7 +46,7 @@
   
       <div class="modal-actions">
         <button class="cta-button" (click)="onInvite()">Invite</button>
-        <button class="cta-button cancel" (click)="closeModal()">Cancel</button>
+        <button class="cta-button cancel" (click)="closeModal()">Close</button>
       </div>
     </div>
   </div>
