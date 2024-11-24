@@ -1,50 +1,177 @@
 .container {
-  display: block; /* Promenio sa flex na block da elementi budu vertikalno poredjani */
+  padding: 20px;
 }
 
-table {
-  width: 100%; /* Širina tabele prilagođena za većinu ekrana */
-  border-collapse: collapse; 
-  margin: 20px 0; 
+.no-checkpoints {
+  font-size: 18px;
+  color: #888;
+  text-align: center;
 }
 
-th, td {
-  padding: 12px; 
-  text-align: left; 
-  border: 1px solid #ddd; 
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
 }
 
-th {
-  background-color: #4CAF50; 
-  color: white; 
+.checkpoint-card {
+  width: 300px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  text-align: center;
+  transition: transform 0.3s ease;
 }
 
-tr:nth-child(even) {
-  background-color: #f2f2f2; 
+.checkpoint-card:hover {
+  transform: translateY(-10px);
 }
 
-tr:hover {
-  background-color: #ddd; 
+.checkpoint-image img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-bottom: 1px solid #ddd;
 }
 
-button {
-  margin-right: 5px; 
-  margin-bottom: 10px;
-  padding: 5px 10px; 
-  background-color: #4CAF50; 
-  color: white; 
-  border: none; 
+.checkpoint-info {
+  padding: 15px;
+}
+
+.checkpoint-actions {
+  padding: 10px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.checkpoint-actions button {
+  padding: 10px 15px;
+  border: none;
   border-radius: 4px;
-  cursor: pointer; 
-  width: 150px; /* Povećao širinu dugmeta kako bi bilo istaknutije */
+  cursor: pointer;
+  font-size: 14px;
 }
 
-button:hover {
-  background-color: #45a049; 
+.checkpoint-actions button:hover {
+  opacity: 0.8;
 }
 
-/* Dugme ispod tabele */
-.add-button-container {
-  text-align: center; /* Centriranje dugmeta ispod tabele */
+.submit-button-container {
+  display: flex;
+  justify-content: center;  /* Centriranje horizontalno */
+  align-items: center;      /* Centriranje vertikalno */
+  margin-top: 20px;         /* Razmak od prethodnog sadržaja */
+}
+
+/* Nova kartica sa dugmetom za dodavanje checkpoint-a */
+.add-card {
+  width: 300px;
+  border: 1px dashed #84dcc6; /* Dashed border za razlikovanje */
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  display: flex;
+  justify-content: center;  /* Centriranje horizontalno */
+  align-items: center;      /* Centriranje vertikalno */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  text-align: center;       /* Centriranje sadržaja unutar kartice */
+}
+
+.add-card:hover {
+  background-color: #e0f7f1; /* Svetlija pozadina na hover */
+}
+
+.add-card-content {
+  display: flex;
+  justify-content: center;  /* Centriranje dugmeta horizontalno */
+  align-items: center;      /* Centriranje dugmeta vertikalno */
+}
+
+/* Floating button styles */
+.floating-add-button {
+  position: center;
+  background-color: #84dcc6;
+  color: white;
+  padding: 15px 30px;
+  border-radius: 25px;
+  font-weight: bold;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+  z-index: 1000;
+  animation: pulseGlow 3s ease-in-out infinite; /* Apply pulsing animation */
+}
+
+/* Hover effect for the button */
+.floating-add-button:hover {
+  background-color: #66c5af;
+  transform: scale(1.1);
+}
+
+.edit-button{
+  background-color: rgb(151, 255, 193);
+}
+.delete-button{
+  background-color: lightcoral;
+}
+
+/* Pulsing effect for the button */
+@keyframes pulseGlow {
+  0%, 100% {
+      box-shadow: 0 0 10px rgba(132, 220, 198, 0.3), 0 0 20px rgba(132, 220, 198, 0.2);
+      transform: scale(1);
+  }
+  50% {
+      box-shadow: 0 0 30px rgba(132, 220, 198, 0.6), 0 0 60px rgba(132, 220, 198, 0.5);
+      transform: scale(1.1);
+  }
+
+}
+
+.instructions {
+  font-family: 'Arial', sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  color: #444;
+  margin-bottom: 20px;
   margin-top: 20px;
+  padding: 10px;
+  border: 2px solid #84dcc6;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  text-align: center;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Senka oko instrukcija */
+  transition: box-shadow 0.3s ease-in-out; /* Animacija senke */
+}
+
+.instructions:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Efekt senke na hover */
+}
+ .feedback{
+  background-color: coral;
+ }
+
+.map{
+  
+    border: 3px solid #84dcc6; /* Svetla boja za granicu */
+    height: 500px; /* Povećana visina */
+    width: 900px; /* Povećana širina */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 40px auto; /* Centriranje sa dodatnim razmakom */
+    gap: 25px;
+    border-radius: 12px; /* Zaobljeni uglovi */
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2); /* Dodavanje senke za bolji izgled */
+    background-color: #f4f4f4; /* Svetla pozadina za bolji kontrast */
+    display: flex;
+    justify-content: center;  /* Centriranje dugmeta horizontalno */
+    align-items: center;     
+  
 }

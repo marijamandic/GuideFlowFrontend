@@ -30,4 +30,7 @@ export class TourCheckpointService {
   getCheckpointsByTour(tourId: number): Observable<Checkpoint[]> {
     return this.http.get<Checkpoint[]>(`${this.baseUrl}/tour/${tourId}`);
   }  
+  getCheckpointById(checkpointId: number): Observable<Checkpoint> {
+    return this.http.get<Checkpoint>(`${this.baseUrl}/${checkpointId}`)
+  }
 }

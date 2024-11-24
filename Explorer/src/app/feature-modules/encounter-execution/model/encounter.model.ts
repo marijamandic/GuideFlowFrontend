@@ -18,6 +18,7 @@ export interface Encounter {
     imageLatitude?: number; // Koordinate slike
     imageLongitude?: number; // Koordinate slike
     actionDescription?: string; // MiscEncounter
+    imageBase64?: string;
 }
 
 export enum EncounterStatus {

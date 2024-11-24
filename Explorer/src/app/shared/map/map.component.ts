@@ -108,7 +108,7 @@ export class MapComponent implements AfterViewInit,OnChanges {
   ngOnChanges(): void {
     if (this.map) {
       this.updateCheckpointMarkers();
-      this.updateEncounterMarkers();
+      //this.updateEncounterMarkers();
     } else {
       this.map.invalidateSize();
     }
@@ -127,16 +127,16 @@ export class MapComponent implements AfterViewInit,OnChanges {
       const waypoints = this.markers.map(m => m.getLatLng());
       this.setRoute(waypoints);
     }
-  }
-
-  private updateEncounterMarkers(): void {
-    this.resetMap();
-
     this.encounters.forEach((encounter) => {
       const latLng = new L.LatLng(encounter.latitude, encounter.longitude);
       const marker = L.marker(latLng).addTo(this.map);
       this.addMarker(marker);
     });
+  }
+
+  private updateEncounterMarkers(): void {
+    this.resetMap();
+
   }
 
 
