@@ -1,0 +1,109 @@
+<div class="main-column">
+  <div class="dashboard-card">
+    <form [formGroup]="clubForm">
+      <div class="edit-layout">
+        <!-- Left Section: Image -->
+        <div class="image-section">
+          <img [src]="getImagePath(imageUrl)" alt="Club image" class="club-image" />
+          <input type="file" id="fileUpload" (change)="onFileSelected($event)" class="form-control" [disabled]="!isEditingEnabled" />
+        </div>
+
+        <!-- Right Section: Form -->
+        <div class="form-section">
+          <label for="name">Name</label>
+          <input id="name" formControlName="name" class="form-control" type="text" [readonly]="!isEditingEnabled"/>
+          <label for="description">Description</label>
+          <textarea id="description" formControlName="description" class="form-control" [readonly]="!isEditingEnabled"></textarea>
+        </div>
+      </div>
+
+      <!-- Bottom Right: Buttons -->
+      <div class="button-section">
+        <button type="button" class="cta-button" (click)="toggleEditing()">
+          {{ isEditingEnabled ? 'Cancel' : 'Edit' }}
+        </button>
+        <button *ngIf="isEditingEnabled" type="submit" class="cta-button form-button" [disabled]="!isFormValid()">Confirm</button>
+      </div>
+    </form>
+  </div>
+  
+    <!-- Club Members Section -->
+    <div class="dashboard-card">
+      <h3>Members</h3>
+      <table class="dashboard-table">
+        <thead>
+          <tr>
+            <th>Username</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let member of members">
+            <td>{{ member.username || 'Unknown' }}</td>
+            <td>{{ member.firstName || 'Unknown' }}</td>
+            <td>{{ member.lastName || 'Unknown' }}</td>
+            <td>{{ member.joinedDate }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    <!-- Membership Requests Section -->
+    <div class="dashboard-card">
+      <h3>Requests</h3>
+      <table class="dashboard-table">
+        <thead>
+          <tr>
+            <th>Username</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let request of requests">
+            <td>{{ request.username || 'Unknown' }}</td>
+            <td>{{ request.firstName || 'Unknown' }}</td>
+            <td>{{ request.lastName || 'Unknown' }}</td>
+            <td>{{ getRequestStatus(request.status) }}</td>
+            <td>
+              <ng-container *ngIf="request.status === 0; else noAction">
+                <button class="action-button accept" (click)="request.id ? acceptRequest(request.id) : null" *ngIf="request.status === 0">Accept</button>
+                <button class="action-button decline" (click)="request.id ? declineRequest(request.id) : null" *ngIf="request.status === 0">Decline</button>
+              </ng-container>
+              <ng-template #noAction>
+                <span>N/A</span>
+              </ng-template>
+              </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    <!-- Invitations Section -->
+    <div class="dashboard-card">
+      <h3>Invitations</h3>
+      <table class="dashboard-table">
+        <thead>
+          <tr>
+            <th>Username</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let invitation of invitations">
+            <td>{{ invitation.username || 'Unknown' }}</td>
+            <td>{{ invitation.firstName || 'Unknown' }}</td>
+            <td>{{ invitation.lastName || 'Unknown' }}</td>
+            <td>{{ getInvitationStatus(invitation.status) }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  

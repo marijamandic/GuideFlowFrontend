@@ -14,11 +14,6 @@ import { CheckpointListComponent } from 'src/app/feature-modules/tour-authoring/
 import { TourComponent } from 'src/app/feature-modules/tour-authoring/tour/tour.component';
 import { TourEquipmentComponent } from 'src/app/feature-modules/tour-authoring/tour-equipment/tour-equipment.component';
 import { ClubComponent } from 'src/app/feature-modules/administration/club/club-overview/club.component';
-import { ClubInvitationComponent } from 'src/app/feature-modules/administration/club/club-invitation/club-invitation.component';
-import { ClubInvitationFormComponent } from 'src/app/feature-modules/administration/club/club-invitation-form/club-invitation-form.component';
-import { ClubRequestComponent } from 'src/app/feature-modules/administration/club/club-request/club-request.component';
-import { ClubRequestFormComponent } from 'src/app/feature-modules/administration/club/club-request-form/club-request-form.component';
-import { ClubMemberListComponent } from 'src/app/feature-modules/administration/club/club-member-list/club-member-list.component';
 import { CommentComponent } from 'src/app/feature-modules/blog/comment/comment.component';
 import { PostComponent } from 'src/app/feature-modules/blog/post/post.component';
 import { CreateBlogComponent } from 'src/app/feature-modules/blog/create-blog/create-blog.component';
@@ -43,6 +38,7 @@ import { PositionsimComponent } from 'src/app/feature-modules/tour-authoring/pos
 import { TourExecutionDetailsComponent } from 'src/app/feature-modules/tour-execution/tour-execution-details/tour-execution-details.component';
 import { PurchasedToursComponent } from 'src/app/feature-modules/tour-execution/purchased-tours/purchased-tours.component';
 import { PublicPointNotificationsComponent } from 'src/app/feature-modules/tour-authoring/public-point-notifications/public-point-notifications.component';
+import { ClubDashboardComponent } from 'src/app/feature-modules/administration/club/club-dashboard/club-dashboard.component';
 import { TourDetailsComponent } from 'src/app/feature-modules/tour-authoring/tour-details/tour-details.component';
 
 const routes: Routes = [
@@ -55,13 +51,8 @@ const routes: Routes = [
   //{ path: 'problem', component: ProblemComponent },
   { path: 'report', component: ReportProblemComponent },
   { path: 'club', component: ClubComponent, canActivate: [AuthGuard] },
-  { path: 'club-invitation', component: ClubInvitationComponent, canActivate: [AuthGuard] },
-  { path: 'club-invitation/add', component: ClubInvitationFormComponent, canActivate: [AuthGuard] },
-  { path: 'club-invitation/edit/:id', component: ClubInvitationFormComponent, canActivate: [AuthGuard] },
-  { path: 'club-request', component: ClubRequestComponent, canActivate: [AuthGuard] },
-  { path: 'club-request/add', component: ClubRequestFormComponent, canActivate: [AuthGuard] },
-  { path: 'club-members/:id', component: ClubMemberListComponent, canActivate: [AuthGuard] },
   { path: 'club-info/:id', component: ClubInfoComponent, canActivate: [AuthGuard] },
+  { path: 'club-dashboard/:id', component: ClubDashboardComponent, canActivate: [AuthGuard] },
   { path: 'new-club', component: ClubFormComponent, canActivate: [AuthGuard]},
   { path: 'blog', component: PostComponent, canActivate: [AuthGuard] },
   { path: 'blog/:id', component: PostInfoComponent, canActivate: [AuthGuard] },
