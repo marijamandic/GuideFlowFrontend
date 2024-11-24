@@ -109,9 +109,9 @@ export class MapComponent implements AfterViewInit,OnChanges {
     if (this.map) {
       this.updateCheckpointMarkers();
       this.updateEncounterMarkers();
-    } else {
+    } /*else {
       this.map.invalidateSize();
-    }
+    }*/
   }
 
   private updateCheckpointMarkers(): void {

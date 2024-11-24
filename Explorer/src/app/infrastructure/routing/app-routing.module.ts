@@ -46,6 +46,7 @@ import { PublicPointNotificationsComponent } from 'src/app/feature-modules/tour-
 import { TourDetailsComponent } from 'src/app/feature-modules/tour-authoring/tour-details/tour-details.component';
 import { EncounterComponent } from 'src/app/feature-modules/encounter-execution/encounter/encounter.component';
 import { EncounterFormComponent } from 'src/app/feature-modules/encounter-execution/encounter-form/encounter-form.component';
+import { AddEncounterComponent } from 'src/app/feature-modules/tour-authoring/add-encounter/add-encounter.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -97,6 +98,7 @@ const routes: Routes = [
   {path: 'encounters', component: EncounterComponent},
   { path: 'encounter-add', component: EncounterFormComponent },
   { path: 'encounter-update/:id', component: EncounterFormComponent },
+  { path: 'author-add-encounter/:id', component: AddEncounterComponent}
 
 ];
 
