@@ -181,7 +181,7 @@ getFormattedCurrency(currency: Currency): string {
   return currencySymbols[currency];
 }
 navigateToAddEncounter(id? : number){
-  this.router.navigate(['/author-add-encounter',id]);
+  this.router.navigate(['/author-add-encounter',id,this.tourId]);
 }
 }
 

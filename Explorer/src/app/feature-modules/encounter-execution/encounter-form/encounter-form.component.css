@@ -70,3 +70,16 @@
     font-weight: bold; /* Podebljaj tekst */
     color: #333; /* Boja teksta */
 }
+
+.map-mode-buttons button {
+    margin: 5px;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .map-mode-buttons button.active {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+  }

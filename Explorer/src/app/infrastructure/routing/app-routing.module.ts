@@ -98,7 +98,7 @@ const routes: Routes = [
   {path: 'encounters', component: EncounterComponent},
   { path: 'encounter-add', component: EncounterFormComponent },
   { path: 'encounter-update/:id', component: EncounterFormComponent },
-  { path: 'author-add-encounter/:id', component: AddEncounterComponent}
+  { path: 'author-add-encounter/:id/:tourId', component: AddEncounterComponent}
 
 ];
 
