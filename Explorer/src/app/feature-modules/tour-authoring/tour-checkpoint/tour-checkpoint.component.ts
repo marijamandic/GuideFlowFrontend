@@ -1,10 +1,11 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { Checkpoint } from '../model/tourCheckpoint.model';
 import { MapComponent } from 'src/app/shared/map/map.component';
 import { TourService } from '../tour.service';
 import { TransportDuration, TransportType } from '../model/transportDuration.model';
 import { Router,ActivatedRoute } from '@angular/router';
 import { environment } from 'src/env/environment';
+import { Tour } from '../model/tour.model';
 
 
 @Component({
@@ -17,10 +18,13 @@ export class CheckpointListComponent implements OnInit {
   checkpoints: Checkpoint[] = [];
   selectedCheckpoint:Checkpoint;
   checkpointCoordinates: { latitude: number, longitude: number }[] = [];
+  @Input() forUpdating : boolean;
   @Output() checkpointsLoaded = new EventEmitter<{ latitude: number; longitude: number; }[]>();
   shouldRenderCheckpointForm:boolean = false;
   shouldEdit:boolean = false; 
   isViewMode:boolean = false;
+  isComplete:boolean = false;
+  showFeedback:boolean= false;
   allTransportData: { transportType: string; time: number; distance: number }[] = [];
   transportDurations: TransportDuration[] = [];
   
@@ -113,15 +117,24 @@ export class CheckpointListComponent implements OnInit {
       this.tourService.addTransportDurations(this.tourId,this.transportDurations).subscribe({
         next: (data) => {
           console.log('Transport Durations added:'+ data.transportDurations);
-          this.router.navigate(['/tour']);
-          alert("Tour with checkpoints added succesfully!");
+          if(!this.forUpdating){
+            this.router.navigate(['/tour']);
+            this.isComplete = true;
+            this.showFeedback = true;
+          }
+          this.router.navigate(['/tourDetails',this.tourId])
+          //alert("Tour with checkpoints added succesfully!");
+          this.isComplete = true;
+          this.showFeedback = true;
         },
         error: (err) => {
           console.error('Greška prilikom add-a transport durations-a:', err);
         }
       });
     }else{
-      alert("You can't finish adding checkpoint without minimum 2 checkpoints and 1 transport duration!");
+      //alert("You can't finish adding checkpoint without minimum 2 checkpoints and 1 transport duration!");
+      this.isComplete = false;
+      this.showFeedback = true;
     }
   }
 

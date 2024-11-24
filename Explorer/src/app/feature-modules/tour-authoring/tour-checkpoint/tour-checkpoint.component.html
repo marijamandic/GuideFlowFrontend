@@ -1,42 +1,66 @@
 <div class="container">
-  <table *ngIf="!shouldRenderCheckpointForm">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Image</th>
-        <th>Latitude</th>
-        <th>Longitude</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngIf="checkpoints.length === 0">
-        <td colspan="6">Nema dostupnih checkpoint-a.</td>
-      </tr>
-      <tr *ngFor="let checkpoint of checkpoints">
-        <td>{{ checkpoint.name }}</td>
-        <td>{{ checkpoint.description }}</td>
-        <td>
-          <img [src]="getImagePath(checkpoint.imageUrl)" alt="Checkpoint image" style="max-width: 100px;">
-        </td>
-        <td>{{ checkpoint.latitude }}</td>
-        <td>{{ checkpoint.longitude }}</td>
-        <td>
-          <button style="background-color: rgb(15, 170, 15);" (click)="editCheckpoint(checkpoint)">Edit</button>
-          <button style="background-color: red;" (click)="deleteCheckpoint(checkpoint)">Delete</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div *ngIf="checkpoints.length === 0" class="no-checkpoints">
+    Checkpoints for this tour do not exist 
+  </div>
 
-  <!-- Dugme za dodavanje novog checkpoint-a ispod tabele -->
-  <div style="margin-top: 20px;">
-    <button *ngIf="!shouldRenderCheckpointForm" (click)="toggleAddCheckpointForm()" style="background-color: blue; color: white;">+ Add Checkpoint</button>
-    <button *ngIf="!shouldRenderCheckpointForm" (click)="finishCheckpointsAdding()" style="background-color: green; color: white;">+ Submit</button>
-  </div>  
+  <div class="instructions">
+    To create this tour, you must add at least two checkpoints. Use + button to add new checkpoint.
+  </div>
+  
+
+  <div class="card-container">
+    <div *ngFor="let checkpoint of checkpoints" class="checkpoint-card">
+      <div class="checkpoint-image">
+        <img [src]="getImagePath(checkpoint.imageUrl)" alt="Checkpoint image" />
+      </div>
+      <div class="checkpoint-info">
+        <h3>{{ checkpoint.name }}</h3>
+        <p>{{ checkpoint.description }}</p>
+        <p><strong>Latitude:</strong> {{ checkpoint.latitude }}</p>
+        <p><strong>Longitude:</strong> {{ checkpoint.longitude }}</p>
+      </div>
+      <div class="checkpoint-actions">
+        <button (click)="editCheckpoint(checkpoint)" class="cta-button edit-button">Edit</button>
+        <button (click)="deleteCheckpoint(checkpoint)" class="cta-button delete-button">Delete</button>
+      </div>
+    </div>
+    
+    <div class="checkpoint-card add-card" (click)="toggleAddCheckpointForm()">
+      <div class="add-card-content">
+        
+        <button class="cta-button floating-add-button"><i class="fa fa-plus" aria-hidden="true"></i></button>
+      </div>
+    </div>
+
+   
+  </div>
+
+  
+
+ 
+
   <xp-tour-checkpoint-form *ngIf="shouldRenderCheckpointForm" [tourId]="tourId" [checkpoint]="selectedCheckpoint" [shouldEdit]="shouldEdit" (updatedCheckpoint)="loadCheckpoints()"></xp-tour-checkpoint-form>
-  <div style="margin-top: 30px;" [hidden]="shouldRenderCheckpointForm">
-    <xp-map [showSearchBar]="isViewMode" [checkpoints]="checkpointCoordinates" (distanceCalculated)="onDistanceCalculated($event)"></xp-map>
+  <div  [hidden]="shouldRenderCheckpointForm">
+    <div>   
+       <h4 class="instructions">Your tour:</h4>
+    </div>
+
+    <xp-map [showSearchBar]="isViewMode" [checkpoints]="checkpointCoordinates" (distanceCalculated)="onDistanceCalculated($event)" ></xp-map>
+  </div>
+
+  <div class="submit-button-container" >
+
+    <button *ngIf="!shouldRenderCheckpointForm " (click)="finishCheckpointsAdding()" class="cta-button floating-add-button">
+       Submit
+    </button>
+
+  </div>
+
+  <div class="instructions feedback" *ngIf="!isComplete && showFeedback">
+    You must add at least two checkpoints!
+  </div>
+
+  <div class="instructions feedback" *ngIf="isComplete && showFeedback">
+    Checkpoints updated!
   </div>
 </div>
