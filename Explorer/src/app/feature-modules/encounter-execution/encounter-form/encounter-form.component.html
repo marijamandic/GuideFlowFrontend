@@ -92,9 +92,20 @@
       <input type="number" id="experiencePoints" [(ngModel)]="encounter.experiencePoints" name="experiencePoints" required />
     </div>
 
+    <p>Current Map: {{ mapMode === 'encounterLocation' ? 'Encounter' : 'Image' }}</p>
+
     <!-- Mapa za unos koordinata -->
     <div class="map-container">
       <xp-map (coordinatesSelected)="onCoordinatesSelected($event)" [encounters]="encounterCoordinates"></xp-map>
+    </div>
+
+    <div class="map-mode-buttons">
+      <button type="button" class="map-mode-buttons" (click)="setMapMode('encounterLocation')" [class.active]="mapMode === 'encounterLocation'">
+        Set Encounter Location
+      </button>
+      <button type="button" class="map-mode-buttons" (click)="setMapMode('imageLocation')" [class.active]="mapMode === 'imageLocation'">
+        Set Image Location
+      </button>
     </div>
 
     <button type="submit" class="cta-button" (click)="onSubmit()">

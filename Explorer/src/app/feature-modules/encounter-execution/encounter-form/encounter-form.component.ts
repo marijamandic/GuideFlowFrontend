@@ -23,6 +23,7 @@ export enum EncounterType {
 export class EncounterFormComponent implements OnInit {
   @Output() updatedEncounter = new EventEmitter<void>();
   @Input() encounterId?: number;
+  mapMode: 'encounterLocation' | 'imageLocation' = 'encounterLocation';
 
   encounter: Encounter = {
     $type: '',
@@ -82,6 +83,11 @@ export class EncounterFormComponent implements OnInit {
     });
   }
 
+  setMapMode(mode: 'encounterLocation' | 'imageLocation'): void {
+    this.mapMode = mode;
+    console.log('Map mode switched to:', this.mapMode);
+  }
+
   onEncounterTypeChange(): void {
     this.encounter.encounterType = this.ConvertType();
   }
@@ -138,12 +144,17 @@ export class EncounterFormComponent implements OnInit {
 //     }
 // }
 
-  onCoordinatesSelected(coordinates: { latitude: number; longitude: number }): void {
+onCoordinatesSelected(coordinates: { latitude: number; longitude: number }): void {
+  if (this.mapMode === 'encounterLocation') {
     this.encounter.encounterLocation.latitude = coordinates.latitude;
     this.encounter.encounterLocation.longitude = coordinates.longitude;
+    console.log('Encounter Location updated:', this.encounter.encounterLocation);
+  } else if (this.mapMode === 'imageLocation') {
     this.encounter.imageLatitude = coordinates.latitude;
     this.encounter.imageLongitude = coordinates.longitude;
+    console.log('Image Location updated:', { latitude: this.encounter.imageLatitude, longitude: this.encounter.imageLongitude });
   }
+}
 
   getEncounter(id: number): void {
     this.encounterService.getEncounter(id).subscribe({
