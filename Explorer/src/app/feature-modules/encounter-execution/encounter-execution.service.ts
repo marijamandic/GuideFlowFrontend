@@ -21,7 +21,7 @@ export class EncounterExecutionService {
     return this.http.post<Encounter>(environment.apiHost + 'admin/encounter', encounter);
   }
 
-  updateEncounter(encounter: Encounter): Observable<Encounter> {
+  updateEncounter(encounter: any): Observable<Encounter> {
     return this.http.put<Encounter>(environment.apiHost + 'admin/encounter', encounter);
   }
 
