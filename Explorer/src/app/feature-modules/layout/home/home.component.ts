@@ -6,6 +6,7 @@ import { MarketplaceService } from '../../marketplace/marketplace.service';
 import { TourService } from '../../tour-authoring/tour.service';
 import { Tour } from '../../tour-authoring/model/tour.model';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
+import { AlertService } from '../alert.service';
 
 @Component({
   selector: 'xp-home',
@@ -24,7 +25,7 @@ export class HomeComponent implements OnInit {
   shoppingCart: ShoppingCart | undefined
 
   constructor(private authService: AuthService, private marketPlaceService: MarketplaceService,
-    private tourService: TourService) {}
+    private tourService: TourService, private a: AlertService) {}
 
   tours = [
     {id: 1,  name: 'Lorem Ipsum', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ', rating: 8.5, reviews: 'Very good, 235 reviews', imageUrl: 'assets/images/tour4.jpg' },
