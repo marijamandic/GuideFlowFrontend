@@ -12,7 +12,6 @@ export interface Encounter {
     touristNumber?: number; // SocialEncounter
     encounterRange?: number; // SocialEncounter
     imageUrl?: string; // LocationEncounter
-    // imageBase64?: string; // Base64 za učitanu sliku
     activationRange?: number; // LocationEncounter
     checkpointId?: number; // LocationEncounter
     imageLatitude?: number; // Koordinate slike

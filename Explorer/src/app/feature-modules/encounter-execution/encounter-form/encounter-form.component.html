@@ -27,17 +27,17 @@
 
     <div *ngIf="encounter.encounterType === 1">
       <!-- Hidden Location Encounter -->
-      <!-- <div class="form-group">
-        <label for="fileInput">Image Upload</label>
-        <input id="fileInput" type="file" (change)="onFileSelected($event)">
-      </div> -->
       <div class="form-group">
         <label for="activationRange">Activation Range</label>
         <input type="number" id="activationRange" [(ngModel)]="encounter.activationRange" name="activationRange" />
       </div>
       <div class="form-group">
-        <label for="imageUrl">Image Url</label>
-        <input type="text" id="imageUrl" [(ngModel)]="encounter.imageUrl" name="imageUrl" />
+        <label for="checkpointId">Checkpoint Id</label>
+        <input type="number" id="checkpointId" [(ngModel)]="encounter.checkpointId" name="checkpointId" />
+      </div>
+      <div class="form-group">
+        <label for="fileInput">Image Upload</label>
+        <input id="fileInput" type="file" (change)="onFileSelected($event)">
       </div>
       <div class="form-group">
         <label for="imageLatitude">Image Latitude</label>

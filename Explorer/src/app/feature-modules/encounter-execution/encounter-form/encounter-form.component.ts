@@ -132,17 +132,18 @@ export class EncounterFormComponent implements OnInit {
     });
   }
 
-//   onFileSelected(event: any): void {
-//     const file: File = event.target.files[0];
-//     if (file) {
-//         const reader = new FileReader();
-//         reader.readAsDataURL(file);
-//         reader.onload = () => {
-//             this.encounter.imageBase64 = reader.result as string; // Postavi Base64 sadržaj slike
-//             console.log('Image successfully loaded:', this.encounter.imageBase64);
-//         };
-//     }
-// }
+  onFileSelected(event: any): void {
+    const file: File = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        this.encounter.imageBase64 = reader.result as string;
+        this.encounter.imageUrl = file.name;
+        console.log('Image uploaded with URL:', this.encounter.imageUrl);
+      };
+    }
+  }
 
 onCoordinatesSelected(coordinates: { latitude: number; longitude: number }): void {
   if (this.mapMode === 'encounterLocation') {
