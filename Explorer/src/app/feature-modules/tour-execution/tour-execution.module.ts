@@ -4,7 +4,7 @@ import { EquipmentManagementComponent } from './equipment-management/equipment-m
 import { EquipmentFormComponent } from './equipment-form/equipment-form.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { ReportProblemComponent } from './report-problem/report-problem.component';
 import { TourReviewComponent } from './tour-review/tour-review.component';

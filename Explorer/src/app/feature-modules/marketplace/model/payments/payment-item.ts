@@ -1,6 +1,8 @@
 import { ProductType } from "../product-type";
 
-export interface ItemInput {
+export interface PaymentItem {
+	id: number;
+	paymentId: number;
 	type: ProductType;
 	productId: number;
 	productName: string;

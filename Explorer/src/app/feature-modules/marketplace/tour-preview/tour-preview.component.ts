@@ -7,7 +7,8 @@ import { MarketplaceService } from '../marketplace.service';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { User } from 'src/app/infrastructure/auth/model/user.model';
 import { ItemInput } from '../model/shopping-carts/item-input';
-import { Item, ProductType } from '../model/shopping-carts/item';
+import { Item } from '../model/shopping-carts/item';
+import { ProductType } from '../model/product-type';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({

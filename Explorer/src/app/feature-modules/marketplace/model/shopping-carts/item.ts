@@ -1,7 +1,4 @@
-export enum ProductType {
-	Tour,
-	Bundle
-}
+import { ProductType } from "../product-type";
 
 export interface Item {
 	id: number;
