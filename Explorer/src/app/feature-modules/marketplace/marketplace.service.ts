@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { TourSpecification } from '../marketplace/model/tour-specification.model';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/env/environment';
+import { TourSpecification } from '../tour-execution/model/tour-specification.model';
 
 import { Item } from './model/shopping-carts/item';
 import { ItemInput } from './model/shopping-carts/item-input';

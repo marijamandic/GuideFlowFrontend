@@ -28,7 +28,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 		ProblemStatusComponent,
 		TourViewComponent
 	],
-	imports: [CommonModule, MatFormFieldModule, SharedModule, MatInputModule, ReactiveFormsModule, MatIconModule, CommonModule],
+	imports: [CommonModule, MatFormFieldModule, FormsModule, SharedModule, MatInputModule, ReactiveFormsModule, MatIconModule, CommonModule],
 	exports: [EquipmentManagementComponent, ReportProblemComponent, TourReviewComponent]
 })
 export class TourExecutionModule {}
