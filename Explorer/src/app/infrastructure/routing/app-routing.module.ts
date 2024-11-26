@@ -47,6 +47,7 @@ import { TourDetailsComponent } from 'src/app/feature-modules/tour-authoring/tou
 import { EncounterComponent } from 'src/app/feature-modules/encounter-execution/encounter/encounter.component';
 import { EncounterFormComponent } from 'src/app/feature-modules/encounter-execution/encounter-form/encounter-form.component';
 import { AddEncounterComponent } from 'src/app/feature-modules/tour-authoring/add-encounter/add-encounter.component';
+import { ExecutionComponent } from 'src/app/feature-modules/encounter-execution/execution/execution.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -98,7 +99,8 @@ const routes: Routes = [
   {path: 'encounters', component: EncounterComponent},
   { path: 'encounter-add', component: EncounterFormComponent },
   { path: 'encounter-update/:id', component: EncounterFormComponent },
-  { path: 'author-add-encounter/:id/:tourId', component: AddEncounterComponent}
+  { path: 'author-add-encounter/:id/:tourId', component: AddEncounterComponent},
+  { path: 'encounter-execution', component: ExecutionComponent}
 
 ];
 

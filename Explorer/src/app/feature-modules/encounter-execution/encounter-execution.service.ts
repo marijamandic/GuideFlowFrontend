@@ -30,4 +30,6 @@ export class EncounterExecutionService {
   getEncounter(encounterId: number): Observable<Encounter> {
     return this.http.get<Encounter>(environment.apiHost + `admin/encounter/${encounterId}`)
   }
+
+  
 }
