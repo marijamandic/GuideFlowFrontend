@@ -86,7 +86,33 @@ export class MarketplaceService {
 	// 	return this.http.put<ShoppingCart>(environment.apiHost + 'shoppingCart/', shoppingCart);
 	// }
 
-	getTourBundles(authorId: Number): Observable<PagedResults<TourBundle>> {
+	getTourBundles(authorId: number): Observable<PagedResults<TourBundle>> {
 		return this.http.get<PagedResults<TourBundle>>(environment.apiHost + 'author/tourBundleMenagement?authorId=' + authorId)
+	}
+
+	createTourBundle(tourBundle: TourBundle): Observable<TourBundle> {
+		return this.http.post<TourBundle>(environment.apiHost + 'author/tourBundleMenagement', tourBundle)
+	}
+
+	deleteTourBundle(tourBundleId: number): Observable<TourBundle> {
+		return this.http.delete<TourBundle>(environment + 'api/tourBundleMenagement?tourBundleId=' + tourBundleId)
+
+	}
+
+	addTourToTourBundle(tourBundleId: number, tourId: number){
+		return this.http.patch<TourBundle>(environment.apiHost + 'author/tourBundleMenagement/addTour?tourbBundleId=' + tourBundleId + '&tourId=' + tourId, null)
+	}
+
+	removeTourFromTourBundle(tourBundleId: number, tourId: number)
+	{
+		return this.http.patch<TourBundle>(environment.apiHost + 'author/tourBundleMenagement/removeTour?tourBundleId=' + tourBundleId + '&tourId=' + tourId, null)
+	}
+
+	publishTourBundle(tourBundleId: number){
+		return this.http.patch<TourBundle>(environment.apiHost + 'author/tourBundleMenagement/publish?tourBundleId=' + tourBundleId, null)
+	}
+
+	archiveTourBundle(tourbBundleId: number){
+		return this.http.patch<TourBundle>(environment.apiHost + 'author/tourBundleMenagement/archive?tourBundleId=' + tourbBundleId, null)
 	}
 }

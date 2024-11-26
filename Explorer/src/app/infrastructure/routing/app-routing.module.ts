@@ -82,7 +82,7 @@ const routes: Routes = [
 	{ path: '', redirectTo: '/home', pathMatch: 'full' },
   {path: 'tourPreview/:id', component: TourPreviewComponent},
   {path: 'shoppingCart', component: ShoppingCartComponent},
-  {path: 'tourBundle', component: TourBundleComponent}
+  {path: 'tourBundleMenagement', component: TourBundleComponent}
 
 ];
 

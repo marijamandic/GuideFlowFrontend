@@ -11,6 +11,8 @@ import { TourPreviewComponent } from './tour-preview/tour-preview.component';
 import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
 import { TourBundleComponent } from './tour-bundle/tour-bundle.component';
 import { MatTabsModule } from '@angular/material/tabs'
+import { FormsModule } from '@angular/forms';
+
 
 @NgModule({
   declarations: [
@@ -27,7 +29,8 @@ import { MatTabsModule } from '@angular/material/tabs'
     CommonModule,
     MaterialModule,
     ReactiveFormsModule,
-    MatTabsModule
+    MatTabsModule,
+    FormsModule,
   ],
   exports: [
     TourSpecificationComponent,

@@ -1,174 +1,195 @@
 /* Overall tab container */
 mat-tab-group {
-    margin-top: 20px;
-    padding: 20px;
-    background-color: #f9f9f9;
-    max-width: 1200px;
-    margin-left: auto;
-    margin-right: auto;
-    border-radius: 8px;
-    overflow: hidden; /* Prevent scrollbars */
-  }
-  
-  /* Creating a form section */
-  .create-bundle-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .create-bundle-container h2 {
-    font-size: 1.8em;
-    margin-bottom: 15px;
-  }
-  
-  .create-bundle-container input {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  .create-bundle-container button {
-    padding: 10px 15px;
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .create-bundle-container button:hover {
-    background-color: #45a049;
-  }
-  
-  /* Tour card container */
-  .tour-cards-container {
-    display: flex;
-    justify-content: space-between;
-    gap: 15px;
-    flex-wrap: wrap;
-  }
-  
-  .tour-card {
-    width: 32%;
-    padding: 15px;
-    background-color: #fff;
-    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    text-align: center;
-    transition: transform 0.3s ease;
-  }
-  
-  .tour-card:hover {
-    transform: scale(1.05);
-  }
-  
-  .tour-card img {
-    width: 100%;
-    height: 150px;
-    object-fit: cover;
-    border-radius: 8px;
-  }
-  
-  .tour-card h3 {
-    margin-top: 10px;
-    font-size: 1.2em;
-  }
-  
-  .tour-card p {
-    color: #666;
-    font-size: 0.9em;
-  }
-  
-  /* Bundle cards container */
-  .bundle-cards-container {
-    display: flex;
-    justify-content: space-between;
-    gap: 15px;
-    flex-wrap: wrap;
-    min-height: 400px;  /* Ensuring there's space even when no bundles */
-  }
-  
-  .bundle-card {
-    width: 32%;
-    padding: 15px;
-    background-color: #fff;
-    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    text-align: center;
-    transition: transform 0.3s ease;
-  }
-  
-  .bundle-card:hover {
-    transform: scale(1.05);
-  }
-  
-  .bundle-card img {
-    width: 100%;
-    height: 150px;
-    object-fit: cover;
-    border-radius: 8px;
-  }
-  
-  .bundle-card h3 {
-    margin-top: 10px;
-    font-size: 1.2em;
-  }
-  
-  .bundle-card p {
-    color: #666;
-    font-size: 0.9em;
-  }
-  
-  /* Empty message */
-  .empty-message {
-    text-align: center;
-    color: #888;
-    font-size: 1.2em;
-    padding: 20px;
-    width: 100%;
-    height: 100%;
-  }
-  
-  /* Bundle actions */
-  .bundle-actions {
-    margin-top: 10px;
-  }
-  
-  .bundle-actions button {
-    padding: 5px 10px;
-    border-radius: 4px;
-    font-size: 1em;
-    cursor: pointer;
-    margin: 5px;
-  }
-  
-  .bundle-actions .btn-info {
-    background-color: #2196F3;
-    color: white;
-  }
-  
-  .bundle-actions .btn-success {
-    background-color: #4caf50;
-    color: white;
-  }
-  
-  .bundle-actions .btn-warning {
-    background-color: #ff9800;
-    color: white;
-  }
-  
-  .bundle-actions .btn-danger {
-    background-color: #f44336;
-    color: white;
-  }
-  
-  .bundle-actions button:hover {
-    opacity: 0.9;
-  }
-  
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #f4f4f9;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+/* Form group styling */
+.form-group {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-size: 1.1em;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  padding: 10px;
+  font-size: 1em;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: #4caf50;
+  box-shadow: 0px 0px 5px rgba(76, 175, 80, 0.3);
+}
+
+.tour-cards-container {
+  display: flex;
+  justify-content: flex-start;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 0;
+  max-height: 650px;  /* Set max height for two full rows */
+  overflow-y: auto;  /* Enable vertical scrollbar when content exceeds max height */
+}
+
+/* Individual tour card */
+.tour-card {
+  width: 29%;  /* Reduced width to fit 3 cards in a row */
+  padding: 15px;
+  background: #fff;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  text-align: center;
+  margin: 0;
+  border: 1px solid #e0e0e0;
+  display: flex;
+  flex-direction: column;
+  height: auto;
+}
+
+.tour-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.tour-card h3 {
+  margin-top: 20px;
+  font-size: 1.4em;
+  color: #333;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.tour-card p {
+  color: #666;
+  font-size: 1.1em;
+  line-height: 1.5;
+  word-wrap: break-word; 
+  white-space: normal; 
+}
+
+/* Bundle card container */
+.bundle-cards-container {
+  display: flex;
+  justify-content: flex-start;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 0;
+  max-height: 650px;  /* Set max height for two full rows */
+  overflow-y: auto;  /* Enable vertical scrollbar when content exceeds max height */
+}
+
+/* Individual bundle card */
+.bundle-card {
+  width: 20%; 
+  padding: 15px;
+  background-color: #fff;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  text-align: center;
+  margin: 0;
+  border: 1px solid #e0e0e0;
+  display: flex;
+  flex-direction: column;
+  height: auto;
+}
+
+.bundle-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.bundle-card h3 {
+  margin-top: 20px;
+  font-size: 1.4em;
+  color: #333;
+  font-weight: 600;
+  text-transform: uppercase;
+  max-width: 100%;
+  overflow-wrap: break-word;
+}
+
+.bundle-card p {
+  color: #666;
+  font-size: 1.1em;
+  line-height: 1.5;
+  flex-grow: 1;
+}
+
+/* Bundle actions buttons */
+.bundle-actions button {
+  margin-top: 15px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 1em;
+  border: none;
+  background-color: #4caf50;
+  color: #fff;
+  transition: background-color 0.3s ease;
+}
+
+.bundle-actions button:hover {
+  background-color: #45a049;
+}
+
+.bundle-actions button:focus {
+  outline: none;
+}
+
+/* Create button styling */
+button.btn-primary {
+  background-color: #4caf50;
+  color: #fff;
+  padding: 12px 25px;
+  font-size: 1.2em;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button.btn-primary:hover {
+  background-color: #45a049;
+}
+
+button.btn-primary:focus {
+  outline: none;
+}
+
+/* Empty placeholder style */
+.empty-placeholder {
+  color: #999;
+  font-size: 1.3em;
+  text-align: center;
+  font-style: italic;
+  padding-top: 20px;
+  letter-spacing: 1px;
+}

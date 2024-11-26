@@ -1,10 +1,11 @@
 export interface TourBundle 
 {
-    id: Number,
+    id: number,
+    name: string,
     price: Number,
     status: BundleStatus,
-    authorId: Number,
-    tourId: Array<Number>
+    authorId: number,
+    tourIds: Array<number> 
 }
 
 export enum BundleStatus
