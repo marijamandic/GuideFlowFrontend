@@ -44,11 +44,18 @@ export class TourViewComponent implements OnInit {
     })
    }
 
+   //constructor(private service: TourExecutionService, authService: AuthService, private cdr: ChangeDetectorRef, private adminService: AdministrationService) {
+    //authService.user$.subscribe((user: User) => {
+      //his.userId = user.id;
+    //})
+   //}
+
   ngOnInit(): void {
     this.getTourSpecificationPromise();  
     this.service.getAllTours().subscribe({
       next: (result: PagedResults<Tour>) => {
         this.allTours = result.results.filter(tour => tour.status === TourStatus.Published);
+        console.log(this.allTours); 
         console.log(this.allTours[1].reviews); 
       },
       error: (err: any) => {
