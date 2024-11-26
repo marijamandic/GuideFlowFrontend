@@ -24,6 +24,7 @@ export class EncounterFormComponent implements OnInit {
   @Output() updatedEncounter = new EventEmitter<void>();
   @Input() encounterId?: number;
   mapMode: 'encounterLocation' | 'imageLocation' = 'encounterLocation';
+  typeSelected: boolean = false;
 
   encounter: Encounter = {
     $type: '',
@@ -90,6 +91,7 @@ export class EncounterFormComponent implements OnInit {
 
   onEncounterTypeChange(): void {
     this.encounter.encounterType = this.ConvertType();
+    this.typeSelected = true;
   }
 
   onSubmit(): void {

@@ -4,6 +4,8 @@ import { Encounter } from '../model/encounter.model';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { User } from 'src/app/infrastructure/auth/model/user.model';
+import { Tourist } from '../../tour-authoring/model/tourist';
+import { TourService } from '../../tour-authoring/tour.service';
 
 @Component({
   selector: 'xp-encounter',
@@ -17,19 +19,31 @@ export class EncounterComponent implements OnInit {
   userMarker: { latitude: number, longitude: number } | null = null;
   isViewMode: boolean = false;
   user: User;
+  tourist : Tourist;
   @Output() encounterCoordinatesLoaded = new EventEmitter<{ latitude: number; longitude: number; }[]>();
 
-  constructor(private service: EncounterExecutionService, private router: Router, private authService: AuthService){}
+  constructor(private service: EncounterExecutionService, private router: Router, private authService: AuthService, private tourService: TourService,){}
 
   ngOnInit(): void {
     this.authService.user$.subscribe(user => {
       this.user = user;
-      if (this.user?.location) {
-        this.userMarker = {
-          latitude: 45.2671,
-          longitude: 19.8335
-        };
-        this.emitCoordinates();
+      if (this.user.role == 'tourist') {
+        this.tourService.getTouristById(user.id).subscribe({
+          next: (result: Tourist) => {
+            this.tourist = result;
+            if (this.tourist.location) {
+              this.userMarker = {
+                latitude: this.tourist.location.latitude,
+                longitude: this.tourist.location.longitude
+              };
+              console.log(this.tourist)
+              this.emitCoordinates();
+            }
+          },
+          error: (err: any) => {
+            console.log(err);
+          }
+        })
       }
     });
     this.getEncounters();
