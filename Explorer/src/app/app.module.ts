@@ -41,7 +41,7 @@ import { FormsModule } from '@angular/forms';
 		MatFormFieldModule,
 		MatInputModule,
 		LayoutModule,
-		FormsModule
+		FormsModule,
 	],
 	providers: [
 		{

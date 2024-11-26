@@ -9,13 +9,16 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { TourPreviewComponent } from './tour-preview/tour-preview.component';
 import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
+import { TourBundleComponent } from './tour-bundle/tour-bundle.component';
+import { MatTabsModule } from '@angular/material/tabs'
 
 @NgModule({
   declarations: [
     TourSpecificationComponent,
     TourSpecificationFormComponent,
     TourPreviewComponent,
-    ShoppingCartComponent
+    ShoppingCartComponent,
+    TourBundleComponent
   ],
   imports: [
     MatRadioModule,
@@ -23,7 +26,8 @@ import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
     MatInputModule,
     CommonModule,
     MaterialModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatTabsModule
   ],
   exports: [
     TourSpecificationComponent,

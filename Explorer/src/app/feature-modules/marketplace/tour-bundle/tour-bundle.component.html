@@ -1,0 +1,125 @@
+<mat-tab-group>
+    <!-- Tab for Creating Tour Bundle -->
+    <mat-tab label="Create Bundle">
+      <div class="create-bundle-container">
+        <h2>Create a New Tour Bundle</h2>
+        <form>
+          <div class="form-group">
+            <label for="bundleName">Bundle Name:</label>
+            <input id="bundleName" type="text" placeholder="Enter Bundle Name" />
+          </div>
+  
+          <div class="form-group">
+            <label for="bundlePrice">Bundle Price:</label>
+            <input id="bundlePrice" type="number" placeholder="Enter Price" />
+          </div>
+          
+          <div class="form-group">
+            <label for="tourSelection">Select Tours:</label>
+            <div class="tour-cards-container">
+              <div class="tour-card">
+                <img src="tour1.jpg" alt="Tour 1" />
+                <h3>Tour 1</h3>
+                <p>A brief description of the tour.</p>
+                <input type="checkbox" id="tour1" />
+              </div>
+              <div class="tour-card">
+                <img src="tour2.jpg" alt="Tour 2" />
+                <h3>Tour 2</h3>
+                <p>A brief description of the tour.</p>
+                <input type="checkbox" id="tour2" />
+              </div>
+              <div class="tour-card">
+                <img src="tour3.jpg" alt="Tour 3" />
+                <h3>Tour 3</h3>
+                <p>A brief description of the tour.</p>
+                <input type="checkbox" id="tour3" />
+              </div>
+            </div>
+          </div>
+  
+          <button type="submit" class="btn btn-primary">Create Bundle</button>
+        </form>
+      </div>
+    </mat-tab>
+  
+    <!-- Tab for Draft Bundles -->
+    <mat-tab label="Drafts">
+      <div class="bundle-list">
+        <h2>Draft Bundles</h2>
+        <div class="bundle-cards-container">
+          <div class="bundle-card">
+            <img src="bundle1.jpg" alt="Draft Bundle 1" />
+            <h3>Sample Draft Bundle 1</h3>
+            <p>Price: $150</p>
+            <div class="bundle-actions">
+              <button class="btn btn-success">Publish</button>
+              <button class="btn btn-warning">Edit</button>
+              <button class="btn btn-danger">Delete</button>
+            </div>
+          </div>
+          <div class="bundle-card">
+            <img src="bundle2.jpg" alt="Draft Bundle 2" />
+            <h3>Sample Draft Bundle 2</h3>
+            <p>Price: $200</p>
+            <div class="bundle-actions">
+              <button class="btn btn-success">Publish</button>
+              <button class="btn btn-warning">Edit</button>
+              <button class="btn btn-danger">Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-tab>
+  
+    <!-- Tab for Published Bundles -->
+    <mat-tab label="Published">
+      <div class="bundle-list">
+        <h2>Published Bundles</h2>
+        <div class="bundle-cards-container">
+          <div class="bundle-card">
+            <img src="bundle3.jpg" alt="Published Bundle 1" />
+            <h3>Sample Published Bundle 1</h3>
+            <p>Price: $250</p>
+            <div class="bundle-actions">
+              <button class="btn btn-info">Archive</button>
+            </div>
+          </div>
+          <div class="bundle-card">
+            <img src="bundle4.jpg" alt="Published Bundle 2" />
+            <h3>Sample Published Bundle 2</h3>
+            <p>Price: $180</p>
+            <div class="bundle-actions">
+              <button class="btn btn-info">Archive</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-tab>
+  
+    <!-- Tab for Archived Bundles -->
+    <mat-tab label="Archived">
+      <div class="bundle-list">
+        <h2>Archived Bundles</h2>
+        <div class="bundle-cards-container">
+          <div class="bundle-card">
+            <img src="bundle5.jpg" alt="Archived Bundle 1" />
+            <h3>Sample Archived Bundle 1</h3>
+            <p>Price: $120</p>
+            <div class="bundle-actions">
+              <button class="btn btn-danger">Delete</button>
+            </div>
+          </div>
+          <div class="bundle-card">
+            <img src="bundle6.jpg" alt="Archived Bundle 2" />
+            <h3>Sample Archived Bundle 2</h3>
+            <p>Price: $140</p>
+            <div class="bundle-actions">
+              <button class="btn btn-danger">Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+  

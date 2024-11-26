@@ -14,6 +14,7 @@ import { TourPurchaseToken } from './model/purchase-tokens/tour-purchase-token';
 import { Action } from 'rxjs/internal/scheduler/Action';
 import { Tour } from '../tour-authoring/model/tour.model';
 import { Payment } from './model/payments/payment';
+import { TourBundle } from './model/tour-bundle.model';
 
 @Injectable({
 	providedIn: 'root'
@@ -84,4 +85,8 @@ export class MarketplaceService {
 	// updateCart(shoppingCart: ShoppingCart): Observable<ShoppingCart> {
 	// 	return this.http.put<ShoppingCart>(environment.apiHost + 'shoppingCart/', shoppingCart);
 	// }
+
+	getTourBundles(authorId: Number): Observable<PagedResults<TourBundle>> {
+		return this.http.get<PagedResults<TourBundle>>(environment.apiHost + 'author/tourBundleMenagement?authorId=' + authorId)
+	}
 }
