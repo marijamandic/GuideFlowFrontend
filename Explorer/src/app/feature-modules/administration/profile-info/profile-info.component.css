@@ -1,5 +1,26 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
 #profileInfo {
-    margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #f9f9f9; /* Optional: Light background for contrast */
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+#profileInfo {
     margin-left: 20px;
 }
 
@@ -8,6 +29,7 @@
     flex-direction: row;
     gap: 50px;
     align-items: flex-start;
+    border-radius: 500px;
 }
 
 p {
@@ -23,7 +45,7 @@ table {
 }
 
 thead tr {
-    background-color: #3f51b5;
+    background-color: #84dcc6;
     color: #ffffff;
     text-align: left;
 }
@@ -41,11 +63,25 @@ tbody tr:nth-of-type(even) {
 }
 
 tbody tr:last-of-type {
-    border-bottom: 2px solid #3f51b5;
+    border-bottom: 2px solid #84dcc6;
 }
 
 tbody tr.active-row {
     font-weight: bold;
-    color: #3f51b5;
+    color: #84dcc6;
 }
 
+.profile-image{
+    border-radius: 20px;
+}
+
+button{
+    background-color: #84dcc6;
+}
+
+body{
+    font-size: 14px;
+    font-weight: lighter;
+    margin: 0;
+    padding: 0;
+}

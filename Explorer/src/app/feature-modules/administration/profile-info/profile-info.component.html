@@ -5,33 +5,95 @@
         <div>
             <table>
                 <thead>
-                    <tr>
-                        <th>FirstName</th>
-                        <th>LastName</th>
-                        <th>ProfilePicture</th>
-                        <th>Biography</th>
-                        <th>Moto</th>
-                    </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let pi of profileInfo"> 
-                        <td>{{pi.firstName}}</td>
-                        <td>{{pi.lastName}}</td>
-                        <td><img [src]="getImagePath(pi.imageUrl)" alt="Post image" *ngIf="pi.imageUrl" class="post-image"/></td>
-                        <td>{{pi.biography}}</td>
-                        <td>{{pi.moto}}</td> 
-                        <td>
-                            <button color="accent" mat-icon-button> <!--(click)="deleteProfileInfo(pi.id || 0)"> -->
-                                <mat-icon>delete</mat-icon>
-                            </button>
-                            <button color="primary" (click)="onEditClicked(pi)" mat-icon-button> <!--  > -->
-                                <mat-icon>edit</mat-icon>
-                            </button>
-                        </td>
+                    <tr *ngFor="let pi of profileInfo">
+                      <td colspan="2" style="text-align: center;">
+                        <img 
+                          [src]="getImagePath(pi.imageUrl)" 
+                          alt="Profile image" 
+                          *ngIf="pi.imageUrl" 
+                          class="profile-image" 
+                        />
+                      </td>
                     </tr>
-                </tbody>
+                    <tr *ngFor="let pi of profileInfo; let i = index">
+                        <td>First Name:</td>
+                        <td>
+                          <input 
+                            type="text" 
+                            [(ngModel)]="pi.firstName" 
+                            [disabled]="!isEditMode"
+                            placeholder="Enter first name" 
+                          />
+                        </td>
+                        
+                      </tr>
+                    <tr *ngFor="let pi of profileInfo">
+                      <td>Last Name:</td>
+                      <td>
+                        <input 
+                          type="text" 
+                          [(ngModel)]="pi.lastName" 
+                          [disabled]="!isEditMode"
+                          placeholder="Enter first name" 
+                        />
+                      </td>
+                    </tr>
+                    <tr *ngFor="let pi of profileInfo">
+                      <td>Biography:</td>
+                      <td>
+                        <input 
+                          type="text" 
+                          [(ngModel)]="pi.biography" 
+                          [disabled]="!isEditMode"
+                          placeholder="Enter first name" 
+                        />
+                      </td>
+                    </tr>
+                    <tr *ngFor="let pi of profileInfo">
+                      <td>Moto:</td>
+                      <td>
+                        <input 
+                          type="text" 
+                          [(ngModel)]="pi.moto" 
+                          [disabled]="!isEditMode"
+                          placeholder="Enter first name" 
+                        />
+                      </td>
+                    </tr>
+
+                    <tr *ngIf="isEditMode" >
+                      <td *ngIf="isEditMode">Image:</td>
+                      <td>
+                        <!-- Ovaj red je vidljiv samo kada je isEditMode true -->
+                        <div *ngFor="let pi of profileInfo">
+                          <input 
+                            type="file" 
+                            (change)="onFileSelected($event)" 
+                            [readonly]="!isEditMode" style="color: transparent"
+                          />
+                        </div>
+                      </td>
+                    </tr>
+
+                    <!-- Akcije -->
+                    <tr *ngFor="let pi of profileInfo">
+                      <td colspan="2" style="text-align: center;">
+                        <!--<button color="primary" (click)="onEditClicked(pi)" mat-icon-button>
+                          <mat-icon>edit</mat-icon>
+                        </button>-->
+                        <button (click)="onEditClicked(pi)" class="cta-button">
+                          {{ isEditMode ? 'Save' : 'Edit' }}
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                  
+                  
             </table>
-        </div>
+          </div>
+    </div>
     <div>
         <div>
             <h3>Followers</h3>
@@ -51,7 +113,9 @@
             </table>
           </div>
         </div>
-        <div>
+      </div>
+
+    <!--     <div>
             <xp-profile-info-form *ngIf="shouldRenderProfileInfoForm" 
                                 [shouldEdit]="shouldEdit" 
                                 [profileInfo]="selectedProfileInfo" 
@@ -59,10 +123,5 @@
         </div>    
     
     
-    <!-- <xp-profile-info-form *ngIf="shouldRenderProfileInfoForm" [shouldEdit]="shouldEdit" [profileInfo]="selectedProfileInfo" (profileInfoUpdated)="getProfileInfoById(userId)"></xp-profile-info-form> -->
-    </div>
-
-
-
-</div>
+    <xp-profile-info-form *ngIf="shouldRenderProfileInfoForm" [shouldEdit]="shouldEdit" [profileInfo]="selectedProfileInfo" (profileInfoUpdated)="getProfileInfoById(userId)"></xp-profile-info-form> -->
 
