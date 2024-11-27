@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Equipment } from './model/equipment.model';
 import { ProfileInfo } from './model/profile-info.model';
 import { environment } from 'src/env/environment';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
 import { Problem } from 'src/app/shared/model/problem.model';
 import { Club } from './model/club.model';
@@ -20,6 +20,7 @@ import { User } from 'src/app/infrastructure/auth/model/user.model';
 export class AdministrationService {
 	constructor(private http: HttpClient) {}
 
+	// ##### Equipment ##### 
 	getEquipment(): Observable<PagedResults<Equipment>> {
 		return this.http.get<PagedResults<Equipment>>(environment.apiHost + 'administration/equipment');
 	}
@@ -36,7 +37,8 @@ export class AdministrationService {
 		return this.http.put<Equipment>(environment.apiHost + 'administration/equipment/' + equipment.id, equipment);
 	}
 
-	 getAllProblems():Observable<PagedResults<Problem>> {
+ 	// ##### Problems ##### 
+	getAllProblems():Observable<PagedResults<Problem>> {
 		const headers = new HttpHeaders({
 			Authorization: `Bearer ${localStorage.getItem('access-token')}`
 		});
@@ -49,9 +51,13 @@ export class AdministrationService {
 		return this.http.put<Problem>(environment.apiHost + 'administrator/problems/' + id + '/deadline',{ Date: date });
 	}
 
+	//  ##### Club ##### 
 	getClubs(): Observable<PagedResults<Club>> {
-		return this.http.get<PagedResults<Club>>('https://localhost:44333/api/manageclub/club');
+		return this.http.get<PagedResults<Club>>(environment.apiHost + 'manageclub/club');
 	}
+	getClubById(clubId: number): Observable<Club> {
+		return this.http.get<Club>(environment.apiHost + 'manageclub/club/' + clubId);
+	}	  
 	addClub(club: Club): Observable<Club> {
 		return this.http.post<Club>(environment.apiHost + 'manageclub/club', club);
 	}
@@ -62,23 +68,7 @@ export class AdministrationService {
 		return this.http.put<Club>(environment.apiHost + 'manageclub/club/' + club.id, club);
 	}
 
-	getClubRequest(): Observable<PagedResults<ClubRequest>> {
-		return this.http.get<PagedResults<ClubRequest>>(environment.apiHost + 'request/clubRequest/1');
-	}
-
-	addRequest(clubRequest: ClubRequest): Observable<ClubRequest> {
-		return this.http.post<ClubRequest>(environment.apiHost + 'request/clubRequest', clubRequest);
-	}
-
-	/*updateRequest(clubRequest: ClubRequest): Observable<ClubRequest>{
-    return this.http.post<ClubRequest>(environment.apiHost + 'request/')
-  }*/
-
-	/*
-  deleteRequest(clubRequest: ClubRequest): Observable<ClubRequest>{
-    return this.http.post<ClubRequest>(environment.apiHost + 'request/')
-  */
-	// Club Invitation
+	// #####  Club Invitation ##### 
 	getClubInvitations(): Observable<ClubInvitation[]> {
 		return this.http.get<ClubInvitation[]>(environment.apiHost + 'invitation/clubInvitation/all');
 	}
@@ -103,7 +93,38 @@ export class AdministrationService {
 		return this.http.put<ClubInvitation>(`${environment.apiHost}/api/invitation/clubInvitation/${invitation.id}/update`, invitation);
 	}
 
-	// Club membership
+	getClubInvitationsByClubId(clubId: number): Observable<ClubInvitation[]> {
+		return this.http.get<ClubInvitation[]>(`${environment.apiHost}invitation/clubInvitation/club/${clubId}`);
+	}
+
+	// ##### Club request ##### 
+	addRequest(clubRequest: ClubRequest): Observable<ClubRequest> {
+		return this.http.post<ClubRequest>(environment.apiHost + 'request/clubRequest', clubRequest);
+	}
+	  
+	getClubRequestByUser(userId: number): Observable<ClubRequest[]> {
+		return this.http.get<ClubRequest[]>(
+		  `${environment.apiHost}request/clubRequest/for-tourist/${userId}`
+		);
+	}
+			  
+	cancelClubRequest(id: number): Observable<ClubRequest> {
+		return this.http.put<ClubRequest>(environment.apiHost + `request/clubRequest/${id}/cancel`, {});
+	}
+	  
+	declineClubRequest(id: number): Observable<ClubRequest> {
+		return this.http.put<ClubRequest>(environment.apiHost + `request/clubRequest/${id}/decline`, {});
+	}
+	  
+	acceptClubRequest(id: number): Observable<ClubRequest> {
+		return this.http.put<ClubRequest>(environment.apiHost + `request/clubRequest/${id}/accept`, {});
+	}	  
+
+	getClubRequestsByClubId(clubId: number): Observable<ClubRequest[]> {
+		return this.http.get<ClubRequest[]>(environment.apiHost + `request/clubRequest/club/${clubId}`);
+	  }	  
+
+	// ##### Club membership ##### 
 	getAllClubMembers(clubId: number): Observable<ClubMemberList[]> {
 		return this.http.get<ClubMemberList[]>(`${environment.apiHost}members/clubMember/${clubId}/all`);
 	}
@@ -112,9 +133,7 @@ export class AdministrationService {
 		return this.http.delete<void>(`${environment.apiHost}members/clubMember/${clubId}/${userId}`);
 	}
 
-	getAllRequests(): Observable<ClubRequest[]> {
-		return this.http.get<ClubRequest[]>(environment.apiHost + 'request/clubRequest/getAllRequests');
-	}
+	//  ##### Profile  ##### 
 	getAccounts(): Observable<Array<Account>> {
 		return this.http.get<Array<Account>>(environment.apiHost + 'administration/account');
 	}
@@ -123,29 +142,36 @@ export class AdministrationService {
 		return this.http.patch<Account>(environment.apiHost + 'administration/account', account);
 	}
 
-  getProfileInfoByUserId(userId: number): Observable<ProfileInfo> {
-    return this.http.get<ProfileInfo>(environment.apiHost + 'administration/profileInfo/' + userId);
-  }  
+	getProfileInfoByUserId(userId: number): Observable<ProfileInfo> {
+		return this.http.get<ProfileInfo>(environment.apiHost + 'administration/profileInfo/' + userId);
+	}  
   
-  updateProfileInfo(profileInfo: ProfileInfo): Observable<ProfileInfo> {
-    return this.http.put<ProfileInfo>(
-      `${environment.apiHost}administration/profileInfo/${profileInfo.id}/${profileInfo.userId}`,
-      profileInfo
-    );
-  }  
+	updateProfileInfo(profileInfo: ProfileInfo): Observable<ProfileInfo> {
+		return this.http.put<ProfileInfo>(
+		`${environment.apiHost}administration/profileInfo/${profileInfo.id}/${profileInfo.userId}`,
+		profileInfo
+		);
+	}  
   
-  getProfileInfo(): Observable<PagedResults<ProfileInfo>> {
-    return this.http.get<PagedResults<ProfileInfo>>(environment.apiHost + 'administration/profileInfo');
-  }  
+	getProfileInfo(): Observable<PagedResults<ProfileInfo>> {
+		return this.http.get<PagedResults<ProfileInfo>>(environment.apiHost + 'administration/profileInfo');
+	}  
+	addClubPost(clubPost: ClubPost): Observable<ClubPost> {
+		return this.http.post<ClubPost>(environment.apiHost + 'administration/clubpost', clubPost);
+	}
+	getClubPosts(): Observable<ClubPost[]> {
+		return this.http.get<ClubPost[]>(environment.apiHost + 'administration/clubpost');
+	}
 
-  addClubPost(clubPost: ClubPost): Observable<ClubPost> {
-    return this.http.post<ClubPost>(environment.apiHost + 'administration/clubpost', clubPost);
-  }
-  getClubPosts(): Observable<ClubPost[]> {
-    return this.http.get<ClubPost[]>(environment.apiHost + 'administration/clubpost');
-  }
+	getAllUsers(): Observable<User[]> {
+		return this.http.get<User[]>(`${environment.apiHost}user/all`);
+	}  
 
-  getAllUsers(): Observable<User[]> {
-    return this.http.get<User[]>(`${environment.apiHost}user/all`);
-  }  
+	// ##### User #####
+	getUsername(userId: number): Observable<string> {
+		return this.http.get<{ username: string }>(`${environment.apiHost}user/username/${userId}`)
+		  .pipe(map(response => response.username));
+	}
+	  
+	  
 }
