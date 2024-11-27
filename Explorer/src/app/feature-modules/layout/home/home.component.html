@@ -14,21 +14,15 @@
 
     <!-- POPULAR TOURS -->
     <section class="popular-tours">
-        <h2>Most popular tours</h2>
-        <div class="tour-cards-wrapper" >
-            <div class="tour-cards-container">
-                <a *ngFor="let tour of tours" class="tour-card"  [routerLink]="['/tourPreview', tour.id]">
-                    <div class="tour-image" [style.backgroundImage]="'url(' + tour.imageUrl + ')'"></div>
-                    <div class="tour-info">
-                        <h3>{{ tour.name }}</h3>
-                        <p>{{ tour.description }}</p>
-                        <div class="tour-rating">
-                            <span class="rating-badge">{{ tour.rating }}</span>
-                            <span class="rating-text">{{ tour.reviews }}</span>
-                        </div>
-                    </div>
-                </a>
-            </div>
+        <h2>Our picks</h2>
+        <div class="tour-cards-container no-scroll">
+            <a *ngFor="let tour of tours" class="tour-card" [routerLink]="['/tourPreview', tour.id]">
+                <div class="tour-image" [style.backgroundImage]="'url(' + tour.imageUrl + ')'"></div>
+                <div class="tour-info">
+                    <h3>{{ tour.name }}</h3>
+                    <p>{{ tour.description }}</p>
+                </div>
+            </a>
         </div>
     </section>
 
@@ -44,57 +38,21 @@
     <!-- POPULAR CLUBS -->
     <section class="popular-clubs">
         <h2>Most popular clubs</h2>
-        <div class="club-cards-wrapper">
-            <div class="club-cards-container">
-                <div *ngFor="let club of clubs" class="club-card">
-                    <div class="club-image" [style.backgroundImage]="'url(' + club.imageUrl + ')'"></div>
-                    <div class="club-info">
-                        <h3>{{ club.name }}</h3>
-                        <p>{{ club.description }}</p>
-                        <div class="club-rating">
-                            <span class="rating-badge">{{ club.rating }}</span>
-                            <span class="rating-text">{{ club.reviews }}</span>
-                        </div>
+        <div class="club-cards-container no-scroll">
+            <div *ngFor="let club of clubs" class="club-card" (click)="navigateToClub(club.id ?? 0)">
+                <div
+                    class="club-image"
+                    [style.backgroundImage]="'url(' + (club.imageUrl || 'assets/images/default-club.jpg') + ')'"
+                ></div>
+                <div class="club-info">
+                    <h3>{{ club.name }}</h3>
+                    <p>{{ club.description }}</p>
+                    <div class="club-rating">
+                        <span class="rating-badge">{{ club.memberCount > 0 ? club.memberCount + ' members' : '321 members' }}</span>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 </div>
-
-<!--FOOTER 
-<footer class="footer">
-    <div class="footer-container">
-        <div class="footer-logo">
-            <img src="assets/images/GuideFlow.png" alt="GuideFlow Logo" class="logo" />
-            <div class="social-icons">
-                <a href="https://instagram.com" target="_blank"><i class="fa-brands fa-instagram"></i></a>
-                <a href="https://facebook.com" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
-                <a href="https://twitter.com" target="_blank"><i class="fa-brands fa-twitter"></i></a>
-                <a href="https://linkedin.com" target="_blank"><i class="fa-brands fa-linkedin-in"></i></a>
-            </div>
-        </div>
-        
-        <div class="footer-links">
-            <div class="footer-column">
-                <a href="/tours">Tours</a>
-                <a href="/clubs">Clubs</a>
-                <a href="/blog">Blog</a>
-            </div>
-            <div class="footer-column">
-                <a href="/contact">Contact</a>
-                <a href="/about">About us</a>
-                <a href="/report">Report a problem</a>
-            </div>
-        </div>
-    </div>
-</footer> -->
-
-
-
-
-
-
-
-
 
