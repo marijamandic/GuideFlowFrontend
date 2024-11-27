@@ -100,7 +100,7 @@ const routes: Routes = [
   { path: 'encounter-add', component: EncounterFormComponent },
   { path: 'encounter-update/:id', component: EncounterFormComponent },
   { path: 'author-add-encounter/:id/:tourId', component: AddEncounterComponent},
-  { path: 'encounter-execution', component: ExecutionComponent}
+  { path: 'encounter-execution/:id', component: ExecutionComponent}
 
 ];
 
