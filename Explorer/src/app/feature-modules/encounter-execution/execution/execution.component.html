@@ -1,3 +1,4 @@
+<div class="layout">
 <div class="execution-container">
   <h1>Encounter execution details</h1>
 
@@ -5,19 +6,9 @@
     {{ errorMessage }}
   </div>
 
-  <div *ngIf="tourist" class="tourist-location">
-    <h2>Lokacija Turista</h2>
-    <p><strong>Latitude:</strong> {{ tourist.location.latitude }}</p>
-    <p><strong>Longitude:</strong> {{ tourist.location.longitude }}</p>
-  </div>
-
   <div *ngIf="encounterExecution" class="execution-details">
     <h2>Detalji izvršenja</h2>
-    <p><strong>Execution ID:</strong> {{ encounterExecution.id }}</p>
-    <p><strong>User ID:</strong> {{ encounterExecution.userId }}</p>
-    <p><strong>Encounter ID:</strong> {{ encounterExecution.encounterId }}</p>
     <p><strong>Status:</strong> {{ encounterExecution.isComplete ? 'Završeno' : 'U toku' }}</p>
-    <p><strong>Encounter type:</strong> {{ encounterExecution.encounterType }}</p>
     <p><strong>User location:</strong></p>
     <ul>
       <li><strong>Longitude:</strong> {{ encounterExecution.userLongitude }}</li>
@@ -28,7 +19,6 @@
   <!-- Detalji o encounteru -->
   <div *ngIf="encounterExecution?.encounterType !== undefined && encounter" class="encounter-details">
     <h2>Detalji Encountera</h2>
-    <p><strong>ID Encountera:</strong> {{ encounter.id }}</p>
     <p><strong>Naziv:</strong> {{ encounter.name }}</p>
     <p><strong>Opis:</strong> {{ encounter.description }}</p>
     <p><strong>Status:</strong> {{ encounter.encounterStatus}}</p>
@@ -59,5 +49,14 @@
       <p><strong>Opis Akcije:</strong> {{ encounter.actionDescription }}</p>
     </div>
   </div>
+
+</div>
+
+<div class="map-container">
+  <xp-map (coordinatesSelected)="onCoordinatesSelected($event)" [encounters]="touristCoordinates"></xp-map>
+
+</div>
+
+<button *ngIf="encounterExecution" (click)="completeExecution()" class="button"> Complete encounter execution</button>
 
 </div>

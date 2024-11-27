@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Execution } from '../model/execution.model';
 import { EncounterExecutionService } from '../encounter-execution.service';
 import { User } from 'src/app/infrastructure/auth/model/user.model';
@@ -21,6 +21,9 @@ export class ExecutionComponent implements OnInit{
   encounterExecution: Execution | undefined;
   encounter: Encounter | undefined;
   public EncounterType = EncounterType;
+
+  touristCoordinates: { latitude: number; longitude: number }[] = [];
+  @Output() touristCoordinatesLoaded = new EventEmitter<{ latitude: number; longitude: number; }[]>();
 
   constructor(
     private encounterExecutionService: EncounterExecutionService,
@@ -81,6 +84,42 @@ export class ExecutionComponent implements OnInit{
       })
     }
   }
+
+  onCoordinatesSelected(coordinates: { latitude: number; longitude: number }): void {
+    if(this.tourist){
+      this.tourist.location.latitude = coordinates.latitude;
+      this.tourist.location.longitude = coordinates.longitude;
+      this.tourService.updateTourist(this.tourist).subscribe(updatedTourist => {
+        console.log('Updated User:', updatedTourist);
+        this.ngOnInit();
+      }, error => {
+        console.error('Error updating user:', error);
+      });
+      console.log('Encounter Location updated:', this.tourist.location);
+    }
+  }
+
+  completeExecution(): void {
+    if (this.encounterExecution) {
+      this.encounterExecutionService.completeExecution(this.encounterExecution).subscribe(
+        (updatedExecution: Execution) => {
+          console.log('Execution successfully completed:', updatedExecution);
+          this.ngOnInit();
+        },
+        error => {
+          if (error.status === 500) {
+            console.log('Ne mozes jos zavrsiti.');
+          } else {
+            console.error('Došlo je do greške:', error);
+          }
+        }
+      );
+    } else {
+      console.warn('EncounterExecution nije inicijalizovan.');
+    }
+  }
+  
+  
 
   ConvertType(): number {
     if(this.encounter){
