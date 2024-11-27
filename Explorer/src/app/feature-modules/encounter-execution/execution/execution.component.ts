@@ -6,6 +6,7 @@ import { Tourist } from '../../tour-authoring/model/tourist';
 import { TourService } from '../../tour-authoring/tour.service';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Encounter, EncounterType } from '../model/encounter.model';
 
 @Component({
   selector: 'xp-execution',
@@ -17,7 +18,9 @@ export class ExecutionComponent implements OnInit{
   encounterExecutionId: string | null = null;
   user: User | undefined;
   tourist: Tourist | undefined;
-  encounterExecution: Execution | null = null;
+  encounterExecution: Execution | undefined;
+  encounter: Encounter | undefined;
+  public EncounterType = EncounterType;
 
   constructor(
     private encounterExecutionService: EncounterExecutionService,
@@ -34,7 +37,7 @@ export class ExecutionComponent implements OnInit{
         this.tourService.getTouristById(user.id).subscribe({
           next: (result: Tourist) => {
             this.tourist = result;
-            if(this.tourist && this.encounterExecutionId){
+            if(this.tourist){
               this.getExecutionByUser();
             }
           },
@@ -42,13 +45,21 @@ export class ExecutionComponent implements OnInit{
             console.log(err);
           }
         })
-      }) 
+      })
   }
 
-  public getExecutionByUser(): void {
+  getExecutionByUser(): void {
     this.encounterExecutionService.getExecution(this.encounterExecutionId!).subscribe({
       next: (result: Execution) => {
         this.encounterExecution = result;
+        if(this.tourist){
+          this.encounterExecution.userLatitude = this.tourist.location.latitude;
+          this.encounterExecution.userLongitude = this.tourist.location.longitude;
+        }
+        if(this.encounterExecution.encounterId){
+          this.getEncounter();
+        }
+
       },
       error: (error) => {
         this.errorMessage = 'Došlo je do greške prilikom učitavanja podataka.';
@@ -57,5 +68,33 @@ export class ExecutionComponent implements OnInit{
     });
   }
 
+  getEncounter(): void {
+    if(this.encounterExecution){
+      this.encounterExecutionService.getEncounter(this.encounterExecution.encounterId).subscribe({
+        next: (result: Encounter) => {
+          this.encounter = result;
+        },
+        error: (error) => {
+          this.errorMessage = 'Došlo je do greške prilikom učitavanja podataka.';
+          console.error(error);
+        }
+      })
+    }
+  }
 
+  ConvertType(): number {
+    if(this.encounter){
+      switch (this.encounter.encounterType.toString()) {
+        case  "Social" :
+          return 0;
+        case "Location":
+          return 1;
+        case "Misc":
+          return 2;
+        default:
+          return 0; 
+      }
+    }
+    return 0;
+  }
 }
