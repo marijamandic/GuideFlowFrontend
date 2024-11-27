@@ -5,6 +5,8 @@ export interface Checkpoint {
     latitude: number;
     longitude: number;
     imageUrl?: string;
-    imageBase64?: string;  
+    imageBase64?: string;
+    encounterId?: number;
+    isEncounterEssential: boolean;  
     secret: string;
 }

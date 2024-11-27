@@ -1,0 +1,77 @@
+<div>
+    <label for="encounterType">Izaberite tip izazova:</label>
+    <select id="encounterType" [(ngModel)]="selectedType" (change)="onTypeChange()">
+        <option *ngFor="let type of encounterTypes" [value]="type">
+        {{ type }}
+        </option>
+    </select>
+    <label for="isEssential">Da li je izazov obavezan za kompletiranje tačke?</label>
+    <input 
+        type="checkbox" 
+        id="isEssential" 
+        [(ngModel)]="isEssential" 
+        name="isEssential" 
+    />
+    <form *ngIf="selectedType">
+        <div>
+          <label for="name">Naziv izazova:</label>
+          <input id="name" type="text" [(ngModel)]="encounter.name" name="name" required />
+        </div>
+    
+        <div>
+          <label for="description">Opis:</label>
+          <textarea id="description" [(ngModel)]="encounter.description" name="description"></textarea>
+        </div>
+    
+        <!-- Specifična polja za svaki tip -->
+        <div *ngIf="selectedType === 'Social'">
+          <div>
+            <label for="touristNumber">Broj turista:</label>
+            <input id="touristNumber" type="number" [(ngModel)]="encounter.touristNumber" name="touristNumber" />
+          </div>
+          <div>
+            <label for="encounterRange">Raspon izazova:</label>
+            <input id="encounterRange" type="number" [(ngModel)]="encounter.encounterRange" name="encounterRange" />
+          </div>
+        </div>
+    
+        <div *ngIf="selectedType === 'Location'">
+            <div>
+                <label for="fileInput">Image URL</label>
+                <input id="fileInput" type="file" (change)="onFileSelected($event)">
+            </div>
+          <div>
+            <label for="activationRange">Aktivacioni raspon:</label>
+            <input id="activationRange" type="number" [(ngModel)]="encounter.activationRange" name="activationRange" />
+          </div>
+          <div class="map-container">
+            <label>Dodaj lokaciju slike</label>
+            <xp-map (coordinatesSelected)="onCoordinatesSelected($event)" [encounters]="encounterCoordinates" ></xp-map>
+          </div>
+        </div>
+    
+        <div *ngIf="selectedType === 'Misc'">
+          <div>
+            <label for="actionDescription">Opis akcije:</label>
+            <textarea id="actionDescription" [(ngModel)]="encounter.actionDescription" name="actionDescription"></textarea>
+          </div>
+        </div>
+    
+        <!-- Zajednička polja -->
+        <div>
+          <label for="experiencePoints">Poeni iskustva:</label>
+          <input id="experiencePoints" type="number" [(ngModel)]="encounter.experiencePoints" name="experiencePoints" />
+        </div>
+    
+        <div>
+          <label for="encounterStatus">Status:</label>
+          <select id="encounterStatus" [(ngModel)]="encounter.encounterStatus" name="encounterStatus">
+            <option *ngFor="let status of encounterStatuses" [value]="status">
+              {{ status }}
+            </option>
+          </select>
+        </div>
+    
+        <button type="button" (click)="submitEncounter()">Kreiraj izazov</button>
+      </form>
+</div>

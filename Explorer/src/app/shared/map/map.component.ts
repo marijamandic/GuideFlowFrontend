@@ -17,7 +17,9 @@ export class MapComponent implements AfterViewInit,OnChanges {
   @Input() initialMarkers: L.LatLng[] = [];
   @Input() allowMultipleMarkers: boolean = true;
   @Input() checkpoints: { latitude: number; longitude: number }[] = [];
+  @Input() encounters: { latitude: number; longitude: number }[] = [];
   @Input() showSearchBar: boolean = true;
+  @Input() userLocation: { latitude: number; longitude: number } | null = null;
   @Output() markerAdded = new EventEmitter<L.LatLng>();
   @Output() mapReset = new EventEmitter<void>();
   @Output() coordinatesSelected = new EventEmitter<{ latitude: number; longitude: number }>();
@@ -33,6 +35,7 @@ export class MapComponent implements AfterViewInit,OnChanges {
     });
 
     L.Marker.prototype.options.icon = DefaultIcon;
+    
     if (!this.map) {
       this.initMap(); 
     }
@@ -106,6 +109,9 @@ export class MapComponent implements AfterViewInit,OnChanges {
   ngOnChanges(): void {
     if (this.map) {
       this.updateCheckpointMarkers();
+      this.addUserMarker();
+    } else {
+      this.map.invalidateSize();
     }
   }
 
@@ -122,6 +128,11 @@ export class MapComponent implements AfterViewInit,OnChanges {
       const waypoints = this.markers.map(m => m.getLatLng());
       this.setRoute(waypoints);
     }
+    this.encounters.forEach((encounter) => {
+      const latLng = new L.LatLng(encounter.latitude, encounter.longitude);
+      const marker = L.marker(latLng).addTo(this.map);
+      this.addMarker(marker);
+    });
   }
 
   search(): void {
@@ -154,6 +165,27 @@ export class MapComponent implements AfterViewInit,OnChanges {
       this.markers.push(marker); 
       this.coordinatesSelected.emit({ latitude: coord.lat, longitude: coord.lng });
     });
+  }
+
+  private addUserMarker(): void {
+    if (!this.userLocation) {
+      console.log('Korisnička lokacija nije dostupna.');
+      return;
+    }
+  
+    console.log('Dodajem marker za korisnika na:', this.userLocation);
+  
+    const userIcon = L.icon({
+      iconUrl: '/assets/images/map-marker.png',
+      iconSize: [30, 40],
+      iconAnchor: [15, 40],
+    });
+  
+    const userMarker = L.marker([this.userLocation.latitude, this.userLocation.longitude], { icon: userIcon })
+      .addTo(this.map)
+      .bindPopup('You are here');
+  
+    this.addMarker(userMarker);
   }
 
   addMarker(marker: L.Marker): void {

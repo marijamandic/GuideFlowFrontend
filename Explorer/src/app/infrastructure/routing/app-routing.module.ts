@@ -38,6 +38,10 @@ import { PositionsimComponent } from 'src/app/feature-modules/tour-authoring/pos
 import { TourExecutionDetailsComponent } from 'src/app/feature-modules/tour-execution/tour-execution-details/tour-execution-details.component';
 import { PurchasedToursComponent } from 'src/app/feature-modules/tour-execution/purchased-tours/purchased-tours.component';
 import { PublicPointNotificationsComponent } from 'src/app/feature-modules/tour-authoring/public-point-notifications/public-point-notifications.component';
+import { TourDetailsComponent } from 'src/app/feature-modules/tour-authoring/tour-details/tour-details.component';
+import { EncounterComponent } from 'src/app/feature-modules/encounter-execution/encounter/encounter.component';
+import { EncounterFormComponent } from 'src/app/feature-modules/encounter-execution/encounter-form/encounter-form.component';
+import { AddEncounterComponent } from 'src/app/feature-modules/tour-authoring/add-encounter/add-encounter.component';
 import { ClubDashboardComponent } from 'src/app/feature-modules/administration/club/club-dashboard/club-dashboard.component';
 
 const routes: Routes = [
@@ -62,7 +66,7 @@ const routes: Routes = [
   { path: 'checkpoints/:tourId', component: CheckpointListComponent },
   { path: 'tour-execution/:id', component: TourExecutionDetailsComponent},
   { path: 'tour', component: TourComponent },
-  { path: 'tourEquipment', component: TourEquipmentComponent },
+  { path: 'tourEquipment/:id', component: TourEquipmentComponent },
   { path: 'ratingTheApp', component: RatingTheAppComponent },
   { path: 'allAppRatings', component: AllAppRatingsComponent },
   { path: 'specification', component: TourSpecificationComponent },
@@ -81,6 +85,11 @@ const routes: Routes = [
 	{ path: '', redirectTo: '/home', pathMatch: 'full' },
   {path: 'tourPreview/:id', component: TourPreviewComponent},
   {path: 'shoppingCart', component: ShoppingCartComponent},
+  {path: 'tourDetails/:tourId', component:TourDetailsComponent, children:[{path:'checkpoints/:tourId', component:CheckpointListComponent}]},
+  {path: 'encounters', component: EncounterComponent},
+  { path: 'encounter-add', component: EncounterFormComponent },
+  { path: 'encounter-update/:id', component: EncounterFormComponent },
+  { path: 'author-add-encounter/:id/:tourId', component: AddEncounterComponent}
 
 ];
 
