@@ -72,6 +72,7 @@ export class ClubFormComponent implements OnInit, OnChanges {
       description: this.clubForm.value.description || "",
       imageBase64: this.clubForm.value.imageBase64 || "",
       imageUrl: this.clubForm.value.imageBase64 || "",
+      memberCount: 0,
     };
     this.service.addClub(club).subscribe({
       next: () => {
@@ -90,6 +91,7 @@ export class ClubFormComponent implements OnInit, OnChanges {
       description: this.clubForm.value.description || "",
       imageBase64: this.clubForm.value.imageBase64 || "",
       imageUrl: this.clubForm.value.imageBase64 || "",
+      memberCount: 0
     };
     this.service.updateClub(club).subscribe({
       next: () => {
