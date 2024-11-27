@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TourExecutionService } from '../tour-execution.service';
 import { User } from 'src/app/infrastructure/auth/model/user.model';
@@ -117,6 +117,21 @@ export class TourExecutionDetailsComponent implements OnInit{
     this.tourExecutionService.updateTourExecution(this.dto).subscribe({
       next: (result: TourExecution) => {
         this.tourExecution = result;
+        this.currentCheckpoint = result.checkpointsStatus[this.currentIndex];
+        this.tourExecutionService.getPercentage(this.tourExecution?.id || 0).subscribe({
+          next: (percent: number) => {
+            console.log(`Pređeni procenat: ${percent}`);
+            this.percentageSubject.next(percent);
+            this.percentageCompleted = percent;
+      
+            const isDisabled = percent <= 35;
+            console.log(`Disabled dugme? ${isDisabled}`);
+          },
+          error: (err: any) => {
+            console.error('Greška prilikom dobijanja procenta:', err);
+            this.percentageSubject.next(0); 
+          }
+        });
       },
       error: (err: any) => {
         console.log(err);
@@ -289,5 +304,13 @@ getReviewMessage(): string {
       });
     }
   }
-
+  isTouristNear(latitude:number,longitude: number){
+    var tolerance : number = 0.0018;
+    if(!this.tourist)
+      return false
+    var isNearLatitude : boolean = Math.abs(latitude-this.tourist?.location.latitude) <= tolerance;
+    var isNearLongitude : boolean = Math.abs(longitude-this.tourist?.location.longitude) <= tolerance;
+    console.log(this.user?.location.latitude)
+    return isNearLatitude && isNearLongitude;
+  }
 }
