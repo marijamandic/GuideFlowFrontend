@@ -2,11 +2,14 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Encounter } from '../model/encounter.model';
 import { EncounterExecutionService } from '../encounter-execution.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { User } from 'src/app/infrastructure/auth/model/user.model';
+import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 
 export enum EncounterStatus {
   Active = 'Active',
   Draft = 'Draft',
-  Archieved = 'Archieved'
+  Archieved = 'Archieved',
+  Pending = 'Pending'
 }
 
 export enum EncounterType {
@@ -25,6 +28,7 @@ export class EncounterFormComponent implements OnInit {
   @Input() encounterId?: number;
   mapMode: 'encounterLocation' | 'imageLocation' = 'encounterLocation';
   typeSelected: boolean = false;
+  user: User;
 
   encounter: Encounter = {
     $type: '',
@@ -40,9 +44,12 @@ export class EncounterFormComponent implements OnInit {
   encounterCoordinates: { latitude: number; longitude: number }[] = [];
   @Output() encounterCoordinatesLoaded = new EventEmitter<{ latitude: number; longitude: number; }[]>();
 
-  constructor(private encounterService: EncounterExecutionService, private router: Router, private route: ActivatedRoute) {}
+  constructor(private encounterService: EncounterExecutionService,private authService: AuthService, private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
+    this.authService.user$.subscribe(user =>{
+      this.user = user;
+    })
     this.route.params.subscribe(params => {
       const encounterId = params['id'];
       if (encounterId) {
@@ -100,8 +107,12 @@ export class EncounterFormComponent implements OnInit {
         1: 'locationEncounter',
         2: 'miscEncounter',
   };
-
-    this.encounter.encounterStatus = this.ConvertStatus();
+    if(this.user.role != 'tourist'){
+      this.encounter.encounterStatus = this.ConvertStatus();
+    }
+    else{
+      this.encounter.encounterStatus = 3;
+    }
 
     this.encounter.$type = typeMap[this.encounter.encounterType];
     console.log(this.encounter.$type)

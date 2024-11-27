@@ -23,7 +23,9 @@ export interface Encounter {
 export enum EncounterStatus {
     Active = 0,
     Draft = 1,
-    Archieved = 2
+    Archieved = 2,
+    Pending = 3,
+    Canceled = 4
 }
 
 export enum EncounterType {
