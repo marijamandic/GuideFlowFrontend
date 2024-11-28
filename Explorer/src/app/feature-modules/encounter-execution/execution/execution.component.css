@@ -1,0 +1,17 @@
+.tour-image {
+    background-color: #e0e0e0;
+    background-size: cover;
+    background-position: center;
+    height: 180px;
+    width: 100px; 
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.layout{
+    display: flex;
+  }
+
+.button{
+    height: 50px;
+}
