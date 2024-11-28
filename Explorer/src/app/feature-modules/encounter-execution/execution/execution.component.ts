@@ -35,20 +35,21 @@ export class ExecutionComponent implements OnInit{
 
   ngOnInit(): void {
     this.encounterExecutionId = this.route.snapshot.paramMap.get('id');
-      this.authService.user$.subscribe(user =>{
-        this.user = user;
-        this.tourService.getTouristById(user.id).subscribe({
-          next: (result: Tourist) => {
-            this.tourist = result;
-            if(this.tourist){
-              this.getExecutionByUser();
-            }
-          },
-          error: (err: any) => {
-            console.log(err);
+    this.authService.user$.subscribe(user => {
+      this.user = user;
+      this.tourService.getTouristById(user.id).subscribe({
+        next: (result: Tourist) => {
+          this.tourist = result;
+          if (this.tourist) {
+            this.getExecutionByUser();
           }
-        })
-      })
+        },
+        error: (err: any) => {
+          console.log(err);
+        }
+      });
+    });
+  
   }
 
   getExecutionByUser(): void {

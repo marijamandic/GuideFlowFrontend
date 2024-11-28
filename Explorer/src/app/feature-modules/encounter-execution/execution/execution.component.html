@@ -20,6 +20,9 @@
       <li><strong>Longitude:</strong> {{ encounterExecution.userLongitude }}</li>
       <li><strong>Latitude:</strong> {{ encounterExecution.userLatitude }}</li>
     </ul>
+    <div>
+      <p ><strong>Broj aktivnih korisnika:</strong> {{ encounterExecution.participants }}</p>
+    </div>
   </div>
 
   <!-- Detalji o encounteru -->
@@ -63,6 +66,6 @@
 
 </div>
 
-<button *ngIf="encounterExecution" (click)="completeExecution()" class="button"> Complete encounter execution</button>
+<button *ngIf="encounterExecution && encounterExecution.encounterType != 0" (click)="completeExecution()" class="button"> Complete encounter execution</button>
 
 </div>

@@ -7,5 +7,6 @@ export interface Execution {
     isComplete: boolean,
     encounterType: EncounterType,
     userLongitude: number,
-    userLatitude: number;
+    userLatitude: number,
+    participants: number,
 }

@@ -1,11 +1,12 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { EncounterExecutionService } from '../encounter-execution.service';
-import { Encounter } from '../model/encounter.model';
+import { Encounter, EncounterType } from '../model/encounter.model';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { User } from 'src/app/infrastructure/auth/model/user.model';
 import { Tourist } from '../../tour-authoring/model/tourist';
 import { TourService } from '../../tour-authoring/tour.service';
+import { Execution } from '../model/execution.model';
 
 @Component({
   selector: 'xp-encounter',
@@ -57,8 +58,50 @@ export class EncounterComponent implements OnInit {
     }
   }
 
-  navigateToEncounter(id?: number): void {
-    this.router.navigate(['/home']);
+  Execute(encounter:Encounter): void {
+    
+    const execution: Execution = {
+      userId: this.user.id, 
+      encounterId: encounter.id || 0,
+      isComplete: false,
+      encounterType: encounter.encounterType, 
+      userLongitude: this.tourist.location.longitude, 
+      userLatitude: this.tourist.location.latitude, 
+      participants: 0 
+    };
+    
+    this.service.findExecution(execution.userId, execution.encounterId).subscribe(
+      (ex: Execution | null) => {
+        if (ex) {
+          console.log('Execution found:', ex);
+          this.router.navigate(['/encounter-execution', ex.id]);
+        } else {
+          console.log('Execution not found.');
+          this.CreateExecution(execution);
+        }
+      },
+      (error) => {
+        console.error('Error occurred:', error);
+      }
+    );
+    
+  }
+  
+  CreateExecution(execution:Execution ):void{
+    this.service.addEncounterExecution(execution).subscribe({
+      next: (response) => {
+        const encounterExecutionId = response.id;
+  
+        if (encounterExecutionId) {
+          this.router.navigate(['/encounter-execution',encounterExecutionId]);
+        } else {
+          console.error('EncounterExecution ID not found in response.');
+        }
+      },
+      error: (err) => {
+        console.error('Failed to create EncounterExecution:', err);
+      }
+    });
   }
 
   getEncounters(): void {

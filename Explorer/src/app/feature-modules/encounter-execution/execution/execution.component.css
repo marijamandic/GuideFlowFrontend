@@ -1,17 +1,96 @@
-.tour-image {
-    background-color: #e0e0e0;
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f7f9fc;
+    color: #333;
+  }
+  
+  .layout {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 20px;
+  }
+  
+  .execution-container {
+    width: 30%;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .execution-container h1 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: #4caf50;
+  }
+  
+  .error-message {
+    color: #d9534f;
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+  
+  .tourist-location,
+  .execution-details,
+  .encounter-details {
+    margin-bottom: 20px;
+  }
+  
+  .tourist-location h2,
+  .execution-details h2,
+  .encounter-details h2 {
+    font-size: 1.3em;
+    margin-bottom: 10px;
+    color: #3f51b5;
+  }
+  
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  ul li {
+    margin: 5px 0;
+  }
+  
+  .map-container {
+    width: 65%;
+    height: 600px;
+    background-color: #e9f7fd;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .button {
+    display: inline-block;
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 15px;
+  }
+  
+  .button:hover {
+    background-color: #45a049;
+  }
+  
+  .tour-image {
+    width: 100%;
+    height: 200px;
     background-size: cover;
     background-position: center;
-    height: 180px;
-    width: 100px; 
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-}
-
-.layout{
-    display: flex;
+    border-radius: 5px;
+    margin: 10px 0;
   }
-
-.button{
-    height: 50px;
-}
+  
