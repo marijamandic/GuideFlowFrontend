@@ -16,8 +16,8 @@ export class ExecutionComponent implements OnInit{
   errorMessage: string | null = null;
   encounterExecutionId: string | null = null;
   user: User | undefined;
-  tourist: Tourist | undefined;
-  encounterExecution: Execution | null = null;
+  tourist: Tourist;
+  encounterExecution: Execution;
 
   constructor(
     private encounterExecutionService: EncounterExecutionService,
@@ -49,6 +49,8 @@ export class ExecutionComponent implements OnInit{
     this.encounterExecutionService.getExecution(this.encounterExecutionId!).subscribe({
       next: (result: Execution) => {
         this.encounterExecution = result;
+        this.encounterExecution.userLatitude = this.tourist.location.latitude;
+        this.encounterExecution.userLongitude = this.tourist.location.longitude;
       },
       error: (error) => {
         this.errorMessage = 'Došlo je do greške prilikom učitavanja podataka.';
@@ -56,6 +58,4 @@ export class ExecutionComponent implements OnInit{
       }
     });
   }
-
-
 }

@@ -5,6 +5,12 @@
     {{ errorMessage }}
   </div>
 
+  <div *ngIf="tourist" class="tourist-location">
+    <h2>Lokacija Turista</h2>
+    <p><strong>Latitude:</strong> {{ tourist.location.latitude }}</p>
+    <p><strong>Longitude:</strong> {{ tourist.location.longitude }}</p>
+  </div>
+
   <div *ngIf="encounterExecution" class="execution-details">
     <h2>Detalji izvršenja</h2>
     <p><strong>Execution ID:</strong> {{ encounterExecution.id }}</p>
