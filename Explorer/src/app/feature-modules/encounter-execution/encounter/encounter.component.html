@@ -2,7 +2,7 @@
   <h1 class="encounter-title">Encounters</h1>
 
   <div class="map-container">
-    <xp-map [encounters]="encounterCoordinates" [showSearchBar]="isViewMode"></xp-map>
+    <xp-map [encounters]="encounterCoordinates" [userLocation]="userMarker" [showSearchBar]="isViewMode"></xp-map>
   </div>
 
   <div class="encounter-list">
@@ -18,13 +18,16 @@
       <div class="encounter-body">
         <p><strong>Description:</strong> {{ encounter.description }}</p>
       </div>
-      <div class="encounter-footer">
+      <div *ngIf="user.role == 'administrator'" class="encounter-footer">
         <button class="update-button" (click)="navigateToForm(encounter.id)">Update</button>
+      </div>
+      <div *ngIf="user.role == 'tourist'" class="encounter-footer">
+        <button class="update-button" (click)="navigateToEncounter(encounter.id)">Execute</button>
       </div>
     </div>
   </div>
 
-  <div class="add-encounter">
+  <div *ngIf="user.role == 'administrator'" class="add-encounter">
     <button class="add-button" (click)="navigateToForm()">Add Encounter</button>
   </div>
 </div>

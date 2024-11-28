@@ -19,6 +19,7 @@ export class MapComponent implements AfterViewInit,OnChanges {
   @Input() checkpoints: { latitude: number; longitude: number }[] = [];
   @Input() encounters: { latitude: number; longitude: number }[] = [];
   @Input() showSearchBar: boolean = true;
+  @Input() userLocation: { latitude: number; longitude: number } | null = null;
   @Output() markerAdded = new EventEmitter<L.LatLng>();
   @Output() mapReset = new EventEmitter<void>();
   @Output() coordinatesSelected = new EventEmitter<{ latitude: number; longitude: number }>();
@@ -108,7 +109,7 @@ export class MapComponent implements AfterViewInit,OnChanges {
   ngOnChanges(): void {
     if (this.map) {
       this.updateCheckpointMarkers();
-      //this.updateEncounterMarkers();
+      this.addUserMarker();
     } else {
       this.map.invalidateSize();
     }
@@ -133,12 +134,6 @@ export class MapComponent implements AfterViewInit,OnChanges {
       this.addMarker(marker);
     });
   }
-
-  private updateEncounterMarkers(): void {
-    this.resetMap();
-
-  }
-
 
   search(): void {
 
@@ -170,6 +165,27 @@ export class MapComponent implements AfterViewInit,OnChanges {
       this.markers.push(marker); 
       this.coordinatesSelected.emit({ latitude: coord.lat, longitude: coord.lng });
     });
+  }
+
+  private addUserMarker(): void {
+    if (!this.userLocation) {
+      console.log('Korisnička lokacija nije dostupna.');
+      return;
+    }
+  
+    console.log('Dodajem marker za korisnika na:', this.userLocation);
+  
+    const userIcon = L.icon({
+      iconUrl: '/assets/images/map-marker.png',
+      iconSize: [30, 40],
+      iconAnchor: [15, 40],
+    });
+  
+    const userMarker = L.marker([this.userLocation.latitude, this.userLocation.longitude], { icon: userIcon })
+      .addTo(this.map)
+      .bindPopup('You are here');
+  
+    this.addMarker(userMarker);
   }
 
   addMarker(marker: L.Marker): void {
