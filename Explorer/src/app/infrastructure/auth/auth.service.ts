@@ -9,6 +9,7 @@ import { Login } from './model/login.model';
 import { AuthenticationResponse } from './model/authentication-response.model';
 import { User } from './model/user.model';
 import { Registration } from './model/registration.model';
+import { EncounterTourist } from 'src/app/feature-modules/encounter-execution/model/encounter-tourist.model';
 
 @Injectable({
   providedIn: 'root'
@@ -77,5 +78,8 @@ export class AuthService {
     //this.idOfUser = +jwtHelperService.decodeToken(accessToken).id;
     //console.log(this.idOfUser);
     this.user$.next(user);
+  }
+  getTourist(touristId: number): Observable<EncounterTourist> {
+    return this.http.get<EncounterTourist>(environment.apiHost + `user/getTourist/${touristId}`);
   }
 }

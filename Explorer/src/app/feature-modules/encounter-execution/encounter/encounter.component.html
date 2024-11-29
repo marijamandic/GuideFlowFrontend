@@ -13,13 +13,21 @@
           <span *ngIf="encounter.encounterStatus === 0">Active</span>
           <span *ngIf="encounter.encounterStatus === 1">Draft</span>
           <span *ngIf="encounter.encounterStatus === 2">Archived</span>
+          <span *ngIf="encounter.encounterStatus === 3">Pending</span>
+          <span *ngIf="encounter.encounterStatus === 4">Canceled</span>
         </p>
       </div>
       <div class="encounter-body">
         <p><strong>Description:</strong> {{ encounter.description }}</p>
       </div>
-      <div *ngIf="user.role == 'administrator'" class="encounter-footer">
+      <div *ngIf="user.role == 'administrator' && encounter.encounterStatus !== 3" class="encounter-footer">
         <button class="update-button" (click)="navigateToForm(encounter.id)">Update</button>
+      </div>
+      <div *ngIf="user.role == 'administrator' && encounter.encounterStatus === 3" class="encounter-footer">
+        <button class="approve-button" (click)="approveEncounter(encounter.id)">Approve</button>
+      </div>
+      <div *ngIf="user.role == 'administrator' && encounter.encounterStatus === 3" class="encounter-footer">
+        <button class="decline-button" (click)="declineEncounter(encounter.id)">Decline</button>
       </div>
       <div *ngIf="user.role == 'tourist'" class="encounter-footer">
         <button class="update-button" (click)="Execute(encounter)">Execute</button>
@@ -27,7 +35,7 @@
     </div>
   </div>
 
-  <div *ngIf="user.role == 'administrator'" class="add-encounter">
+  <div *ngIf="canAddEncounter" class="add-encounter">
     <button class="add-button" (click)="navigateToForm()">Add Encounter</button>
   </div>
 </div>

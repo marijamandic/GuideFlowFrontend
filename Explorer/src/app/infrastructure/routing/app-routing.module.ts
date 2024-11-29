@@ -44,6 +44,7 @@ import { EncounterComponent } from 'src/app/feature-modules/encounter-execution/
 import { EncounterFormComponent } from 'src/app/feature-modules/encounter-execution/encounter-form/encounter-form.component';
 import { AddEncounterComponent } from 'src/app/feature-modules/tour-authoring/add-encounter/add-encounter.component';
 import { ExecutionComponent } from 'src/app/feature-modules/encounter-execution/execution/execution.component';
+import { ClubDashboardComponent } from 'src/app/feature-modules/administration/club/club-dashboard/club-dashboard.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
