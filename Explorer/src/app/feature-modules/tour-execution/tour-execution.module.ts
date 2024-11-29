@@ -16,32 +16,19 @@ import { PurchasedToursComponent } from './purchased-tours/purchased-tours.compo
 import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
-  providers:[DatePipe],
-  declarations: [
-    EquipmentManagementComponent,
-    EquipmentFormComponent,
-    ReportProblemComponent,
-	TourReviewComponent,
-	TourReviewFormComponent,
- TourExecutionDetailsComponent,
- PurchasedToursComponent,
- ProblemStatusComponent,
- TourViewComponent
-  ],
-  imports: [
-    CommonModule,
-    MatFormFieldModule,
-    SharedModule,
-    MatInputModule,
-    ReactiveFormsModule,
-    MatIconModule,
-    CommonModule
-  ],
-  exports:
-  [
-    EquipmentManagementComponent,
-    ReportProblemComponent,
-	TourReviewComponent
-  ],
+	providers: [DatePipe],
+	declarations: [
+		EquipmentManagementComponent,
+		EquipmentFormComponent,
+		ReportProblemComponent,
+		TourReviewComponent,
+		TourReviewFormComponent,
+		TourExecutionDetailsComponent,
+		PurchasedToursComponent,
+		ProblemStatusComponent,
+		TourViewComponent
+	],
+	imports: [CommonModule, MatFormFieldModule, SharedModule, MatInputModule, ReactiveFormsModule, MatIconModule, CommonModule],
+	exports: [EquipmentManagementComponent, ReportProblemComponent, TourReviewComponent]
 })
 export class TourExecutionModule {}

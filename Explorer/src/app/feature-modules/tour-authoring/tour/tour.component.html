@@ -6,7 +6,7 @@
     </div>
 
     <!-- Draft Tours -->
-    <div *ngIf="currentView === 'drafts'" class="card-container">
+    <div *ngIf="currentView === 'drafts' && user.role === 'author'" class="card-container">
         <div *ngIf="draftTours.length > 0; else noDrafts">
             <div *ngFor="let tour of draftTours" class="tour-card" (click)="onTourClick(tour)">
                 <h2>{{ tour.name }}</h2>
@@ -33,7 +33,7 @@
             <xp-tour-form [shouldEdit]="shouldEdit" [tour]="selectedTour" (tourUpdated)="getTours()"></xp-tour-form>
         </div>
     </div>
-    <div *ngIf="currentView === 'published'" class="card-container">
+    <div *ngIf="currentView === 'published' && (user.role === 'tourist' || user.role === 'author')" class="card-container">
         <div *ngIf="user && user.role === 'tourist'">
                 <xp-map [allowMultipleMarkers]="false"
                 [initialMarkers]="initialMarkers"
@@ -61,7 +61,7 @@
             <p>No published tours available.</p>
         </ng-template>
     </div>
-    <div *ngIf="currentView === 'archive'" class="card-container">
+    <div *ngIf="currentView === 'archive' && user.role === 'author'" class="card-container">
         <div *ngIf="archivedTours.length > 0; else noArchived">
             <div *ngFor="let tour of archivedTours" class="tour-card" (click)="onTourClick(tour)">
                 <h2>{{ tour.name }}</h2>

@@ -6,6 +6,7 @@ import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { User } from 'src/app/infrastructure/auth/model/user.model';
 import { Tourist } from '../../tour-authoring/model/tourist';
 import { TourService } from '../../tour-authoring/tour.service';
+import { EncounterTourist } from '../model/encounter-tourist.model';
 
 @Component({
   selector: 'xp-encounter',
@@ -15,6 +16,7 @@ import { TourService } from '../../tour-authoring/tour.service';
 export class EncounterComponent implements OnInit {
 
   encounters: Encounter[] = [];
+  encounterTourist: EncounterTourist;
   encounterCoordinates: { latitude: number, longitude: number }[] = [];
   userMarker: { latitude: number, longitude: number } | null = null;
   isViewMode: boolean = false;
@@ -47,6 +49,8 @@ export class EncounterComponent implements OnInit {
       }
     });
     this.getEncounters();
+    this.getEncounterTourist();
+
   };
 
   navigateToForm(id?: number): void {
@@ -83,7 +87,10 @@ export class EncounterComponent implements OnInit {
     // Procesiraj rezultat API poziva
     encounterObservable.subscribe({
       next: (data) => {
-        const activeEncounters = data.results.filter(e => e.encounterStatus === 0);
+        const activeEncounters = this.user.role === 'tourist' 
+        ? data.results.filter(e => e.encounterStatus === 0) 
+        : data.results.filter(e => e.encounterStatus === 0 || e.encounterStatus === 3);
+  
         this.encounters = activeEncounters;
         this.encounterCoordinates = this.encounters.map(e => ({ 
           latitude: e.encounterLocation.latitude, 
@@ -104,4 +111,79 @@ export class EncounterComponent implements OnInit {
     }
     this.encounterCoordinatesLoaded.emit(allCoordinates);
   }
+  getEncounterTourist() : void{
+      this.authService.getTourist(this.user.id).subscribe({
+        next: (result: EncounterTourist) =>{
+          this.encounterTourist = result;
+        },
+        error: (err: any) => {
+          console.log(err);
+        }
+      })
+  }
+  get canAddEncounter(): boolean {
+    return this.user.role === 'administrator' || 
+           (this.user.role === 'tourist' && this.encounterTourist?.level >= 10);
+  }
+  approveEncounter(id?: number): void {
+    if (!id) {
+      console.error("No ID provided for approval");
+      return;
+    }
+  
+    this.service.getEncounter(id).subscribe({
+      next: (encounter) => {
+        encounter.encounterStatus = 0;
+  
+        this.service.updateEncounter(encounter).subscribe({
+          next: (updatedEncounter) => {
+  
+            // Ažuriranje liste encounters
+            const index = this.encounters.findIndex(e => e.id === updatedEncounter.id);
+            if (index !== -1) {
+              this.encounters[index] = updatedEncounter; 
+            } else {
+              this.encounters.push(updatedEncounter);
+            }
+          },
+          error: (err) => {
+            console.error("Error updating encounter:", err);
+          }
+        });
+      },
+      error: (err) => {
+        console.error("Error retrieving encounter:", err);
+      }
+    });
+  }
+  declineEncounter(id?: number): void {
+    if (!id) {
+      console.error("No ID provided for decline");
+      return;
+    }
+  
+    this.service.getEncounter(id).subscribe({
+      next: (encounter) => {
+        encounter.encounterStatus = 4; // Postavljanje statusa na "Declined"
+  
+        this.service.updateEncounter(encounter).subscribe({
+          next: (updatedEncounter) => {
+  
+            // Uklanjanje encounter-a iz liste
+            const index = this.encounters.findIndex(e => e.id === updatedEncounter.id);
+            if (index !== -1) {
+              this.encounters.splice(index, 1);
+            }
+          },
+          error: (err) => {
+            console.error("Error updating encounter:", err);
+          }
+        });
+      },
+      error: (err) => {
+        console.error("Error retrieving encounter:", err);
+      }
+    });
+  }
+  
 }

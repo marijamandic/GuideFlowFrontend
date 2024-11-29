@@ -81,6 +81,28 @@
   cursor: pointer;
   transition: background-color 0.3s;
 }
+.approve-button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px;
+  width: 100%;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.decline-button {
+  background-color: #960a0a;
+  color: white;
+  border: none;
+  padding: 10px;
+  width: 100%;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
 
 .update-button:hover {
   background-color: #0056b3;

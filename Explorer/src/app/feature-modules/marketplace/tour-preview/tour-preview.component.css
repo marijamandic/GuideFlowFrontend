@@ -2,11 +2,13 @@
     background-color: #ffffff;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    width: 500px;
+    max-width: 800px; /* Ograničena širina */
+    width: 100%; /* Kartica zauzima 100% dostupne širine */
     padding: 16px;
-    margin: 16px auto;
+    margin: 16px auto; /* Centriranje */
     text-align: center;
 }
+
 .tour-images {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); 
@@ -30,12 +32,12 @@
     text-align: left;
 }
 .tour-info h2 {
-    font-size: 24px;
     color: #333;
 }
 .tour-info p {
     margin: 4px 0;
     color: #666;
+    font-size: large;
 }
 .reviews {
     margin-top: 16px;
@@ -101,4 +103,54 @@
     align-items: center;
     margin-right: 10px;  
   }
+
+.purchase-button.archived {
+    background-color: #d3d3d3; /* Siva boja za dugme */
+    cursor: not-allowed; /* Onemogućava interakciju sa dugmetom */
+    color: #888; /* Svetla boja teksta */
+}
   
+.checkpoint-hero img {
+    width: 800px; /* Prilagodite širini kartice */
+    height: auto;
+    max-height: 300px;
+    border-radius: 8px;
+}
+
+.checkpoint-details img {
+    width: 40%; /* I ove slike koristite isto pravilo */
+    height: auto;
+    border-radius: 8px;
+}
+
+
+.checkpoint-details {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.checkpoint-container {
+    display: flex;
+    align-items: start; 
+    margin-bottom: 16px; 
+}
+
+.checkpoint-container img {
+    width: 200px; 
+    height: auto; 
+    margin-right: 16px; 
+    border-radius: 8px; 
+}
+
+.checkpoint-text {
+    display: flex;
+    flex-direction: column; 
+    font-size: large;
+}
+
+.checkpoint-text p {
+    margin: 0; 
+    line-height: 1.4; 
+    font-size: medium;
+}
+

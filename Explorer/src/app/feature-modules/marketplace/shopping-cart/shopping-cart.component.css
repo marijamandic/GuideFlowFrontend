@@ -1,174 +1,65 @@
-/* Shopping Cart Container */
-.shopping-cart {
-  max-width: 700px;
-  margin: 50px auto;
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+.main {
+	display: flex;
+	justify-content: center;
+	margin-top: 20px;
 }
 
-/* Header Styling */
-h2 {
-  font-size: 2em;
-  color: #333;
-  text-align: center;
-  margin-bottom: 30px;
+.container {
+	width: 100%;
+	max-width: 1200px;
 }
 
-/* Order Item Card */
-.order-item {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 100px; /* Flexibly divide columns for item details, price, quantity, and remove button */
-  gap: 20px;
-  padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
-  align-items: center;
-  transition: background-color 0.3s ease;
+.items-checkout {
+	display: flex;
 }
 
-.order-item:hover {
-  background-color: #f0f0f0;
+.items {
+	width: 70%;
+	padding-right: 20px;
 }
 
-/* Item Details */
-.item-details {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: left;
+.checkout {
+	width: 30%;
+	padding-left: 20px;
 }
 
-.item-details h3 {
-  font-size: 1.2em;
-  color: #333;
-  margin: 0;
+.cart-item {
+	display: flex;
+	justify-content: space-between;
+	background-color: #84dcc6;
+	border-radius: 15px;
+	padding: 20px;
+	margin-bottom: 10px;
 }
 
-.item-details p {
-  font-size: 0.9em;
-  color: #777;
-  margin: 5px 0 0 0;
+.checkout-button {
+	background-color: #84dcc6;
+	border: none;
+	outline: none;
+	text-align: center;
+	border-radius: 30px;
+	padding: 12px 25px;
+	transition: transform 0.3s ease;
+	width: 100%;
 }
 
-/* Quantity Control */
-.item-quantity {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  justify-content: center;
+.checkout-button:hover {
+	transform: scale(0.9);
 }
 
-.quantity-btn {
-  padding: 6px 12px;
-  font-size: 1.1em;
-  background-color: #28a745;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+.remove {
+	display: flex;
+	align-items: center;
 }
 
-.quantity-btn:hover {
-  background-color: #218838;
+.remove > button {
+	border: none;
+	outline: none;
+	background-color: transparent;
+	margin-right: 25px;
+	height: 20px;
 }
 
-.quantity {
-  font-size: 1.2em;
-  color: #333;
-  margin: 0 10px;
-}
-
-/* Price */
-.item-price {
-  font-size: 1.1em;
-  color: #28a745;
-  font-weight: bold;
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* Remove Button */
-.remove-btn {
-  padding: 8px 15px;
-  background-color: #ff7f50;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  font-size: 1em;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  align-self: center; /* Ensure it is centered vertically within its cell */
-}
-
-.remove-btn:hover {
-  background-color: #ff6347;
-}
-
-/* Total Section */
-.total {
-  font-size: 1.4em;
-  font-weight: bold;
-  color: #333;
-  margin-top: 30px;
-  text-align: center;
-}
-
-/* Checkout Button */
-.checkout-btn {
-  padding: 12px 25px;
-  font-size: 1.2em;
-  color: #fff;
-  background-color: #28a745;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  text-align: center;
-  display: block;
-  margin-top: 20px;
-}
-
-.checkout-btn:hover {
-  background-color: #218838;
-}
-
-/* Empty Cart Message */
-.empty-message {
-  font-size: 1.1em;
-  color: #777;
-  text-align: center;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .order-item {
-    grid-template-columns: 1fr 1fr; /* Stack details and price on smaller screens */
-    grid-template-areas: 
-      "details details"
-      "quantity price"
-      "quantity remove";
-  }
-
-  .item-price {
-    justify-content: flex-start; /* Align price to the left in small screens */
-  }
-
-  .remove-btn {
-    margin-top: 10px; /* Add space on smaller screens */}
-
-  .item-quantity {
-    justify-content: flex-start;
-  }
-
-  .checkout-btn {
-    font-size: 1em;
-    padding: 10px 20px;
-  }
+.remove > button:hover {
+	cursor: pointer;
 }

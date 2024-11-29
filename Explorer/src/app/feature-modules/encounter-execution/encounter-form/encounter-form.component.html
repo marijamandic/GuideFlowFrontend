@@ -69,7 +69,7 @@
         <textarea id="description" [(ngModel)]="encounter.description" name="description" required placeholder="Encounter description"></textarea>
       </div>
 
-      <div class="form-group">
+      <div class="form-group" *ngIf="user.role != 'tourist'">
         <label for="status">Status</label>
         <select id="status" [(ngModel)]="encounter.encounterStatus" name="status" class="form-control">
           <option value="Active">Active</option>
