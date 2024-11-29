@@ -39,9 +39,11 @@ import { TourExecutionDetailsComponent } from 'src/app/feature-modules/tour-exec
 import { PurchasedToursComponent } from 'src/app/feature-modules/tour-execution/purchased-tours/purchased-tours.component';
 import { PublicPointNotificationsComponent } from 'src/app/feature-modules/tour-authoring/public-point-notifications/public-point-notifications.component';
 import { TourDetailsComponent } from 'src/app/feature-modules/tour-authoring/tour-details/tour-details.component';
+import { ClubDashboardComponent } from 'src/app/feature-modules/administration/club/club-dashboard/club-dashboard.component';
 import { EncounterComponent } from 'src/app/feature-modules/encounter-execution/encounter/encounter.component';
 import { EncounterFormComponent } from 'src/app/feature-modules/encounter-execution/encounter-form/encounter-form.component';
 import { AddEncounterComponent } from 'src/app/feature-modules/tour-authoring/add-encounter/add-encounter.component';
+import { ExecutionComponent } from 'src/app/feature-modules/encounter-execution/execution/execution.component';
 import { ClubDashboardComponent } from 'src/app/feature-modules/administration/club/club-dashboard/club-dashboard.component';
 
 const routes: Routes = [
@@ -89,7 +91,8 @@ const routes: Routes = [
   {path: 'encounters', component: EncounterComponent},
   { path: 'encounter-add', component: EncounterFormComponent },
   { path: 'encounter-update/:id', component: EncounterFormComponent },
-  { path: 'author-add-encounter/:id/:tourId', component: AddEncounterComponent}
+  { path: 'author-add-encounter/:id/:tourId', component: AddEncounterComponent},
+  { path: 'encounter-execution/:id', component: ExecutionComponent}
 
 ];
 

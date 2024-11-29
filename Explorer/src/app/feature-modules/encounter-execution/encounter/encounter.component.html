@@ -30,7 +30,7 @@
         <button class="decline-button" (click)="declineEncounter(encounter.id)">Decline</button>
       </div>
       <div *ngIf="user.role == 'tourist'" class="encounter-footer">
-        <button class="update-button" (click)="navigateToEncounter(encounter.id)">Execute</button>
+        <button class="update-button" (click)="Execute(encounter)">Execute</button>
       </div>
     </div>
   </div>

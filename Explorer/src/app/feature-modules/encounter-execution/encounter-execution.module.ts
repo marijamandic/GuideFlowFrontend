@@ -6,11 +6,13 @@ import { EncounterFormComponent } from './encounter-form/encounter-form.componen
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from 'src/app/infrastructure/material/material.module';
 import { AdministrationModule } from '../administration/administration.module';
+import { ExecutionComponent } from './execution/execution.component';
 
 @NgModule({
   declarations: [
     EncounterComponent,
-    EncounterFormComponent
+    EncounterFormComponent,
+    ExecutionComponent
   ],
   imports: [
     CommonModule,
