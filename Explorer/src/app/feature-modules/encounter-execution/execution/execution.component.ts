@@ -7,6 +7,7 @@ import { TourService } from '../../tour-authoring/tour.service';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Encounter, EncounterType } from '../model/encounter.model';
+import { environment } from 'src/env/environment';
 
 @Component({
   selector: 'xp-execution',
@@ -120,6 +121,9 @@ export class ExecutionComponent implements OnInit{
     }
   }
   
+  getImagePath(imageUrl: string) {
+    return environment.webRootHost +"/images/encounters/"+ imageUrl;
+  }
   
 
   ConvertType(): number {
