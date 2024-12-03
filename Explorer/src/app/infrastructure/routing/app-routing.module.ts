@@ -41,47 +41,68 @@ import { ClubDashboardComponent } from 'src/app/feature-modules/administration/c
 import { TourDetailsComponent } from 'src/app/feature-modules/tour-authoring/tour-details/tour-details.component';
 
 const routes: Routes = [
+  // ### HOME
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
+
+  // ### ACCOUNT SHIT
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegistrationComponent },
+  { path: 'profile', component: ProfileInfoComponent }, // svaka čast onome ko je ovo radio je nije nigde bilo bindovano
+  { path: 'account', component: AccountComponent, canActivate: [AuthGuard] }, // Ovo je prazno i ne znam čemu služi, ali ima nekog koda
+  
+  // ### TOURS 
+  // --- /tours pregled svih tura (za s ve role), dodavanje tura, search tura
+  { path: 'tours', component: TourViewComponent },  
+  { path: 'toursForAuthor', component: TourComponent }, // ovo treba spojiti u ovo iznad
+  { path: 'purchased', component: PurchasedToursComponent }, // ovo treba napraviti da izgleda kao tours samo sto se druge ucitavaju
+
+  // --- tours/:id pregled pojedinacne ture, dodavanje checkpointa, reviews, equpimentm, redirect na edit ture?
+  { path: 'tours/:id', component:TourDetailsComponent, children:[{path:'checkpoints/:tourId', component:CheckpointListComponent}]},
+  { path: 'checkpoints/:tourId', component: CheckpointListComponent },  // ovo spajamo u tours/:id
+  { path: 'tourReview/:tourId/:touristId', component: TourReviewComponent }, // ovo isto spajamo u tours/:id
+
+  // --- /tour-execution/:id 
+  { path: 'tour-execution/:id', component: TourExecutionDetailsComponent}, // blizanac, blizanac 
+
+  // -- ne sta je sta
+  { path: 'tourPreview/:id', component: TourPreviewComponent},
+  { path: 'tourObjects', component: TourObjectComponent, canActivate: [AuthGuard] },
+  
+  // --- ne znam šta spada u šta, treba mi pomoc 
+  { path: 'tourEquipment/:id', component: TourEquipmentComponent },
   { path: 'equipment', component: EquipmentComponent, canActivate: [AuthGuard] },
-  { path: 'profileInfo', component: ProfileInfoComponent },
   { path: 'equipmentManagement', component: EquipmentManagementComponent },
-  //{ path: 'problem', component: ProblemComponent },
-  { path: 'report', component: ReportProblemComponent },
+
+  // ### CLUB (nema club posts @nikola.s)
   { path: 'club', component: ClubComponent, canActivate: [AuthGuard] },
-  { path: 'club-info/:id', component: ClubInfoComponent, canActivate: [AuthGuard] },
+  { path: 'club/:id', component: ClubInfoComponent, canActivate: [AuthGuard] },
   { path: 'club-dashboard/:id', component: ClubDashboardComponent, canActivate: [AuthGuard] },
   { path: 'new-club', component: ClubFormComponent, canActivate: [AuthGuard]},
+
+  // ### BLOG (gotovo, ali bih promenio dodavanje/edit)
   { path: 'blog', component: PostComponent, canActivate: [AuthGuard] },
   { path: 'blog/:id', component: PostInfoComponent, canActivate: [AuthGuard] },
-  { path: 'comment', component: CommentComponent },
-  { path: 'edit-post/:id', component: CreateBlogComponent },
   { path: 'create-blog', component: CreateBlogComponent },
-  { path: 'tourObjects', component: TourObjectComponent, canActivate: [AuthGuard] },
-  { path: 'checkpoints/:tourId', component: CheckpointListComponent },
-  { path: 'tour-execution/:id', component: TourExecutionDetailsComponent},
-  { path: 'tour', component: TourComponent },
-  { path: 'tourEquipment/:id', component: TourEquipmentComponent },
-  { path: 'ratingTheApp', component: RatingTheAppComponent },
-  { path: 'allAppRatings', component: AllAppRatingsComponent },
-  { path: 'purchased', component: PurchasedToursComponent },
-  { path: 'account', component: AccountComponent, canActivate: [AuthGuard] },
-  { path: 'tourView', component: TourViewComponent },
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: 'pending', component: PublicPointRequestsComponent },
-  { path: 'tourReview/:tourId/:touristId', component: TourReviewComponent },
-  { path: 'author/notifications', component: PublicPointNotificationsComponent },
-  { path: 'position-sim', component: PositionsimComponent },
-	{ path: 'author-problems', component: ProblemComponent },
-	{ path: 'notifications', component: NotificationsComponent },
-	{ path: 'tourist-problems', component: ProblemStatusComponent },
-	{ path: 'admin-problems', component: AdminProblemComponent },
-	{ path: '', redirectTo: '/home', pathMatch: 'full' },
-  {path: 'tourPreview/:id', component: TourPreviewComponent},
+  { path: 'edit-blog/:id', component: CreateBlogComponent },
+  
+  // ### SHOPPING CART  (biće još kada se sve spoji)
   {path: 'shoppingCart', component: ShoppingCartComponent},
-  {path: 'tourDetails/:tourId', component:TourDetailsComponent, children:[{path:'checkpoints/:tourId', component:CheckpointListComponent}]}
 
+  // ### REPORT
+  { path: 'report', component: ReportProblemComponent },  // ako je ovo problem vezano za sve onda ide na dno u footer, ako je vazno samo za ture onda ide negde sa turama
+  { path: 'tourist-problems', component: ProblemStatusComponent },  
+  { path: 'author-problems', component: ProblemComponent },
+  { path: 'admin-problems', component: AdminProblemComponent }, 
+
+  // ### MISC
+  { path: 'position-sim', component: PositionsimComponent },  // ovo sam prilično sig da se ne koristi samo za ture?
+  { path: 'notifications', component: NotificationsComponent }, // ne znam da li je ikada radilo?
+  { path: 'ratingTheApp', component: RatingTheAppComponent }, // ovo negde ubaciti kao pop-up na home page?
+  { path: 'allAppRatings', component: AllAppRatingsComponent }, // ovo na nekom admin dashboard?
+  { path: 'author/notifications', component: PublicPointNotificationsComponent }, // ne znam
+  //{ path: 'problem', component: ProblemComponent }, // ovo je bilo zakomentarisano i ne znam cemu sluzi
+  { path: 'pending', component: PublicPointRequestsComponent }, // ne znams ta je ovo
 ];
 
 @NgModule({
