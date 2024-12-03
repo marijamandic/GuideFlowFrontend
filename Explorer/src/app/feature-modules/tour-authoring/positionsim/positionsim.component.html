@@ -15,6 +15,8 @@
   
     <div style="margin-top: 20px;">
       <button (click)="saveCoordinates()" style="background-color: green; color: white;">Save</button>
+      <button *ngIf="toNumber(tourExecutionId)!=0" (click)="navigateToTourExecution()">Go to tour execution</button>
+      <button *ngIf="encounterExecutionId" (click)="navigateToEncounterExecution()">Go to encounter execution</button>
     </div>
   </div>
   

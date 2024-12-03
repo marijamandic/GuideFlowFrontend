@@ -38,7 +38,8 @@ export class AddEncounterComponent implements OnInit {
     encounterStatus: 0,
     encounterLocation: { latitude: 0, longitude: 0 },
     experiencePoints: 0,
-    encounterType: 0
+    encounterType: 0,
+    isCreatedByAuthor: true,
   };
 
   encounterCoordinates: { latitude: number; longitude: number }[] = [];

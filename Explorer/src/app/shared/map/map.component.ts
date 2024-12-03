@@ -27,6 +27,14 @@ export class MapComponent implements AfterViewInit,OnChanges {
 
   constructor(private mapService: MapService) {}
 
+  ngOnDestroy(): void {
+    if (this.map) {
+      this.map.off(); // Uklonite sve event listenere
+      this.map.remove(); // Uklonite mapu
+      this.map = null; // Postavite mapu na null kako biste oslobodili resurse
+    }
+  }
+
   ngAfterViewInit(): void {
     let DefaultIcon = L.icon({
       iconUrl: 'https://unpkg.com/leaflet@1.6.0/dist/images/marker-icon.png',
@@ -41,16 +49,19 @@ export class MapComponent implements AfterViewInit,OnChanges {
     }
   }
 
-  private initMap(): void {
+  public initMap(): void {
     if (this.map) {
       console.log('Mapa je već inicijalizovana');
+      this.resetMap()
       return; // Sprečite ponovnu inicijalizaciju
+    }else{
+      this.map = L.map('map', {
+        center: [45.2396, 19.8227],
+        zoom: 13,
+      });
+      console.log(this.map)
     }
 
-    this.map = L.map('map', {
-      center: [45.2396, 19.8227],
-      zoom: 13,
-    });
 
     const tiles = L.tileLayer(
       'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -107,6 +118,10 @@ export class MapComponent implements AfterViewInit,OnChanges {
   }
 
   ngOnChanges(): void {
+    console.log(this.map)
+    if (this.map) {
+      setTimeout(() => this.map.invalidateSize(), 0); // Osvežavanje dimenzija mape
+    }
     if (this.map) {
       this.updateCheckpointMarkers();
       this.addUserMarker();
@@ -209,5 +224,9 @@ export class MapComponent implements AfterViewInit,OnChanges {
 
     this.mapReset.emit();
   }
-  
+  public resetPositionSimMap(): void {
+    if (this.map) {
+      setTimeout(() => this.map.invalidateSize(), 0);
+    }
+  }
 }

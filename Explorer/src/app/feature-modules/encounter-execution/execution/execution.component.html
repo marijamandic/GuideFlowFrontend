@@ -6,40 +6,21 @@
     {{ errorMessage }}
   </div>
 
-  <div *ngIf="tourist" class="tourist-location">
-    <h2>Lokacija Turista</h2>
-    <p><strong>Latitude:</strong> {{ tourist.location.latitude }}</p>
-    <p><strong>Longitude:</strong> {{ tourist.location.longitude }}</p>
-  </div>
-
   <div *ngIf="encounterExecution" class="execution-details">
     <h2>Detalji izvršenja</h2>
-    <p><strong>Status:</strong> {{ encounterExecution.isComplete ? 'Završeno' : 'U toku' }}</p>
-    <p><strong>User location:</strong></p>
-    <ul>
-      <li><strong>Longitude:</strong> {{ encounterExecution.userLongitude }}</li>
-      <li><strong>Latitude:</strong> {{ encounterExecution.userLatitude }}</li>
-    </ul>
+    <p><strong>Status izvrsavanja izazova:</strong> {{ encounterExecution.isComplete ? 'Završeno' : 'U toku' }}</p>
     <div>
-      <p ><strong>Broj aktivnih korisnika:</strong> {{ encounterExecution.participants }}</p>
+      <p *ngIf="encounterExecution.encounterType==1"><strong>Broj aktivnih korisnika:</strong> {{ encounterExecution.participants }}</p>
     </div>
   </div>
 
   <!-- Detalji o encounteru -->
   <div *ngIf="encounterExecution?.encounterType !== undefined && encounter" class="encounter-details">
-    <h2>Detalji Encountera</h2>
     <p><strong>Naziv:</strong> {{ encounter.name }}</p>
     <p><strong>Opis:</strong> {{ encounter.description }}</p>
-    <p><strong>Status:</strong> {{ encounter.encounterStatus}}</p>
-    <p><strong>Tip Encountera:</strong> {{ encounter.encounterType}}</p>
+    <p><strong>Status izazova:</strong> {{mapToStatus(encounter.encounterStatus)}}</p>
+    <p><strong>Tip izazova:</strong> {{ mapToType(encounter.encounterType)}}</p>
     <p><strong>Experience Points:</strong> {{ encounter.experiencePoints }}</p>
-    
-    <!-- Lokacija Encountera -->
-    <div *ngIf="encounter?.encounterLocation">
-      <h3>Lokacija Encountera</h3>
-      <p><strong>Latitude:</strong> {{ encounter.encounterLocation.latitude }}</p>
-      <p><strong>Longitude:</strong> {{ encounter.encounterLocation.longitude }}</p>
-    </div>
 
     <!-- Dodatni podaci specifični za tip Encountera -->
     <div *ngIf="encounter?.encounterType === EncounterType.Social">
@@ -64,10 +45,9 @@
 </div>
 
 <div class="map-container">
-  <xp-map (coordinatesSelected)="onCoordinatesSelected($event)" [encounters]="touristCoordinates"></xp-map>
-
+  <xp-map [encounters]="encounterCoordinates" [userLocation]="userMarker" [showSearchBar]="false"></xp-map>
 </div>
 
 <button *ngIf="encounterExecution" (click)="completeExecution()" class="button"> Complete encounter execution</button>
-
+<button (click)="navigateToPositionSimulator()">Position simulator</button>
 </div>

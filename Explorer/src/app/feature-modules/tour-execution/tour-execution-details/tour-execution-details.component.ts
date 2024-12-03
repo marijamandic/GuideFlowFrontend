@@ -13,6 +13,8 @@ import { Tourist } from '../../tour-authoring/model/tourist';
 import { DatePipe } from '@angular/common';
 import { CheckpointStatus } from '../model/checkpoint-status.model';
 import { Checkpoint } from '../../tour-authoring/model/tourCheckpoint.model';
+import { EncounterExecutionService } from '../../encounter-execution/encounter-execution.service';
+import { Execution } from '../../encounter-execution/model/execution.model';
 
 @Component({
   selector: 'xp-tour-execution-details',
@@ -21,8 +23,8 @@ import { Checkpoint } from '../../tour-authoring/model/tourCheckpoint.model';
 })
 export class TourExecutionDetailsComponent implements OnInit{
   tourExecutionId : string | null=null;
-  user : User | undefined;
-  tourist : Tourist | undefined;
+  user : User;
+  tourist : Tourist;
   tourExecution : TourExecution | null=null;
   executionStatus : string | null = null;
   currentCheckpoint : CheckpointStatus;
@@ -35,13 +37,15 @@ export class TourExecutionDetailsComponent implements OnInit{
   private intervalId: any;
   isReviewFormOpen = false;
   isBelowThirtyFivePercent = false;
-
+  userMarker: { latitude: number, longitude: number } | null = null;
   checkpoints: Checkpoint[] = [];
+  encounterIds: number[] = [];
   checkpointCoordinates: { latitude: number, longitude: number }[] = [];
   @Output() checkpointsLoaded = new EventEmitter<{ latitude: number; longitude: number; }[]>();
   isViewMode:boolean = false;
 
   constructor(
+    private encounterService: EncounterExecutionService,
     private tourService: TourService,
     private datePipe: DatePipe,
     private tourExecutionService: TourExecutionService,
@@ -60,9 +64,13 @@ export class TourExecutionDetailsComponent implements OnInit{
         this.tourService.getTouristById(user.id).subscribe({
           next: (result: Tourist) => {
             this.tourist = result;
+            this.userMarker = {
+              latitude: this.tourist.location.latitude,
+              longitude: this.tourist.location.longitude
+            };
             if(this.tourist && this.tourExecutionId){
               this.fetchTourExecution();
-      
+              
               this.intervalId = setInterval( ()=> {
                 this.updateTourExecution();
               },10000)
@@ -72,7 +80,15 @@ export class TourExecutionDetailsComponent implements OnInit{
             console.log(err);
           }
         })
-      }) 
+        this.encounterService.getAllEncounterIdsByUserId(user.id).subscribe({
+          next: (ids)=>{
+            this.encounterIds = ids;
+          },
+          error:(err:any) => {
+            console.log(err);
+          }
+        }) 
+      })
   }
 
   ngOnDestroy(): void {
@@ -126,6 +142,7 @@ export class TourExecutionDetailsComponent implements OnInit{
       
             const isDisabled = percent <= 35;
             console.log(`Disabled dugme? ${isDisabled}`);
+            this.isLessThanThirtyFivePercent();
           },
           error: (err: any) => {
             console.error('Greška prilikom dobijanja procenta:', err);
@@ -221,7 +238,7 @@ isLessThanThirtyFivePercent(): void {
 }
 
 isDisabled(): boolean {
-  this.isLessThanThirtyFivePercent();
+  
   if(this.isBelowThirtyFivePercent) {
     console.log("IsDisabled1: ", this.isBelowThirtyFivePercent)
     return true;
@@ -229,14 +246,14 @@ isDisabled(): boolean {
     console.log("IsDisabled2: ", this.isBelowThirtyFivePercent)
     return true;
   }
-  console.log("IsDisabled3: falsee")
+  //console.log("IsDisabled3: falsee")
   return false;
 }
 
 getReviewMessage(): string {
   const isPastSevenDays = !this.isMoreThanSevenDaysAgo();
-  console.log("Manje od 7 dana:", isPastSevenDays)
-  console.log("Manje od 35:", this.isBelowThirtyFivePercent)
+  //console.log("Manje od 7 dana:", isPastSevenDays)
+  //console.log("Manje od 35:", this.isBelowThirtyFivePercent)
   if (isPastSevenDays && this.isBelowThirtyFivePercent) {
     return "Review cannot be submitted because more than 7 days have passed since the last activity and less than 35% of the tour has been completed.";
   } else if (isPastSevenDays) {
@@ -304,13 +321,48 @@ getReviewMessage(): string {
       });
     }
   }
-  isTouristNear(latitude:number,longitude: number){
+  isTouristNear(latitude:number,longitude: number,encounterId:number){
     var tolerance : number = 0.0018;
     if(!this.tourist)
       return false
+   
     var isNearLatitude : boolean = Math.abs(latitude-this.tourist?.location.latitude) <= tolerance;
     var isNearLongitude : boolean = Math.abs(longitude-this.tourist?.location.longitude) <= tolerance;
-    console.log(this.user?.location.latitude)
-    return isNearLatitude && isNearLongitude;
+    if(!encounterId)
+      return false;
+    const isStarted: boolean = this.encounterIds.includes(encounterId);
+    return isNearLatitude && isNearLongitude && !isStarted;
+  }
+  Execute(encounterId:number) {
+      this.encounterService.getEncounter(encounterId).subscribe({
+        next: (encounter) => {
+          const execution: Execution = {
+            userId: this.user.id, 
+            encounterId: encounter.id || 0,
+            isComplete: false,
+            encounterType: encounter.encounterType, 
+            userLongitude: this.tourist.location.longitude, 
+            userLatitude: this.tourist.location.latitude, 
+            participants: 0 
+          };
+          this.encounterService.addEncounterExecution(execution).subscribe({
+            next: (response) => {
+              const encounterExecutionId = response.id;
+        
+              if (encounterExecutionId) {
+                this.router.navigate(['/encounter-execution',encounterExecutionId,this.tourExecutionId]);
+              } else {
+                console.error('EncounterExecution ID not found in response.');
+              }
+            },
+            error: (err) => {
+              console.error('Failed to create EncounterExecution:', err);
+            }
+          });
+        }
+      });
+  }
+  naivgateToPositionSimulator(){
+    this.router.navigate(['position-sim',this.tourExecutionId]);
   }
 }

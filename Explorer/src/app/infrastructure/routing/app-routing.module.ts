@@ -91,7 +91,10 @@ const routes: Routes = [
   { path: 'encounter-add', component: EncounterFormComponent },
   { path: 'encounter-update/:id', component: EncounterFormComponent },
   { path: 'author-add-encounter/:id/:tourId', component: AddEncounterComponent},
-  { path: 'encounter-execution/:id', component: ExecutionComponent}
+  { path: 'encounter-execution/:id', component: ExecutionComponent},
+  { path: 'encounter-execution/:id/:tourExecutionId', component: ExecutionComponent},
+  { path: 'position-sim/:tourExecutionId', component: PositionsimComponent },
+  { path: 'position-sim/:tourExecutionId/:encounterExecutionId', component: PositionsimComponent },
 
 ];
 

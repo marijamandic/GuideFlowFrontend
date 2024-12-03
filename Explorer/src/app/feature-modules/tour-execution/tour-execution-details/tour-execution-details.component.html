@@ -1,4 +1,4 @@
-<div *ngIf="tourExecution">
+<div *ngIf="tourExecution && user && tourist">
     <div class="title">
       <h2>Mountain ride Tour Execution</h2>
     </div>
@@ -9,7 +9,7 @@
             <h3>Tour execution details</h3>
           </div>
           <div class="basicInfo">
-            <p><strong>User name:</strong> {{ tourist?.username }}</p>
+            <p><strong>User name:</strong> {{ tourist.username }}</p>
             <p><strong>Tour Range:</strong> {{ tourExecution.tourRange }} km</p>
             <p><strong>Execution Status:</strong> {{ mapToTourExecutionStatus( tourExecution.executionStatus) }}</p>
             <p><strong>Start Time:</strong> {{ tourExecution.startTime | date: 'short' }}</p>
@@ -28,7 +28,7 @@
               <p><strong>Description:</strong> {{ currentCheckpoint.checkpoint.description }}</p>
               <p><strong>Completion Time:</strong> {{ mapToCompletionTime(currentCheckpoint.completionTime) }}</p>
               <p><strong>Secret:</strong> {{ currentCheckpoint.checkpoint.secret }}</p>
-              <button *ngIf="isTouristNear(currentCheckpoint.checkpoint.latitude,currentCheckpoint.checkpoint.longitude)">Start encounter</button>
+              <button *ngIf="isTouristNear(currentCheckpoint.checkpoint.latitude,currentCheckpoint.checkpoint.longitude,currentCheckpoint.checkpoint.encounterId)" (click)="Execute(currentCheckpoint.checkpoint.encounterId)">Start encounter</button>
             </div>
             <div class="checkpoint-dots">
               <!-- Proveravamo da li 'tourExecution' postoji i da 'checkpointsStatus' nije null ili undefined -->
@@ -79,10 +79,11 @@
       </div>
       <div class="mapDetails">
         <div style="margin-top: 30px;" >
-          <xp-map [showSearchBar]="isViewMode" [checkpoints]="checkpointCoordinates" ></xp-map>
+          <xp-map [showSearchBar]="isViewMode" [checkpoints]="checkpointCoordinates" [userLocation]="userMarker"></xp-map>
           <div class="button-container">
             <button class="button" (click)="abandonSession()">Abandon session</button>
             <button class="button" (click)="completeSession()">Complete session</button>
+            <button class="button" (click)="naivgateToPositionSimulator()">Position simulator</button>
           </div>
         </div>
       </div>

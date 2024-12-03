@@ -19,6 +19,7 @@
       </div>
       <div class="encounter-body">
         <p><strong>Description:</strong> {{ encounter.description }}</p>
+        <p style="color: red;" *ngIf="error && error.encounterId==encounter.id">{{error.errorMessage}}</p>
       </div>
       <div *ngIf="user.role == 'administrator' && encounter.encounterStatus !== 3" class="encounter-footer">
         <button class="update-button" (click)="navigateToForm(encounter.id)">Update</button>
@@ -29,8 +30,11 @@
       <div *ngIf="user.role == 'administrator' && encounter.encounterStatus === 3" class="encounter-footer">
         <button class="decline-button" (click)="declineEncounter(encounter.id)">Decline</button>
       </div>
-      <div *ngIf="user.role == 'tourist'" class="encounter-footer">
+      <div *ngIf="user.role == 'tourist' &&  !encounter.isCreatedByAuthor" class="encounter-footer">
         <button class="update-button" (click)="Execute(encounter)">Execute</button>
+      </div>
+      <div *ngIf="user.role == 'tourist' && encounter.isCreatedByAuthor" class="encounter-footer">
+        <p>You can execute this encounter only from tour execution</p>
       </div>
     </div>
   </div>
