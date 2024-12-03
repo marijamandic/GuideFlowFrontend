@@ -24,6 +24,7 @@ export class ExecutionComponent implements OnInit{
   encounter: Encounter | undefined;
   userMarker: { latitude: number, longitude: number } | null = null;
   public EncounterType = EncounterType;
+  private intervalId: any;
 
   encounterCoordinates: { latitude: number; longitude: number }[] = [];
   @Output() encounterCoordinatesLoaded = new EventEmitter<{ latitude: number; longitude: number; }[]>();
@@ -37,39 +38,62 @@ export class ExecutionComponent implements OnInit{
   ) {}
 
   ngOnInit(): void {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+    }
+  
     this.encounterExecutionId = this.route.snapshot.paramMap.get('id');
     this.tourExecutionId = this.route.snapshot.paramMap.get('tourExecutionId');
-    this.authService.user$.subscribe(user => {
+  
+    this.authService.user$.subscribe((user) => {
       this.user = user;
       this.tourService.getTouristById(user.id).subscribe({
         next: (result: Tourist) => {
           this.tourist = result;
           if (this.tourist) {
-            this.getExecutionByUser();
-            this.userMarker = {latitude: result.location.latitude,longitude: result.location.longitude}
+            this.getExecutionByUser(() => {
+              this.userMarker = {
+                latitude: result.location.latitude,
+                longitude: result.location.longitude
+              };
+              console.log('10s:', this.encounterExecution);
+              if(!this.encounterExecution?.isComplete){
+                this.intervalId = setInterval(() => {
+                  this.completeSocialExecution();
+                }, 10000);
+              }
+              
+            });
           }
           this.emitCoordinates();
         },
-        error: (err: any) => {
+        error: (err) => {
           console.log(err);
         }
       });
     });
-  
   }
 
-  getExecutionByUser(): void {
+
+  ngOnDestroy(): void {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+    }
+  }
+  
+
+  getExecutionByUser(callback: () => void): void {
     this.encounterExecutionService.getExecution(this.encounterExecutionId!).subscribe({
       next: (result: Execution) => {
         this.encounterExecution = result;
-        if(this.tourist){
+        if (this.tourist) {
           this.encounterExecution.userLatitude = this.tourist.location.latitude;
           this.encounterExecution.userLongitude = this.tourist.location.longitude;
         }
-        if(this.encounterExecution.encounterId){
+        if (this.encounterExecution.encounterId) {
           this.getEncounter();
         }
-
+        callback(); // Pozovi nakon završetka
       },
       error: (error) => {
         this.errorMessage = 'Došlo je do greške prilikom učitavanja podataka.';
@@ -77,6 +101,7 @@ export class ExecutionComponent implements OnInit{
       }
     });
   }
+  
 
   getEncounter(): void {
     if(this.encounterExecution){
@@ -109,9 +134,34 @@ export class ExecutionComponent implements OnInit{
     }
   }*/
 
+    completeSocialExecution(): void {
+      if (this.encounterExecution && this.encounterExecution.encounterType === EncounterType.Social) {
+        this.encounterExecutionService.completeSocialExecution(this.encounterExecution)
+          .subscribe({
+            next: (result) => {
+              console.log('Zahtev uspešno poslat:', result);
+              this.encounterExecutionService.getExecution(this.encounterExecutionId!).subscribe({
+                next: (ex: Execution) => {
+                  this.encounterExecution = ex;
+                },
+                error: (error) => {
+                  this.errorMessage = 'Došlo je do greške prilikom učitavanja podataka.';
+                  console.error(error);
+                }
+              });
+            },
+            error: (err) => {
+              console.error('Došlo je do greške:', err);
+            }
+          });
+        console.log('izvrsavam komplete na 10 sec');
+      }
+    }
+    
+
   completeExecution(): void {
     if (this.encounterExecution) {
-      this.encounterExecutionService.completeExecution(this.encounterExecution).subscribe(
+        this.encounterExecutionService.completeExecution(this.encounterExecution).subscribe(
         (updatedExecution: Execution) => {
           console.log('Execution successfully completed:', updatedExecution);
           this.encounterExecution = updatedExecution;

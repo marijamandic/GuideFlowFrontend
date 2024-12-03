@@ -1,53 +1,55 @@
 <div class="layout">
-<div class="execution-container">
-  <h1>Encounter execution details</h1>
-
-  <div *ngIf="errorMessage" class="error-message">
-    {{ errorMessage }}
+  <div class="execution-container">
+    <h1>Encounter execution details</h1>
+  
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+  
+    <div *ngIf="encounterExecution" class="execution-details">
+      <h2>Detalji izvršenja</h2>
+      <p><strong>Status izvrsavanja izazova:</strong> {{ encounterExecution.isComplete ? 'Završeno' : 'U toku' }}</p>
+      <div>
+        <p *ngIf="encounterExecution.encounterType==1"><strong>Broj aktivnih korisnika:</strong> {{ encounterExecution.participants }}</p>
+      </div>
+    </div>
+  
+    <!-- Detalji o encounteru -->
+    <div *ngIf="encounterExecution?.encounterType !== undefined && encounter && encounterExecution" class="encounter-details">
+      <p><strong>Naziv:</strong> {{ encounter.name }}</p>
+      <p><strong>Opis:</strong> {{ encounter.description }}</p>
+      <p><strong>Status izazova:</strong> {{mapToStatus(encounter.encounterStatus)}}</p>
+      <p><strong>Tip izazova:</strong> {{ mapToType(encounter.encounterType)}}</p>
+      <p><strong>Experience Points:</strong> {{ encounter.experiencePoints }}</p>
+      <p *ngIf="encounter.encounterType === EncounterType.Social"><strong>Participants:</strong> {{ encounterExecution.participants }}</p>
+  
+  
+      <!-- Dodatni podaci specifični za tip Encountera -->
+      <div *ngIf="encounter?.encounterType === EncounterType.Social">
+        <p><strong>Broj Turista:</strong> {{ encounter.touristNumber }}</p>
+        <p><strong>Domet Encountera:</strong> {{ encounter.encounterRange }}</p>
+      </div>
+      <div *ngIf="encounter?.encounterType === EncounterType.Location && encounter.imageUrl">
+        <!--<div class="tour-image" [style.backgroundImage]="'url(' + encounter.imageUrl + ')'"></div>-->
+        <img [src]="getImagePath(encounter.imageUrl)" alt="encounter image" />
+  
+        <p><strong>Koordinate slike:</strong></p>
+        <ul>
+          <li><strong>Latitude:</strong> {{ encounter.imageLatitude }}</li>
+          <li><strong>Longitude:</strong> {{ encounter.imageLongitude }}</li>
+        </ul>
+      </div>
+      <div *ngIf="encounter?.encounterType === EncounterType.Misc">
+        <p><strong>Opis Akcije:</strong> {{ encounter.actionDescription }}</p>
+      </div>
+    </div>
+  
   </div>
-
-  <div *ngIf="encounterExecution" class="execution-details">
-    <h2>Detalji izvršenja</h2>
-    <p><strong>Status izvrsavanja izazova:</strong> {{ encounterExecution.isComplete ? 'Završeno' : 'U toku' }}</p>
-    <div>
-      <p *ngIf="encounterExecution.encounterType==1"><strong>Broj aktivnih korisnika:</strong> {{ encounterExecution.participants }}</p>
-    </div>
+  
+  <div class="map-container">
+    <xp-map [encounters]="encounterCoordinates" [userLocation]="userMarker" [showSearchBar]="false"></xp-map>
   </div>
-
-  <!-- Detalji o encounteru -->
-  <div *ngIf="encounterExecution?.encounterType !== undefined && encounter" class="encounter-details">
-    <p><strong>Naziv:</strong> {{ encounter.name }}</p>
-    <p><strong>Opis:</strong> {{ encounter.description }}</p>
-    <p><strong>Status izazova:</strong> {{mapToStatus(encounter.encounterStatus)}}</p>
-    <p><strong>Tip izazova:</strong> {{ mapToType(encounter.encounterType)}}</p>
-    <p><strong>Experience Points:</strong> {{ encounter.experiencePoints }}</p>
-
-    <!-- Dodatni podaci specifični za tip Encountera -->
-    <div *ngIf="encounter?.encounterType === EncounterType.Social">
-      <p><strong>Broj Turista:</strong> {{ encounter.touristNumber }}</p>
-      <p><strong>Domet Encountera:</strong> {{ encounter.encounterRange }}</p>
-    </div>
-    <div *ngIf="encounter?.encounterType === EncounterType.Location && encounter.imageUrl">
-      <!--<div class="tour-image" [style.backgroundImage]="'url(' + encounter.imageUrl + ')'"></div>-->
-      <img [src]="getImagePath(encounter.imageUrl)" alt="encounter image" />
-
-      <p><strong>Koordinate slike:</strong></p>
-      <ul>
-        <li><strong>Latitude:</strong> {{ encounter.imageLatitude }}</li>
-        <li><strong>Longitude:</strong> {{ encounter.imageLongitude }}</li>
-      </ul>
-    </div>
-    <div *ngIf="encounter?.encounterType === EncounterType.Misc">
-      <p><strong>Opis Akcije:</strong> {{ encounter.actionDescription }}</p>
-    </div>
+  
+  <button *ngIf="encounterExecution && encounter?.encounterType !== EncounterType.Social && encounter" (click)="completeExecution()" class="button"> Complete encounter execution</button>
+  <button (click)="navigateToPositionSimulator()">Position simulator</button>
   </div>
-
-</div>
-
-<div class="map-container">
-  <xp-map [encounters]="encounterCoordinates" [userLocation]="userMarker" [showSearchBar]="false"></xp-map>
-</div>
-
-<button *ngIf="encounterExecution" (click)="completeExecution()" class="button"> Complete encounter execution</button>
-<button (click)="navigateToPositionSimulator()">Position simulator</button>
-</div>
