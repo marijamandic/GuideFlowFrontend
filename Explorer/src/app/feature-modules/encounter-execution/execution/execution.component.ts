@@ -191,7 +191,7 @@ export class ExecutionComponent implements OnInit{
   }
   navigateToPositionSimulator(){
     if(this.tourExecutionId){
-      this.router.navigate(['/position-sim',this.tourExecutionId,this.encounterExecutionId])
+      this.router.navigate(['/position-sim',this.encounterExecutionId,this.tourExecutionId])
     }else{
       this.router.navigate(['/position-sim',0,this.encounterExecutionId])
     }
