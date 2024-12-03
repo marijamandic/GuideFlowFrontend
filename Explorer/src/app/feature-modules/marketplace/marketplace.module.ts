@@ -7,11 +7,13 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { TourPreviewComponent } from './tour-preview/tour-preview.component';
 import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
+import { TourBundlePreviewComponent } from './tour-bundle-preview/tour-bundle-preview.component';
 
 @NgModule({
   declarations: [
     TourPreviewComponent,
-    ShoppingCartComponent
+    ShoppingCartComponent,
+    TourBundlePreviewComponent
   ],
   imports: [
     MatRadioModule,
