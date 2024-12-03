@@ -51,7 +51,9 @@ export class EncounterExecutionService {
   getExecutionByUser(userId: number): Observable<Execution[]>{
     return this.http.get<Execution[]>('https://localhost:44333/api/tourist/encounterExecution/getByUser/' + userId);
   }
-
+  getAllEncounterIdsByUserId(userId: number): Observable<number[]>{
+    return this.http.get<number[]>(environment.apiHost+'tourist/encounterExecution/getAllByUser/' + userId);
+  }
 
   findExecution(userId: number, encounterId: number): Observable<Execution | null> {
     return this.http.get<Execution | null>(`https://localhost:44333/api/tourist/encounterExecution/findExecution/${userId}/${encounterId}`);

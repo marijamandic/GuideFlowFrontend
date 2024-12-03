@@ -17,14 +17,16 @@ import { environment } from 'src/env/environment';
 export class ExecutionComponent implements OnInit{
   errorMessage: string | null = null;
   encounterExecutionId: string | null = null;
+  tourExecutionId: string | null = null;
   user: User | undefined;
   tourist: Tourist | undefined;
   encounterExecution: Execution | undefined;
   encounter: Encounter | undefined;
+  userMarker: { latitude: number, longitude: number } | null = null;
   public EncounterType = EncounterType;
 
-  touristCoordinates: { latitude: number; longitude: number }[] = [];
-  @Output() touristCoordinatesLoaded = new EventEmitter<{ latitude: number; longitude: number; }[]>();
+  encounterCoordinates: { latitude: number; longitude: number }[] = [];
+  @Output() encounterCoordinatesLoaded = new EventEmitter<{ latitude: number; longitude: number; }[]>();
 
   constructor(
     private encounterExecutionService: EncounterExecutionService,
@@ -36,6 +38,7 @@ export class ExecutionComponent implements OnInit{
 
   ngOnInit(): void {
     this.encounterExecutionId = this.route.snapshot.paramMap.get('id');
+    this.tourExecutionId = this.route.snapshot.paramMap.get('tourExecutionId');
     this.authService.user$.subscribe(user => {
       this.user = user;
       this.tourService.getTouristById(user.id).subscribe({
@@ -43,7 +46,9 @@ export class ExecutionComponent implements OnInit{
           this.tourist = result;
           if (this.tourist) {
             this.getExecutionByUser();
+            this.userMarker = {latitude: result.location.latitude,longitude: result.location.longitude}
           }
+          this.emitCoordinates();
         },
         error: (err: any) => {
           console.log(err);
@@ -78,6 +83,9 @@ export class ExecutionComponent implements OnInit{
       this.encounterExecutionService.getEncounter(this.encounterExecution.encounterId).subscribe({
         next: (result: Encounter) => {
           this.encounter = result;
+          this.encounterCoordinates = [result.encounterLocation]
+          console.log(this.encounterCoordinates)
+          this.encounterCoordinatesLoaded.emit(this.encounterCoordinates);
         },
         error: (error) => {
           this.errorMessage = 'Došlo je do greške prilikom učitavanja podataka.';
@@ -87,26 +95,31 @@ export class ExecutionComponent implements OnInit{
     }
   }
 
-  onCoordinatesSelected(coordinates: { latitude: number; longitude: number }): void {
+/*  onCoordinatesSelected(coordinates: { latitude: number; longitude: number }): void {
     if(this.tourist){
       this.tourist.location.latitude = coordinates.latitude;
       this.tourist.location.longitude = coordinates.longitude;
       this.tourService.updateTourist(this.tourist).subscribe(updatedTourist => {
         console.log('Updated User:', updatedTourist);
-        this.ngOnInit();
+        this.tourist = updatedTourist;
       }, error => {
         console.error('Error updating user:', error);
       });
       console.log('Encounter Location updated:', this.tourist.location);
     }
-  }
+  }*/
 
   completeExecution(): void {
     if (this.encounterExecution) {
       this.encounterExecutionService.completeExecution(this.encounterExecution).subscribe(
         (updatedExecution: Execution) => {
           console.log('Execution successfully completed:', updatedExecution);
-          this.ngOnInit();
+          this.encounterExecution = updatedExecution;
+          if(this.tourExecutionId){
+            this.router.navigate(['tour-execution/',this.tourExecutionId]);
+          }else{
+            this.router.navigate(['encounters']);
+          }
         },
         error => {
           if (error.status === 500) {
@@ -140,5 +153,47 @@ export class ExecutionComponent implements OnInit{
       }
     }
     return 0;
+  }
+  emitCoordinates(): void {
+    const allCoordinates = [...this.encounterCoordinates];
+    if (this.userMarker) {
+      allCoordinates.push(this.userMarker);
+    }
+    this.encounterCoordinatesLoaded.emit(allCoordinates);
+  }
+  mapToType(type:number):string{
+    switch(type){
+      case 0:
+        return "Social";
+      case 1:
+        return "Location";
+      case 2: 
+        return "Misc";
+      default:
+        return "Base";
+    }
+  }
+  mapToStatus(status:number):string{
+    switch(status){
+      case 0:
+        return "Active";
+      case 1:
+        return "Draft";
+      case 2: 
+        return "Archived";
+      case 3:
+        return "Pendig";
+      case 4: 
+        return "Canceled"
+      default:
+        return "Base";
+    }
+  }
+  navigateToPositionSimulator(){
+    if(this.tourExecutionId){
+      this.router.navigate(['/position-sim',this.tourExecutionId,this.encounterExecutionId])
+    }else{
+      this.router.navigate(['/position-sim',0,this.encounterExecutionId])
+    }
   }
 }

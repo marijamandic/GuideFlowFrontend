@@ -8,6 +8,7 @@ import { Tourist } from '../../tour-authoring/model/tourist';
 import { TourService } from '../../tour-authoring/tour.service';
 import { Execution } from '../model/execution.model';
 import { EncounterTourist } from '../model/encounter-tourist.model';
+import { EncounterError } from '../model/encounter-error';
 
 @Component({
   selector: 'xp-encounter',
@@ -23,6 +24,7 @@ export class EncounterComponent implements OnInit {
   isViewMode: boolean = false;
   user: User;
   tourist : Tourist;
+  error : EncounterError;
   @Output() encounterCoordinatesLoaded = new EventEmitter<{ latitude: number; longitude: number; }[]>();
 
   constructor(private service: EncounterExecutionService, private router: Router, private authService: AuthService, private tourService: TourService,){}
@@ -104,6 +106,7 @@ export class EncounterComponent implements OnInit {
       },
       error: (err) => {
         console.error('Failed to create EncounterExecution:', err);
+        this.error = {errorMessage: "Morate biti na lokaciji izazova",encounterId:execution.encounterId}
       }
     });
   }
@@ -139,6 +142,7 @@ export class EncounterComponent implements OnInit {
           latitude: e.encounterLocation.latitude, 
           longitude: e.encounterLocation.longitude 
         }));
+        console.log(this.encounterCoordinates)
         this.encounterCoordinatesLoaded.emit(this.encounterCoordinates);
       },
       error: (err) => {

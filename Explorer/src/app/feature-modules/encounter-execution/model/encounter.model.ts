@@ -9,6 +9,7 @@ export interface Encounter {
     encounterStatus: EncounterStatus;
     experiencePoints: number;
     encounterType: EncounterType;
+    isCreatedByAuthor?: boolean;
     touristNumber?: number; // SocialEncounter
     encounterRange?: number; // SocialEncounter
     imageUrl?: string; // LocationEncounter
