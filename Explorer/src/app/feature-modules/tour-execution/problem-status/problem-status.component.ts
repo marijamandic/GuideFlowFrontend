@@ -100,4 +100,11 @@ export class ProblemStatusComponent implements OnInit {
             this.toggleForm(null);
         }
     }
+    isDeadlineValid(deadline: Date): boolean {
+        const today = new Date();
+        const deadlineDate = new Date(deadline);
+        // Proverava da li je rok u budućnosti ili danas
+        return deadlineDate >= today;
+    }
 }
+
