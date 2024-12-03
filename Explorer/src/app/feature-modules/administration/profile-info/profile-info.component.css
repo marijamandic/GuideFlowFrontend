@@ -15,7 +15,7 @@ body, html {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #f9f9f9; /* Optional: Light background for contrast */
+  background-color: #f9f9f9;
   padding: 20px;
   box-sizing: border-box;
 }
@@ -29,7 +29,6 @@ body, html {
     flex-direction: row;
     gap: 50px;
     align-items: flex-start;
-    border-radius: 500px;
 }
 
 p {
@@ -42,42 +41,66 @@ table {
     font-family: sans-serif;
     min-width: 300px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
 }
 
 thead tr {
     background-color: #84dcc6;
     color: #ffffff;
-    text-align: left;
+    text-align: center;
 }
 
-th, td {
-    padding: 12px 15px;
-}
-
-tbody tr {
-    border-bottom: 1px solid #dddddd;
-}
-
-tbody tr:nth-of-type(even) {
-    background-color: #f3f3f3;
+th {
+    padding: 0px 15px;
 }
 
 tbody tr:last-of-type {
-    border-bottom: 2px solid #84dcc6;
-}
-
-tbody tr.active-row {
-    font-weight: bold;
-    color: #84dcc6;
+    margin-top: 100px;
 }
 
 .profile-image{
     border-radius: 20px;
+    border: 1px solid #84dcc6;
+    margin-top: 30px;
 }
 
-button{
+button {
     background-color: #84dcc6;
+    padding: 10px 20px;
+    border: none;
+    color: white;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: auto; /* Ovo pomera dugme ka desnoj strani */
+    display: block; /* Obezbeđuje da dugme koristi ceo red */
+    margin-right: 20px;
+    margin-bottom: 10px;
 }
+
+.input-no-border {
+    border: none; /* Uklanja okvir */
+    background-color: transparent; /* Uklanja pozadinu */
+    pointer-events: none; /* Sprečava interakciju */
+    font-weight: bold;
+    font-size: 15px;
+    margin-left: 47px;
+  }
+  
+  .input-border {
+    border: 1px solid #ccc; /* Dodaje okvir */
+    background-color: #fff; /* Dodaje pozadinu */
+    pointer-events: auto;
+    margin-left: 50px;
+  }
+
+  textarea {
+    resize: none; /* Sprečava korisnike da promene veličinu */
+  }
+
+  .profile-row{
+    padding: 0px 50px;
+  }
 
 body{
     font-size: 14px;
