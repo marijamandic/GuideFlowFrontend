@@ -4,6 +4,7 @@
   margin-left: 32.2%;
   background-color: #FFF;
   padding-top: 0.65%;
+  z-index: 1000;
 }
 .map-background xp-tour-execution-map {
   position: relative;  /* Dodajemo poziciju */
@@ -445,12 +446,35 @@
   align-items: center; /* Poravnava dugmad vertikalno */
 }
 
-.navigation-buttons {
-  margin-left: 50px; /* Pomerite navigacione dugmiće udesno */
+.navigation-buttons { /* Pomerite navigacione dugmiće udesno */
   display: flex;
   gap: 10px; /* Razmak između Back i Next dugmeta */
 }
 
+.checkpoint-button{
+  width: 100px;
+  background-color:var(--primary-color);
+  color: white;
+  border-radius: 25px;
+  font-size: 14px;
+  height: 50px;
+  font-weight: bold;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease; 
+}
+.checkpoint-button:hover {
+  background-color: var(--primary-color-hover, darken(var(--primary-color), 10%)); /* Tamnija nijansa */
+  color: #f1f1f1; /* Svetlija boja teksta na hover */
+}
+
+.checkpoint-button:disabled {
+  background-color: #cccccc; /* Svetlosiva za disabled */
+  color: #666666; /* Tamnosiva za tekst */
+  cursor: not-allowed; /* Pokazivač pokazuje da nije klikabilno */
+  opacity: 0.7; /* Blago providno */
+}
 .navigation-button:disabled {
   background-color: #ccc;
   cursor: not-allowed;

@@ -1,0 +1,25 @@
+<div class="bundle-page" *ngIf="bundle !== undefined">
+  <div class="bundle-info">
+    <h1 class="bundle-title">{{ bundle.name }}</h1>
+    <p class="bundle-description">
+      Ovaj paket sadrži ekskluzivne ture. Iskoristite priliku da ih sve istražite!
+    </p>
+    <div class="bundle-meta">
+      <span class="bundle-price">{{ bundle.price }} AC</span>
+      <button class="bundle-buy-button" (click)="addToCart()">Dodaj u korpu</button>
+    </div>
+  </div>
+  <div class="tours-list">
+    <div *ngFor="let tour of tours" class="tour-card">
+      <div class="tour-details">
+        <h2 class="tour-title">{{ tour.name }}</h2>
+        <p class="tour-description">{{ tour.description }}</p>
+        <div class="tour-meta">
+          <span class="tour-price">{{ getFormattedPrice(tour.price) }}</span>
+          <span class="tour-difficulty">{{ getLevel(tour.level) }}</span>
+          <span class="tour-tags">{{ tour.taggs.join(', ') }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

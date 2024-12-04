@@ -1,96 +1,157 @@
+.execution-card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  width: 300px;
+  font-family: Arial, sans-serif;
+}
 
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f7f9fc;
-    color: #333;
-  }
-  
-  .layout {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-start;
-    padding: 20px;
-  }
-  
-  .execution-container {
-    width: 30%;
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 15px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  .execution-container h1 {
-    font-size: 1.5em;
-    margin-bottom: 10px;
-    color: #4caf50;
-  }
-  
-  .error-message {
-    color: #d9534f;
-    font-weight: bold;
-    margin-bottom: 15px;
-  }
-  
-  .tourist-location,
-  .execution-details,
-  .encounter-details {
-    margin-bottom: 20px;
-  }
-  
-  .tourist-location h2,
-  .execution-details h2,
-  .encounter-details h2 {
-    font-size: 1.3em;
-    margin-bottom: 10px;
-    color: #3f51b5;
-  }
-  
-  ul {
-    list-style: none;
-    padding: 0;
-  }
-  
-  ul li {
-    margin: 5px 0;
-  }
-  
-  .map-container {
-    width: 65%;
-    height: 600px;
-    background-color: #e9f7fd;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  .button {
-    display: inline-block;
-    background-color: #4caf50;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    margin-top: 15px;
-  }
-  
-  .button:hover {
-    background-color: #45a049;
-  }
-  
-  .tour-image {
-    width: 100%;
-    height: 200px;
-    background-size: cover;
-    background-position: center;
-    border-radius: 5px;
-    margin: 10px 0;
-  }
-  
+.card-header h1 {
+  font-size: 1.5em;
+  color: #333;
+  margin-bottom: 16px;
+}
+
+.error-message {
+  color: red;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+.execution-details {
+  margin-bottom: 16px;
+}
+
+.status, .participants, .encounter-name, .encounter-description, .encounter-status, .encounter-type, .encounter-participants {
+  font-size: 0.9em;
+  margin: 8px 0;
+}
+
+.social-encounter, .location-encounter, .misc-encounter {
+  margin-top: 16px;
+  display: flex;
+	justify-content: space-around;
+	align-items: center;
+}
+
+.encounter-image {
+  max-width: 100%;
+  border-radius: 4px;
+}
+
+.coordinates-list {
+  list-style: none;
+  padding: 0;
+}
+
+.coordinates-list li {
+  font-size: 0.9em;
+}
+
+.complete-button, .simulator-button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-size: 0.9em;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 16px;
+}
+
+.complete-button:hover, .simulator-button:hover {
+  background-color: #0056b3;
+}
+.icon {
+  margin-right: 8px;
+  color: #007bff; /* Plava boja ikone */
+  font-size: 20px; /* Veličina ikone */
+  vertical-align: middle; /* Poravnanje s tekstom */
+}
+.header-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.points {
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--primary-color);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.challenge-type {
+  display: flex;
+  align-items: center;
+  font-size: 14px; /* Manji font */
+  color: gray; /* Siva boja teksta */
+  font-style: italic; /* Italic stil */
+  gap: 5px; /* Razmak između ikonice i teksta */
+  margin-top: 5px;
+}
+
+.challenge-type mat-icon {
+  font-size: 16px; /* Veličina ikonice smanjena */
+  color: gray; /* Boja ikonice */
+}
+
+.header-left {
+  display: flex;
+  flex-direction: column;
+}
+
+.cta-button {
+  background-color: var(--primary-color);
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  padding: 12px 30px;
+  border-radius: 25px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s ease;
+}
+
+.cta-button:hover {
+  background-color: var(--hover-color);
+  transform: scale(1.1);
+  transition: 0.5s ease;
+}
+
+.button {
+	display: inline-block;
+	background-color: var(--primary-color);
+	color: white;
+	padding: 12px 25px;
+	border-radius: 30px;
+	transition: background-color 0.3s ease, transform 0.3s ease;
+	text-align: center;
+	margin: 20px auto;
+	display: block;
+	width: fit-content;
+	outline: none;
+	border: none;
+}
+
+.button:focus {
+	outline: none;
+}
+
+.button:hover {
+	background-color: var(--hover-color);
+	transform: scale(1.05);
+}

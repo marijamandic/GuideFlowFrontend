@@ -10,6 +10,7 @@ import { FooterComponent } from './footer/footer.component'; // <-- Import Forms
 import { NotificationsComponent } from './notifications/notifications.component'; // <-- Import FormsModule
 import { SharedModule } from 'src/app/shared/shared.module';
 import { MarketplaceModule } from "../marketplace/marketplace.module";
+import { CustomAlertComponent } from './custom-alert/custom-alert.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { MarketplaceModule } from "../marketplace/marketplace.module";
     NavbarComponent,
     RatingTheAppComponent,
     FooterComponent,
-    NotificationsComponent
+    NotificationsComponent,
+    CustomAlertComponent
   ],
   imports: [
     CommonModule,
@@ -32,7 +34,8 @@ import { MarketplaceModule } from "../marketplace/marketplace.module";
     HomeComponent,
     RatingTheAppComponent,
     FooterComponent,
-    NotificationsComponent
+    NotificationsComponent,
+    CustomAlertComponent
   ]
 })
 export class LayoutModule {}
