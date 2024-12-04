@@ -6,6 +6,7 @@ import { Item } from '../model/shopping-carts/item';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
 import { TourPurchaseToken } from '../model/purchase-tokens/tour-purchase-token';
 import { Payment } from '../model/payments/payment';
+import { ShoppingCartService } from '../shopping-cart.service';
 
 @Component({
 	selector: 'xp-shopping-cart',
@@ -13,17 +14,23 @@ import { Payment } from '../model/payments/payment';
 	styleUrls: ['./shopping-cart.component.css']
 })
 export class ShoppingCartComponent implements OnInit {
-	cart: ShoppingCart = {
-		id: 0,
-		touristId: 0,
-		items: []
-	};
+	cart$: ShoppingCart;
+	totalAdventureCoins: number;
 
-	totalAdventureCoins = 0;
+	constructor(private shoppingCartService: ShoppingCartService, private marketplaceService: MarketplaceService) {}
 
-	constructor(private marketplaceService: MarketplaceService) {}
+	ngOnInit(): void {
+		this.subscribeCart();
+	}
 
-	calculateAc(items: Item[]): void {
+	private subscribeCart() {
+		this.shoppingCartService.cart$.subscribe(cart => {
+			this.cart$ = cart;
+			this.calculateAc(this.cart$.items);
+		});
+	}
+
+	private calculateAc(items: Item[]): void {
 		this.totalAdventureCoins = 0;
 		items.forEach(i => {
 			this.totalAdventureCoins += i.adventureCoin;
@@ -31,42 +38,22 @@ export class ShoppingCartComponent implements OnInit {
 	}
 
 	handleRemoveClick(itemId: number): void {
-		this.marketplaceService.removeFromCart(itemId).subscribe({
-			next: (): void => {
-				this.cart.items = [...this.cart.items.filter(i => i.id !== itemId)];
-				this.calculateAc(this.cart.items);
-			},
-			error: (err: HttpErrorResponse): void => {
-				console.log(err.message);
-			}
+		this.shoppingCartService.removeFromCart(itemId).subscribe({
+			error: (error: HttpErrorResponse) => console.log(error.message)
 		});
 	}
 
 	goToCheckout(): void {
 		this.marketplaceService.pay().subscribe({
-			next: (result: Payment ): void => {
-				this.loadShoppingCart();
+			next: (result: Payment): void => {
+				this.shoppingCartService.getShoppingCartByTouristId().subscribe({
+					error: (error: HttpErrorResponse) => console.log(error.message)
+				});
 				alert('You have successfully purchased ' + result.paymentItems.length + ' tours, and you have received a token for each one!');
 			},
 			error: (err: HttpErrorResponse): void => {
 				console.log(err.message);
 			}
 		});
-	}
-
-	loadShoppingCart() {
-		this.marketplaceService.getShoppingCartByTouristId().subscribe({
-			next: (result: ShoppingCart) => {
-				this.cart = { ...result };
-				this.calculateAc(this.cart.items);
-			},
-			error: (err: HttpErrorResponse) => {
-				console.log(err.message);
-			}
-		});
-	}
-
-	ngOnInit(): void {
-		this.loadShoppingCart();
 	}
 }

@@ -1,5 +1,9 @@
 {
 	"devDependencies": {
 		"@angular/platform-browser-dynamic": "^18.2.8"
+	},
+	"dependencies": {
+		"@types/leaflet-routing-machine": "^3.2.8",
+		"leaflet-routing-machine": "^3.2.12"
 	}
 }

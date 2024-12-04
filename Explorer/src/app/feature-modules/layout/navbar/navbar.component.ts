@@ -14,6 +14,7 @@ export class NavbarComponent implements OnInit {
 	isDropdownOpen: boolean = false;
 	notificationCount: number = 0;
 	showNotifications: boolean = false;
+	showCart = false;
 
 	constructor(private authService: AuthService, private publiPointService: PublicPointService) {}
 
@@ -42,5 +43,9 @@ export class NavbarComponent implements OnInit {
 
 	toggleNotifications(): void {
 		this.showNotifications = !this.showNotifications;
+	}
+
+	handleShoppingCartOpened() {
+		this.showCart = false;
 	}
 }
