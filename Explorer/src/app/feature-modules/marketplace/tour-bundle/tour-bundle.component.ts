@@ -22,53 +22,7 @@ export class TourBundleComponent implements OnInit{
 
 
   constructor(private authService: AuthService,
-               private marketPlace: MarketplaceService,private dialog: MatDialog) {
-
-                this.publishedTourBundles = [
-                  {
-                    id: 1,
-                    name: 'Tropical Escape',
-                    price: 250,
-                    status: BundleStatus.Published,
-                    authorId: 101,
-                    tourIds: [1, 2]
-                  },
-                  {
-                    id: 2,
-                    name: 'Historic Adventure 2',
-                    price: 300,
-                    status: BundleStatus.Published,
-                    authorId: 101,
-                    tourIds: [3, 4]
-                  },
-                  {
-                    id: 3,
-                    name: 'Historic Adventure 3',
-                    price: 300,
-                    status: BundleStatus.Published,
-                    authorId: 101,
-                    tourIds: [3, 4]
-                  },
-                  {
-                    id: 4,
-                    name: 'Historic Adventure 4',
-                    price: 300,
-                    status: BundleStatus.Published,
-                    authorId: 101,
-                    tourIds: [3, 4]
-                  }
-                  ,
-                  {
-                    id: 5,
-                    name: 'Historic Adventure 5',
-                    price: 300,
-                    status: BundleStatus.Published,
-                    authorId: 101,
-                    tourIds: [3, 4]
-                  }
-                ];
-
-               }
+               private marketPlace: MarketplaceService,private dialog: MatDialog) { }
                
                
   ngOnInit(): void {
