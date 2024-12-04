@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { TourSpecification } from '../marketplace/model/tour-specification.model';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/env/environment';
+import { TourSpecification } from '../tour-execution/model/tour-specification.model';
 
 import { Item } from './model/shopping-carts/item';
 import { ItemInput } from './model/shopping-carts/item-input';
@@ -15,6 +15,7 @@ import { Action } from 'rxjs/internal/scheduler/Action';
 import { Tour } from '../tour-authoring/model/tour.model';
 import { Payment } from './model/payments/payment';
 import { Coupon } from './model/coupon.model';
+import { TourBundle } from './model/tour-bundle';
 
 @Injectable({
 	providedIn: 'root'
@@ -112,4 +113,7 @@ export class MarketplaceService {
 	}
 
 
+	getBundleById(id:number):Observable<TourBundle> {
+		return this.http.get<TourBundle>(environment.apiHost + 'shopping/tourBundle/' + id);
+	}
 }
