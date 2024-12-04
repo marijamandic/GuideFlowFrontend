@@ -130,26 +130,29 @@ input[type="range"]::-ms-thumb {
   position: relative;
   display: flex;
   flex-direction: row;
-  align-items: center;
+  /*align-items: top;*/
   padding: 15px;
   background-color: #fff;
   border-radius: 15px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 10px;
   width: 100%;
+  margin-bottom: 20px;
 }
 
 .tour-card-header {
   display: flex; 
   justify-content: space-between; 
-  align-items: center;
+  align-items: top;
 }
 
 /* Card image section */
 .tour-card img {
   width: 300px;
-  height: 200px;
+  height: 100%;
   border-radius: 15px;
   object-fit: cover;
+  align-self: center;
+  margin-bottom: -20px;
 }
 
 /* Card content section */
@@ -158,7 +161,7 @@ input[type="range"]::-ms-thumb {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding: 0 10px; 
+  padding-left: 20px;
 }
 
 /* Card actions (e.g., Buy button and kebab menu) */
@@ -170,17 +173,38 @@ input[type="range"]::-ms-thumb {
 }
 
 .kebab-menu {
+  align-self: flex-end;
   background: none;
   border: none;
   font-size: 20px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
   color: #666;
   cursor: pointer;
+}
+
+.add-to-cart {
+  align-items: baseline;
+  cursor: pointer;
+}
+
+.buttons {
+  border: none;
+  display: flex;
+  flex-direction: column; /* Stack items vertically */
+  height: 200px; /* Set a height for the container */
+  justify-content: space-between; /* Push one item to the top and one to the bottom */
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px;
 }
 
 /* Card details (e.g., price, difficulty, tags) */
 .tour-card-details {
   display: flex;
   flex-wrap: wrap;
+  flex-direction: column;
   gap: 10px;
   font-size: 14px;
   color: #666;
@@ -192,6 +216,3 @@ input[type="range"]::-ms-thumb {
   gap: 5px;
 }
 
-.add-to-cart {
-  align-self: flex-end; 
-}
