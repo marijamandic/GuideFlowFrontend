@@ -82,7 +82,8 @@ export class CheckpointFormComponent implements OnChanges {
           imageBase64:this.checkpointForm.value.imageBase64 || "",
           latitude:this.checkpointForm.value.latitude || 0,
           longitude:this.checkpointForm.value.longitude || 0,
-          secret:this.checkpointForm.value.secret || ""
+          secret:this.checkpointForm.value.secret || "",
+          isEncounterEssential:false
         };
         console.log(checkpoint);
         this.tourService.addCheckpoint(this.tourId,checkpoint).subscribe({
@@ -102,7 +103,8 @@ export class CheckpointFormComponent implements OnChanges {
           imageBase64:this.checkpointForm.value.imageBase64 || "",
           latitude:this.checkpointForm.value.latitude || 0,
           longitude:this.checkpointForm.value.longitude || 0,
-          secret:this.checkpointForm.value.secret || ""
+          secret:this.checkpointForm.value.secret || "",
+          isEncounterEssential:false
         };
         checkpoint.id=this.checkpoint.id;
         this.tourService.updateCheckpoint(this.tourId,checkpoint).subscribe({

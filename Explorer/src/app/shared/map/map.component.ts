@@ -17,13 +17,24 @@ export class MapComponent implements AfterViewInit,OnChanges {
   @Input() initialMarkers: L.LatLng[] = [];
   @Input() allowMultipleMarkers: boolean = true;
   @Input() checkpoints: { latitude: number; longitude: number }[] = [];
+  @Input() encounters: { latitude: number; longitude: number }[] = [];
   @Input() showSearchBar: boolean = true;
+  @Input() formWithoutSearchBar: boolean =false;
+  @Input() userLocation: { latitude: number; longitude: number } | null = null;
   @Output() markerAdded = new EventEmitter<L.LatLng>();
   @Output() mapReset = new EventEmitter<void>();
   @Output() coordinatesSelected = new EventEmitter<{ latitude: number; longitude: number }>();
   @Output() distanceCalculated = new EventEmitter<{ transportType: string; time: number; distance: number }>();
 
   constructor(private mapService: MapService) {}
+
+  ngOnDestroy(): void {
+    if (this.map) {
+      this.map.off(); // Uklonite sve event listenere
+      this.map.remove(); // Uklonite mapu
+      this.map = null; // Postavite mapu na null kako biste oslobodili resurse
+    }
+  }
 
   ngAfterViewInit(): void {
     let DefaultIcon = L.icon({
@@ -33,21 +44,25 @@ export class MapComponent implements AfterViewInit,OnChanges {
     });
 
     L.Marker.prototype.options.icon = DefaultIcon;
+    
     if (!this.map) {
       this.initMap(); 
     }
   }
 
-  private initMap(): void {
+  public initMap(): void {
     if (this.map) {
       console.log('Mapa je već inicijalizovana');
+      this.resetMap()
       return; // Sprečite ponovnu inicijalizaciju
+    }else{
+      this.map = L.map('map', {
+        center: [45.2396, 19.8227],
+        zoom: 13,
+      });
+      console.log(this.map)
     }
 
-    this.map = L.map('map', {
-      center: [45.2396, 19.8227],
-      zoom: 13,
-    });
 
     const tiles = L.tileLayer(
       'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -59,8 +74,11 @@ export class MapComponent implements AfterViewInit,OnChanges {
       }
     );
     tiles.addTo(this.map);
-
-    this.registerOnClick();
+    if(this.formWithoutSearchBar){
+      this.registerOnClickForm();
+    }else{
+      this.registerOnClick();
+    }
 
     this.initialMarkers.forEach((latLng) => {
       const marker = L.marker(latLng).addTo(this.map);
@@ -104,9 +122,16 @@ export class MapComponent implements AfterViewInit,OnChanges {
   }
 
   ngOnChanges(): void {
+    console.log(this.map)
+    if (this.map) {
+      setTimeout(() => this.map.invalidateSize(), 0); // Osvežavanje dimenzija mape
+    }
     if (this.map) {
       this.updateCheckpointMarkers();
-    }
+      this.addUserMarker();
+    } /*else {
+      this.map.invalidateSize();
+    }*/
   }
 
   private updateCheckpointMarkers(): void {
@@ -122,6 +147,11 @@ export class MapComponent implements AfterViewInit,OnChanges {
       const waypoints = this.markers.map(m => m.getLatLng());
       this.setRoute(waypoints);
     }
+    this.encounters.forEach((encounter) => {
+      const latLng = new L.LatLng(encounter.latitude, encounter.longitude);
+      const marker = L.marker(latLng).addTo(this.map);
+      this.addMarker(marker);
+    });
   }
 
   search(): void {
@@ -139,7 +169,18 @@ export class MapComponent implements AfterViewInit,OnChanges {
     });
 
   }
-
+  registerOnClickForm(): void {
+    this.map.on('click', (e: any) => {
+      this.markers.forEach(marker => {
+        this.map.removeLayer(marker);
+      });
+      this.markers = [];
+      const coord = e.latlng;
+      const marker = new L.Marker([coord.lat, coord.lng]).addTo(this.map);
+      this.markers.push(marker); 
+      this.coordinatesSelected.emit({ latitude: coord.lat, longitude: coord.lng });
+    });
+  }
   registerOnClick(): void {
     this.map.on('click', (e: any) => {
       if (!this.showSearchBar) {
@@ -154,6 +195,27 @@ export class MapComponent implements AfterViewInit,OnChanges {
       this.markers.push(marker); 
       this.coordinatesSelected.emit({ latitude: coord.lat, longitude: coord.lng });
     });
+  }
+
+  private addUserMarker(): void {
+    if (!this.userLocation) {
+      console.log('Korisnička lokacija nije dostupna.');
+      return;
+    }
+  
+    console.log('Dodajem marker za korisnika na:', this.userLocation);
+  
+    const userIcon = L.icon({
+      iconUrl: '/assets/images/map-marker.png',
+      iconSize: [30, 40],
+      iconAnchor: [15, 40],
+    });
+  
+    const userMarker = L.marker([this.userLocation.latitude, this.userLocation.longitude], { icon: userIcon })
+      .addTo(this.map)
+      .bindPopup('You are here');
+  
+    this.addMarker(userMarker);
   }
 
   addMarker(marker: L.Marker): void {
@@ -177,5 +239,9 @@ export class MapComponent implements AfterViewInit,OnChanges {
 
     this.mapReset.emit();
   }
-  
+  public resetPositionSimMap(): void {
+    if (this.map) {
+      setTimeout(() => this.map.invalidateSize(), 0);
+    }
+  }
 }

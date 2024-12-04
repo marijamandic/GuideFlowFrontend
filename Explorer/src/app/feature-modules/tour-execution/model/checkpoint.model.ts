@@ -7,4 +7,6 @@ export interface Checkpoint {
     longitude: number;
     imageUrl: string;
     tourId: number;
+    encounterId: number;
+    isEncounterEssential: boolean;
 }

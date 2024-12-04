@@ -1,0 +1,98 @@
+.map-frame {
+    position: relative;
+    width: 100%;
+    height: 91vh;
+}
+
+#map {
+    width: 98%;
+    height: 96%;
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0 10px 8px rgba(0, 0, 0, 0.2);
+}
+
+.search-container {
+    position: absolute;
+    top: 10px;
+    left: 100%;
+    margin-left: 210px;
+    transform: translateX(-50%);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column; /* Stack the input and Add button vertically */
+    align-items: flex-start; /* Align them to the left */
+}
+
+.search-icon {
+    width: 13px;
+    height: 13px;
+}
+
+.input-wrapper {
+    position: relative;
+    width: 300px;
+    margin-bottom: 10px; /* Razmak između input polja i dugmeta */
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 10px 40px 10px 10px; /* Rezervisan prostor za ikonu sa desne strane */
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+/* Stil za ikonu pretrage */
+.search-icon {
+    position: absolute;
+    top: 50%;
+    right: -39px;
+    transform: translateY(-50%);
+    width: 22px;
+    height: 22px;
+    cursor: pointer;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.search-icon:hover {
+    transform: translateY(-50%) scale(1.2); /* Povećanje ikone na hover */
+    opacity: 0.8; /* Blago smanjenje vidljivosti na hover */
+}
+
+.add-button {
+    width: 116%;
+    padding: 10px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px; /* Razmak između Add dugmeta i pretrage */
+}
+
+.add-button:hover {
+    background-color: #218838;
+}
+
+
+.search-button:hover {
+    background-color: #0056b3;
+}
+
+.add-button {
+    width: 116%;
+    padding: 10px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px; /* Space between the Add button and the Search button */
+}
+
+.add-button:hover {
+    background-color: #218838;
+}
