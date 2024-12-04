@@ -34,6 +34,11 @@ p{
     box-sizing: border-box;
 }
 
+.no-scroll {
+    overflow-x: visible;
+}
+
+
 .carousel {
     position: relative;
     width: 100%;
@@ -121,11 +126,10 @@ p{
 
 .tour-cards-container {
     display: flex;
-    overflow-x: scroll;
     gap: 20px;
+    justify-content: center;
     padding: 20px 0;
-    scrollbar-width: none;
-    -ms-overflow-style: none; 
+    overflow: visible;
 }
 
 .tour-cards-container::-webkit-scrollbar {
@@ -136,11 +140,10 @@ p{
     background-color: var(--secondary-color);
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    width: 280px;
+    width: 255px;
     flex: 0 0 auto;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
     text-align: left;
     transition: transform 0.3s ease;
 }
@@ -281,11 +284,10 @@ p{
 
 .club-cards-container {
     display: flex;
-    overflow-x: scroll;
+    justify-content: center;
     gap: 20px;
     padding: 20px 0;
-    scrollbar-width: none;
-    -ms-overflow-style: none; 
+    overflow: visible; 
 }
 
 .club-cards-container::-webkit-scrollbar {
@@ -296,11 +298,10 @@ p{
     background-color: var(--secondary-color);
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    width: 280px;
+    width: 255px;
     flex: 0 0 auto;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
     text-align: left;
     transition: transform 0.3s ease;
 }
@@ -356,15 +357,9 @@ p{
     border-radius: 5px;
     font-size: 12px;
     margin-right: 10px;
-    width: 20px;
-    height: 20px;
     text-align: center;
-}
-
-.rating-text {
-    font-size: 12px;
-    color: #666666;
-    text-align: center;
+    width: auto;
+    white-space: nowrap;
 }
 
 /* Footer Styles */

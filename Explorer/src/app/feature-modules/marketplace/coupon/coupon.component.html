@@ -1,0 +1,122 @@
+<div class="coupons-container">
+
+    <button (click)="openCreateModal()" class="create-coupon-btn">Create Coupon</button>
+
+    <h2>Your Coupons</h2>
+    <div *ngIf="coupons.length === 0">
+      <p>No coupons found.</p>
+    </div>
+    <div class="coupon-card" *ngFor="let coupon of coupons">
+      <div class="coupon-header">
+        <span class="coupon-tour-title">
+          {{ coupon.validForAllTours ? 'All of them' : (coupon.tourId ? getTourTitle(coupon.tourId) : 'No Tour') }}
+        </span>
+        <span class="coupon-status">
+          <i
+            [ngClass]="coupon.redeemed ? 'fa fa-check' : 'fa fa-times'"
+            aria-hidden="true"
+          ></i>
+        </span>
+      </div>
+      <div class="coupon-body">
+        <p><strong>Code:</strong> {{ coupon.code }}</p>
+        <p><strong>Discount:</strong> {{ coupon.discount }}%</p>
+        <p>
+          <strong>Expiry Date:</strong>
+          {{ coupon.expiryDate ? (coupon.expiryDate | date:'mediumDate') : 'None' }}
+        </p>
+      </div>
+      <div class="coupon-footer">
+        <button (click)="deleteCoupon(coupon.id)">Delete</button>
+        <button (click)="openEditModal(coupon)">Edit</button>
+      </div>
+    </div>
+  </div>
+
+  
+  <!-- Edit Coupon Modal -->
+  <div *ngIf="showEditModal" class="modal-overlay">
+      <div class="modal-content">
+          <h2>Edit Coupon</h2>
+          <div class="tours-list">
+            <h3>Your Tours</h3>
+            <div *ngIf="tours.length === 0">No tours found for this author.</div>
+            <ul>
+              <li *ngFor="let tour of tours" (click)="selectTour(tour)">
+                <p><strong>{{ tour.name }}</strong></p>
+              </li>
+            </ul>
+          </div>
+          <div *ngIf="selectedCoupon">
+            <form (ngSubmit)="updateCoupon()">
+              <label>Code</label>
+              <input type="text" [(ngModel)]="selectedCoupon.code" name="code" required />
+          
+              <label>Discount</label>
+              <input type="number" [(ngModel)]="selectedCoupon.discount" name="discount" required />
+          
+              <label>Expiry Date</label>
+              <input type="date" [(ngModel)]="selectedCoupon.expiryDate" name="expiryDate" />
+          
+              <label>
+                <input
+                  type="checkbox"
+                  [checked]="selectedCoupon?.validForAllTours"
+                  (change)="toggleValidForAllTours()"
+                />
+                Valid for All Tours
+              </label>
+          
+              <div *ngIf="selectedTour">
+                <p>Selected Tour: {{ selectedTour?.name }}</p>
+              </div>
+          
+              <button type="submit">Update Coupon</button>
+              <button type="button" (click)="closeEditModal()">Cancel</button>
+            </form>
+          </div>
+    </div>
+  </div>
+  
+  <div *ngIf="showCreateModal" class="modal-overlay">
+    <div class="modal-content">
+      <h2>Create Coupon</h2>
+      <div class="tours-list">
+        <h3>Your Tours</h3>
+        <div *ngIf="tours.length === 0">No tours found for this author.</div>
+        <ul>
+          <li *ngFor="let tour of tours" (click)="selectTour(tour)">
+            <p><strong>{{ tour.name }}</strong></p>
+          </li>
+        </ul>
+      </div>
+      <div *ngIf="selectedCoupon">
+        <form (ngSubmit)="createCoupon()">
+          <!-- Removed the 'Code' field -->
+          <label>Discount</label>
+          <input type="number" [(ngModel)]="selectedCoupon.discount" name="discount" required />
+  
+          <label>Expiry Date</label>
+          <input type="date" [(ngModel)]="selectedCoupon.expiryDate" name="expiryDate" />
+  
+          <label>
+            <input
+              type="checkbox"
+              [checked]="selectedCoupon.validForAllTours"
+              (change)="toggleValidForAllTours()"
+            />
+            Valid for All Tours
+          </label>
+  
+          <div *ngIf="selectedTour">
+            <p>Selected Tour: {{ selectedTour?.name }}</p>
+          </div>
+  
+          <button type="submit">Create Coupon</button>
+          <button type="button" (click)="closeCreateModal()">Cancel</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  

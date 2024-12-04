@@ -3,6 +3,8 @@ import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { User } from 'src/app/infrastructure/auth/model/user.model';
 import { PublicPointService } from '../../tour-authoring/tour-public-point.service';
 import { PublicPointNotification } from '../../tour-authoring/model/publicPointNotification.model';
+import { ShoppingCart } from '../../marketplace/model/shopping-carts/shopping-cart';
+import { MarketplaceService } from '../../marketplace/marketplace.service';
 import { AlertService } from '../alert.service';
 
 @Component({
@@ -40,7 +42,6 @@ export class NavbarComponent implements OnInit {
       this.showNotifications = false;
   }
   }
-
 	onLogout(): void {
 		this.toggleDropdown();
 		this.authService.logout();

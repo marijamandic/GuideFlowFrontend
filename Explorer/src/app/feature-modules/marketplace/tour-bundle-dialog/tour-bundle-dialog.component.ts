@@ -29,56 +29,6 @@ export class TourBundleDialogComponent implements OnInit{
       this.selectedToursIds = data.tourIds
     }
 
-    this.availableTours = [
-      {
-        id: 8,
-        authorId: 101,
-        name: 'Sunset Trail Adventure',
-        description: 'Enjoy a scenic sunset view along this easy-to-moderate trail.',
-        price: { cost: 25, currency: Currency.EUR },
-        level: Level.Easy,
-        status: TourStatus.Published,
-        StatusChangeDate: new Date('2024-01-15'),
-        lengthInKm: 5.5,
-        averageGrade: 2.3,
-        taggs: ['scenic', 'family-friendly', 'nature'],
-        checkpoints: [], // Placeholder as requested
-        transportDurations: [],
-        reviews: []
-      },
-      {
-        id: 9,
-        authorId: 102,
-        name: 'Mountain Explorer Challenge',
-        description: 'A challenging tour for experienced hikers seeking adventure.',
-        price: { cost: 50, currency: Currency.USD },
-        level: Level.Expert,
-        status: TourStatus.Published,
-        StatusChangeDate: undefined, // No status change date for drafts
-        lengthInKm: 15,
-        averageGrade: 8.4,
-        taggs: ['adventure', 'mountains', 'challenging'],
-        checkpoints: [], // Placeholder as requested
-        transportDurations: [],
-        reviews: []
-      },
-      {
-        id: 10,
-        authorId: 103,
-        name: 'Historic City Walk',
-        description: 'Discover the historic landmarks of the city on this guided tour.',
-        price: { cost: 20, currency: Currency.EUR },
-        level: Level.Easy,
-        status: TourStatus.Published,
-        StatusChangeDate: new Date('2023-12-01'),
-        lengthInKm: 3,
-        averageGrade: 1.2,
-        taggs: ['historic', 'city', 'guided'],
-        transportDurations: [],
-        reviews: [],
-        checkpoints: []
-      }
-    ];
   }
 
   ngOnInit(): void {
@@ -87,7 +37,7 @@ export class TourBundleDialogComponent implements OnInit{
         this.user = user
         this.tourService.getTour().subscribe({
           next:(tours: PagedResults<Tour>) => {
-            //this.availableTours = tours.results.filter(tour => tour.authorId === this.user.id && tour.status == TourStatus.Published);
+            this.availableTours = tours.results.filter(tour => tour.authorId === this.user.id && tour.status == TourStatus.Published);
             if(this.data)
             {
               this.selectedTours = this.availableTours.filter(tour => this.selectedToursIds.includes(tour.id))

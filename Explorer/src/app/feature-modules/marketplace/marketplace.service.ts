@@ -15,6 +15,7 @@ import { Action } from 'rxjs/internal/scheduler/Action';
 import { Tour } from '../tour-authoring/model/tour.model';
 import { Payment } from './model/payments/payment';
 import { TourBundle } from './model/tour-bundle.model';
+import { Coupon } from './model/coupon.model';
 
 @Injectable({
 	providedIn: 'root'
@@ -111,6 +112,32 @@ export class MarketplaceService {
 	archiveTourBundle(tourbBundleId: number){
 		return this.http.patch<TourBundle>(environment.apiHost + 'author/tourBundlesManagement/archive?tourBundleId=' + tourbBundleId, null)
 	}
+	//Coupon
+	createCoupon(coupon: Coupon): Observable<Coupon> {
+		return this.http.post<Coupon>(environment.apiHost + 'shopping/coupons', coupon);
+	}
+
+	getCouponByCode(code: string): Observable<Coupon> {
+		return this.http.get<Coupon>(environment.apiHost + 'shopping/coupons/code/' + code);
+	}
+
+	getCouponsByAuthorId(authorId: number): Observable<Coupon[]> {
+		return this.http.get<Coupon[]>(`${environment.apiHost}shopping/coupons/author/${authorId}`);
+	}
+	
+	updateCoupon(couponId: number, coupon: Partial<Coupon>): Observable<Coupon> {
+		return this.http.put<Coupon>(`${environment.apiHost}shopping/coupons/${couponId}`, coupon);
+	}
+	
+	deleteCoupon(couponId: number): Observable<void> {
+		return this.http.delete<void>(`${environment.apiHost}shopping/coupons/${couponId}`);
+	}
+
+	redeemCoupon(code: string): Observable<void>{
+		return this.http.put<void>(environment.apiHost + 'tourist/shopping/coupons/redeem/' + code, null);
+	}
+
+
 	getBundleById(id:number):Observable<TourBundle> {
 		return this.http.get<TourBundle>(environment.apiHost + 'shopping/tourBundle/' + id);
 	}

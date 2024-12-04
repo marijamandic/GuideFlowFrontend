@@ -4,6 +4,7 @@ import { TourAuthoringService } from '../tour-authoring.service';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
 import { Equipment } from '../../administration/model/equipment.model';
 import { AdministrationService } from '../../administration/administration.service';
+import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'xp-tour-equipment',
   templateUrl: './tour-equipment.component.html',
@@ -11,7 +12,7 @@ import { AdministrationService } from '../../administration/administration.servi
 })
 export class TourEquipmentComponent implements OnInit{
 
-constructor (private service : TourAuthoringService, private equipmentService: AdministrationService ){
+constructor (private service : TourAuthoringService,private route: ActivatedRoute, private equipmentService: AdministrationService ){
   
 }
 
@@ -21,16 +22,13 @@ equipment: any[] = [];
 selectedEquipment: TourEquipment[] = [];
 tourEq: TourEquipment;
 availableTourIds: number[] = [1,2,3,4,5]; // Lista ID-eva dostupnih tura
-selectedTourId!: number;  // ID ture koji je izabran iz dropdown-a
 deleteId! : number;// id for deleting
-  ngOnInit(): void {
-   
+tourId: number;
 
-    if (this.availableTourIds.length > 0) {
-      this.selectedTourId = this.availableTourIds[0]; // Prvi ID kao default
-    }else{
-      this.selectedTourId = 1;
-    }
+
+  ngOnInit(): void {
+    this.tourId = Number(this.route.snapshot.paramMap.get('id'));
+
     this.loadEquipment();
     this.loadTourEquipment();
     this.loadRelations();
@@ -38,7 +36,8 @@ deleteId! : number;// id for deleting
   }
 
   loadTourEquipment(): void {
-    this.service.getTourEquipment(this.selectedTourId).subscribe({
+    console.log(this.tourId);
+    this.service.getTourEquipment(this.tourId).subscribe({
       next: (result: any[]) => {
         console.log('*********metoda load tourEq:************');
         console.log(result);
@@ -63,7 +62,7 @@ deleteId! : number;// id for deleting
 
   loadRelations():void{
    
-    this.service.getAllByTour(this.selectedTourId).subscribe({
+    this.service.getAllByTour(this.tourId).subscribe({
       next:(result: any[])=>{
         this.tourEquipmentRelations = result.map(e => ({
           id: e.id,
@@ -88,7 +87,6 @@ deleteId! : number;// id for deleting
   loadEquipment(): void {
     this.service.getEquipment().subscribe({
       next: (result: PagedResults<Equipment>) => {
-        // Dodaj privremeno polje za quantity svakom Equipment
         this.equipment = result.results
         .filter(e => !this.tourEquipment.some(te => te.id === e.id))
         .map(e => ({ ...e, quantity: 1 })); // default 1
@@ -102,14 +100,14 @@ deleteId! : number;// id for deleting
     });
   }
 
-  onTourSelectionChange(): void {
+ /* onTourSelectionChange(): void {
     console.log(`Tour ID changed to: ${this.selectedTourId}`);
     this.loadTourEquipment(); // Ponovno učitavanje opreme za izabranu turu
     console.log('dobavljene ture -----------:');
     console.log(this.tourEquipment);
     this.loadEquipment();
     this.loadRelations();
-  }
+  }*/
 
   // Funkcija koja pronalazi naziv opreme na osnovu equipmentId
   getEquipmentName(equipmentId: number): string {
@@ -126,7 +124,7 @@ deleteId! : number;// id for deleting
       alert('Please select equipment first');
     }
     this.selectedEquipment.forEach((equipment) => {
-      this.service.addTourEquipment(equipment.equipmentId, equipment.tourId, equipment.quantity).subscribe({
+      this.service.addTourEquipment(equipment.equipmentId, this.tourId, 1).subscribe({
           next: (response) => {
             this.loadTourEquipment();
             this.loadEquipment();

@@ -12,6 +12,7 @@ import { MatTabsModule } from '@angular/material/tabs'
 import { TourBundleDialogComponent } from './tour-bundle-dialog/tour-bundle-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
 
+import { CouponComponent } from './coupon/coupon.component';
 import { TourBundlePreviewComponent } from './tour-bundle-preview/tour-bundle-preview.component';
 
 @NgModule({
@@ -20,6 +21,7 @@ import { TourBundlePreviewComponent } from './tour-bundle-preview/tour-bundle-pr
     ShoppingCartComponent,
     TourBundleComponent,
     TourBundleDialogComponent,
+    CouponComponent,
     TourBundlePreviewComponent
   ],
   imports: [
@@ -31,11 +33,12 @@ import { TourBundlePreviewComponent } from './tour-bundle-preview/tour-bundle-pr
     ReactiveFormsModule,
     MatTabsModule,
     FormsModule,
-    MatDialogModule
+    MatDialogModule,
   ],
   exports: [
     TourPreviewComponent,
-    ShoppingCartComponent
+    ShoppingCartComponent,
+    CouponComponent
   ]
 })
 export class MarketplaceModule { }
