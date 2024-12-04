@@ -15,12 +15,14 @@
   </div>
 
   <!-- Detalji o encounteru -->
-  <div *ngIf="encounterExecution?.encounterType !== undefined && encounter" class="encounter-details">
+  <div *ngIf="encounterExecution?.encounterType !== undefined && encounter && encounterExecution" class="encounter-details">
     <p><strong>Naziv:</strong> {{ encounter.name }}</p>
     <p><strong>Opis:</strong> {{ encounter.description }}</p>
     <p><strong>Status izazova:</strong> {{mapToStatus(encounter.encounterStatus)}}</p>
     <p><strong>Tip izazova:</strong> {{ mapToType(encounter.encounterType)}}</p>
     <p><strong>Experience Points:</strong> {{ encounter.experiencePoints }}</p>
+    <p *ngIf="encounter.encounterType === EncounterType.Social"><strong>Participants:</strong> {{ encounterExecution.participants }}</p>
+
 
     <!-- Dodatni podaci specifični za tip Encountera -->
     <div *ngIf="encounter?.encounterType === EncounterType.Social">
@@ -48,6 +50,6 @@
   <xp-map [encounters]="encounterCoordinates" [userLocation]="userMarker" [showSearchBar]="false"></xp-map>
 </div>
 
-<button *ngIf="encounterExecution" (click)="completeExecution()" class="button"> Complete encounter execution</button>
+<button *ngIf="encounterExecution && encounter?.encounterType !== EncounterType.Social && encounter" (click)="completeExecution()" class="button"> Complete encounter execution</button>
 <button (click)="navigateToPositionSimulator()">Position simulator</button>
 </div>

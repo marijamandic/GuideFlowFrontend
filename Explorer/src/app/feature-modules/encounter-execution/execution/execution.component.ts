@@ -8,6 +8,7 @@ import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Encounter, EncounterType } from '../model/encounter.model';
 import { environment } from 'src/env/environment';
+import { timer } from 'rxjs';
 
 @Component({
   selector: 'xp-execution',
@@ -24,6 +25,7 @@ export class ExecutionComponent implements OnInit{
   encounter: Encounter | undefined;
   userMarker: { latitude: number, longitude: number } | null = null;
   public EncounterType = EncounterType;
+  private intervalId: any;
 
   encounterCoordinates: { latitude: number; longitude: number }[] = [];
   @Output() encounterCoordinatesLoaded = new EventEmitter<{ latitude: number; longitude: number; }[]>();
@@ -45,10 +47,24 @@ export class ExecutionComponent implements OnInit{
         next: (result: Tourist) => {
           this.tourist = result;
           if (this.tourist) {
-            this.getExecutionByUser();
-            this.userMarker = {latitude: result.location.latitude,longitude: result.location.longitude}
+            this.getExecutionByUser(() => {
+              this.userMarker = {
+                latitude: result.location.latitude,
+                longitude: result.location.longitude
+              };
+              
+            });
+            console.log(this.encounterExecution);
+              if(!this.encounterExecution?.isComplete){
+                console.log(this.encounterExecution?.isComplete);
+                this.intervalId = setInterval(() => {
+                  this.completeExecution();
+                }, 10000);
+              }
           }
+
           this.emitCoordinates();
+          
         },
         error: (err: any) => {
           console.log(err);
@@ -58,18 +74,24 @@ export class ExecutionComponent implements OnInit{
   
   }
 
-  getExecutionByUser(): void {
+  ngOnDestroy(): void {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+    }
+  }
+
+  getExecutionByUser(callback: () => void): void {
     this.encounterExecutionService.getExecution(this.encounterExecutionId!).subscribe({
       next: (result: Execution) => {
         this.encounterExecution = result;
-        if(this.tourist){
+        if (this.tourist) {
           this.encounterExecution.userLatitude = this.tourist.location.latitude;
           this.encounterExecution.userLongitude = this.tourist.location.longitude;
         }
-        if(this.encounterExecution.encounterId){
+        if (this.encounterExecution.encounterId) {
           this.getEncounter();
         }
-
+        callback(); // Pozovi nakon završetka
       },
       error: (error) => {
         this.errorMessage = 'Došlo je do greške prilikom učitavanja podataka.';
@@ -108,31 +130,61 @@ export class ExecutionComponent implements OnInit{
       console.log('Encounter Location updated:', this.tourist.location);
     }
   }*/
-
-  completeExecution(): void {
-    if (this.encounterExecution) {
-      this.encounterExecutionService.completeExecution(this.encounterExecution).subscribe(
-        (updatedExecution: Execution) => {
+    
+completeExecution(): void {
+  if (this.encounterExecution) {
+      this.encounterExecutionService.completeExecution(this.encounterExecution).subscribe({
+        next: (updatedExecution: Execution) => {
           console.log('Execution successfully completed:', updatedExecution);
           this.encounterExecution = updatedExecution;
+          alert("Encounter successfully completed");
           if(this.tourExecutionId){
             this.router.navigate(['tour-execution/',this.tourExecutionId]);
           }else{
             this.router.navigate(['encounters']);
           }
         },
-        error => {
+        error: (error) => {
           if (error.status === 500) {
             console.log('Ne mozes jos zavrsiti.');
+            alert("You can not complete encounter yet");
+
           } else {
             console.error('Došlo je do greške:', error);
           }
         }
-      );
-    } else {
-      console.warn('EncounterExecution nije inicijalizovan.');
-    }
+
+      })
+  } else {
+    console.warn('EncounterExecution nije inicijalizovan.');
   }
+}
+
+// completeExecutionnn(): void {
+//   if (this.encounterExecution) {
+//       this.encounterExecutionService.completeExecution(this.encounterExecution).subscribe(
+//       (updatedExecution: Execution) => {
+//         console.log('Execution successfully completed:', updatedExecution);
+//         this.encounterExecution = updatedExecution;
+//         if(this.tourExecutionId){
+//           this.router.navigate(['tour-execution/',this.tourExecutionId]);
+//         }else{
+//           this.router.navigate(['encounters']);
+//         }
+//       },
+//       error => {
+//         if (error.status === 500) {
+//           console.log('Ne mozes jos zavrsiti.');
+//         } else {
+//           console.error('Došlo je do greške:', error);
+//         }
+//       }
+//     );
+//   } else {
+//     console.warn('EncounterExecution nije inicijalizovan.');
+//   }
+// }
+
   
   getImagePath(imageUrl: string) {
     return environment.webRootHost +"/images/encounters/"+ imageUrl;
