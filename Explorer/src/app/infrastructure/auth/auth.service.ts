@@ -9,12 +9,14 @@ import { Login } from './model/login.model';
 import { AuthenticationResponse } from './model/authentication-response.model';
 import { User } from './model/user.model';
 import { Registration } from './model/registration.model';
+import {Profile} from './model/profile.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   user$ = new BehaviorSubject<User>({username: "", id: 0, role: "", location: { latitude: 0, longitude: 0 } });
+  profileInfo$ = new BehaviorSubject<Profile>({id: 0, userId: 0, firstName: "", lastName: "", imageUrl: "", biography: "", moto: ""})
   //@Output() idOfUser: number = 0;
 
   constructor(private http: HttpClient,
@@ -28,6 +30,7 @@ export class AuthService {
         tap((authenticationResponse) => {
           this.tokenStorage.saveAccessToken(authenticationResponse.accessToken);
           this.setUser();
+          this.setProfileInfo();
         })
       );
   }
@@ -39,6 +42,7 @@ export class AuthService {
       tap((authenticationResponse) => {
         this.tokenStorage.saveAccessToken(authenticationResponse.accessToken);
         this.setUser();
+        this.setProfileInfo();
       })
     );
   }
@@ -58,6 +62,7 @@ export class AuthService {
       return;
     }
     this.setUser();
+    this.setProfileInfo();
   }
 
   private setUser(): void {
@@ -78,4 +83,25 @@ export class AuthService {
     //console.log(this.idOfUser);
     this.user$.next(user);
   }
+
+  private setProfileInfo(): void {
+    const jwtHelperService = new JwtHelperService();
+    const accessToken = this.tokenStorage.getAccessToken() || "";
+    const profileInfo: Profile = {
+      id: +jwtHelperService.decodeToken(accessToken).id,      userId: +jwtHelperService.decodeToken(accessToken).id,
+      firstName: jwtHelperService.decodeToken(accessToken).name,
+      lastName: jwtHelperService.decodeToken(accessToken).surname,
+      imageUrl: "slika.jpg",
+      biography: "bio",
+      moto: "moto"
+    };
+    //this.idOfUser = +jwtHelperService.decodeToken(accessToken).id;
+    //console.log(this.idOfUser);
+    this.profileInfo$.next(profileInfo);
+  }
+
+  addProfile(profile: Profile): Observable<void> {
+    return this.http.post<void>(environment.apiHost + 'administration/profileInfo', profile);
+  }
+  
 }
