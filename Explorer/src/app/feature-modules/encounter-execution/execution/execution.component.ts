@@ -39,9 +39,14 @@ export class ExecutionComponent implements OnInit{
   ) {}
 
   ngOnInit(): void {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+    }
+  
     this.encounterExecutionId = this.route.snapshot.paramMap.get('id');
     this.tourExecutionId = this.route.snapshot.paramMap.get('tourExecutionId');
-    this.authService.user$.subscribe(user => {
+  
+    this.authService.user$.subscribe((user) => {
       this.user = user;
       this.tourService.getTouristById(user.id).subscribe({
         next: (result: Tourist) => {
@@ -52,27 +57,33 @@ export class ExecutionComponent implements OnInit{
                 latitude: result.location.latitude,
                 longitude: result.location.longitude
               };
+              console.log('10s:', this.encounterExecution);
+              if(this.encounterExecution?.encounterType === EncounterType.Social && !this.encounterExecution?.isComplete){
+                this.intervalId = setInterval(() => {
+                  this.completeSocialExecution();
+                }, 10000);
+              }
               
             });
-            console.log(this.encounterExecution);
-              if(!this.encounterExecution?.isComplete){
+          
+              if(!this.encounterExecution?.isComplete && this.encounterExecution?.encounterType === EncounterType.Location){
                 console.log(this.encounterExecution?.isComplete);
                 this.intervalId = setInterval(() => {
                   this.completeExecution();
-                }, 10000);
+                }, 30000);
               }
           }
 
           this.emitCoordinates();
           
         },
-        error: (err: any) => {
+        error: (err) => {
           console.log(err);
         }
       });
     });
-  
   }
+
 
   ngOnDestroy(): void {
     if (this.intervalId) {
@@ -88,10 +99,10 @@ export class ExecutionComponent implements OnInit{
           this.encounterExecution.userLatitude = this.tourist.location.latitude;
           this.encounterExecution.userLongitude = this.tourist.location.longitude;
         }
-        if (this.encounterExecution.encounterId) {
+        if  (this.encounterExecution.encounterId)  {
           this.getEncounter();
         }
-        callback(); // Pozovi nakon završetka
+        callback(); // Pozovi nakon završetka        callback(); // Pozovi nakon završetka
       },
       error: (error) => {
         this.errorMessage = 'Došlo je do greške prilikom učitavanja podataka.';
@@ -99,6 +110,7 @@ export class ExecutionComponent implements OnInit{
       }
     });
   }
+  
 
   getEncounter(): void {
     if(this.encounterExecution){
@@ -130,6 +142,30 @@ export class ExecutionComponent implements OnInit{
       console.log('Encounter Location updated:', this.tourist.location);
     }
   }*/
+
+    completeSocialExecution(): void {
+      if (this.encounterExecution && this.encounterExecution.encounterType === EncounterType.Social) {
+        this.encounterExecutionService.completeSocialExecution(this.encounterExecution)
+          .subscribe({
+            next: (result) => {
+              console.log('Zahtev uspešno poslat:', result);
+              this.encounterExecutionService.getExecution(this.encounterExecutionId!).subscribe({
+                next: (ex: Execution) => {
+                  this.encounterExecution = ex;
+                },
+                error: (error) => {
+                  this.errorMessage = 'Došlo je do greške prilikom učitavanja podataka.';
+                  console.error(error);
+                }
+              });
+            },
+            error: (err) => {
+              console.error('Došlo je do greške:', err);
+            }
+          });
+        console.log('izvrsavam komplete na 10 sec');
+      }
+    }
     
 completeExecution(): void {
   if (this.encounterExecution) {
@@ -243,7 +279,7 @@ completeExecution(): void {
   }
   navigateToPositionSimulator(){
     if(this.tourExecutionId){
-      this.router.navigate(['/position-sim',this.tourExecutionId,this.encounterExecutionId])
+      this.router.navigate(['/position-sim',this.encounterExecutionId,this.tourExecutionId])
     }else{
       this.router.navigate(['/position-sim',0,this.encounterExecutionId])
     }
