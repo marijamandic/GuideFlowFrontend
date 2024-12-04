@@ -46,6 +46,7 @@ import { EncounterComponent } from 'src/app/feature-modules/encounter-execution/
 import { EncounterFormComponent } from 'src/app/feature-modules/encounter-execution/encounter-form/encounter-form.component';
 import { AddEncounterComponent } from 'src/app/feature-modules/tour-authoring/add-encounter/add-encounter.component';
 import { ExecutionComponent } from 'src/app/feature-modules/encounter-execution/execution/execution.component';
+import { TourMoreDetailsComponent } from 'src/app/feature-modules/marketplace/tour-more-details/tour-more-details.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -100,6 +101,7 @@ const routes: Routes = [
   { path: 'position-sim', component: PositionsimComponent},
   { path: 'position-sim/:tourExecutionId', component: PositionsimComponent },
   { path: 'position-sim/:tourExecutionId/:encounterExecutionId', component: PositionsimComponent },
+  { path: 'tour-more-details/:id',component:TourMoreDetailsComponent}
 
 ];
 

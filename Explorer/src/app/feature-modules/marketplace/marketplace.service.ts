@@ -86,7 +86,7 @@ export class MarketplaceService {
 	// updateCart(shoppingCart: ShoppingCart): Observable<ShoppingCart> {
 	// 	return this.http.put<ShoppingCart>(environment.apiHost + 'shoppingCart/', shoppingCart);
 	// }
-
+	
 	//Coupon
 	createCoupon(coupon: Coupon): Observable<Coupon> {
 		return this.http.post<Coupon>(environment.apiHost + 'shopping/coupons', coupon);

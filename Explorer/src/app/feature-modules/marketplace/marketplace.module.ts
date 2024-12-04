@@ -9,13 +9,16 @@ import { TourPreviewComponent } from './tour-preview/tour-preview.component';
 import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
 import { CouponComponent } from './coupon/coupon.component';
 import { TourBundlePreviewComponent } from './tour-bundle-preview/tour-bundle-preview.component';
+import { SharedModule } from 'src/app/shared/shared.module';
+import { TourMoreDetailsComponent } from './tour-more-details/tour-more-details.component';
 
 @NgModule({
   declarations: [
     TourPreviewComponent,
     ShoppingCartComponent,
     CouponComponent,
-    TourBundlePreviewComponent
+    TourBundlePreviewComponent,
+    TourMoreDetailsComponent
   ],
   imports: [
     MatRadioModule,
@@ -24,12 +27,14 @@ import { TourBundlePreviewComponent } from './tour-bundle-preview/tour-bundle-pr
     CommonModule,
     MaterialModule,
     ReactiveFormsModule,
-    FormsModule 
+    FormsModule,
+    SharedModule
   ],
   exports: [
     TourPreviewComponent,
     ShoppingCartComponent,
-    CouponComponent
+    CouponComponent,
+    TourMoreDetailsComponent
   ]
 })
 export class MarketplaceModule { }

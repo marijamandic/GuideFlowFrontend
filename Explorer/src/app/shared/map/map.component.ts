@@ -90,6 +90,9 @@ export class MapComponent implements AfterViewInit,OnChanges {
       const marker = L.marker(latLng).addTo(this.map);
       this.addMarker(marker);
     });
+    if(!this.showSearchBar){
+      this.updateCheckpointMarkers();
+    }
   }
 
   setRoute(waypoints: L.LatLng[]): void {
@@ -111,7 +114,7 @@ export class MapComponent implements AfterViewInit,OnChanges {
         const summary = routes[0].summary;
         const totalDistanceKm = (summary.totalDistance / 1000).toFixed(2);
         const totalTimeMinutes = Math.round(summary.totalTime / 60);
-        alert(`Total distance is ${totalDistanceKm} km and total time is ${totalTimeMinutes} minutes for walking`);
+        //alert(`Total distance is ${totalDistanceKm} km and total time is ${totalTimeMinutes} minutes for walking`);
         this.distanceCalculated.emit({
           transportType: 'walking',
           time: totalTimeMinutes,
