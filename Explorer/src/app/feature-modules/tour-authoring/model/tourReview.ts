@@ -5,7 +5,8 @@ export interface TourReview {
     rating: number,
     comment: string,
     tourDate: DateTime,
-    creationDate: DateTime
+    creationDate: DateTime,
+    touristId: number
 }
 
 export interface DateTime{
