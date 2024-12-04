@@ -29,6 +29,7 @@
               <p><strong>Completion Time:</strong> {{ mapToCompletionTime(currentCheckpoint.completionTime) }}</p>
               <p><strong>Secret:</strong> {{ currentCheckpoint.checkpoint.secret }}</p>
               <button *ngIf="isTouristNear(currentCheckpoint.checkpoint.latitude,currentCheckpoint.checkpoint.longitude,currentCheckpoint.checkpoint.encounterId)" (click)="Execute(currentCheckpoint.checkpoint.encounterId)">Open encounter</button>
+              <p></p>
             </div>
             <div class="checkpoint-dots">
               <!-- Proveravamo da li 'tourExecution' postoji i da 'checkpointsStatus' nije null ili undefined -->
