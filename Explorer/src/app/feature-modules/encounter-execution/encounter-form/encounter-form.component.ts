@@ -4,6 +4,7 @@ import { EncounterExecutionService } from '../encounter-execution.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from 'src/app/infrastructure/auth/model/user.model';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
+import { NgForm } from '@angular/forms';
 
 export enum EncounterStatus {
   Active = 'Active',
@@ -29,6 +30,9 @@ export class EncounterFormComponent implements OnInit {
   mapMode: 'encounterLocation' | 'imageLocation' = 'encounterLocation';
   typeSelected: boolean = false;
   user: User;
+  encounterTypes = Object.keys(EncounterType).filter((key) => isNaN(Number(key)));
+  selectedType: string | null = null;
+  selectedFile: File | null = null;
 
   encounter: Encounter = {
     $type: '',
@@ -97,11 +101,49 @@ export class EncounterFormComponent implements OnInit {
   }
 
   onEncounterTypeChange(): void {
-    this.encounter.encounterType = this.ConvertType();
-    this.typeSelected = true;
+    // Resetovanje nepotrebnih polja
+    this.encounter = {
+      ...this.encounter,
+      touristNumber: undefined,
+      encounterRange: undefined,
+      imageUrl: undefined,
+      activationRange: undefined,
+      actionDescription: undefined,
+      imageLatitude: undefined,
+      imageLongitude: undefined,
+      imageBase64: undefined
+    };
+
+    // Podesavanje tipa izazova
+    this.encounter.encounterType = this.mapToType(this.selectedType);
+    this.encounter.$type = this.mapToDiscriminatorType(this.selectedType);
   }
 
-  onSubmit(): void {
+  onSubmit(form: NgForm): void {
+    if (form.invalid) {
+      Object.keys(form.controls).forEach((field) => {
+        const control = form.controls[field];
+        control.markAsTouched({ onlySelf: true });
+      });
+      return; // Zaustavi slanje forme ako je nevalidna
+    }
+
+    if (this.encounter.encounterType == this.mapToType("Location") && !this.selectedFile) {
+      // Ako fajl nije selektovan, ručno oznaci input kao nevalidan
+      alert('File is required');
+      return;
+    }
+
+    if (!this.encounter.encounterLocation.latitude || !this.encounter.encounterLocation.longitude) {
+      alert('Encounter coordinates are required');
+      return;  // Prekida slanje forme ako koordinate nisu unete
+    }
+
+    if (this.encounter.encounterType == this.mapToType("Location") && (!this.encounter.imageLatitude || !this.encounter.imageLongitude)) {
+      alert('Image coordinates are required');
+      return;  // Prekida slanje forme ako image koordinate nisu unete
+    }
+
     const typeMap = {
         0: 'socialEncounter',
         1: 'locationEncounter',
@@ -146,13 +188,13 @@ export class EncounterFormComponent implements OnInit {
   }
 
   onFileSelected(event: any): void {
-    const file: File = event.target.files[0];
-    if (file) {
+     this.selectedFile = event.target.files[0];
+    if (this.selectedFile) {
       const reader = new FileReader();
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(this.selectedFile);
       reader.onload = () => {
         this.encounter.imageBase64 = reader.result as string;
-        this.encounter.imageUrl = file.name;
+        this.encounter.imageUrl = this.selectedFile?.name;
         console.log('Image uploaded with URL:', this.encounter.imageUrl);
       };
     }
@@ -194,6 +236,32 @@ onCoordinatesSelected(coordinates: { latitude: number; longitude: number }): voi
   ConvertType(): number {
      
     switch (this.encounter.encounterType.toString()) {
+      case  "Social" :
+        return 0;
+      case "Location":
+        return 1;
+      case "Misc":
+        return 2;
+      default:
+        return 0; 
+    }
+  }
+
+  mapToDiscriminatorType(type:string | null): string{
+    switch (type) {
+      case  "Social" :
+        return "socialEncounter";
+      case "Location":
+        return "locationEncounter";
+      case "Misc":
+        return "miscEncounter";
+      default:
+        return "base"; 
+    }
+  }
+
+  mapToType(type:string | null): number{
+    switch (type) {
       case  "Social" :
         return 0;
       case "Location":
