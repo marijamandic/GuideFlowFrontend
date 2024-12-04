@@ -21,10 +21,14 @@ import { HomeComponent } from './feature-modules/layout/home/home.component';
 import { RatingTheAppComponent } from './feature-modules/layout/rating-the-app/rating-the-app.component';
 import { FooterComponent } from './feature-modules/layout/footer/footer.component';
 import { FormsModule } from '@angular/forms';
+import { EncounterComponent } from './feature-modules/encounter-execution/encounter/encounter.component';
+import { EncounterExecutionModule } from './feature-modules/encounter-execution/encounter-execution.module';
 
 @NgModule({
-	declarations: [AppComponent],
-
+	declarations: [
+		AppComponent,
+	],
+		
 	imports: [
 		BrowserModule,
 		AppRoutingModule,
@@ -36,6 +40,7 @@ import { FormsModule } from '@angular/forms';
 		MarketplaceModule,
 		TourAuthoringModule,
 		TourExecutionModule,
+		EncounterExecutionModule,
 		AuthModule,
 		HttpClientModule,
 		MatFormFieldModule,

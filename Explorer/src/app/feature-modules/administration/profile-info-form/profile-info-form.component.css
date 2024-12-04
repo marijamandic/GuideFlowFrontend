@@ -4,3 +4,7 @@ div{
     gap:20px;
     flex-direction: column;
 }
+
+button{
+    background-color: #84dcc6;
+}

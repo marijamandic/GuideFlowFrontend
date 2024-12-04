@@ -1,53 +1,33 @@
 
 
 <!-- Dropdown za izbor ID-a ture -->
-<label for="tourIdSelect">Equipment for tour: </label>
-<select id="tourIdSelect" [(ngModel)]="selectedTourId" (change)="onTourSelectionChange()">
-  <option *ngFor="let tourId of availableTourIds" [value]="tourId">{{ tourId }}</option>
-</select>
+<label for="tourIdSelect">Equipment for tour: {{tourId}}</label>
 
-<table border="1">
-  <thead>
-    <tr>
-     
-      <th>Equipment Name</th>
-      <th>Description</th>
-      
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let eq of tourEquipment" >
-     
-      
-      <td>{{ eq.name }}</td>
-      <td>{{ eq.description }}</td>
-      <td>
-        <button (click)="deleteTourEquipment(eq.id!)" >Delete</button>
-      </td>
-    </tr>
-  </tbody>
-</table>
+<!--prikaz trenutne opreme za turu -->
+<div class="tour-equipment-container">
+  <h2>Equipment for Tour: {{ tourId }}</h2>
+  <div class="equipment-list">
+    <div class="equipment-card" *ngFor="let eq of tourEquipment">
+      <h3>{{ eq.name }}</h3>
+      <p>{{ eq.description }}</p>
+      <button (click)="deleteTourEquipment(eq.id!)">Delete</button>
+    </div>
+  </div>
+</div>
 
-<h3>Select Equipment for Tour</h3>
+<!--prikaz sve postojece opreme-->
 
-<table border="1">
-  <thead>
-    <tr>
-      <th>Select</th>
-      <th>Equipment Name</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody *ngFor="let eq of equipment" >
-    <tr *ngIf="!isEquipmentInTour(eq.id)">
-      <td>
-      <input type="checkbox" (change)="toggleEquipmentSelection(eq.id,selectedTourId, $event)" />
-      
-      </td>
-      <td>{{ eq.name }}</td>
-      <td>{{ eq.description }}</td>
-    </tr>
-  </tbody>
-</table>
+<div class="add-equipment-container">
+  <h3>Select Equipment for Tour</h3>
+  <div class="equipment-list">
+    <div class="equipment-card" *ngFor="let eq of equipment">
+      <div *ngIf="!isEquipmentInTour(eq.id)">
+        <input type="checkbox" (change)="toggleEquipmentSelection(eq.id, tourId, $event)" />
+        <h3>{{ eq.name }}</h3>
+        <p>{{ eq.description }}</p>
+      </div>
+    </div>
+  </div>
+  <button class="cta-button" (click)="addSelectedEquipment()">Add Selected Equipment</button>
+</div>
 
-<button (click)="addSelectedEquipment()">Add Selected Equipment</button>

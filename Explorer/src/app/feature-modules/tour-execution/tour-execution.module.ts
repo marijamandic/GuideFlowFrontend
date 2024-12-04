@@ -4,7 +4,7 @@ import { EquipmentManagementComponent } from './equipment-management/equipment-m
 import { EquipmentFormComponent } from './equipment-form/equipment-form.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { ReportProblemComponent } from './report-problem/report-problem.component';
 import { TourReviewComponent } from './tour-review/tour-review.component';
@@ -14,21 +14,38 @@ import { ProblemStatusComponent } from './problem-status/problem-status.componen
 import { TourExecutionDetailsComponent } from './tour-execution-details/tour-execution-details.component';
 import { PurchasedToursComponent } from './purchased-tours/purchased-tours.component';
 import { SharedModule } from 'src/app/shared/shared.module';
-
+import { TourExecutionMap } from './tour-execution-map/tour-execution-map.component';
+import { TourAuthoringModule } from '../tour-authoring/tour-authoring.module';
 @NgModule({
-	providers: [DatePipe],
-	declarations: [
-		EquipmentManagementComponent,
-		EquipmentFormComponent,
-		ReportProblemComponent,
-		TourReviewComponent,
-		TourReviewFormComponent,
-		TourExecutionDetailsComponent,
-		PurchasedToursComponent,
-		ProblemStatusComponent,
-		TourViewComponent
-	],
-	imports: [CommonModule, MatFormFieldModule, SharedModule, MatInputModule, ReactiveFormsModule, MatIconModule, CommonModule],
-	exports: [EquipmentManagementComponent, ReportProblemComponent, TourReviewComponent]
+  providers:[DatePipe],
+  declarations: [
+    EquipmentManagementComponent,
+    EquipmentFormComponent,
+    ReportProblemComponent,
+	TourReviewComponent,
+	TourReviewFormComponent,
+ TourExecutionDetailsComponent,
+ PurchasedToursComponent,
+ ProblemStatusComponent,
+ TourViewComponent,
+ TourExecutionMap
+  ],
+  imports: [
+    CommonModule,
+    MatFormFieldModule,
+    SharedModule,
+    MatInputModule,
+    ReactiveFormsModule,
+    MatIconModule,
+    CommonModule,
+    FormsModule,
+    TourAuthoringModule
+  ],
+  exports:
+  [
+    EquipmentManagementComponent,
+    ReportProblemComponent,
+	TourReviewComponent
+  ]
 })
 export class TourExecutionModule {}

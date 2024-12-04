@@ -1,0 +1,122 @@
+
+label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 8px;
+    color: #333;
+  }
+  
+  input[type="text"],
+  input[type="number"],
+  textarea,
+  input[type="file"] {
+    width: 80%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  select {
+    width: 83%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  textarea {
+    resize: vertical;
+  }
+  
+  input[type="checkbox"] {
+    margin-left: 10px;
+    margin-bottom: 20px;
+  }
+  
+
+.cta-button:disabled {
+    background-color: #9b9b9b;
+    cursor: not-allowed;
+  }
+  
+  .cta-button:hover:not(:disabled) {
+    background-color: #66c5af;
+  }
+  .cta-button{
+    margin-top: 50px;
+  }
+  
+
+@media (max-width: 600px) {
+    .tour-form {
+        width: 100%;
+        padding: 15px;
+    }
+}
+
+.map-mode-buttons button {
+    margin: 5px;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .map-mode-buttons button.active {
+    background-color: #66c5af;
+    color: white;
+    font-weight: bold;
+  }
+
+  .is-invalid {
+    border: 1px solid red !important;
+  }
+  
+  .error-message {
+    color: red;
+    font-size: 0.8em;
+    margin-top: 4px;
+  }
+
+
+  .divContainer {
+    font-family: 'Arial', sans-serif;
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  }
+  div {
+    margin-bottom: 0px;
+  }
+
+  div.map-container label {
+    margin-bottom: 10px;
+    display: inline-block;
+  }
+  
+  div.map-container xp-map {
+    width: 100%;
+    height: 300px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    max-width: 700px;
+  }
+  
+  div *:focus {
+    outline: none;
+    border: 1px solid #007BFF;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  }
