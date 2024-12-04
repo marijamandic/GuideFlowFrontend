@@ -93,6 +93,7 @@ const routes: Routes = [
   { path: 'author-add-encounter/:id/:tourId', component: AddEncounterComponent},
   { path: 'encounter-execution/:id', component: ExecutionComponent},
   { path: 'encounter-execution/:id/:tourExecutionId', component: ExecutionComponent},
+  { path: 'position-sim', component: PositionsimComponent},
   { path: 'position-sim/:tourExecutionId', component: PositionsimComponent },
   { path: 'position-sim/:tourExecutionId/:encounterExecutionId', component: PositionsimComponent },
 

@@ -92,6 +92,9 @@ export class PositionsimComponent implements OnInit {
       this.router.navigate(['encounter-execution',this.tourExecutionId,this.encounterExecutionId])
     }
   }
+  navigateToEncounters(){
+    this.router.navigate(['encounters'])
+  }
   toNumber(numberAsString:string|null){
     return Number(numberAsString);
   }
