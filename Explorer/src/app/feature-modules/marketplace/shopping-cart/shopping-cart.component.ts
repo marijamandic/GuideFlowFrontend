@@ -11,6 +11,7 @@ import { ProductType } from '../model/product-type';
 import { ItemInput } from '../model/shopping-carts/item-input';
 import { TourService } from '../../tour-authoring/tour.service';
 import { Tour } from '../../tour-authoring/model/tour.model';
+import { TourBundle } from '../model/tour-bundle';
 
 @Component({
 	selector: 'xp-shopping-cart',
@@ -102,6 +103,23 @@ export class ShoppingCartComponent implements OnInit {
 						console.error('Error fetching tours for author:', error);
 					});
 
+					this.fetchBundlesByAuthorId(coupon.authorId).then(authorBundles => {
+						console.log('Fetched bundles for author:', authorBundles);
+
+						authorBundles.forEach(bundleId => {
+						const item = this.cart.items.find(
+							i => i.productId === bundleId && i.type === ProductType.Bundle
+						);
+						if (item) {
+							this.applyDiscountToItem(item, coupon);
+						}
+						});
+
+						this.loadShoppingCart();
+					}).catch(error => {
+						console.error('Error fetching bundles for author:', error);
+					});
+
 				}
 			}
 		})
@@ -176,7 +194,36 @@ export class ShoppingCartComponent implements OnInit {
 			console.error('Error fetching tours:', error);
 			return [];
 		  });
-	  }
+	}
+	
+	fetchBundlesByAuthorId(authorId: number): Promise<any[]> {
+		const BundleItems = this.cart.items
+		  .filter(i => i.type === ProductType.Bundle) // Filter cart items of type Bundle
+		  .map(i => i.productId); // Extract their product IDs
+	  
+		// Make requests to fetch each bundle by its ID
+		const bundleRequests = BundleItems.map(id =>
+		  this.marketplaceService.getBundleById(id).toPromise()
+		);
+	  
+		return Promise.all(bundleRequests)
+		  .then(bundles => {
+			// Exclude undefined or null bundles
+			const definedBundles = bundles.filter((bundle): bundle is TourBundle => bundle !== undefined && bundle !== null);
+	  
+			// Filter bundles by authorId and return their IDs
+			const authorBundles = definedBundles
+			  .filter(bundle => bundle.authorId === authorId)
+			  .map(bundle => bundle.id);
+	  
+			console.log('Fetched bundles for author:', authorBundles);
+			return authorBundles; // Return the IDs of the bundles
+		  })
+		  .catch(error => {
+			console.error('Error fetching bundles:', error);
+			return []; // Return an empty array in case of an error
+		  });
+	}
 	  
 	  
 	ngOnInit(): void {
