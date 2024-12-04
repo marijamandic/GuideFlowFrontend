@@ -58,33 +58,19 @@
       <img [src]="getImagePath(encounter.imageUrl)" alt="Encounter Image" class="card-image" />
       
     </div>
-    <div class="location-encounter ">
-      <p><strong>Koordinate slike:</strong></p>
-      <ul class="coordinates-list">
-        <li>
-          <mat-icon>location_on</mat-icon>
-          <strong>Latitude:</strong> {{ encounter.imageLatitude }}
-        </li>
-        <li>
-          <mat-icon>location_on</mat-icon>
-          <strong>Longitude:</strong> {{ encounter.imageLongitude }}
-        </li>
-      </ul>
-    </div>
 
 
 
     <div *ngIf="encounter?.encounterType === EncounterType.Misc" class="misc-encounter">
-      <mat-icon>build</mat-icon>
       <p><strong>Opis Akcije:</strong> {{ encounter.actionDescription }}</p>
     </div>
   </div>
 
   <button *ngIf="encounterExecution && encounter?.encounterType !== EncounterType.Social && encounter" 
           (click)="completeExecution()" 
-          class="cta-button">
+          class="button">
     <mat-icon>check_circle</mat-icon>
-    Complete encounter execution
+    Complete
   </button>
   <button (click)="navigateToPositionSimulator()" class="cta-button-cancel">
     <mat-icon>navigation</mat-icon>
