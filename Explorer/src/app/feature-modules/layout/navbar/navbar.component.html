@@ -24,7 +24,7 @@
             <mat-icon *ngIf="user && user.username !== ''" class="notification-icon" (click)="toggleNotifications()">notifications</mat-icon>
             <span *ngIf="user && user.username !== '' && notificationCount > 0" class="notification-badge">{{ notificationCount }}</span>
             <mat-icon class="profile-icon" (click)="toggleDropdown()">account_circle</mat-icon>
-            <mat-icon  *ngIf="user && user.username != ''" class="shopping-cart-icon" [routerLink]="['/shoppingCart']">shopping_cart</mat-icon>
+            <mat-icon  *ngIf="user && user.role === 'tourist'" class="shopping-cart-icon" [routerLink]="['/shoppingCart']">shopping_cart</mat-icon>
             
             <mat-icon>notifcations</mat-icon>
             <div class="dropdown-content" *ngIf="isDropdownOpen">

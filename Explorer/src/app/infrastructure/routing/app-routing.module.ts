@@ -23,13 +23,11 @@ import { AllAppRatingsComponent } from 'src/app/feature-modules/administration/a
 import { AccountComponent } from 'src/app/feature-modules/administration/account/account.component';
 import { ClubFormComponent } from 'src/app/feature-modules/administration/club/club-form/club-form.component';
 import { ClubInfoComponent } from 'src/app/feature-modules/administration/club/club-info/club-info.component';
-import { TourViewComponent } from 'src/app/feature-modules/tour-execution/tour-view/tour-view.component';
 import { ProblemComponent } from 'src/app/feature-modules/tour-authoring/problem/problem.component';
 import { NotificationsComponent } from 'src/app/feature-modules/layout/notifications/notifications.component';
 import { ProblemStatusComponent } from 'src/app/feature-modules/tour-execution/problem-status/problem-status.component';
 import { AdminProblemComponent } from 'src/app/feature-modules/administration/admin-problem/admin-problem.component';
 import { PublicPointRequestsComponent } from 'src/app/feature-modules/tour-authoring/public-point-requests/public-point-requests.component';
-import { TourReviewFormComponent } from 'src/app/feature-modules/tour-execution/tour-review-form/tour-review-form.component';
 import { TourReviewComponent } from 'src/app/feature-modules/tour-execution/tour-review/tour-review.component';
 import { TourPreviewComponent } from 'src/app/feature-modules/marketplace/tour-preview/tour-preview.component';
 import { ShoppingCartComponent } from 'src/app/feature-modules/marketplace/shopping-cart/shopping-cart.component';
@@ -39,6 +37,7 @@ import { PurchasedToursComponent } from 'src/app/feature-modules/tour-execution/
 import { PublicPointNotificationsComponent } from 'src/app/feature-modules/tour-authoring/public-point-notifications/public-point-notifications.component';
 import { ClubDashboardComponent } from 'src/app/feature-modules/administration/club/club-dashboard/club-dashboard.component';
 import { TourDetailsComponent } from 'src/app/feature-modules/tour-authoring/tour-details/tour-details.component';
+import { TourViewComponent } from 'src/app/feature-modules/tour-execution/tour-view/tour-view.component';
 
 const routes: Routes = [
   // ### HOME
@@ -49,7 +48,8 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegistrationComponent },
   { path: 'profile', component: ProfileInfoComponent }, // svaka čast onome ko je ovo radio je nije nigde bilo bindovano
-  { path: 'account', component: AccountComponent, canActivate: [AuthGuard] }, // Ovo je prazno i ne znam čemu služi, ali ima nekog koda
+  { path: 'admin-dashboard', component: AccountComponent, canActivate: [AuthGuard] }, // Ovo je buduci admin dashboard
+  { path: 'pending', component: PublicPointRequestsComponent }, // ovo treba spojiti sa admin-dashboard, za prihvatane tour objecta
   
   // ### TOURS 
   // --- /tours pregled svih tura (za s ve role), dodavanje tura, search tura
@@ -60,19 +60,19 @@ const routes: Routes = [
   // --- tours/:id pregled pojedinacne ture, dodavanje checkpointa, reviews, equpimentm, redirect na edit ture?
   { path: 'tours/:id', component:TourDetailsComponent, children:[{path:'checkpoints/:tourId', component:CheckpointListComponent}]},
   { path: 'checkpoints/:tourId', component: CheckpointListComponent },  // ovo spajamo u tours/:id
-  { path: 'tourReview/:tourId/:touristId', component: TourReviewComponent }, // ovo isto spajamo u tours/:id
+  { path: 'tour-review/:tourId/:touristId', component: TourReviewComponent }, // ovo isto spajamo u tours/:id
 
   // --- /tour-execution/:id 
   { path: 'tour-execution/:id', component: TourExecutionDetailsComponent}, // blizanac, blizanac 
 
-  // -- ne sta je sta
-  { path: 'tourPreview/:id', component: TourPreviewComponent},
-  { path: 'tourObjects', component: TourObjectComponent, canActivate: [AuthGuard] },
+  // -- ne gde ovo uvezati u frontu
+  { path: 'tour-preview/:id', component: TourPreviewComponent},
+  { path: 'tour-objects', component: TourObjectComponent, canActivate: [AuthGuard] },
   
   // --- ne znam šta spada u šta, treba mi pomoc 
-  { path: 'tourEquipment/:id', component: TourEquipmentComponent },
+  { path: 'tour-equipment/:id', component: TourEquipmentComponent },
   { path: 'equipment', component: EquipmentComponent, canActivate: [AuthGuard] },
-  { path: 'equipmentManagement', component: EquipmentManagementComponent },
+  { path: 'equipment-management', component: EquipmentManagementComponent },
 
   // ### CLUB (nema club posts @nikola.s)
   { path: 'club', component: ClubComponent, canActivate: [AuthGuard] },
@@ -96,13 +96,14 @@ const routes: Routes = [
   { path: 'admin-problems', component: AdminProblemComponent }, 
 
   // ### MISC
-  { path: 'position-sim', component: PositionsimComponent },  // ovo sam prilično sig da se ne koristi samo za ture?
-  { path: 'notifications', component: NotificationsComponent }, // ne znam da li je ikada radilo?
-  { path: 'ratingTheApp', component: RatingTheAppComponent }, // ovo negde ubaciti kao pop-up na home page?
-  { path: 'allAppRatings', component: AllAppRatingsComponent }, // ovo na nekom admin dashboard?
-  { path: 'author/notifications', component: PublicPointNotificationsComponent }, // ne znam
+  { path: 'position-sim', component: PositionsimComponent },  // ovo sam prilično sig da nije potrebno kao posebna komponenta?
+  { path: 'rate', component: RatingTheAppComponent }, // ovo negde ubaciti kao pop-up na home page?
+  { path: 'all-ratings', component: AllAppRatingsComponent }, // ovo na nekom admin dashboard?
   //{ path: 'problem', component: ProblemComponent }, // ovo je bilo zakomentarisano i ne znam cemu sluzi
-  { path: 'pending', component: PublicPointRequestsComponent }, // ne znams ta je ovo
+
+  // ### NOTIFICATION
+  { path: 'notifications', component: NotificationsComponent }, // ne znam da li je ikada radilo?
+  { path: 'author-notifications', component: PublicPointNotificationsComponent }, // ne znam (menjati)
 ];
 
 @NgModule({

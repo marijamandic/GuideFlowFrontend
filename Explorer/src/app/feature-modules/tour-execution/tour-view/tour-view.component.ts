@@ -236,5 +236,4 @@ export class TourViewComponent implements OnInit {
       console.error('Error applying changes:', error);
     }
   }
-  
 }

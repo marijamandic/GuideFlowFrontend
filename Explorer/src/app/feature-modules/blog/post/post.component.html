@@ -56,7 +56,7 @@
       <img [src]="getImagePath(p.imageUrl)" alt="Post image" *ngIf="p.imageUrl" class="post-image" />
     </div>
     <!-- Create post button for authors at the bottom -->
-    <button class="cta-button floating-add-blog-button " *ngIf="user?.role === 'author'" (click)="navigateToCreatePost()">
+    <button class="cta-button floating-add-button " *ngIf="user?.role === 'author'" (click)="navigateToCreatePost()">
       <i class="fa fa-plus" aria-hidden="true"></i>
     </button>
   </div>
