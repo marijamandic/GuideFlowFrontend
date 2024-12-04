@@ -333,7 +333,23 @@ getReviewMessage(): string {
     const isStarted: boolean = this.encounterIds.includes(encounterId);
     return isNearLatitude && isNearLongitude && !isStarted;
   }
-  Execute(encounterId:number) {
+  Execute(encounterId:number){
+    this.encounterService.findExecution(this.user.id,encounterId).subscribe(
+      (ex: Execution | null) => {
+        if (ex) {
+          console.log('Execution found:', ex);
+          this.router.navigate(['/encounter-execution', ex.id,this.tourExecutionId]);
+        } else {
+          console.log('Execution not found.');
+          this.CreateExecution(encounterId);
+        }
+      },
+      (error) => {
+        console.error('Error occurred:', error);
+      }
+    );
+  }
+  CreateExecution(encounterId:number) {
       this.encounterService.getEncounter(encounterId).subscribe({
         next: (encounter) => {
           const execution: Execution = {

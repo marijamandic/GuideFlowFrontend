@@ -1,17 +1,19 @@
-<div>
+<div class="divContainer">
     <label for="encounterType">Izaberite tip izazova:</label>
     <select id="encounterType" [(ngModel)]="selectedType" (change)="onTypeChange()">
         <option *ngFor="let type of encounterTypes" [value]="type">
         {{ type }}
         </option>
     </select>
-    <label for="isEssential">Da li je izazov obavezan za kompletiranje tačke?</label>
+    <div style="display: flex;">
+      <label for="isEssential">Da li je izazov obavezan za kompletiranje tačke?</label>
     <input 
         type="checkbox" 
         id="isEssential" 
         [(ngModel)]="isEssential" 
         name="isEssential" 
     />
+    </div>
     <form *ngIf="selectedType">
         <div>
           <label for="name">Naziv izazova:</label>
@@ -46,7 +48,7 @@
           </div>
           <div class="map-container">
             <label>Dodaj lokaciju slike</label>
-            <xp-map (coordinatesSelected)="onCoordinatesSelected($event)" [encounters]="encounterCoordinates" ></xp-map>
+            <xp-map (coordinatesSelected)="onCoordinatesSelected($event)" [encounters]="encounterCoordinates" [showSearchBar]="false"></xp-map>
           </div>
         </div>
     
@@ -72,6 +74,6 @@
           </select>
         </div>
     
-        <button type="button" (click)="submitEncounter()">Kreiraj izazov</button>
+        <button type="button" class="cta-button" (click)="submitEncounter()">Kreiraj izazov</button>
       </form>
 </div>
