@@ -63,3 +63,35 @@
 .remove > button:hover {
 	cursor: pointer;
 }
+
+.apply-coupon-button {
+	background-color: #84dcc6;
+	border: none;
+	outline: none;
+	text-align: center;
+	border-radius: 15px;
+	padding: 10px 20px;
+	transition: transform 0.3s ease;
+	margin-left: 10px;
+	cursor: pointer;
+}
+
+.apply-coupon-button:hover {
+	transform: scale(0.9);
+}
+
+#coupon {
+	background-color: #f0fdf4;
+	border: 1px solid #84dcc6;
+	border-radius: 15px;
+	padding: 10px;
+	outline: none;
+	width: calc(100% - 120px);
+	box-sizing: border-box;
+	margin-bottom: 10px;
+}
+
+#coupon:focus {
+	border-color: #32a899;
+	box-shadow: 0 0 5px #32a899;
+}
