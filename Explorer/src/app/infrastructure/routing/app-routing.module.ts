@@ -38,6 +38,7 @@ import { PositionsimComponent } from 'src/app/feature-modules/tour-authoring/pos
 import { TourExecutionDetailsComponent } from 'src/app/feature-modules/tour-execution/tour-execution-details/tour-execution-details.component';
 import { PurchasedToursComponent } from 'src/app/feature-modules/tour-execution/purchased-tours/purchased-tours.component';
 import { PublicPointNotificationsComponent } from 'src/app/feature-modules/tour-authoring/public-point-notifications/public-point-notifications.component';
+import { TourExecutionMap } from 'src/app/feature-modules/tour-execution/tour-execution-map/tour-execution-map.component';
 import { TourDetailsComponent } from 'src/app/feature-modules/tour-authoring/tour-details/tour-details.component';
 import { ClubDashboardComponent } from 'src/app/feature-modules/administration/club/club-dashboard/club-dashboard.component';
 import { EncounterComponent } from 'src/app/feature-modules/encounter-execution/encounter/encounter.component';
@@ -86,6 +87,7 @@ const routes: Routes = [
 	{ path: '', redirectTo: '/home', pathMatch: 'full' },
   {path: 'tourPreview/:id', component: TourPreviewComponent},
   {path: 'shoppingCart', component: ShoppingCartComponent},
+  {path: 'tourExecutionMap', component: TourExecutionMap},
   {path: 'tourDetails/:tourId', component:TourDetailsComponent, children:[{path:'checkpoints/:tourId', component:CheckpointListComponent}]},
   {path: 'encounters', component: EncounterComponent},
   { path: 'encounter-add', component: EncounterFormComponent },
@@ -93,6 +95,7 @@ const routes: Routes = [
   { path: 'author-add-encounter/:id/:tourId', component: AddEncounterComponent},
   { path: 'encounter-execution/:id', component: ExecutionComponent},
   { path: 'encounter-execution/:id/:tourExecutionId', component: ExecutionComponent},
+  { path: 'position-sim', component: PositionsimComponent},
   { path: 'position-sim/:tourExecutionId', component: PositionsimComponent },
   { path: 'position-sim/:tourExecutionId/:encounterExecutionId', component: PositionsimComponent },
 

@@ -19,6 +19,7 @@ export class MapComponent implements AfterViewInit,OnChanges {
   @Input() checkpoints: { latitude: number; longitude: number }[] = [];
   @Input() encounters: { latitude: number; longitude: number }[] = [];
   @Input() showSearchBar: boolean = true;
+  @Input() formWithoutSearchBar: boolean =false;
   @Input() userLocation: { latitude: number; longitude: number } | null = null;
   @Output() markerAdded = new EventEmitter<L.LatLng>();
   @Output() mapReset = new EventEmitter<void>();
@@ -73,8 +74,11 @@ export class MapComponent implements AfterViewInit,OnChanges {
       }
     );
     tiles.addTo(this.map);
-
-    this.registerOnClick();
+    if(this.formWithoutSearchBar){
+      this.registerOnClickForm();
+    }else{
+      this.registerOnClick();
+    }
 
     this.initialMarkers.forEach((latLng) => {
       const marker = L.marker(latLng).addTo(this.map);
@@ -165,7 +169,18 @@ export class MapComponent implements AfterViewInit,OnChanges {
     });
 
   }
-
+  registerOnClickForm(): void {
+    this.map.on('click', (e: any) => {
+      this.markers.forEach(marker => {
+        this.map.removeLayer(marker);
+      });
+      this.markers = [];
+      const coord = e.latlng;
+      const marker = new L.Marker([coord.lat, coord.lng]).addTo(this.map);
+      this.markers.push(marker); 
+      this.coordinatesSelected.emit({ latitude: coord.lat, longitude: coord.lng });
+    });
+  }
   registerOnClick(): void {
     this.map.on('click', (e: any) => {
       if (!this.showSearchBar) {

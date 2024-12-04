@@ -1,6 +1,8 @@
 <div class="container">
   <h1 class="encounter-title">Encounters</h1>
-
+  <div>
+    <button (click)="navigateToPositionSimulator()">Position simulator</button>
+  </div>
   <div class="map-container">
     <xp-map [encounters]="encounterCoordinates" [userLocation]="userMarker" [showSearchBar]="isViewMode"></xp-map>
   </div>

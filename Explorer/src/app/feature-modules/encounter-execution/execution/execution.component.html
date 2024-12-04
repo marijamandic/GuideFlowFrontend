@@ -66,15 +66,21 @@
     </div>
   </div>
 
-  <button *ngIf="encounterExecution && encounter?.encounterType !== EncounterType.Social && encounter" 
-          (click)="completeExecution()" 
-          class="button">
-    <mat-icon>check_circle</mat-icon>
-    Complete
-  </button>
-  <button (click)="navigateToPositionSimulator()" class="cta-button-cancel">
-    <mat-icon>navigation</mat-icon>
-    Position simulator
-  </button>
-<button (click)="navigateToTourExecution()">Go to tour</button>
+</div>
+
+<div class="map-container">
+  <xp-map [encounters]="encounterCoordinates" [userLocation]="userMarker" [showSearchBar]="false"></xp-map>
+</div>
+
+<button *ngIf="tourExecutionId" (click)="navigateToTourExecution()">Go to tour</button>
+<button *ngIf="encounterExecution && encounter?.encounterType !== EncounterType.Social && encounter" 
+        (click)="completeExecution()" 
+        class="button">
+  <mat-icon>check_circle</mat-icon>
+  Complete
+</button>
+<button (click)="navigateToPositionSimulator()" class="cta-button-cancel">
+  <mat-icon>navigation</mat-icon>
+  Position simulator
+</button>
 </div>
