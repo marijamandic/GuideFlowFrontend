@@ -74,7 +74,7 @@ export class TourExecutionDetailsComponent implements OnInit{
             };
             if(this.tourist && this.tourExecutionId){
               this.fetchTourExecution();
-              
+              this.updateTourExecution()
               this.intervalId = setInterval( ()=> {
                 this.updateTourExecution();
               },10000)
@@ -229,7 +229,7 @@ setCurrentCheckpoint(index: number): void {
 } 
 
   openReviewForm(): void {
-    this.isReviewFormOpen = true;
+      this.isReviewFormOpen = true;
   }
 
   closeReviewForm(): void {
@@ -374,13 +374,17 @@ getReviewMessage(): string {
     var tolerance : number = 0.0018;
     if(!this.tourist)
       return false
-   
+    
     var isNearLatitude : boolean = Math.abs(latitude-this.tourist?.location.latitude) <= tolerance;
     var isNearLongitude : boolean = Math.abs(longitude-this.tourist?.location.longitude) <= tolerance;
+    console.log(latitude)
     if(!encounterId)
       return false;
     const isStarted: boolean = this.encounterIds.includes(encounterId);
     return isNearLatitude && isNearLongitude && !isStarted;
+  }
+  isFinished(encouterId:number){
+    return this.encounterIds.includes(encouterId)
   }
   Execute(encounterId:number){
     this.encounterService.findExecution(this.user.id,encounterId).subscribe(
@@ -426,8 +430,5 @@ getReviewMessage(): string {
           });
         }
       });
-  }
-  naivgateToPositionSimulator(){
-    this.router.navigate(['position-sim',this.tourExecutionId]);
   }
 }
