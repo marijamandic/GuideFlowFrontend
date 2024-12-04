@@ -1,12 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, numberAttribute, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { TourService } from '../../tour-authoring/tour.service';
 import { User } from 'src/app/infrastructure/auth/model/user.model';
 import { Tour, TourStatus } from '../../tour-authoring/model/tour.model';
-import { combineLatest, min} from 'rxjs';
+import { combineLatest} from 'rxjs';
 import { BundleStatus, TourBundle } from '../model/tour-bundle.model';
 import { MarketplaceService } from '../marketplace.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { TourBundleDialogComponent } from '../tour-bundle-dialog/tour-bundle-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 
 @Component({
@@ -21,26 +23,10 @@ export class TourBundleComponent implements OnInit{
   draftTourBundles: TourBundle[] = []
   publishedTourBundles: TourBundle[] = []
   archivedTourBundles: TourBundle[] = []
-  currentDraft: TourBundle = {
-    tourIds: [],
-    price: 0,
-    name: '',
-    status: BundleStatus.Draft,
-    authorId: 0,
-    id: 0
-  }
-  tourBundleForm: FormGroup
-
 
 
   constructor(private authService: AuthService, private tourService: TourService,
-               private marketPlace: MarketplaceService) {
-
-                this.tourBundleForm = new FormGroup({
-                  name: new FormControl('' , [Validators.required]), 
-                  price: new FormControl('', [Validators.min(1)]), 
-                  tours: new FormControl([], []), 
-                });
+               private marketPlace: MarketplaceService,private dialog: MatDialog) {
 
                 this.publishedTourBundles = [
                   {
@@ -75,6 +61,15 @@ export class TourBundleComponent implements OnInit{
                     authorId: 101,
                     tourIds: [3, 4]
                   }
+                  ,
+                  {
+                    id: 5,
+                    name: 'Historic Adventure 5',
+                    price: 300,
+                    status: BundleStatus.Published,
+                    authorId: 101,
+                    tourIds: [3, 4]
+                  }
                 ];
 
                 this.draftTourBundles = [ {
@@ -103,7 +98,6 @@ export class TourBundleComponent implements OnInit{
           ]).subscribe({
             next: ([user, result]) => {
                   this.user = user;
-                  this.currentDraft.authorId = user.id
                   this.authorTours = result.results.filter(tour => tour.authorId === user.id && tour.status == TourStatus.Published);
                   this.marketPlace.getTourBundles(user.id).subscribe({
                   next: (result) => {
@@ -121,14 +115,6 @@ export class TourBundleComponent implements OnInit{
     });
   }
   
-  
-  onTourSelectChange(event: Event, tourId: number): void {
-    const target = event.target as HTMLInputElement
-    if(target.checked)
-      this.currentDraft.tourIds.push(tourId)
-    else
-      this.currentDraft.tourIds = this.currentDraft.tourIds.filter(id => id != tourId)
-  }
 
 
   publish(bundle: TourBundle): void{
@@ -151,13 +137,41 @@ export class TourBundleComponent implements OnInit{
       this.archivedTourBundles = this.archivedTourBundles.filter(b => b.id != bundle.id)
     else if (bundle.status ==  BundleStatus.Draft)
       this.draftTourBundles = this.draftTourBundles.filter(b => b.id != bundle.id)
-
   }
 
-  create(): void{
-    this.currentDraft = this.tourBundleForm.value
-    this.draftTourBundles.push({...this.currentDraft})
-    this.marketPlace.createTourBundle(this.currentDraft).subscribe()
-    this.tourBundleForm.reset({});
+
+  openAddBundleDialog(): void {
+    const dialogRef = this.dialog.open(TourBundleDialogComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const newDraft = {
+          id: 0,
+          name: result.name,
+          price: result.price,
+          tourIds: result.selectedTours,
+          authorId: 0,
+          status: 0
+        } as TourBundle
+        this.draftTourBundles.push(newDraft)
+        this.marketPlace.createTourBundle(newDraft).subscribe()
+      }
+    });
+  }
+
+  modifyDraft(bundle: TourBundle): void {
+    const dialogRef = this.dialog.open(TourBundleDialogComponent, {
+      data: bundle,  
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const index = this.draftTourBundles.findIndex(draft => draft.id === result.id);
+      
+      if (index !== -1)
+        this.draftTourBundles[index] = result;
+      this.marketPlace.modifyTourBundle(result).subscribe()
+      }
+    });
   }
 }

@@ -12,6 +12,8 @@ import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
 import { TourBundleComponent } from './tour-bundle/tour-bundle.component';
 import { MatTabsModule } from '@angular/material/tabs'
 import { FormsModule } from '@angular/forms';
+import { TourBundleDialogComponent } from './tour-bundle-dialog/tour-bundle-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 
 @NgModule({
@@ -20,7 +22,8 @@ import { FormsModule } from '@angular/forms';
     TourSpecificationFormComponent,
     TourPreviewComponent,
     ShoppingCartComponent,
-    TourBundleComponent
+    TourBundleComponent,
+    TourBundleDialogComponent
   ],
   imports: [
     MatRadioModule,
@@ -31,6 +34,7 @@ import { FormsModule } from '@angular/forms';
     ReactiveFormsModule,
     MatTabsModule,
     FormsModule,
+    MatDialogModule
   ],
   exports: [
     TourSpecificationComponent,

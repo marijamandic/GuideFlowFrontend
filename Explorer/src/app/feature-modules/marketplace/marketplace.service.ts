@@ -99,13 +99,9 @@ export class MarketplaceService {
 
 	}
 
-	addTourToTourBundle(tourBundleId: number, tourId: number){
-		return this.http.patch<TourBundle>(environment.apiHost + 'author/tourBundleMenagement/addTour?tourbBundleId=' + tourBundleId + '&tourId=' + tourId, null)
-	}
-
-	removeTourFromTourBundle(tourBundleId: number, tourId: number)
+	modifyTourBundle(tourBundle: TourBundle): Observable<TourBundle>
 	{
-		return this.http.patch<TourBundle>(environment.apiHost + 'author/tourBundleMenagement/removeTour?tourBundleId=' + tourBundleId + '&tourId=' + tourId, null)
+		return this.http.put<TourBundle>(environment.apiHost + 'author/tourBundleMenagement', tourBundle)
 	}
 
 	publishTourBundle(tourBundleId: number){

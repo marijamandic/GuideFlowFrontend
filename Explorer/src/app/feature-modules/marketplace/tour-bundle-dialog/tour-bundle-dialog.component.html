@@ -1,0 +1,43 @@
+<h2 class="dialog-title"*ngIf="data">Edit Tour Bundle Draft</h2>
+<h2 class="dialog-title"*ngIf='!data'>Add New Tour Bundle Draft</h2>
+<form (ngSubmit)="onSubmit()" class="dialog-form">
+  <div class="form-group">
+    <label for="bundleName">Name:</label>
+    <input 
+      id="bundleName" 
+      type="text" 
+      [(ngModel)]="bundleName" 
+      name="name" 
+      required 
+      class="form-control" />
+  </div>
+
+  <div class="form-group">
+    <label for="bundlePrice">Price:</label>
+    <input 
+      id="bundlePrice" 
+      type="number" 
+      [(ngModel)]="bundlePrice" 
+      name="price" 
+      required 
+      class="form-control" />
+  </div>
+
+  <div class="form-group">
+    <label for="selectedTour">Tour:</label>
+    <select 
+      id="selectedTour" 
+      [(ngModel)]="selectedTours" 
+      name="tour" 
+      required 
+      class="form-control">
+      <option value="" disabled selected>Select a tour</option>
+
+    </select>
+  </div>
+
+  <div class="dialog-actions">
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="button" (click)="onCancel()" class="btn btn-secondary">Cancel</button>
+  </div>
+</form>

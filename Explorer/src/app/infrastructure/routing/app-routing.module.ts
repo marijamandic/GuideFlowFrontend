@@ -68,7 +68,7 @@ const routes: Routes = [
   { path: 'allAppRatings', component: AllAppRatingsComponent },
   { path: 'specification', component: TourSpecificationComponent },
   { path: 'purchased', component: PurchasedToursComponent },
-  { path: 'account', component: AccountComponent, canActivate: [AuthGuard] },
+  { path: 'account', component: AccountComponent},
   { path: 'tourView', component: TourViewComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'pending', component: PublicPointRequestsComponent },
@@ -82,7 +82,7 @@ const routes: Routes = [
 	{ path: '', redirectTo: '/home', pathMatch: 'full' },
   {path: 'tourPreview/:id', component: TourPreviewComponent},
   {path: 'shoppingCart', component: ShoppingCartComponent},
-  {path: 'tourBundleMenagement', component: TourBundleComponent}
+  {path: 'tourBundleManagement', component: TourBundleComponent}
 
 ];
 

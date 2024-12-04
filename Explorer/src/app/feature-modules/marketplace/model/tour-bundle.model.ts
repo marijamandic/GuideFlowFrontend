@@ -2,7 +2,7 @@ export interface TourBundle
 {
     id: number,
     name: string,
-    price: Number,
+    price: number,
     status: BundleStatus,
     authorId: number,
     tourIds: Array<number> 

@@ -1,83 +1,24 @@
-<mat-tab-group>
-  <!-- Tab for Creating Tour Bundle -->
-  <mat-tab label="Create Bundle">
-    <div class="tab-content create-bundle-container">
-      <h2>Create a New Tour Bundle</h2>
-      <form [formGroup]="tourBundleForm">
-        <div class="form-group">
-          <label for="bundleName">Bundle Name:</label>
-          <input type="text" placeholder="Enter Bundle Name" formControlName="name"/>
-        </div>
-
-        <div class="form-group">
-          <label for="bundlePrice">Bundle Price:</label>
-          <input type="number" placeholder="Enter Price" formControlName="price"/>
-        </div>
-
-        <div class="form-group">
-          <label>Select Tours:</label>
-          <div class="tour-cards-container">
-            <div class="tour-card">
-              <img src="tour1.jpg" alt="Tour 1" />
-              <h3>Tour 1</h3>
-              <p>A brief description of the tour.</p>
-              <input type="checkbox" />
-            </div>
-            <div class="tour-card">
-              <img src="tour2.jpg" alt="Tour 2" />
-              <h3>Tour 2</h3>
-              <p>A brief description of the tour.</p>
-              <input type="checkbox" />
-            </div>
-            <div class="tour-card">
-              <img src="tour2.jpg" alt="Tour 2" />
-              <h3>Tour 5</h3>
-              <p>A brief description of the tour.</p>
-              <input type="checkbox" />
-            </div>
-            <div class="tour-card">
-              <img src="tour2.jpg" alt="Tour 2" />
-              <h3>Tour 4</h3>
-              <p>A brief description of the tour.</p>
-              <input type="checkbox" />
-            </div>
-            <div class="tour-card">
-              <img src="tour3.jpg" alt="Tour 3" />
-              <h3>Tour 3</h3>
-              <p>A brief description of the tour.</p>
-              <input type="checkbox" />
-            </div>
-            <div class="tour-card" *ngFor="let tour of authorTours">
-              <img src="tour3.jpg" alt="Tour 3" />
-              <h3>{{tour.name}}</h3>
-              <p>{{tour.description}}</p>
-              <input type="checkbox" (change)="onTourSelectChange($event,tour.id)"/>
-            </div>
-          </div>
-        </div>
-
-        <button class="btn btn-primary" [disabled]="tourBundleForm.invalid" (click)="create()">Create Bundle</button>
-      </form>
-    </div>
-  </mat-tab>
-
+<mat-tab-group class="tab-group">
   <!-- Tab for Draft Bundles -->
   <mat-tab label="Drafts">
     <div class="tab-content">
-      <h2>Draft Bundles</h2>
+      <h2>Tour Bundle Drafts</h2>
       <div class="bundle-cards-container">
-        <p *ngIf="!draftTourBundles?.length" class="empty-placeholder">Empty</p>
-
         <div class="bundle-card" *ngFor="let bundle of draftTourBundles">
-          <img src="bundle1.jpg" alt="Draft Bundle" />
-          <h3>{{ bundle.name }}</h3>
-          <p>Price: ${{ bundle.price }}</p>
-          <div class="bundle-actions">
-            <button class="btn btn-success" (click)="publish(bundle)">Publish</button>
-            <button class="btn btn-warning">Edit</button>
-            <button class="btn btn-danger" (click)="delete(bundle)">Delete</button>
+          <img src="https://static.wikia.nocookie.net/rezero/images/6/68/Regulus_Corneas_Anime.jpg" alt="Draft Bundle" class="bundle-img" />
+          <div class="bundle-details">
+            <h3>{{ bundle.name }}</h3>
+            <p>Price: ${{ bundle.price }}</p>
+            <div class="bundle-actions">
+              <button class="btn btn-success" (click)="publish(bundle)">Publish</button>
+              <button class="btn btn-warning" (click)="modifyDraft(bundle)">Edit</button>
+              <button class="btn btn-danger" (click)="delete(bundle)">Delete</button>
+            </div>
           </div>
         </div>
+      </div>
+      <div class="add-bundle-card"  (click)="openAddBundleDialog()">
+        <i class="plus-icon">+</i>
       </div>
     </div>
   </mat-tab>
@@ -85,16 +26,18 @@
   <!-- Tab for Published Bundles -->
   <mat-tab label="Published">
     <div class="tab-content">
-      <h2>Published Bundles</h2>
+      <h2>Published Tour Bundles</h2>
       <div class="bundle-cards-container">
         <p *ngIf="!publishedTourBundles?.length" class="empty-placeholder">Empty</p>
 
         <div class="bundle-card" *ngFor="let bundle of publishedTourBundles">
-          <img src="bundle3.jpg" alt="Published Bundle" />
-          <h3>{{ bundle.name }}</h3>
-          <p>Price: ${{ bundle.price }}</p>
-          <div class="bundle-actions">
-            <button class="btn btn-info" (click)="archive(bundle)">Archive</button>
+          <img src="https://static.wikia.nocookie.net/rezero/images/6/68/Regulus_Corneas_Anime.jpg" alt="Published Bundle" class="bundle-img" />
+          <div class="bundle-details">
+            <h3>{{ bundle.name }}</h3>
+            <p>Price: ${{ bundle.price }}</p>
+            <div class="bundle-actions">
+              <button class="btn btn-info" (click)="archive(bundle)">Archive</button>
+            </div>
           </div>
         </div>
       </div>
@@ -104,16 +47,18 @@
   <!-- Tab for Archived Bundles -->
   <mat-tab label="Archived">
     <div class="tab-content">
-      <h2>Archived Bundles</h2>
+      <h2>Archived Tour Bundles</h2>
       <div class="bundle-cards-container">
         <p *ngIf="!archivedTourBundles?.length" class="empty-placeholder">Empty</p>
 
         <div class="bundle-card" *ngFor="let bundle of archivedTourBundles">
-          <img src="bundle5.jpg" alt="Archived Bundle" />
-          <h3>{{ bundle.name }}</h3>
-          <p>Price: ${{ bundle.price }}</p>
-          <div class="bundle-actions">
-            <button class="btn btn-danger" (click)="delete(bundle)">Delete</button>
+          <img src="https://static.wikia.nocookie.net/rezero/images/6/68/Regulus_Corneas_Anime.jpg" alt="Archived Bundle" class="bundle-img" />
+          <div class="bundle-details">
+            <h3>{{ bundle.name }}</h3>
+            <p>Price: ${{ bundle.price }}</p>
+            <div class="bundle-actions">
+              <button class="btn btn-danger" (click)="delete(bundle)">Delete</button>
+            </div>
           </div>
         </div>
       </div>
