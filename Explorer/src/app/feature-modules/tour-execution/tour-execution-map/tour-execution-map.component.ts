@@ -6,6 +6,7 @@ import { TourService } from '../../tour-authoring/tour.service';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { User } from 'src/app/infrastructure/auth/model/user.model';
 import { Tourist } from '../../tour-authoring/model/tourist';
+import { PublicPointService } from '../../tour-authoring/tour-public-point.service';
 
 @Component({
   selector: 'xp-tour-execution-map',
@@ -28,7 +29,7 @@ export class TourExecutionMap implements AfterViewInit,OnChanges {
   @Output() coordinatesSelected = new EventEmitter<{ latitude: number; longitude: number }>();
   @Output() distanceCalculated = new EventEmitter<{ transportType: string; time: number; distance: number }>();
 
-  constructor(private mapService: MapService, private tourService: TourService, private authService : AuthService) {}
+  constructor(private mapService: MapService, private tourService: TourService, private authService : AuthService, private publicPointService: PublicPointService) {}
   user : User;
 
   ngAfterViewInit(): void {
@@ -42,6 +43,7 @@ export class TourExecutionMap implements AfterViewInit,OnChanges {
     if (!this.map) {
       this.initMap(); 
     }
+    this.loadPublicPoints();
   }
 
   private initMap(): void {
@@ -297,4 +299,38 @@ export class TourExecutionMap implements AfterViewInit,OnChanges {
     }
   }
   
+  private fixedMarkers: L.Marker[] = []; // Niz za javne fiksirane markere
+
+  loadPublicPoints(): void {
+    this.publicPointService.getAccpetedPublicPoints().subscribe({
+      next: (publicPoints) => {
+        publicPoints.forEach((point) => {
+          const latLng = new L.LatLng(point.latitude, point.longitude);
+  
+          const marker = L.marker(latLng, {
+            icon: L.icon({
+              iconUrl: 'assets/images/placeholder.png',
+              iconSize: [32, 41],
+              iconAnchor: [15, 41],
+            }),
+          });
+  
+          const popupContent = `
+            <div style="width: 250px; text-align: center;">
+              <h3 style="margin: 0; font-size: 16px;">${point.name}</h3>
+              ${point.imageUrl ? `<img src="${point.imageUrl}" alt="${point.name}" style="width: 100%; height: auto; margin: 10px 0; border-radius: 5px;" />` : ''}
+              ${point.description ? `<p style="font-size: 14px; color: #555; margin: 0;">${point.description}</p>` : ''}
+            </div>
+          `;
+  
+          marker.bindPopup(popupContent).addTo(this.map);
+          this.fixedMarkers.push(marker); 
+        });
+      },
+      error: (err) => {
+        console.error('Error loading public points:', err);
+      },
+    });
+  }  
+
 }

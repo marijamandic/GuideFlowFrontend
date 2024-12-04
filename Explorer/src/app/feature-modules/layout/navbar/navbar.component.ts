@@ -42,7 +42,6 @@ export class NavbarComponent implements OnInit {
       this.showNotifications = false;
   }
   }
-
 	onLogout(): void {
 		this.toggleDropdown();
 		this.authService.logout();
