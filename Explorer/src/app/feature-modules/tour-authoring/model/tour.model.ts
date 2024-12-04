@@ -5,7 +5,7 @@ import { TourReview } from "./tourReview";
 import { TransportDuration } from "./transportDuration.model";
 
 export interface Tour {
-    id?: number;
+    id: number;
     authorId: number;
     name: string;
     description: string;

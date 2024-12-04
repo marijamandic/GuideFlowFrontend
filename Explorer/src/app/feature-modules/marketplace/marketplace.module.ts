@@ -7,6 +7,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { TourPreviewComponent } from './tour-preview/tour-preview.component';
 import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
+import { TourBundleComponent } from './tour-bundle/tour-bundle.component';
+import { MatTabsModule } from '@angular/material/tabs'
+import { TourBundleDialogComponent } from './tour-bundle-dialog/tour-bundle-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
+
 import { CouponComponent } from './coupon/coupon.component';
 import { TourBundlePreviewComponent } from './tour-bundle-preview/tour-bundle-preview.component';
 
@@ -14,6 +19,8 @@ import { TourBundlePreviewComponent } from './tour-bundle-preview/tour-bundle-pr
   declarations: [
     TourPreviewComponent,
     ShoppingCartComponent,
+    TourBundleComponent,
+    TourBundleDialogComponent,
     CouponComponent,
     TourBundlePreviewComponent
   ],
@@ -24,7 +31,9 @@ import { TourBundlePreviewComponent } from './tour-bundle-preview/tour-bundle-pr
     CommonModule,
     MaterialModule,
     ReactiveFormsModule,
-    FormsModule 
+    MatTabsModule,
+    FormsModule,
+    MatDialogModule,
   ],
   exports: [
     TourPreviewComponent,

@@ -11,7 +11,7 @@ import { ProductType } from '../model/product-type';
 import { ItemInput } from '../model/shopping-carts/item-input';
 import { TourService } from '../../tour-authoring/tour.service';
 import { Tour } from '../../tour-authoring/model/tour.model';
-import { TourBundle } from '../model/tour-bundle';
+import { TourBundle } from '../model/tour-bundle.model';
 
 @Component({
 	selector: 'xp-shopping-cart',

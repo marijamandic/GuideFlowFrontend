@@ -14,8 +14,8 @@ import { TourPurchaseToken } from './model/purchase-tokens/tour-purchase-token';
 import { Action } from 'rxjs/internal/scheduler/Action';
 import { Tour } from '../tour-authoring/model/tour.model';
 import { Payment } from './model/payments/payment';
+import { TourBundle } from './model/tour-bundle.model';
 import { Coupon } from './model/coupon.model';
-import { TourBundle } from './model/tour-bundle';
 
 @Injectable({
 	providedIn: 'root'
@@ -87,6 +87,31 @@ export class MarketplaceService {
 	// 	return this.http.put<ShoppingCart>(environment.apiHost + 'shoppingCart/', shoppingCart);
 	// }
 
+	getTourBundles(authorId: number): Observable<PagedResults<TourBundle>> {
+		return this.http.get<PagedResults<TourBundle>>(environment.apiHost + 'author/tourBundlesManagement?authorId=' + authorId)
+	}
+
+	createTourBundle(tourBundle: TourBundle): Observable<TourBundle> {
+		return this.http.post<TourBundle>(environment.apiHost + 'author/tourBundlesManagement', tourBundle)
+	}
+
+	deleteTourBundle(tourBundleId: number): Observable<TourBundle> {
+		return this.http.delete<TourBundle>(environment.apiHost + 'author/tourBundlesManagement?tourBundleId=' + tourBundleId)
+
+	}
+
+	modifyTourBundle(tourBundle: TourBundle): Observable<TourBundle>
+	{
+		return this.http.put<TourBundle>(environment.apiHost + 'author/tourBundlesManagement', tourBundle)
+	}
+
+	publishTourBundle(tourBundleId: number){
+		return this.http.patch<TourBundle>(environment.apiHost + 'author/tourBundlesManagement/publish?tourBundleId=' + tourBundleId, null)
+	}
+
+	archiveTourBundle(tourbBundleId: number){
+		return this.http.patch<TourBundle>(environment.apiHost + 'author/tourBundlesManagement/archive?tourBundleId=' + tourbBundleId, null)
+	}
 	//Coupon
 	createCoupon(coupon: Coupon): Observable<Coupon> {
 		return this.http.post<Coupon>(environment.apiHost + 'shopping/coupons', coupon);
