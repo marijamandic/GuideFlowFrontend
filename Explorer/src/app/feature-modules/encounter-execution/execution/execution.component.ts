@@ -57,7 +57,7 @@ export class ExecutionComponent implements OnInit{
                 longitude: result.location.longitude
               };
               console.log('10s:', this.encounterExecution);
-              if(!this.encounterExecution?.isComplete){
+              if(this.encounterExecution?.encounterType === EncounterType.Social && !this.encounterExecution?.isComplete){
                 this.intervalId = setInterval(() => {
                   this.completeSocialExecution();
                 }, 10000);
