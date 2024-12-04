@@ -46,6 +46,6 @@ import { TourAuthoringModule } from '../tour-authoring/tour-authoring.module';
     EquipmentManagementComponent,
     ReportProblemComponent,
 	TourReviewComponent
-  ],
+  ]
 })
 export class TourExecutionModule {}
