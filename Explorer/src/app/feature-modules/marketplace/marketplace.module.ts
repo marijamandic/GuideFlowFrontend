@@ -11,25 +11,8 @@ import { TourPreviewComponent } from './tour-preview/tour-preview.component';
 import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
 
 @NgModule({
-  declarations: [
-    TourSpecificationComponent,
-    TourSpecificationFormComponent,
-    TourPreviewComponent,
-    ShoppingCartComponent
-  ],
-  imports: [
-    MatRadioModule,
-    MatFormFieldModule,
-    MatInputModule,
-    CommonModule,
-    MaterialModule,
-    ReactiveFormsModule
-  ],
-  exports: [
-    TourSpecificationComponent,
-    TourSpecificationFormComponent,
-    TourPreviewComponent,
-    ShoppingCartComponent
-  ]
+	declarations: [TourSpecificationComponent, TourSpecificationFormComponent, TourPreviewComponent, ShoppingCartComponent],
+	imports: [MatRadioModule, MatFormFieldModule, MatInputModule, CommonModule, MaterialModule, ReactiveFormsModule],
+	exports: [TourSpecificationComponent, TourSpecificationFormComponent, TourPreviewComponent, ShoppingCartComponent]
 })
-export class MarketplaceModule { }
+export class MarketplaceModule {}
