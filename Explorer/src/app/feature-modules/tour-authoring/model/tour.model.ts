@@ -25,7 +25,7 @@ export enum TourStatus {
     Draft = 0,
     Published = 1,
     Archived = 2,
-    Active
+    Deleted = 3
 }
 
 export enum Level {

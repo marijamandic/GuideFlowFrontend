@@ -1,45 +1,79 @@
-<div class="form-container">
-  <form class="encounter-form">
+<div class="divContainer">
+  <form #encounterForm="ngForm" (ngSubmit)="onSubmit(encounterForm)" novalidate>
     <h2>{{ encounter.id ? 'Edit Encounter' : 'Add Encounter' }}</h2>
 
     <!-- Dropdown za tip Encounter-a -->
-    <div *ngIf="!encounter.id" class="form-group">
-      <label for="encounterType">Encounter Type</label>
-      <select id="encounterType" [(ngModel)]="encounter.encounterType" name="encounterType" (change)="onEncounterTypeChange()" [disabled]="!!encounter.id">
-        <option value="Social">Social</option>
-        <option value="Location">Hidden Location</option>
-        <option value="Misc">Misc</option>
+    <div *ngIf="!encounter.id">
+      <label for="encounterType">Izaberite tip izazova:</label>
+      <select id="encounterType" [(ngModel)]="selectedType" name="encounterType" (change)="onEncounterTypeChange()" [disabled]="!!encounter.id">
+        <option *ngFor="let type of encounterTypes" [value]="type">
+          {{ type }}
+          </option>
       </select>
     </div>
 
-    <div *ngIf="encounter.id || typeSelected === true">
-      <!-- Dodatna polja za specifične tipove -->
-      <div *ngIf="encounter.encounterType === 0">
-        <!-- Social Encounter -->
-        <div class="form-group">
-          <label for="touristNumber">Tourist Number</label>
-          <input type="number" id="touristNumber" [(ngModel)]="encounter.touristNumber" name="touristNumber" required />
+    <div *ngIf="encounter.id || selectedType">
+      <div>
+        <label for="name">Encounter name:</label>
+        <input id="name" type="text" [(ngModel)]="encounter.name" name="name" required #name="ngModel"
+        [ngClass]="{'is-invalid': name.invalid && name.touched}"/>
+        <div *ngIf="name.invalid && name.touched" class="error-message">
+          This field is required.
         </div>
-        <div class="form-group">
-          <label for="encounterRange">Encounter Range</label>
-          <input type="number" id="encounterRange" [(ngModel)]="encounter.encounterRange" name="encounterRange" required />
+      </div>
+      <div>
+        <label for="description">Description:</label>
+        <textarea id="description" [(ngModel)]="encounter.description" name="description" required #name="ngModel"
+        [ngClass]="{'is-invalid': name.invalid && name.touched}"></textarea>
+        <div *ngIf="name.invalid && name.touched" class="error-message">
+          This field is required.
         </div>
       </div>
 
-      <div *ngIf="encounter.encounterType === 1">
+      <!-- Dodatna polja za specifične tipove -->
+      <div *ngIf="selectedType === 'Social'">
+        <!-- Social Encounter -->
+        <div>
+          <label for="touristNumber">Tourist number:</label>
+          <input id="touristNumber" type="number" [(ngModel)]="encounter.touristNumber" name="touristNumber" required #name="ngModel"
+          [ngClass]="{'is-invalid': name.invalid && name.touched}"/>
+          <div *ngIf="name.invalid && name.touched" class="error-message">
+            This field is required.
+          </div>
+        </div>
+        <div>
+          <label for="encounterRange">Encounter range:</label>
+          <input id="encounterRange" type="number" [(ngModel)]="encounter.encounterRange" name="encounterRange" required #name="ngModel"
+          [ngClass]="{'is-invalid': name.invalid && name.touched}"/>
+          <div *ngIf="name.invalid && name.touched" class="error-message">
+            This field is required.
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="selectedType === 'Location'">
         <!-- Hidden Location Encounter -->
-        <div class="form-group">
-          <label for="activationRange">Activation Range</label>
-          <input type="number" id="activationRange" [(ngModel)]="encounter.activationRange" name="activationRange" />
+        <div>
+          <label for="fileInput">Image URL</label>
+          <input id="fileInput" type="file" (change)="onFileSelected($event)" required #fileInput 
+          [ngClass]="{'is-invalid': !selectedFile && fileInput?.value}">
         </div>
-        <div class="form-group">
-          <label for="checkpointId">Checkpoint Id</label>
-          <input type="number" id="checkpointId" [(ngModel)]="encounter.checkpointId" name="checkpointId" />
+        <div *ngIf="!selectedFile && fileInput?.value" class="error-message">
+          File is required.
         </div>
-        <div class="form-group">
-          <label for="fileInput">Image Upload</label>
-          <input id="fileInput" type="file" (change)="onFileSelected($event)">
+        <div>
+          <label for="activationRange">Activation range:</label>
+          <input id="activationRange" type="number" [(ngModel)]="encounter.activationRange" name="activationRange" required #name="ngModel"
+          [ngClass]="{'is-invalid': name.invalid && name.touched}"/>
+          <div *ngIf="name.invalid && name.touched" class="error-message">
+            This field is required.
+          </div>
         </div>
+        <!-- <div class="map-container">
+          <label>Image location</label>
+          <xp-map (coordinatesSelected)="onCoordinatesSelected($event)" [encounters]="encounterCoordinates" [showSearchBar]="false"></xp-map>
+        </div> -->
+
         <!-- <div class="form-group">
           <label for="imageLatitude">Image Latitude</label>
           <input type="number" id="imageLatitude" [(ngModel)]="encounter.imageLatitude" name="imageLatitude" />
@@ -50,23 +84,16 @@
         </div> -->
       </div>
 
-      <div *ngIf="encounter.encounterType === 2">
+      <div *ngIf="selectedType === 'Misc'">
         <!-- Misc Encounter -->
         <div class="form-group">
-          <label for="actionDescription">Action Description</label>
-          <textarea id="actionDescription" [(ngModel)]="encounter.actionDescription" name="actionDescription" required></textarea>
+          <label for="actionDescription">Action description:</label>
+          <textarea id="actionDescription" [(ngModel)]="encounter.actionDescription" name="actionDescription" required #name="ngModel"
+          [ngClass]="{'is-invalid': name.invalid && name.touched}"></textarea>
+          <div *ngIf="name.invalid && name.touched" class="error-message">
+            This field is required.
+          </div>
         </div>
-      </div>
-
-      <!-- Osnovna polja -->
-      <div class="form-group">
-        <label for="name">Name</label>
-        <input type="text" id="name" [(ngModel)]="encounter.name" name="name" required placeholder="Encounter name" />
-      </div>
-
-      <div class="form-group">
-        <label for="description">Description</label>
-        <textarea id="description" [(ngModel)]="encounter.description" name="description" required placeholder="Encounter description"></textarea>
       </div>
 
       <div class="form-group" *ngIf="user.role != 'tourist'">
@@ -89,12 +116,16 @@
       </div> -->
 
       <div class="form-group">
-        <label for="experiencePoints">Experience Points</label>
-        <input type="number" id="experiencePoints" [(ngModel)]="encounter.experiencePoints" name="experiencePoints" required />
+        <label for="experiencePoints">Experience points:</label>
+        <input type="number" id="experiencePoints" [(ngModel)]="encounter.experiencePoints" name="experiencePoints" required #name="ngModel"
+        [ngClass]="{'is-invalid': name.invalid && name.touched}"/>
+        <div *ngIf="name.invalid && name.touched" class="error-message">
+          This field is required.
+        </div>
       </div>
 
       <div *ngIf="encounter.encounterType === 1" class="map-mode-buttons">
-        <p>Current Map: {{ mapMode === 'encounterLocation' ? 'Encounter' : 'Image' }}</p>
+        <!-- <p>Current Map: {{ mapMode === 'encounterLocation' ? 'Encounter' : 'Image' }}</p> -->
         <button type="button" class="map-mode-buttons" (click)="setMapMode('encounterLocation')" [class.active]="mapMode === 'encounterLocation'">
           Set Encounter Location
         </button>
@@ -105,10 +136,15 @@
 
       <!-- Mapa za unos koordinata -->
       <div class="map-container">
-        <xp-map (coordinatesSelected)="onCoordinatesSelected($event)" [encounters]="encounterCoordinates"></xp-map>
+        <xp-map (coordinatesSelected)="onCoordinatesSelected($event)" [encounters]="encounterCoordinates" [showSearchBar]="false" [formWithoutSearchBar]="true"></xp-map>
       </div>
 
-      <button type="submit" class="cta-button" (click)="onSubmit()">
+      <div *ngIf="!encounter.encounterLocation.latitude || !encounter.encounterLocation.longitude" class="error-message">
+        Coordinates are required.
+      </div>
+      
+
+      <button type="submit" class="cta-button">
         {{ encounter.id ? 'Update Encounter' : 'Add Encounter' }}
       </button>
     </div>

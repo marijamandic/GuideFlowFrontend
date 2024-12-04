@@ -48,6 +48,11 @@ export class EncounterExecutionService {
     return this.http.put<Execution>('https://localhost:44333/api/tourist/encounterExecution/' + execution.id, execution);
   }
 
+  completeSocialExecution(execution: Execution): Observable<Execution> {
+    console.log('usao u servis');
+    return this.http.put<Execution>('https://localhost:44333/api/tourist/encounterExecution/completeSocial/' + execution.id, execution);
+  }
+  
   getExecutionByUser(userId: number): Observable<Execution[]>{
     return this.http.get<Execution[]>('https://localhost:44333/api/tourist/encounterExecution/getByUser/' + userId);
   }
