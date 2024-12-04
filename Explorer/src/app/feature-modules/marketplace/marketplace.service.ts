@@ -87,28 +87,28 @@ export class MarketplaceService {
 	// }
 
 	getTourBundles(authorId: number): Observable<PagedResults<TourBundle>> {
-		return this.http.get<PagedResults<TourBundle>>(environment.apiHost + 'author/tourBundleMenagement?authorId=' + authorId)
+		return this.http.get<PagedResults<TourBundle>>(environment.apiHost + 'author/tourBundlesManagement?authorId=' + authorId)
 	}
 
 	createTourBundle(tourBundle: TourBundle): Observable<TourBundle> {
-		return this.http.post<TourBundle>(environment.apiHost + 'author/tourBundleMenagement', tourBundle)
+		return this.http.post<TourBundle>(environment.apiHost + 'author/tourBundlesManagement', tourBundle)
 	}
 
 	deleteTourBundle(tourBundleId: number): Observable<TourBundle> {
-		return this.http.delete<TourBundle>(environment + 'api/tourBundleMenagement?tourBundleId=' + tourBundleId)
+		return this.http.delete<TourBundle>(environment.apiHost + 'author/tourBundlesManagement?tourBundleId=' + tourBundleId)
 
 	}
 
 	modifyTourBundle(tourBundle: TourBundle): Observable<TourBundle>
 	{
-		return this.http.put<TourBundle>(environment.apiHost + 'author/tourBundleMenagement', tourBundle)
+		return this.http.put<TourBundle>(environment.apiHost + 'author/tourBundlesManagement', tourBundle)
 	}
 
 	publishTourBundle(tourBundleId: number){
-		return this.http.patch<TourBundle>(environment.apiHost + 'author/tourBundleMenagement/publish?tourBundleId=' + tourBundleId, null)
+		return this.http.patch<TourBundle>(environment.apiHost + 'author/tourBundlesManagement/publish?tourBundleId=' + tourBundleId, null)
 	}
 
 	archiveTourBundle(tourbBundleId: number){
-		return this.http.patch<TourBundle>(environment.apiHost + 'author/tourBundleMenagement/archive?tourBundleId=' + tourbBundleId, null)
+		return this.http.patch<TourBundle>(environment.apiHost + 'author/tourBundlesManagement/archive?tourBundleId=' + tourbBundleId, null)
 	}
 }

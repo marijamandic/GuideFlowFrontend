@@ -1,43 +1,62 @@
 <h2 class="dialog-title"*ngIf="data">Edit Tour Bundle Draft</h2>
 <h2 class="dialog-title"*ngIf='!data'>Add New Tour Bundle Draft</h2>
-<form (ngSubmit)="onSubmit()" class="dialog-form">
+<form  #formName="ngForm"  (ngSubmit)="onSubmit()" class="dialog-form">
   <div class="form-group">
-    <label for="bundleName">Name:</label>
-    <input 
-      id="bundleName" 
+    <label>Name:</label>
+    <input  
       type="text" 
       [(ngModel)]="bundleName" 
       name="name" 
-      required 
+      required
       class="form-control" />
   </div>
 
   <div class="form-group">
-    <label for="bundlePrice">Price:</label>
+    <label >Price:</label>
     <input 
-      id="bundlePrice" 
       type="number" 
       [(ngModel)]="bundlePrice" 
       name="price" 
-      required 
       class="form-control" />
   </div>
 
   <div class="form-group">
-    <label for="selectedTour">Tour:</label>
+    <label>Packaged Tours:</label>
     <select 
-      id="selectedTour" 
-      [(ngModel)]="selectedTours" 
-      name="tour" 
-      required 
-      class="form-control">
-      <option value="" disabled selected>Select a tour</option>
-
+      [(ngModel)]="selectedToursIds" 
+      name="toursIds"
+      multiple
+      class="form-control"
+      *ngIf="!data">
+      <option *ngFor="let tour of availableTours" [ngValue]="tour.id">
+        {{ tour.name }}
+      </option>
     </select>
+    <select 
+      name="packagedTours"
+      multiple
+      class="form-control"
+      *ngIf="data">
+      <option *ngFor="let tour of selectedTours" (click)="moveToSelected(tour, 'selected')">
+        {{ tour.name }}
+      </option>
+    </select>
+    <div class="form-group" *ngIf="data">
+      <label>Available Tours:</label>
+      <select 
+      name="availableTours"
+      multiple
+      class="form-control"
+      *ngIf="data">
+      <option *ngFor="let tour of availableTours" [ngValue]="tour.id" (click)="moveToSelected(tour, 'available')">
+        {{ tour.name }}
+      </option>
+    </select>
+    </div>
   </div>
 
   <div class="dialog-actions">
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" [disabled]="formName.invalid" class="btn btn-primary">Submit</button>
     <button type="button" (click)="onCancel()" class="btn btn-secondary">Cancel</button>
   </div>
 </form>

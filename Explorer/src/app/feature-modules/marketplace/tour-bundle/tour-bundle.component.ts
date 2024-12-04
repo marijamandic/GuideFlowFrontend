@@ -2,11 +2,8 @@ import { Component, numberAttribute, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { TourService } from '../../tour-authoring/tour.service';
 import { User } from 'src/app/infrastructure/auth/model/user.model';
-import { Tour, TourStatus } from '../../tour-authoring/model/tour.model';
-import { combineLatest} from 'rxjs';
 import { BundleStatus, TourBundle } from '../model/tour-bundle.model';
 import { MarketplaceService } from '../marketplace.service';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { TourBundleDialogComponent } from '../tour-bundle-dialog/tour-bundle-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -19,13 +16,12 @@ import { MatDialog } from '@angular/material/dialog';
 export class TourBundleComponent implements OnInit{
 
   user: User
-  authorTours: Tour[] = []
   draftTourBundles: TourBundle[] = []
   publishedTourBundles: TourBundle[] = []
   archivedTourBundles: TourBundle[] = []
 
 
-  constructor(private authService: AuthService, private tourService: TourService,
+  constructor(private authService: AuthService,
                private marketPlace: MarketplaceService,private dialog: MatDialog) {
 
                 this.publishedTourBundles = [
@@ -72,42 +68,14 @@ export class TourBundleComponent implements OnInit{
                   }
                 ];
 
-                this.draftTourBundles = [ {
-                  id: 2,
-                  name: 'Historic Adventure 2',
-                  price: 300,
-                  status: BundleStatus.Draft,
-                  authorId: 101,
-                  tourIds: [3, 4]
-                },
-                {
-                  id: 3,
-                  name: 'Historic Adventure 3',
-                  price: 300,
-                  status: BundleStatus.Draft,
-                  authorId: 101,
-                  tourIds: [3, 4]
-                }]
                }
                
                
   ngOnInit(): void {
-    combineLatest([
-          this.authService.user$,
-          this.tourService.getTour()
-          ]).subscribe({
-            next: ([user, result]) => {
+          this.authService.user$.subscribe({
+            next: (user) => {
                   this.user = user;
-                  this.authorTours = result.results.filter(tour => tour.authorId === user.id && tour.status == TourStatus.Published);
-                  this.marketPlace.getTourBundles(user.id).subscribe({
-                  next: (result) => {
-                        const allBundles = result.results
-                        this.draftTourBundles = allBundles.filter(bundle => bundle.status == BundleStatus.Draft);
-                        this.publishedTourBundles = allBundles.filter(bundle => bundle.status == BundleStatus.Published);
-                        this.archivedTourBundles = allBundles.filter(bundle => bundle.status == BundleStatus.Archived);
-            }
-          })
-        
+                  this.getTourBundles(user.id)
       },
       error: (err) => {
         console.error('Error fetching user or tours:', err);
@@ -115,9 +83,19 @@ export class TourBundleComponent implements OnInit{
     });
   }
   
-
+  getTourBundles(userId: number) : void {
+    this.marketPlace.getTourBundles(userId).subscribe({
+      next: (result) => {
+        const allBundles = result.results
+        this.draftTourBundles = allBundles.filter(bundle => bundle.status == BundleStatus.Draft);
+        this.publishedTourBundles = allBundles.filter(bundle => bundle.status == BundleStatus.Published);
+        this.archivedTourBundles = allBundles.filter(bundle => bundle.status == BundleStatus.Archived);
+      }
+    })
+  }
 
   publish(bundle: TourBundle): void{
+    if(bundle.tourIds.length < 2 || bundle.price < 0) return
     bundle.status = BundleStatus.Published
     this.draftTourBundles = this.draftTourBundles.filter( b => b.id != bundle.id)
     this.publishedTourBundles.push(bundle)
@@ -149,12 +127,17 @@ export class TourBundleComponent implements OnInit{
           id: 0,
           name: result.name,
           price: result.price,
-          tourIds: result.selectedTours,
+          tourIds: result.tourIds,
           authorId: 0,
           status: 0
         } as TourBundle
+        console.log(result)
         this.draftTourBundles.push(newDraft)
-        this.marketPlace.createTourBundle(newDraft).subscribe()
+        this.marketPlace.createTourBundle(newDraft).subscribe({
+          next: () => {
+            this.getTourBundles(this.user.id)
+          }
+       })
       }
     });
   }
@@ -166,11 +149,11 @@ export class TourBundleComponent implements OnInit{
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        const index = this.draftTourBundles.findIndex(draft => draft.id === result.id);
-      
-      if (index !== -1)
-        this.draftTourBundles[index] = result;
-      this.marketPlace.modifyTourBundle(result).subscribe()
+        bundle.name = result.name
+        bundle.price = result.price
+        bundle.tourIds = result.tourIds
+        console.log(bundle)
+        this.marketPlace.modifyTourBundle(bundle).subscribe()
       }
     });
   }
