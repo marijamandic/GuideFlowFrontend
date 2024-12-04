@@ -232,5 +232,7 @@ export class EncounterComponent implements OnInit {
       }
     });
   }
-  
+  navigateToPositionSimulator(){
+    this.router.navigate(["position-sim"])
+  }
 }
