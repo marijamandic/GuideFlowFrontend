@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Account, UserRole } from '../model/account.model'
 import { AdministrationService } from '../administration.service';
+import { LayoutService } from '../../layout/layout.service';
+import { AuthService } from 'src/app/infrastructure/auth/auth.service';
+import { User } from 'src/app/infrastructure/auth/model/user.model';
 
 @Component({
   selector: 'xp-account',
@@ -13,10 +16,15 @@ accounts: Account[] = []
   
 public UserRole = UserRole;
   
-  constructor(private service: AdministrationService) {}
+  constructor(private service: AdministrationService, private notificationService: LayoutService, private authService: AuthService) {}
+  
+  user: User
 
   ngOnInit(): void {
-    this.getAccounts()
+    this.getAccounts();
+    this.authService.user$.subscribe((user)=>{
+      this.user = user;
+    })
   }
 
   ToggleAcountActivty(account : Account) : void {
@@ -67,13 +75,26 @@ public UserRole = UserRole;
     this.service.updateMoney(account.userId, this.moneyInput).subscribe({
       next: () => {
         alert(`Money successfully deposited for ${account.username}`);
-        this.selectedAccountId = null; // Resetuj selekciju
-        this.moneyInput = 0; // Resetuj unos
+        this.selectedAccountId = null; 
+        this.moneyInput = 0; 
       },
       error: (err) => {
         console.error('Error depositing money:', err);
       }
     });
+    this.notificationService.createNotification({
+      id: 0,
+      userId: account.userId,
+      sender: this.user.username,
+      message: `Your account has been credited with ${this.moneyInput} AC`,
+      createdAt: new Date(),
+      isOpened: false,
+      type: 1
+    }).subscribe({
+      next: () => console.log('Notification created successfully'),
+      error: err => console.error('Error creating notification', err)
+  });
+  
   }
   
 }

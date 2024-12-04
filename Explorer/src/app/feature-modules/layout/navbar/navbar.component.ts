@@ -3,7 +3,7 @@ import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { User } from 'src/app/infrastructure/auth/model/user.model';
 import { PublicPointService } from '../../tour-authoring/tour-public-point.service';
 import { PublicPointNotification } from '../../tour-authoring/model/publicPointNotification.model';
-import { ShoppingCart } from '../../marketplace/model/shoppingCart.model';
+//import { ShoppingCart } from '../../marketplace/model/shoppingCart.model';
 import { MarketplaceService } from '../../marketplace/marketplace.service';
 import { AlertService } from '../alert.service';
 

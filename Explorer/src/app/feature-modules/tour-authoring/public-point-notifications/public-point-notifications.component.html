@@ -1,45 +1,98 @@
 <div class="notifications-container">
     <div class="header">
         <h4>Notifications</h4>
-        <span class="mark-read-text" >Mark as read</span>
+        <span class="mark-read-text" (click)="markAllAsRead()">Mark as read</span>
     </div>
 
-    <div class="header" *ngIf="unreadNotifications.length === 0 && readNotifications.length === 0">
+    <div class="header" *ngIf="unreadNotification.length === 0 && readNotificatio.length === 0">
         <p>No notifications available.</p>
     </div>
 
     <div class="notification-table">
-        <div *ngFor="let notification of unreadNotifications" class="notification-row unread"
-             [ngClass]="{'accepted': notification.isAccepted, 'rejected': !notification.isAccepted}"
-             (click)="openNotificationDialog(notification)">
-            <div class="notification-title">
-                <span><strong class="notification-point">Public Point ID: {{ notification.publicPointId }}</strong></span>
-                <div class="notification-comment">
-                    {{ truncateComment(notification.comment, 100) }}
-                </div>
-                <div class="notification-date">{{ notification.creationTime | date:'MMMM d, y, h:mm a' }}</div>
-                <div class="notification-status" [ngClass]="notification.isAccepted ? 'status-accepted' : 'status-rejected'">
-                    {{ notification.isAccepted ? 'ACCEPTED' : 'REJECTED' }}
+        <ng-container *ngFor="let notification of unreadNotification">
+            <div *ngIf="isPublicPointNotification(notification)" 
+                 class="notification-row unread"
+                 [ngClass]="{
+                    accepted: notification.data.isAccepted,
+                    rejected: !notification.data.isAccepted
+                 }"
+                 (click)="openNotificationDialog(notification.data)">
+                <div class="notification-title">
+                    <span>
+                        <strong class="notification-point">
+                            Public Point ID: {{ notification.data.publicPointId }}
+                        </strong>
+                    </span>
+                    <div class="notification-comment">
+                        {{ truncateComment(notification.data.comment || '', 100) }}
+                    </div>
+                    <div class="notification-date">
+                        {{ notification.creationTime | date:'MMMM d, y, h:mm a' }}
+                    </div>
+                    <div class="notification-status"
+                         [ngClass]="notification.data.isAccepted ? 'status-accepted' : 'status-rejected'">
+                        {{ notification.data.isAccepted ? 'ACCEPTED' : 'REJECTED' }}
+                    </div>
                 </div>
             </div>
-        </div>
+            <!-- Prikaz za običan Notification -->
+            <div *ngIf="isNotification(notification)" 
+                class="notification-row unread">
+            <div class="notification-title">
+            <span>
+                <strong class="notification-point">
+                    Sender: {{ notification.data.sender }}
+                </strong>
+            </span>
+            <div class="notification-comment">
+                {{ truncateComment(notification.data.message || '', 100) }}
+            </div>
+            <div class="notification-date">
+                {{ notification.creationTime | date:'MMMM d, y, h:mm a' }}
+            </div>
+            </div>
+            </div>
+        </ng-container>
     </div>
-
+    
     <div class="notification-table">
-        <div *ngFor="let notification of readNotifications" class="notification-row read"
-             [ngClass]="{'accepted': notification.isAccepted, 'rejected': !notification.isAccepted}"
-             (click)="openNotificationDialog(notification)">
+        <ng-container *ngFor="let notification of readNotificatio">
+        <div *ngIf="isPublicPointNotification(notification)" 
+                 class="notification-row read"
+                 [ngClass]="{
+                    accepted: notification.data.isAccepted,
+                    rejected: !notification.data.isAccepted
+                 }"
+                 (click)="openNotificationDialog(notification.data)">
             <div class="notification-title">
-                <strong class="notification-point-read">Public Point ID: {{ notification.publicPointId }}</strong>
+                <strong class="notification-point-read">Public Point ID: {{ notification.data.publicPointId }}</strong>
                 <div class="notification-comment">
-                    {{ truncateComment(notification.comment, 100) }}
+                    {{ truncateComment(notification.data.comment, 100) }}
                 </div>
-                <div class="notification-date">{{ notification.creationTime | date:'MMMM d, y, h:mm a' }}</div>
-                <div class="notification-status" [ngClass]="notification.isAccepted ? 'status-accepted' : 'status-rejected'">
-                    {{ notification.isAccepted ? 'ACCEPTED' : 'REJECTED' }}
+                <div class="notification-date">{{ notification.data.creationTime | date:'MMMM d, y, h:mm a' }}</div>
+                <div class="notification-status" [ngClass]="notification.data.isAccepted ? 'status-accepted' : 'status-rejected'">
+                    {{ notification.data.isAccepted ? 'ACCEPTED' : 'REJECTED' }}
                 </div>
             </div>
         </div>
+        <!-- Prikaz za običan Notification -->
+        <div *ngIf="isNotification(notification)" 
+        class="notification-row read">
+        <div class="notification-title">
+        <span>
+            <strong class="notification-point-read">
+                Sender: {{ notification.data.sender }}
+            </strong>
+        </span>
+        <div class="notification-comment">
+            {{ truncateComment(notification.data.message || '', 100) }}
+        </div>
+        <div class="notification-date">
+            {{ notification.creationTime | date:'MMMM d, y, h:mm a' }}
+        </div>
+        </div>
+        </div>
+        </ng-container>
     </div>
 
     <div *ngIf="showModal" class="modal-backdrop">
@@ -65,6 +118,4 @@
             </div>
         </div>
     </div>
-    
-    
 </div>

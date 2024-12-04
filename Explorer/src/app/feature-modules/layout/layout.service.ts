@@ -6,6 +6,7 @@ import { AppRating } from './model/AppRating.model';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
 import { ProblemNotification } from './model/problem-notification.model';
 import { environment } from 'src/env/environment';
+import { Notification } from './model/Notification.model';
 
 @Injectable({
 	providedIn: 'root'
@@ -31,6 +32,34 @@ export class LayoutService {
 		return this.http.get<PagedResults<ProblemNotification>>(`${environment.apiHost}notifications/${role}/problem`, { headers });
 	}
 
+	getNotificationsByUserId(userId: number): Observable<Notification[]> {
+		const headers = new HttpHeaders({
+			Authorization: `Bearer ${localStorage.getItem('access-token')}`,
+			'Content-Type': 'application/json'
+		});
+		return this.http.get<Notification[]>(`${environment.apiHost}notifications/tourist/problem/by-user/${userId}`, { headers });
+	}
+
+	updateNotification(id: number, updatedNotification: Notification): Observable<void> {
+		const headers = new HttpHeaders({
+			Authorization: `Bearer ${localStorage.getItem('access-token')}`,
+			'Content-Type': 'application/json'
+		});
+		return this.http.patch<void>(`${environment.apiHost}notifications/tourist/problem/${id}`, updatedNotification, { headers });
+	}
+	
+	createNotification(notification: Notification): Observable<void> {
+		const headers = new HttpHeaders({
+			Authorization: `Bearer ${localStorage.getItem('access-token')}`,
+			'Content-Type': 'application/json'
+		});
+		return this.http.post<void>(
+			`${environment.apiHost}notifications/administrator/problem/money-exchange`,
+			notification,
+			{ headers }
+		);
+	}	
+	
 	patchIsOpened(id: number) {
 		const headers = new HttpHeaders({
 			Authorization: `Bearer ${localStorage.getItem('access-token')}`,
