@@ -8,6 +8,8 @@ import { Level, TourSpecification } from '../model/tour-specification.model';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { User } from 'src/app/infrastructure/auth/model/user.model';
 import { AdministrationService } from '../../administration/administration.service';
+import { Sales } from '../model/sales.model';
+import { Price } from '../../tour-authoring/model/price.model';
 
 @Component({
   selector: 'xp-tour-view',
@@ -18,6 +20,7 @@ export class TourViewComponent implements OnInit {
 
   allTours: Tour[] = [];
   allUsers: User[] = [];  
+  allSales: Sales[] = [];
 
  tourSpecification: TourSpecification[] = [];
   public TransportMode = TransportMode;
@@ -60,6 +63,15 @@ export class TourViewComponent implements OnInit {
       },
       error: (err: any) => {
         console.log(err);
+      }
+    });
+
+    this.service.getAllSales().subscribe({
+      next: (sales: Sales[]) => {
+        this.allSales = sales;
+      },
+      error: (err: any) => {
+        console.error('Error fetching sales:', err);
       }
     });
 
@@ -235,6 +247,66 @@ export class TourViewComponent implements OnInit {
     } catch (error) {
       console.error('Error applying changes:', error);
     }
+  }
+  
+  sortAscending(): void {
+    this.allTours.sort((a, b) => {
+      const aPrice = this.getCostFromPrice(a.price);
+      const bPrice = this.getCostFromPrice(b.price);
+      return aPrice - bPrice; // Rastuće sortiranje
+    });
+  }
+  
+  sortDescending(): void {
+    this.allTours.sort((a, b) => {
+      const aPrice = this.getCostFromPrice(a.price);
+      const bPrice = this.getCostFromPrice(b.price);
+      return bPrice - aPrice; // Opadajuće sortiranje
+    });
+  }
+  
+  sortByPrice(): void {
+    this.allTours.sort((a, b) => {
+      const aPrice = this.getCostFromPrice(a.price);
+      const bPrice = this.getCostFromPrice(b.price);
+      return aPrice - bPrice; // Podrazumevano sortiranje po ceni (rastuće)
+    });
+  }
+  
+  sortBySales(): void {
+    if (this.allSales.length === 0) {
+      console.warn('No sales data available for sorting.');
+      return;
+    }
+  
+    const sortedTours: Tour[] = [];
+    const toursWithSales: Set<number> = new Set();
+  
+    // Dodaj ture koje su povezane sa Sales podacima
+    for (const sale of this.allSales) {
+      const matchingTours = this.allTours.filter(tour =>
+        tour.id !== undefined && sale.tourIds.includes(tour.id)
+      );
+      matchingTours.forEach(tour => {
+        if (tour.id !== undefined) {
+          toursWithSales.add(tour.id);
+        }
+      });
+      sortedTours.push(...matchingTours);
+    }
+  
+    // Dodaj ture koje nisu povezane sa Sales podacima na kraj
+    const toursWithoutSales = this.allTours.filter(
+      tour => tour.id !== undefined && !toursWithSales.has(tour.id)
+    );
+    sortedTours.push(...toursWithoutSales);
+  
+    // Ažuriraj listu tura
+    this.allTours = sortedTours;
+  }
+  
+  private getCostFromPrice(price: Price): number {
+    return price?.cost ?? 0;
   }
   
 }

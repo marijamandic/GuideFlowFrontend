@@ -405,3 +405,33 @@
   font-size: 60px; 
   color: white; 
 }
+
+.sort-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.sort-label {
+  text-align: left;
+}
+
+.sort-label h3 {
+  margin: 0;
+}
+
+.sort-label ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sort-label ul li {
+  margin-bottom: 0.5rem;
+}
+
+.sort-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
