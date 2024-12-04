@@ -39,6 +39,8 @@ import { TourExecutionDetailsComponent } from 'src/app/feature-modules/tour-exec
 import { PurchasedToursComponent } from 'src/app/feature-modules/tour-execution/purchased-tours/purchased-tours.component';
 import { PublicPointNotificationsComponent } from 'src/app/feature-modules/tour-authoring/public-point-notifications/public-point-notifications.component';
 import { ClubDashboardComponent } from 'src/app/feature-modules/administration/club/club-dashboard/club-dashboard.component';
+import { CouponComponent } from 'src/app/feature-modules/marketplace/coupon/coupon.component';
+
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -81,7 +83,7 @@ const routes: Routes = [
 	{ path: '', redirectTo: '/home', pathMatch: 'full' },
   {path: 'tourPreview/:id', component: TourPreviewComponent},
   {path: 'shoppingCart', component: ShoppingCartComponent},
-
+  { path: 'coupons', component: CouponComponent},
 ];
 
 @NgModule({

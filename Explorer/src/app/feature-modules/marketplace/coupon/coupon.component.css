@@ -1,0 +1,202 @@
+/* General styling for the container */
+.coupons-container {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  /* Individual coupon card styling */
+  .coupon-card {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .coupon-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Coupon header styling */
+  .coupon-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  /* Status icon styling */
+  .coupon-status {
+    font-size: 24px;
+    color: #4caf50; /* Green for active */
+  }
+  
+  .coupon-status .fa-times {
+    color: #f44336; /* Red for inactive */
+  }
+  
+  /* Coupon body styling */
+  .coupon-body {
+    margin-top: 10px;
+    color: #555;
+    line-height: 1.5;
+  }
+  
+  .coupon-body p {
+    margin: 5px 0;
+  }
+  
+  /* Coupon footer */
+  .coupon-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 15px;
+  }
+  
+  .coupon-footer button {
+    margin-left: 10px;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    transition: background-color 0.2s ease;
+  }
+  
+  .coupon-footer button:hover {
+    background-color: #0056b3;
+  }
+  
+  .coupon-tour-title {
+    font-weight: bold;
+    color: #333;
+  }
+  
+  /* Tours list */
+  .tours-list {
+    margin: 20px 0;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #fafafa;
+  }
+  
+  .tours-list h3 {
+    margin-bottom: 10px;
+    font-size: 1.2em;
+    color: #333;
+  }
+  
+  .tours-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .tours-list li {
+    margin-bottom: 10px;
+    padding: 10px;
+    cursor: pointer;
+    border: 1px solid #eaeaea;
+    border-radius: 5px;
+    background: #f5f5f5;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .tours-list li:hover {
+    background-color: #e0e0e0;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Modal overlay */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+  }
+  
+  /* Modal content */
+  .modal-content {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    z-index: 1001;
+    width: 500px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  }
+  
+  .modal-content h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 1.5em;
+    color: #333;
+  }
+  
+  .modal-content form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .modal-content label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #555;
+  }
+  
+  .modal-content input,
+  .modal-content textarea {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1em;
+    width: 100%;
+  }
+  
+  .modal-content input:focus,
+  .modal-content textarea:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+  
+  .modal-content button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.2s ease;
+  }
+  
+  .modal-content button[type='submit'] {
+    background-color: #28a745;
+    color: white;
+  }
+  
+  .modal-content button[type='submit']:hover {
+    background-color: #218838;
+  }
+  
+  .modal-content button[type='button'] {
+    background-color: #dc3545;
+    color: white;
+  }
+  
+  .modal-content button[type='button']:hover {
+    background-color: #c82333;
+  }
+  
