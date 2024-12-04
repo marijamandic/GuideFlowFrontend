@@ -121,6 +121,7 @@ export class ShoppingCartComponent implements OnInit {
 					});
 
 				}
+				this.couponCode = '';
 			}
 		})
 	}

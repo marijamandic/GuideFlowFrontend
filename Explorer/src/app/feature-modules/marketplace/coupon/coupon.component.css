@@ -1,120 +1,93 @@
-/* General styling for the container */
+/* General container styles */
 .coupons-container {
-    padding: 20px;
-    max-width: 800px;
-    margin: 0 auto;
+    margin-top: 20px;
+    width: 100%;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
   }
   
-  /* Individual coupon card styling */
-  .coupon-card {
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 15px;
+  .coupons-container h2 {
+    font-size: 24px;
     margin-bottom: 20px;
-    background-color: #f9f9f9;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    text-align: center; /* Center the heading */
   }
   
-  .coupon-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  .create-coupon-btn {
+    background-color: #84dcc6;
+    border: none;
+    outline: none;
+    text-align: center;
+    border-radius: 15px;
+    padding: 10px 20px;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+    margin-bottom: 20px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto; /* Center the button */
   }
   
-  /* Coupon header styling */
+  .create-coupon-btn:hover {
+    transform: scale(0.95);
+  }
+  
+  /* Coupon card styles */
+  .coupon-card {
+    background-color: #ffffff; /* Keep the cards white */
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 15px;
+    border: 1px solid #84dcc6;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
   .coupon-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 1.2em;
+    font-size: 18px;
     font-weight: bold;
-    color: #333;
   }
   
-  /* Status icon styling */
   .coupon-status {
-    font-size: 24px;
-    color: #4caf50; /* Green for active */
+    font-size: 20px;
+    color: #32a899;
   }
   
   .coupon-status .fa-times {
-    color: #f44336; /* Red for inactive */
-  }
-  
-  /* Coupon body styling */
-  .coupon-body {
-    margin-top: 10px;
-    color: #555;
-    line-height: 1.5;
+    color: #e74c3c;
   }
   
   .coupon-body p {
     margin: 5px 0;
   }
   
-  /* Coupon footer */
   .coupon-footer {
     display: flex;
-    justify-content: flex-end;
+    justify-content: center; /* Center the buttons */
+    gap: 10px;
     margin-top: 15px;
   }
   
   .coupon-footer button {
-    margin-left: 10px;
-    padding: 8px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    background-color: #007bff;
+    background-color: #84dcc6; /* Match the "Create Coupon" button color */
     color: white;
-    transition: background-color 0.2s ease;
+    border: none;
+    outline: none;
+    padding: 10px 20px;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
   }
   
   .coupon-footer button:hover {
-    background-color: #0056b3;
+    transform: scale(0.95);
   }
   
-  .coupon-tour-title {
-    font-weight: bold;
-    color: #333;
-  }
-  
-  /* Tours list */
-  .tours-list {
-    margin: 20px 0;
-    padding: 15px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    background-color: #fafafa;
-  }
-  
-  .tours-list h3 {
-    margin-bottom: 10px;
-    font-size: 1.2em;
-    color: #333;
-  }
-  
-  .tours-list ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .tours-list li {
-    margin-bottom: 10px;
-    padding: 10px;
-    cursor: pointer;
-    border: 1px solid #eaeaea;
-    border-radius: 5px;
-    background: #f5f5f5;
-    transition: background-color 0.2s ease, box-shadow 0.2s ease;
-  }
-  
-  .tours-list li:hover {
-    background-color: #e0e0e0;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* Modal overlay */
+  /* Modal overlay styles */
   .modal-overlay {
     position: fixed;
     top: 0;
@@ -123,80 +96,96 @@
     height: 100%;
     background: rgba(0, 0, 0, 0.5);
     z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   
-  /* Modal content */
   .modal-content {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: #fff;
-    padding: 30px;
-    border-radius: 10px;
-    z-index: 1001;
-    width: 500px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    background-color: white;
+    padding: 20px;
+    border-radius: 15px;
+    width: 400px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 0.3s ease;
   }
   
   .modal-content h2 {
-    margin-top: 0;
+    font-size: 22px;
     margin-bottom: 20px;
-    font-size: 1.5em;
-    color: #333;
+    text-align: center; /* Center the modal title */
   }
   
-  .modal-content form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+  .modal-content form label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 16px;
   }
   
-  .modal-content label {
-    font-weight: bold;
-    margin-bottom: 5px;
-    color: #555;
-  }
-  
-  .modal-content input,
-  .modal-content textarea {
+  .modal-content form input[type="text"],
+  .modal-content form input[type="number"],
+  .modal-content form input[type="date"] {
+    width: 95%;
     padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 1em;
-    width: 100%;
-  }
-  
-  .modal-content input:focus,
-  .modal-content textarea:focus {
-    border-color: #007bff;
+    margin-bottom: 15px;
+    border: 1px solid #84dcc6;
+    border-radius: 10px;
     outline: none;
+    background-color: #f9f9f9;
   }
   
-  .modal-content button {
-    padding: 10px 20px;
+  .modal-content form input[type="text"]:focus,
+  .modal-content form input[type="number"]:focus,
+  .modal-content form input[type="date"]:focus {
+    border-color: #32a899;
+    box-shadow: 0 0 5px #32a899;
+  }
+  
+  .modal-content form input[type="checkbox"] {
+    margin-right: 10px;
+  }
+  
+  .modal-content form button {
+    background-color: #84dcc6; /* Match the "Create Coupon" button color */
+    color: white;
     border: none;
-    border-radius: 5px;
+    outline: none;
+    padding: 10px 20px;
+    border-radius: 15px;
     cursor: pointer;
-    font-size: 1em;
-    transition: background-color 0.2s ease;
+    transition: transform 0.3s ease;
   }
   
-  .modal-content button[type='submit'] {
-    background-color: #28a745;
-    color: white;
+  .modal-content form button:hover {
+    transform: scale(0.95);
   }
   
-  .modal-content button[type='submit']:hover {
-    background-color: #218838;
+  .tours-list {
+    margin-top: 20px;
   }
   
-  .modal-content button[type='button'] {
-    background-color: #dc3545;
-    color: white;
+  .tours-list h3 {
+    margin-bottom: 10px;
+    font-size: 18px;
   }
   
-  .modal-content button[type='button']:hover {
-    background-color: #c82333;
+  .tours-list ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .tours-list li {
+    background-color: #f0fdf4;
+    border: 1px solid #84dcc6;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+  
+  .tours-list li:hover {
+    transform: scale(0.95);
+    background-color: #e0f7e9;
   }
   
