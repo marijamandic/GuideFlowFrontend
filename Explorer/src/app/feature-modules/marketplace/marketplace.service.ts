@@ -107,5 +107,9 @@ export class MarketplaceService {
 		return this.http.delete<void>(`${environment.apiHost}shopping/coupons/${couponId}`);
 	}
 
+	redeemCoupon(code: string): Observable<void>{
+		return this.http.put<void>(environment.apiHost + 'tourist/shopping/coupons/redeem/' + code, null);
+	}
+
 
 }

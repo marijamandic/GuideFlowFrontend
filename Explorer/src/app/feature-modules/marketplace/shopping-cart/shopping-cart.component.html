@@ -14,7 +14,16 @@
 					</div>
 				</div>
 			</div>
+
 			<div class="checkout">
+				<label for="coupon">Enter Coupon Code:</label>
+				<input
+					type="text"
+					id="coupon"
+					[(ngModel)]="couponCode"
+					placeholder="Enter your code"
+				/>
+				<button type="button" class="apply-coupon-button" (click)="applyCoupon()">Apply</button>
 				<h3>Total price:</h3>
 				<h2>{{ totalAdventureCoins }} AC</h2>
 				<button type="button" class="checkout-button" (click)="goToCheckout()">Checkout</button>
