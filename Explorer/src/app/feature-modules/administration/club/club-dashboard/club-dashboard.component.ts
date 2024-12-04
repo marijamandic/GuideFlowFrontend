@@ -28,6 +28,8 @@ export class ClubDashboardComponent implements OnInit {
   imageBase64: string;
   imageUrl: string = '';
   isEditingEnabled: boolean = false;
+  memberCount: number;
+  
 
   constructor(
     private service: AdministrationService,
@@ -171,6 +173,7 @@ export class ClubDashboardComponent implements OnInit {
       description: this.clubForm.value.description || '',
       imageBase64: this.clubForm.value.imageBase64 || '',
       imageUrl: this.clubForm.value.imageBase64 || '',
+      memberCount: this.memberCount || 0,
     };
   
     if (this.imageBase64 !== undefined) {

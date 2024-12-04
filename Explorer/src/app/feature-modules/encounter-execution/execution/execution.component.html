@@ -1,0 +1,86 @@
+<div class="execution-card book-now-container">
+  <div *ngIf="encounterExecution?.encounterType !== undefined && encounter && encounterExecution" class="encounter-details">
+     <!-- Desna strana: Poeni sa ikonicom -->
+     <div class="header-right points">
+      <mat-icon class="fire-icon">local_fire_department</mat-icon>
+      {{ encounter.experiencePoints }}
+     </div>
+     <div class="card-header">
+          <div class="header-left">
+            <strong>
+            <h1 class="title">{{ encounter.name }}</h1>
+            </strong>
+            <p class="subtitle challenge-type">
+              <mat-icon>category</mat-icon>
+              {{ mapToType(encounter.encounterType) }}
+            </p>
+          
+          </div>
+      </div>
+    
+    <div *ngIf="errorMessage" class="error-message subtitle">
+      <mat-icon>error</mat-icon>
+      {{ errorMessage }}
+    </div>
+
+    <div *ngIf="encounterExecution" class="execution-details">
+      <h2 class="subtitle">
+        <strong>Status:</strong> {{ encounterExecution.isComplete ? 'Završeno' : 'U toku' }}
+      </h2>
+    
+    </div>
+
+    
+
+  <div *ngIf="encounterExecution?.encounterType !== undefined && encounter && encounterExecution" class="encounter-details">
+    
+    <p >
+      <strong>Opis:</strong> {{ encounter.description }}
+    </p>
+    <p >
+      <strong>Status izazova:</strong> {{ mapToStatus(encounter.encounterStatus) }}
+    </p>
+    
+    
+
+    <div *ngIf="encounter?.encounterType === EncounterType.Social" class="social-encounter ">
+      <p>
+        <mat-icon>hiking</mat-icon>
+        <strong>Broj aktivnih Turista:</strong> {{ encounterExecution.participants }} <strong>/</strong> {{encounter.touristNumber}}
+      </p>
+      <p>
+        <mat-icon>near_me</mat-icon>
+        <strong>Domet Encountera:</strong> {{ encounter.encounterRange }}
+      </p>
+    </div>
+
+    <div *ngIf="encounter?.encounterType === EncounterType.Location && encounter.imageUrl" class="location-encounter card">
+      <img [src]="getImagePath(encounter.imageUrl)" alt="Encounter Image" class="card-image" />
+      
+    </div>
+
+
+
+    <div *ngIf="encounter?.encounterType === EncounterType.Misc" class="misc-encounter">
+      <p><strong>Opis Akcije:</strong> {{ encounter.actionDescription }}</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="map-container">
+  <xp-map [encounters]="encounterCoordinates" [userLocation]="userMarker" [showSearchBar]="false"></xp-map>
+</div>
+
+<button *ngIf="tourExecutionId" (click)="navigateToTourExecution()">Go to tour</button>
+<button *ngIf="encounterExecution && encounter?.encounterType !== EncounterType.Social && encounter" 
+        (click)="completeExecution()" 
+        class="button">
+  <mat-icon>check_circle</mat-icon>
+  Complete
+</button>
+<button (click)="navigateToPositionSimulator()" class="cta-button-cancel">
+  <mat-icon>navigation</mat-icon>
+  Position simulator
+</button>
+</div>

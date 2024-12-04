@@ -1,116 +1,110 @@
 <div class="main-container">
-<!-- Mapa kao pozadina -->
-<div class="map-background">
-  <xp-tour-execution-map [checkpoints]="checkpointCoordinates"></xp-tour-execution-map>
-</div>
-
-<!-- Leva kolona - Informacije i Checkpoint Details sa skrolom -->
-<div class="left-container">
-  <div class="info-container">
-    <h3 class="title">{{ tourName }}</h3>
-    <div class="info-grid">
-      <div>
-        <h5 class="description">{{ tourDescription }}</h5>
-      </div>
-      
-      <div class="date-range-container">
-        <div class="date-info">
-          <img src="assets/images/clock.png" alt="Clock Icon" class="icon" />
-          {{ tourExecution?.startTime | date: 'hh:mm a' }}
-          <img src="assets/images/date.png" alt="Date Icon" class="icon-date" />
-          {{ tourExecution?.startTime | date: 'MM/dd/yyyy' }}
-        </div>
-  
-        <div class="range-info">
-          <img src="assets/images/range.png" alt="Range Icon" class="icon-range" />
-          {{ tourExecution?.tourRange }} km
-        </div>
-      </div>
-      <div class="progress-bar-wrapper">
-        <div
-          class="progress-bar"
-          [style.width.%]="percentageCompleted"
-          [class.low]="percentageCompleted < 35"
-          [class.medium]="percentageCompleted >= 35 && percentageCompleted < 70"
-          [class.high]="percentageCompleted >= 70">
-        </div>
-        <p class="progres-p">{{ percentageCompleted }}%</p>
-      </div>
-    </div>
+  <!-- Mapa kao pozadina -->
+  <div class="map-background">
+    <xp-tour-execution-map [checkpoints]="checkpointCoordinates"></xp-tour-execution-map>
   </div>
   
-  
-
-
-
-  <div class="checkpoint-container">
-    <div class="checkpoint-card">
-      <div class="checkpoint-header">
-        <h3>{{ currentCheckpoint.checkpoint.name }}</h3>
-      </div>
-      <div class="checkpoint-image-wrapper">
-        <img [src]="getImagePath(currentCheckpoint.checkpoint.imageUrl)" alt="Checkpoint Image" class="checkpoint-image" />
-      </div>
-      <div class="checkpoint-info">
-        <p>{{ currentCheckpoint.checkpoint.description }}</p>
-        <div class="checkpoint-time">
-          <img src="assets/images/time.png" alt="Time Icon" class="icon-time" />
-          {{ mapToCompletionTime(currentCheckpoint.completionTime) }}
+  <!-- Leva kolona - Informacije i Checkpoint Details sa skrolom -->
+  <div class="left-container">
+    <div class="info-container">
+      <h3 class="title">{{ tourName }}</h3>
+      <div class="info-grid">
+        <div>
+          <h5 class="description">{{ tourDescription }}</h5>
         </div>
-        <div class="checkpoint-secret" *ngIf="isSecretUnlocked(currentCheckpoint.completionTime)">
-          <img src="assets/images/unlock.png" alt="Unlock Icon" class="icon-lock" />
-          {{ currentCheckpoint.checkpoint.secret }}
+        
+        <div class="date-range-container">
+          <div class="date-info">
+            <img src="assets/images/clock.png" alt="Clock Icon" class="icon" />
+            {{ tourExecution?.startTime | date: 'hh:mm a' }}
+            <img src="assets/images/date.png" alt="Date Icon" class="icon-date" />
+            {{ tourExecution?.startTime | date: 'MM/dd/yyyy' }}
+          </div>
+          
+          <div class="range-info">
+            <img src="assets/images/range.png" alt="Range Icon" class="icon-range" />
+            {{ tourExecution?.tourRange }} km
+          </div>
         </div>
-        <div class="checkpoint-secret" *ngIf="!isSecretUnlocked(currentCheckpoint.completionTime)">
-          <img src="assets/images/lock.png" alt="Lock Icon" class="icon-lock" />
-          secret will unlock once you complete this checkpoint.
-        </div>          
-      </div>
-      
-  
-      <!-- Dugmići za Back, Next i Recenziju -->
-      <div class="button-group">
-        <button class="cta-button" (click)="openReviewForm()" [disabled]="isDisabled()">Leave Review</button>
-        <div class="navigation-buttons">
-          <button class="cta-button" (click)="goToPreviousCheckpoint()" [disabled]="isFirstCheckpoint()">Back</button>
-          <button class="cta-button" (click)="goToNextCheckpoint()" [disabled]="isLastCheckpoint()">Next</button>
-        </div>
-      </div>      
-      <div class="checkpoint-dots">
-        <!-- Proveravamo da li 'tourExecution' postoji i da 'checkpointsStatus' nije null ili undefined -->
-        <div 
-          *ngFor="let checkpoint of tourExecution?.checkpointsStatus || []; let i = index" 
-          [class.active]="i === getCurrentCheckpointIndex()" 
-          (click)="setCurrentCheckpoint(i)">
+        <div class="progress-bar-wrapper">
+          <div
+            class="progress-bar"
+            [style.width.%]="percentageCompleted"
+            [class.low]="percentageCompleted < 35"
+            [class.medium]="percentageCompleted >= 35 && percentageCompleted < 70"
+            [class.high]="percentageCompleted >= 70">
+          </div>
+          <p class="progres-p">{{ percentageCompleted }}%</p>
         </div>
       </div>
-      <!-- Poruka ako postoji -->
-      <p *ngIf="getReviewMessage()" class="expired-message">
-        {{ getReviewMessage() }}
-      </p>
-    </div>
-  
-    <!-- Popup za recenziju -->
-    <div *ngIf="isReviewFormOpen" class="overlay">
-      <div class="review-popup">
-        <xp-tour-review 
-          [tourId]="tourExecution?.tourId ?? 0"
-          [touristId]="tourExecution?.userId ?? 0"
-          [startDate]="tourExecution?.startTime ?? null"
-          [percentageCompleted]="percentageCompleted ?? 0"
-          (tourReviewUpdated)="closeReviewForm()"
-        >
-        </xp-tour-review>
-        <button class="close-button" (click)="closeReviewForm()">X</button>
+      <div style="display: flex;">
+        <button class="button abandon-button" (click)="abandonSession()">Abandon Session</button>
+        <button class="button complete-button" (click)="completeSession()">Complete Session</button>
       </div>
     </div>
-  </div>  
 
-
-  <!-- Dugmad za akcije -->
-  <div class="button-container">
-    <button class="button abandon-button" (click)="abandonSession()">Abandon Session</button>
-    <button class="button complete-button" (click)="completeSession()">Complete Session</button>
+    <div class="checkpoint-container">
+      <div class="checkpoint-card">
+        <div class="checkpoint-header">
+          <h3>{{ currentCheckpoint.checkpoint.name }}</h3>
+        </div>
+        <div class="checkpoint-image-wrapper">
+          <img [src]="getImagePath(currentCheckpoint.checkpoint.imageUrl)" alt="Checkpoint Image" class="checkpoint-image" />
+        </div>
+        <div class="checkpoint-info">
+          <p>{{ currentCheckpoint.checkpoint.description }}</p>
+          <div class="checkpoint-time">
+            <img src="assets/images/time.png" alt="Time Icon" class="icon-time" />
+            {{ mapToCompletionTime(currentCheckpoint.completionTime) }}
+          </div>
+          <div class="checkpoint-secret" *ngIf="isSecretUnlocked(currentCheckpoint.completionTime)">
+            <img src="assets/images/unlock.png" alt="Unlock Icon" class="icon-lock" />
+            {{ currentCheckpoint.checkpoint.secret }}
+          </div>
+          <div class="checkpoint-secret" *ngIf="!isSecretUnlocked(currentCheckpoint.completionTime)">
+            <img src="assets/images/lock.png" alt="Lock Icon" class="icon-lock" />
+            {{currentCheckpoint.checkpoint.secret}}
+          </div>          
+        </div>
+        
+    
+        <!-- Dugmići za Back, Next i Recenziju -->
+        <div class="button-group">
+          <button class="checkpoint-button" (click)="openReviewForm()" [disabled]="isDisabled()">Leave Review</button>
+          <div class="navigation-buttons">
+            <button class="checkpoint-button" (click)="goToPreviousCheckpoint()" [disabled]="isFirstCheckpoint()">Back</button>
+            <button class="checkpoint-button" (click)="goToNextCheckpoint()" [disabled]="isLastCheckpoint()">Next</button>
+            <button *ngIf="currentCheckpoint.checkpoint.encounterId" class="checkpoint-button" (click)="Execute(currentCheckpoint.checkpoint.encounterId)" [disabled]="!isTouristNear(currentCheckpoint.checkpoint.latitude,currentCheckpoint.checkpoint.longitude,currentCheckpoint.checkpoint.encounterId)">{{isFinished(currentCheckpoint.checkpoint.encounterId) ? 'Encounter completed': 'Open encounter'}}</button>
+          </div>
+        </div>      
+        <div class="checkpoint-dots">
+          <!-- Proveravamo da li 'tourExecution' postoji i da 'checkpointsStatus' nije null ili undefined -->
+          <div 
+            *ngFor="let checkpoint of tourExecution?.checkpointsStatus || []; let i = index" 
+            [class.active]="i === getCurrentCheckpointIndex()" 
+            (click)="setCurrentCheckpoint(i)">
+          </div>
+        </div>
+        <!-- Poruka ako postoji -->
+        <p *ngIf="getReviewMessage()" class="expired-message">
+          {{ getReviewMessage() }}
+        </p>
+      </div>
+    
+      <!-- Popup za recenziju -->
+      <div *ngIf="isReviewFormOpen" class="overlay">
+        <div class="review-popup">
+          <xp-tour-review 
+            [tourId]="tourExecution?.tourId ?? 0"
+            [touristId]="tourExecution?.userId ?? 0"
+            [startDate]="tourExecution?.startTime ?? null"
+            [percentageCompleted]="percentageCompleted"
+            (tourReviewUpdated)="closeReviewForm()"
+          >
+          </xp-tour-review>
+          <button class="close-button" (click)="closeReviewForm()">X</button>
+        </div>
+      </div>
+    </div>  
   </div>
-</div>
-</div>
+  </div>

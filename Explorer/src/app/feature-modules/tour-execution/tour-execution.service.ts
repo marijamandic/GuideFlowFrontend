@@ -14,6 +14,8 @@ import { TourExecution } from './model/tour-execution.model';
 import { UpdateTourExecutionDto } from './model/update-tour-execution.dto';
 import { PurchasedTours } from './model/purchased-tours.model';
 import { CreateTourExecutionDto } from './model/create-tour-execution.dto';
+import { TourSpecification } from './model/tour-specification.model';
+import { Sales } from './model/sales.model';
 
 @Injectable({
 	providedIn: 'root'
@@ -86,5 +88,25 @@ export class TourExecutionService {
 
 	getActiveSessionByUser(id: number){
 		return this.http.get<TourExecution>(environment.apiHost + 'execution/tourExecution/getByUser/' + id);
+	}
+
+	getTourSpecification (userId : number) : Observable<TourSpecification>{
+		return this.http.get<TourSpecification>(environment.apiHost + 'tourist/tourspecifications/' + userId);
+	}
+	
+	addTourSpecification(tourSpecification: TourSpecification): Observable<TourSpecification> {
+		return this.http.post<TourSpecification>(environment.apiHost + 'tourist/tourspecifications', tourSpecification);
+	}
+	
+	updateTourSpecification(tourSpecification: TourSpecification): Observable<TourSpecification>{
+		return this.http.put<TourSpecification>(environment.apiHost + 'tourist/tourspecifications/' + tourSpecification.id, tourSpecification);
+	}
+	
+	deleteTourSpecification(tourSpecification: TourSpecification): Observable<TourSpecification>{
+		return this.http.delete<TourSpecification>(environment.apiHost + 'tourist/tourspecifications/' + tourSpecification.id);
+	}
+
+	getAllSales(): Observable<Sales[]> {
+		return this.http.get<Sales[]>('https://localhost:44333/api/sales');
 	}
 }

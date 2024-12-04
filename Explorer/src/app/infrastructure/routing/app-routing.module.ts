@@ -20,7 +20,6 @@ import { CreateBlogComponent } from 'src/app/feature-modules/blog/create-blog/cr
 import { PostInfoComponent } from 'src/app/feature-modules/blog/post-info/post-info.component';
 import { RatingTheAppComponent } from 'src/app/feature-modules/layout/rating-the-app/rating-the-app.component';
 import { AllAppRatingsComponent } from 'src/app/feature-modules/administration/all-app-ratings/all-app-ratings.component';
-import { TourSpecificationComponent } from 'src/app/feature-modules/marketplace/tour-specification/tour-specification.component';
 import { AccountComponent } from 'src/app/feature-modules/administration/account/account.component';
 import { ClubFormComponent } from 'src/app/feature-modules/administration/club/club-form/club-form.component';
 import { ClubInfoComponent } from 'src/app/feature-modules/administration/club/club-info/club-info.component';
@@ -39,7 +38,14 @@ import { TourExecutionDetailsComponent } from 'src/app/feature-modules/tour-exec
 import { PurchasedToursComponent } from 'src/app/feature-modules/tour-execution/purchased-tours/purchased-tours.component';
 import { PublicPointNotificationsComponent } from 'src/app/feature-modules/tour-authoring/public-point-notifications/public-point-notifications.component';
 import { TourExecutionMap } from 'src/app/feature-modules/tour-execution/tour-execution-map/tour-execution-map.component';
+import { TourDetailsComponent } from 'src/app/feature-modules/tour-authoring/tour-details/tour-details.component';
 import { ClubDashboardComponent } from 'src/app/feature-modules/administration/club/club-dashboard/club-dashboard.component';
+import { CouponComponent } from 'src/app/feature-modules/marketplace/coupon/coupon.component';
+import { TourBundlePreviewComponent } from 'src/app/feature-modules/marketplace/tour-bundle-preview/tour-bundle-preview.component';
+import { EncounterComponent } from 'src/app/feature-modules/encounter-execution/encounter/encounter.component';
+import { EncounterFormComponent } from 'src/app/feature-modules/encounter-execution/encounter-form/encounter-form.component';
+import { AddEncounterComponent } from 'src/app/feature-modules/tour-authoring/add-encounter/add-encounter.component';
+import { ExecutionComponent } from 'src/app/feature-modules/encounter-execution/execution/execution.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -63,10 +69,9 @@ const routes: Routes = [
   { path: 'checkpoints/:tourId', component: CheckpointListComponent },
   { path: 'tour-execution/:id', component: TourExecutionDetailsComponent},
   { path: 'tour', component: TourComponent },
-  { path: 'tourEquipment', component: TourEquipmentComponent },
+  { path: 'tourEquipment/:id', component: TourEquipmentComponent },
   { path: 'ratingTheApp', component: RatingTheAppComponent },
   { path: 'allAppRatings', component: AllAppRatingsComponent },
-  { path: 'specification', component: TourSpecificationComponent },
   { path: 'purchased', component: PurchasedToursComponent },
   { path: 'account', component: AccountComponent, canActivate: [AuthGuard] },
   { path: 'tourView', component: TourViewComponent },
@@ -82,7 +87,19 @@ const routes: Routes = [
 	{ path: '', redirectTo: '/home', pathMatch: 'full' },
   {path: 'tourPreview/:id', component: TourPreviewComponent},
   {path: 'shoppingCart', component: ShoppingCartComponent},
-  {path: 'tourExecutionMap', component: TourExecutionMap}
+  { path: 'coupons', component: CouponComponent},
+  { path: 'tourBundlePreview/:id', component: TourBundlePreviewComponent},
+  {path: 'tourExecutionMap', component: TourExecutionMap},
+  {path: 'tourDetails/:tourId', component:TourDetailsComponent, children:[{path:'checkpoints/:tourId', component:CheckpointListComponent}]},
+  {path: 'encounters', component: EncounterComponent},
+  { path: 'encounter-add', component: EncounterFormComponent },
+  { path: 'encounter-update/:id', component: EncounterFormComponent },
+  { path: 'author-add-encounter/:id/:tourId', component: AddEncounterComponent},
+  { path: 'encounter-execution/:id', component: ExecutionComponent},
+  { path: 'encounter-execution/:id/:tourExecutionId', component: ExecutionComponent},
+  { path: 'position-sim', component: PositionsimComponent},
+  { path: 'position-sim/:tourExecutionId', component: PositionsimComponent },
+  { path: 'position-sim/:tourExecutionId/:encounterExecutionId', component: PositionsimComponent },
 
 ];
 

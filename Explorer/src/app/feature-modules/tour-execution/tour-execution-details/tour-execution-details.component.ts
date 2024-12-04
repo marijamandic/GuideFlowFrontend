@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TourExecutionService } from '../tour-execution.service';
 import { User } from 'src/app/infrastructure/auth/model/user.model';
@@ -13,6 +13,8 @@ import { Tourist } from '../../tour-authoring/model/tourist';
 import { DatePipe } from '@angular/common';
 import { CheckpointStatus } from '../model/checkpoint-status.model';
 import { Checkpoint } from '../../tour-authoring/model/tourCheckpoint.model';
+import { EncounterExecutionService } from '../../encounter-execution/encounter-execution.service';
+import { Execution } from '../../encounter-execution/model/execution.model';
 import { Tour } from '../../tour-authoring/model/tour.model';
 
 @Component({
@@ -22,8 +24,8 @@ import { Tour } from '../../tour-authoring/model/tour.model';
 })
 export class TourExecutionDetailsComponent implements OnInit{
   tourExecutionId : string | null=null;
-  user : User | undefined;
-  tourist : Tourist | undefined;
+  user : User;
+  tourist : Tourist;
   tourExecution : TourExecution | null=null;
   executionStatus : string | null = null;
   currentCheckpoint : CheckpointStatus;
@@ -36,15 +38,18 @@ export class TourExecutionDetailsComponent implements OnInit{
   private intervalId: any;
   isReviewFormOpen = false;
   isBelowThirtyFivePercent = false;
+  userMarker: { latitude: number, longitude: number } | null = null;
   tourName = "";
   tourDescription = "";
 
   checkpoints: Checkpoint[] = [];
+  encounterIds: number[] = [];
   checkpointCoordinates: { latitude: number, longitude: number }[] = [];
   @Output() checkpointsLoaded = new EventEmitter<{ latitude: number; longitude: number; }[]>();
   isViewMode:boolean = false;
 
   constructor(
+    private encounterService: EncounterExecutionService,
     private tourService: TourService,
     private datePipe: DatePipe,
     private tourExecutionService: TourExecutionService,
@@ -63,9 +68,13 @@ export class TourExecutionDetailsComponent implements OnInit{
         this.tourService.getTouristById(user.id).subscribe({
           next: (result: Tourist) => {
             this.tourist = result;
+            this.userMarker = {
+              latitude: this.tourist.location.latitude,
+              longitude: this.tourist.location.longitude
+            };
             if(this.tourist && this.tourExecutionId){
               this.fetchTourExecution();
-      
+              this.updateTourExecution()
               this.intervalId = setInterval( ()=> {
                 this.updateTourExecution();
               },10000)
@@ -75,6 +84,14 @@ export class TourExecutionDetailsComponent implements OnInit{
             console.log(err);
           }
         })
+        this.encounterService.getAllEncounterIdsByUserId(user.id).subscribe({
+          next: (ids)=>{
+            this.encounterIds = ids;
+          },
+          error:(err:any) => {
+            console.log(err);
+          }
+        }) 
       })
   }
 
@@ -148,6 +165,22 @@ export class TourExecutionDetailsComponent implements OnInit{
     this.tourExecutionService.updateTourExecution(this.dto).subscribe({
       next: (result: TourExecution) => {
         this.tourExecution = result;
+        this.currentCheckpoint = result.checkpointsStatus[this.currentIndex];
+        this.tourExecutionService.getPercentage(this.tourExecution?.id || 0).subscribe({
+          next: (percent: number) => {
+            console.log(`Pređeni procenat: ${percent}`);
+            this.percentageSubject.next(percent);
+            this.percentageCompleted = percent;
+      
+            const isDisabled = percent <= 35;
+            console.log(`Disabled dugme? ${isDisabled}`);
+            this.isLessThanThirtyFivePercent();
+          },
+          error: (err: any) => {
+            console.error('Greška prilikom dobijanja procenta:', err);
+            this.percentageSubject.next(0); 
+          }
+        });
       },
       error: (err: any) => {
         console.log(err);
@@ -196,7 +229,7 @@ setCurrentCheckpoint(index: number): void {
 } 
 
   openReviewForm(): void {
-    this.isReviewFormOpen = true;
+      this.isReviewFormOpen = true;
   }
 
   closeReviewForm(): void {
@@ -256,17 +289,20 @@ isLessThanThirtyFivePercent(): void {
 }
 
 isDisabled(): boolean {
-  this.isLessThanThirtyFivePercent();
+  
   if(this.isBelowThirtyFivePercent) {
     return true;
   } else if(!this.isMoreThanSevenDaysAgo()) {
     return true;
   }
+  //console.log("IsDisabled3: falsee")
   return false;
 }
 
 getReviewMessage(): string {
   const isPastSevenDays = !this.isMoreThanSevenDaysAgo();
+  //console.log("Manje od 7 dana:", isPastSevenDays)
+  //console.log("Manje od 35:", this.isBelowThirtyFivePercent)
   if (isPastSevenDays && this.isBelowThirtyFivePercent) {
     return "Review cannot be submitted because more than 7 days have passed since the last activity and less than 35% of the tour has been completed.";
   } else if (isPastSevenDays) {
@@ -334,5 +370,65 @@ getReviewMessage(): string {
       });
     }
   }
-
+  isTouristNear(latitude:number,longitude: number,encounterId:number){
+    var tolerance : number = 0.0018;
+    if(!this.tourist)
+      return false
+    
+    var isNearLatitude : boolean = Math.abs(latitude-this.tourist?.location.latitude) <= tolerance;
+    var isNearLongitude : boolean = Math.abs(longitude-this.tourist?.location.longitude) <= tolerance;
+    console.log(latitude)
+    if(!encounterId)
+      return false;
+    const isStarted: boolean = this.encounterIds.includes(encounterId);
+    return isNearLatitude && isNearLongitude && !isStarted;
+  }
+  isFinished(encouterId:number){
+    return this.encounterIds.includes(encouterId)
+  }
+  Execute(encounterId:number){
+    this.encounterService.findExecution(this.user.id,encounterId).subscribe(
+      (ex: Execution | null) => {
+        if (ex) {
+          console.log('Execution found:', ex);
+          this.router.navigate(['/encounter-execution', ex.id,this.tourExecutionId]);
+        } else {
+          console.log('Execution not found.');
+          this.CreateExecution(encounterId);
+        }
+      },
+      (error) => {
+        console.error('Error occurred:', error);
+      }
+    );
+  }
+  CreateExecution(encounterId:number) {
+      this.encounterService.getEncounter(encounterId).subscribe({
+        next: (encounter) => {
+          const execution: Execution = {
+            userId: this.user.id, 
+            encounterId: encounter.id || 0,
+            isComplete: false,
+            encounterType: encounter.encounterType, 
+            userLongitude: this.tourist.location.longitude, 
+            userLatitude: this.tourist.location.latitude, 
+            participants: 0 
+          };
+          this.encounterService.addEncounterExecution(execution).subscribe({
+            next: (response) => {
+              const encounterExecutionId = response.id;
+        
+              if (encounterExecutionId) {
+                this.router.navigate(['/encounter-execution',encounterExecutionId,this.tourExecutionId]);
+              } else {
+                console.error('EncounterExecution ID not found in response.');
+              }
+            },
+            error: (err) => {
+              console.error('Failed to create EncounterExecution:', err);
+            }
+          });
+        }
+      });
+  }
 }
