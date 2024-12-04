@@ -136,7 +136,7 @@
 
       <!-- Mapa za unos koordinata -->
       <div class="map-container">
-        <xp-map (coordinatesSelected)="onCoordinatesSelected($event)" [encounters]="encounterCoordinates"></xp-map>
+        <xp-map (coordinatesSelected)="onCoordinatesSelected($event)" [encounters]="encounterCoordinates" [showSearchBar]="false" [formWithoutSearchBar]="true"></xp-map>
       </div>
 
       <div *ngIf="!encounter.encounterLocation.latitude || !encounter.encounterLocation.longitude" class="error-message">
