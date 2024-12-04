@@ -57,7 +57,7 @@ export class RegistrationComponent {
           this.router.navigate(['home']);
         },
       });
-      this.touristService.createTourist(user).subscribe({
+      /*this.touristService.createTourist(user).subscribe({
         next: (response) => {
           console.log('Tourist created successfully:', response);
           alert('Tourist created successfully!');
@@ -69,7 +69,7 @@ export class RegistrationComponent {
         complete: () => {
           console.log('Tourist creation process completed.');
         }
-      });      
+      });  */    
     }
   }
 }
