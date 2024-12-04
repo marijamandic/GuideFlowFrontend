@@ -6,7 +6,7 @@
 
 <div class="left-container">
   <div class="encounter-container">
-  <div class="encounter-list">
+  <div class="encounter-list" >
     <div *ngFor="let encounter of encounters" (click)="toggleExpand(encounter.id)" class="encounter-card">
       <div class="encounter-header">
         <h3><strong>{{ encounter.name }}</strong></h3>
@@ -49,4 +49,9 @@
     </button>
   </div>
 </div>
+<div *ngIf = "activeExecutionId !== -1">
+  <xp-execution [encounterExecutionId] = "activeExecutionId"></xp-execution>
+</div>
+
+
 </div>
