@@ -9,7 +9,7 @@
         <p><strong>Is problem solved:</strong> {{p.resolution.isResolved ? 'Yes' : 'No'}}</p>
         <p><strong>Problem deadline:</strong> {{formatDate(p.resolution.deadline)}}</p>
         
-        <button (click)="toggleForm(p.id ?? null)" class="update-status-btn">Update Status</button>
+        <button *ngIf="isDeadlineValid(p.resolution.deadline)" (click)="toggleForm(p.id ?? null)" class="update-status-btn">Update Status</button>
 
         <div *ngIf="selectedProblemId === p.id" class="update-form">
             <label>

@@ -284,4 +284,7 @@ completeExecution(): void {
       this.router.navigate(['/position-sim',0,this.encounterExecutionId])
     }
   }
+  navigateToTourExecution(){
+    this.router.navigate(['tour-execution/',this.tourExecutionId])
+  }
 }
