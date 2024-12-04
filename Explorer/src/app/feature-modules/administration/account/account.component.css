@@ -53,11 +53,10 @@ th {
     font-size: 14px;
     position: absolute;
     left: 10px; /* Početna pozicija inputa */
-    opacity: 0;
     transform: translateX(-20px); /* Početna pozicija */
     transition: all 0.3s ease;
     z-index: 1;
-    margin-left: -140px;
+    margin-left: -120px;
   }
   
   .money-input.visible {

@@ -29,32 +29,31 @@
           </td>
           <td *ngIf="acc.role === UserRole.Tourist">
             <div class="money-action-container">
-              <button *ngIf="!clicked"
+              <button 
+                *ngIf="selectedAccountId !== acc.userId"
                 color="accent" 
                 mat-raised-button 
                 class="add-money-button" 
-                [class.shifted]="selectedAccountId === acc.userId"
                 (click)="toggleMoneyInput(acc)">
                 Add Money
               </button>
-              <button *ngIf="clicked"
-                color="accent" 
-                mat-raised-button 
-                class="add-money-button" 
-                [class.shifted]="selectedAccountId === acc.userId"
-                (click)="depositMoney(acc)">
-                Submit
-              </button>           
-              <input 
-                *ngIf="selectedAccountId === acc.userId" 
-                type="number" 
-                [(ngModel)]="moneyInput" 
-                placeholder="Enter amount" 
-                class="money-input"
-                [class.visible]="selectedAccountId === acc.userId" 
-              />
+              <div *ngIf="selectedAccountId === acc.userId">
+                <input 
+                  type="number" 
+                  [(ngModel)]="moneyInput" 
+                  placeholder="Enter amount" 
+                  class="money-input"
+                />
+                <button 
+                  color="accent" 
+                  mat-raised-button 
+                  class="add-money-button" 
+                  (click)="depositMoney(acc)">
+                  Submit
+                </button>
+              </div>
             </div>
-          </td>
+          </td>          
         </tr>
       </tbody>
     </table>
