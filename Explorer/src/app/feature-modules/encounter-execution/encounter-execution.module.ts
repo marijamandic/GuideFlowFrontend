@@ -7,12 +7,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from 'src/app/infrastructure/material/material.module';
 import { AdministrationModule } from '../administration/administration.module';
 import { ExecutionComponent } from './execution/execution.component';
+import { EncounterExecutionMapComponent } from './encounter-execution-map/encounter-execution-map.component';
 
 @NgModule({
   declarations: [
     EncounterComponent,
     EncounterFormComponent,
-    ExecutionComponent
+    ExecutionComponent,
+    EncounterExecutionMapComponent
   ],
   imports: [
     CommonModule,
