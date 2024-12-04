@@ -30,3 +30,39 @@ th {
 #card.inactive {
     background-color: pink;
   }
+  .money-action-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+  
+  .add-money-button {
+    transition: transform 0.3s ease;
+    z-index: 1400;
+  }
+  
+  .add-money-button.shifted {
+    transform: translateX(120px); /* Pomeranje dugmeta udesno */
+  }
+  
+  .money-input {
+    width: 100px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    position: absolute;
+    left: 10px; /* Početna pozicija inputa */
+    opacity: 0;
+    transform: translateX(-20px); /* Početna pozicija */
+    transition: all 0.3s ease;
+    z-index: 1;
+    margin-left: -140px;
+  }
+  
+  .money-input.visible {
+    opacity: 1;
+    transform: translateX(130px); /* Pomeranje inputa u poziciju iza dugmeta */
+  }
+  
+  

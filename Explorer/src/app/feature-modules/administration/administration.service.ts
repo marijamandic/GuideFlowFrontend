@@ -172,6 +172,12 @@ export class AdministrationService {
 		return this.http.get<{ username: string }>(`${environment.apiHost}user/username/${userId}`)
 		  .pipe(map(response => response.username));
 	}
-	  
+
+	updateMoney(touristId: number, amount: number): Observable<User> {
+		return this.http.put<User>(
+		  `${environment.apiHost}user/updateMoney/${touristId}`,
+		  amount
+		);
+	  }	  
 	  
 }

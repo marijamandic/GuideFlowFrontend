@@ -1,26 +1,62 @@
 <div *ngFor="let acc of accounts" id="card" [ngClass]="{ 'inactive': !acc.isActive }">
-    <table >
-        <thead>
-            <tr>
-                <th colspan="2">{{ acc.username }}</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Role:</td>
-                <td>{{ UserRole[acc.role ]}}</td>
-            </tr>
-            <tr>
-                <td>Email:</td>
-                <td>{{ acc.email }}</td>
-            </tr>
-            <tr>
-                <td>Active:</td>
-                <td>{{ acc.isActive ? 'Yes' : 'No' }}</td>
-            </tr>
-            <tr>
-                <button color="primary" mat-raised-button (click)="ToggleAcountActivty(acc)">Toggle Activity</button>
-            </tr>
-        </tbody>
+    <table>
+      <thead>
+        <tr>
+          <th colspan="2">{{ acc.username }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Role:</td>
+          <td>{{ UserRole[acc.role] }}</td>
+        </tr>
+        <tr>
+          <td>Email:</td>
+          <td>{{ acc.email }}</td>
+        </tr>
+        <tr>
+          <td>Active:</td>
+          <td>{{ acc.isActive ? 'Yes' : 'No' }}</td>
+        </tr>
+        <tr>
+          <td>
+            <button 
+              color="primary" 
+              mat-raised-button 
+              (click)="ToggleAcountActivty(acc)">
+              Toggle Activity
+            </button>
+          </td>
+          <td *ngIf="acc.role === UserRole.Tourist">
+            <div class="money-action-container">
+              <button *ngIf="!clicked"
+                color="accent" 
+                mat-raised-button 
+                class="add-money-button" 
+                [class.shifted]="selectedAccountId === acc.userId"
+                (click)="toggleMoneyInput(acc)">
+                Add Money
+              </button>
+              <button *ngIf="clicked"
+                color="accent" 
+                mat-raised-button 
+                class="add-money-button" 
+                [class.shifted]="selectedAccountId === acc.userId"
+                (click)="depositMoney(acc)">
+                Submit
+              </button>           
+              <input 
+                *ngIf="selectedAccountId === acc.userId" 
+                type="number" 
+                [(ngModel)]="moneyInput" 
+                placeholder="Enter amount" 
+                class="money-input"
+                [class.visible]="selectedAccountId === acc.userId" 
+              />
+            </div>
+          </td>
+        </tr>
+      </tbody>
     </table>
-</div>
+  </div>
+  
