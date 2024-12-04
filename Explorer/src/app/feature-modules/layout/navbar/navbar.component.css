@@ -56,29 +56,35 @@
     display: flex;
     align-items: center;
     cursor: pointer;
-    margin-left: 15px;
+    margin-left: auto;
     margin-bottom: 10px;
+    justify-content: flex-end;
+    gap: 20px;
+    right: 0;
 }
 
-.profile-icon {
-    font-size: 24px;
-    color: #222222;
-}
 
 .profile-icon:hover{
     color: #585858;
 }
 
-.notification-icon {
+.shopping-cart-icon,
+.notification-icon,
+.profile-icon {
+    font-size: 24px; /* Ensure consistent size */
+    color: #222222;
     cursor: pointer;
     margin-right: 21px;
     position: relative;
+    transition: color 0.3s ease;
+    margin: 0; /* Remove unnecessary margins */
 }
+
 
 .notification-badge {
     position: absolute;
-    top: -10px; /* You can keep or adjust this value to control the vertical position */
-    right: 45px; /* You can adjust this for horizontal positioning */
+    top: -8px; /* You can keep or adjust this value to control the vertical position */
+    right: -10px; /* You can adjust this for horizontal positioning */
     background-color: rgba(255, 0, 0, 0.975);
     color: white;
     border-radius: 50%; /* Keeps the circular shape */
@@ -121,6 +127,7 @@
     cursor: pointer;
     margin-left: 20px;
     margin-bottom: 10px;
+    position: relative; 
 }
 
 mat-icon {

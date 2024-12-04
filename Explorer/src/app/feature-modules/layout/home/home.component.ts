@@ -6,6 +6,7 @@ import { MarketplaceService } from '../../marketplace/marketplace.service';
 import { TourService } from '../../tour-authoring/tour.service';
 import { Tour } from '../../tour-authoring/model/tour.model';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
+import { AlertService } from '../alert.service';
 
 @Component({
 	selector: 'xp-home',
@@ -19,8 +20,8 @@ export class HomeComponent implements OnInit {
 	user: User | undefined;
 	shoppingCart: ShoppingCart | undefined;
 
-	constructor(private authService: AuthService, private marketPlaceService: MarketplaceService, private tourService: TourService) {}
-
+  constructor(private authService: AuthService, private marketPlaceService: MarketplaceService,
+    private tourService: TourService, private a: AlertService) {}
 	tours = [
 		{
 			id: 1,
