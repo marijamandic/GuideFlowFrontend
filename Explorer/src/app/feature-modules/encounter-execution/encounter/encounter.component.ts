@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { EncounterExecutionService } from '../encounter-execution.service';
-import { Encounter, EncounterType } from '../model/encounter.model';
+import { Encounter } from '../model/encounter.model';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { User } from 'src/app/infrastructure/auth/model/user.model';
@@ -25,6 +25,7 @@ export class EncounterComponent implements OnInit {
   user: User;
   tourist : Tourist;
   error : EncounterError;
+  expandedEncounterId?: number;
   @Output() encounterCoordinatesLoaded = new EventEmitter<{ latitude: number; longitude: number; }[]>();
 
   constructor(private service: EncounterExecutionService, private router: Router, private authService: AuthService, private tourService: TourService,){}
@@ -55,6 +56,14 @@ export class EncounterComponent implements OnInit {
     this.getEncounterTourist();
 
   };
+
+  toggleExpand(encounterId?: number): void {
+    if (this.expandedEncounterId === encounterId) {
+      this.expandedEncounterId = 0; // Sklanja proširenje ako je već prošireno
+    } else {
+      this.expandedEncounterId = encounterId; // Postavlja ID proširene kartice
+    }
+  }
 
   navigateToForm(id?: number): void {
     if (id) {
