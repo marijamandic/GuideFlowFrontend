@@ -21,8 +21,8 @@ export class ExecutionComponent implements OnInit{
   tourExecutionId: string | null = null;
   user: User | undefined;
   tourist: Tourist | undefined;
-  encounterExecution: Execution | undefined;
-  encounter: Encounter | undefined;
+  encounterExecution: Execution;
+  encounter: Encounter;
   userMarker: { latitude: number, longitude: number } | null = null;
   public EncounterType = EncounterType;
   private intervalId: any;
@@ -57,21 +57,23 @@ export class ExecutionComponent implements OnInit{
                 latitude: result.location.latitude,
                 longitude: result.location.longitude
               };
-              console.log('10s:', this.encounterExecution);
-              if(this.encounterExecution?.encounterType === EncounterType.Social && !this.encounterExecution?.isComplete){
-                this.intervalId = setInterval(() => {
-                  this.completeSocialExecution();
-                }, 10000);
-              }
+              // console.log('10s:', this.encounterExecution);
+              // if(this.encounterExecution?.encounterType === EncounterType.Social && !this.encounterExecution?.isComplete){
+              //   console.log("pogresna petlja");
+              //   this.intervalId = setInterval(() => {
+              //     this.completeSocialExecution();
+              //   }, 10000);
+              // }
               
+              // if(!this.encounterExecution?.isComplete && this.encounterExecution.encounterType === EncounterType.Location){
+              //   console.log("Usao je u petljuuuu");
+              //   this.intervalId = setInterval(() => {
+              //     this.completeExecution();
+              //   }, 30000);
+              // }
             });
-          
-              if(!this.encounterExecution?.isComplete && this.encounterExecution?.encounterType === EncounterType.Location){
-                console.log(this.encounterExecution?.isComplete);
-                this.intervalId = setInterval(() => {
-                  this.completeExecution();
-                }, 30000);
-              }
+            
+              
           }
 
           this.emitCoordinates();
@@ -95,6 +97,7 @@ export class ExecutionComponent implements OnInit{
     this.encounterExecutionService.getExecution(this.encounterExecutionId!).subscribe({
       next: (result: Execution) => {
         this.encounterExecution = result;
+        console.log("encounterExecution:", this.encounterExecution);
         if (this.tourist) {
           this.encounterExecution.userLatitude = this.tourist.location.latitude;
           this.encounterExecution.userLongitude = this.tourist.location.longitude;
@@ -102,7 +105,7 @@ export class ExecutionComponent implements OnInit{
         if  (this.encounterExecution.encounterId)  {
           this.getEncounter();
         }
-        callback(); // Pozovi nakon završetka        callback(); // Pozovi nakon završetka
+        callback(); // Pozovi nakon završetka
       },
       error: (error) => {
         this.errorMessage = 'Došlo je do greške prilikom učitavanja podataka.';
@@ -117,6 +120,12 @@ export class ExecutionComponent implements OnInit{
       this.encounterExecutionService.getEncounter(this.encounterExecution.encounterId).subscribe({
         next: (result: Encounter) => {
           this.encounter = result;
+          this.encounterExecution.encounterType = result.encounterType;
+          console.log("encounter:", this.encounter);
+          console.log("execution:", this.encounterExecution);
+
+          this.setUpIntervalLogic();
+
           this.encounterCoordinates = [result.encounterLocation]
           console.log(this.encounterCoordinates)
           this.encounterCoordinatesLoaded.emit(this.encounterCoordinates);
@@ -128,6 +137,23 @@ export class ExecutionComponent implements OnInit{
       })
     }
   }
+
+  setUpIntervalLogic(): void {
+    if (this.encounterExecution?.encounterType === EncounterType.Social && !this.encounterExecution?.isComplete) {
+      console.log("Pokreće interval za Social encounter");
+      this.intervalId = setInterval(() => {
+        this.completeSocialExecution();
+      }, 10000);
+    }
+  
+    if (!this.encounterExecution?.isComplete && this.encounterExecution?.encounterType === EncounterType.Location) {
+      console.log("Pokreće interval za Location encounter");
+      this.intervalId = setInterval(() => {
+        this.completeExecution();
+      }, 30000);
+    }
+  }
+  
 
 /*  onCoordinatesSelected(coordinates: { latitude: number; longitude: number }): void {
     if(this.tourist){
@@ -195,32 +221,6 @@ completeExecution(): void {
     console.warn('EncounterExecution nije inicijalizovan.');
   }
 }
-
-// completeExecutionnn(): void {
-//   if (this.encounterExecution) {
-//       this.encounterExecutionService.completeExecution(this.encounterExecution).subscribe(
-//       (updatedExecution: Execution) => {
-//         console.log('Execution successfully completed:', updatedExecution);
-//         this.encounterExecution = updatedExecution;
-//         if(this.tourExecutionId){
-//           this.router.navigate(['tour-execution/',this.tourExecutionId]);
-//         }else{
-//           this.router.navigate(['encounters']);
-//         }
-//       },
-//       error => {
-//         if (error.status === 500) {
-//           console.log('Ne mozes jos zavrsiti.');
-//         } else {
-//           console.error('Došlo je do greške:', error);
-//         }
-//       }
-//     );
-//   } else {
-//     console.warn('EncounterExecution nije inicijalizovan.');
-//   }
-// }
-
   
   getImagePath(imageUrl: string) {
     return environment.webRootHost +"/images/encounters/"+ imageUrl;
