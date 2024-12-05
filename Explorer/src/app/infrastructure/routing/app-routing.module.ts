@@ -96,6 +96,7 @@ const routes: Routes = [
   {path: 'tourExecutionMap', component: TourExecutionMap},
   {path: 'tourDetails/:tourId', component:TourDetailsComponent, children:[{path:'checkpoints/:tourId', component:CheckpointListComponent}]},
   {path: 'encounters', component: EncounterComponent},
+  {path: 'encounters/:encounterExecutionId/:tourExecutionId' , component:EncounterComponent},
   { path: 'encounter-add', component: EncounterFormComponent },
   { path: 'encounter-update/:id', component: EncounterFormComponent },
   { path: 'author-add-encounter/:id/:tourId', component: AddEncounterComponent},

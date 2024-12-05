@@ -18,7 +18,7 @@ import { timer } from 'rxjs';
 export class ExecutionComponent implements OnInit{
   errorMessage: string | null = null;
   //encounterExecutionId: string | null = null;
-  tourExecutionId: string | null = null;
+ 
   user: User | undefined;
   tourist: Tourist | undefined;
   encounterExecution: Execution;
@@ -29,6 +29,7 @@ export class ExecutionComponent implements OnInit{
   flag:boolean = false;
   encounterCoordinates: { latitude: number; longitude: number }[] = [];
   @Input() encounterExecutionId: number;
+  @Input()  tourExecutionId?: number| null = null;
   @Output() encounterCoordinatesLoaded = new EventEmitter<{ latitude: number; longitude: number; }[]>();
 
   constructor(
@@ -46,7 +47,7 @@ export class ExecutionComponent implements OnInit{
   
     //this.encounterExecutionId = this.route.snapshot.paramMap.get('id');
     //this.encounterExecutionId = this.executionId;
-    this.tourExecutionId = this.route.snapshot.paramMap.get('tourExecutionId');
+    //this.tourExecutionId = this.route.snapshot.paramMap.get('tourExecutionId');
   
     this.authService.user$.subscribe((user) => {
       this.user = user;
@@ -59,20 +60,7 @@ export class ExecutionComponent implements OnInit{
                 latitude: result.location.latitude,
                 longitude: result.location.longitude
               };
-              // console.log('10s:', this.encounterExecution);
-              // if(this.encounterExecution?.encounterType === EncounterType.Social && !this.encounterExecution?.isComplete){
-              //   console.log("pogresna petlja");
-              //   this.intervalId = setInterval(() => {
-              //     this.completeSocialExecution();
-              //   }, 10000);
-              // }
-              
-              // if(!this.encounterExecution?.isComplete && this.encounterExecution.encounterType === EncounterType.Location){
-              //   console.log("Usao je u petljuuuu");
-              //   this.intervalId = setInterval(() => {
-              //     this.completeExecution();
-              //   }, 30000);
-              // }
+             
             });
             
               
@@ -172,19 +160,7 @@ export class ExecutionComponent implements OnInit{
     });  
   }
 
-/*  onCoordinatesSelected(coordinates: { latitude: number; longitude: number }): void {
-    if(this.tourist){
-      this.tourist.location.latitude = coordinates.latitude;
-      this.tourist.location.longitude = coordinates.longitude;
-      this.tourService.updateTourist(this.tourist).subscribe(updatedTourist => {
-        console.log('Updated User:', updatedTourist);
-        this.tourist = updatedTourist;
-      }, error => {
-        console.error('Error updating user:', error);
-      });
-      console.log('Encounter Location updated:', this.tourist.location);
-    }
-  }*/
+
 
     completeSocialExecution(): void {
       console.log(this.encounterExecution);

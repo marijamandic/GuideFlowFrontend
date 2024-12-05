@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { EncounterExecutionService } from '../encounter-execution.service';
 import { Encounter } from '../model/encounter.model';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { User } from 'src/app/infrastructure/auth/model/user.model';
 import { Tourist } from '../../tour-authoring/model/tourist';
@@ -22,6 +22,7 @@ export class EncounterComponent implements OnInit {
   filteredEncounters: Encounter[] = [];
   encounterTourist: EncounterTourist;
   activeExecutionId:number=-1;
+  tourExecutionId:number = -1;
   encounterCoordinates: { latitude: number, longitude: number }[] = [];
   userMarker: { latitude: number, longitude: number } | null = null;
   isViewMode: boolean = false;
@@ -32,9 +33,19 @@ export class EncounterComponent implements OnInit {
   selectedFilter?: number;
   @Output() encounterCoordinatesLoaded = new EventEmitter<{ latitude: number; longitude: number; }[]>();
 
-  constructor(private service: EncounterExecutionService, private router: Router, private authService: AuthService, private tourService: TourService,){}
+  constructor(private service: EncounterExecutionService,
+    private route: ActivatedRoute,
+    private router: Router,
+      private authService: AuthService,
+       private tourService: TourService,){}
 
   ngOnInit(): void {
+    console.log("ovo su parametri koje sam dobio", this.route.snapshot.paramMap.get('encounterExecutionId'), this.route.snapshot.paramMap.get('tourExecutionId') );
+    if(this.route.snapshot.paramMap.get('encounterExecutionId')!= null && this.route.snapshot.paramMap.get('tourExecutionId') != null ){
+      this.activeExecutionId =Number(this.route.snapshot.paramMap.get('encounterExecutionId'));
+      this.tourExecutionId = Number(this.route.snapshot.paramMap.get('tourExecutionId'));
+    }
+
     this.authService.user$.subscribe(user => {
       this.user = user;
       if (this.user.role == 'tourist') {
@@ -59,6 +70,8 @@ export class EncounterComponent implements OnInit {
     this.getEncounters();
     this.getEncounterTourist();
 
+    
+    
   };
 
   filterEncounters(type?: number): void {

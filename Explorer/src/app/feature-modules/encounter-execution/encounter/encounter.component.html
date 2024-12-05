@@ -67,9 +67,11 @@
     </button>
   </div>
 </div>
-<div *ngIf = "activeExecutionId !== -1">
+<div *ngIf = "activeExecutionId !== -1 && tourExecutionId !== -1">
+  <xp-execution [encounterExecutionId] = "activeExecutionId" [tourExecutionId] = "tourExecutionId"></xp-execution>
+</div>
+<div *ngIf = "activeExecutionId !== -1  && tourExecutionId == -1">
   <xp-execution [encounterExecutionId] = "activeExecutionId"></xp-execution>
 </div>
-
 
 </div>
