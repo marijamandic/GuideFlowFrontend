@@ -1,169 +1,197 @@
 .navbar {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%; 
-    height: 60px;
-    background: white;
-    padding: 0; 
-    box-shadow: none; 
-    position: fixed; 
-    z-index: 10; 
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	height: 60px;
+	background: white;
+	padding: 0;
+	box-shadow: none;
+	position: fixed;
+	z-index: 10;
 }
 
 .navbar-content {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    max-width: 1200px; 
-    margin-top: 10px;
-    justify-content: space-between;
-    padding: 0 20px;
+	display: flex;
+	align-items: center;
+	width: 100%;
+	max-width: 1200px;
+	margin-top: 10px;
+	justify-content: space-between;
+	padding: 0 20px;
 }
 
 .logo-img {
-    height: 30px;
-    margin-right: 10px;
+	height: 30px;
+	margin-right: 10px;
 }
 
 .nav-links {
-    display: flex;
-    gap: 5px;
-    flex-grow: 1;
-    justify-content: center;
+	display: flex;
+	gap: 5px;
+	flex-grow: 1;
+	justify-content: center;
 }
 
 .nav-links a {
-    text-decoration: none;
-    color: #222222;
-    font-size: 16px;
-    font-weight: regular;
-    padding: 8px 44px;
-    border-radius: 20px; 
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    background-color: transparent; 
-    margin-bottom: 10px;
-  }
+	text-decoration: none;
+	color: #222222;
+	font-size: 16px;
+	font-weight: regular;
+	padding: 8px 44px;
+	border-radius: 20px;
+	transition: background-color 0.3s ease, transform 0.2s ease;
+	background-color: transparent;
+	margin-bottom: 10px;
+}
 
 .nav-links a:hover {
-    color: #373737;
-    background-color: #f5f5f5;
-    transition-duration: 500ms;
+	color: #373737;
+	background-color: #f5f5f5;
+	transition-duration: 500ms;
 }
 
 .profile-menu {
-    position: relative;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    margin-left: auto;
-    margin-bottom: 10px;
-    justify-content: flex-end;
-    gap: 20px;
-    right: 0;
+	position: relative;
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+	margin-left: auto;
+	margin-bottom: 10px;
+	justify-content: flex-end;
+	gap: 20px;
+	right: 0;
 }
 
+.profile-icon {
+	font-size: 24px;
+	color: #222222;
+}
 
-.profile-icon:hover{
-    color: #585858;
+.profile-icon:hover {
+	color: #585858;
 }
 
 .shopping-cart-icon,
 .notification-icon,
 .profile-icon {
-    font-size: 24px; /* Ensure consistent size */
-    color: #222222;
-    cursor: pointer;
-    margin-right: 21px;
-    position: relative;
-    transition: color 0.3s ease;
-    margin: 0; /* Remove unnecessary margins */
+	font-size: 24px; /* Ensure consistent size */
+	color: #222222;
+	cursor: pointer;
+	margin-right: 21px;
+	position: relative;
+	transition: color 0.3s ease;
+	margin: 0; /* Remove unnecessary margins */
 }
-
 
 .notification-badge {
-    position: absolute;
-    top: -8px; /* You can keep or adjust this value to control the vertical position */
-    right: -10px; /* You can adjust this for horizontal positioning */
-    background-color: rgba(255, 0, 0, 0.975);
-    color: white;
-    border-radius: 50%; /* Keeps the circular shape */
-    padding: 2px 4px; /* Reduces the size by lowering padding */
-    font-size: 9px; /* Smaller font size for a smaller badge */
-    height: 16px; /* Control the height of the circle */
-    min-width: 16px; /* Ensure it remains circular */
-    line-height: 16px; /* Vertically center the text within the circle */
-    text-align: center;
+	position: absolute;
+	top: -8px; /* You can keep or adjust this value to control the vertical position */
+	right: -10px; /* You can adjust this for horizontal positioning */
+	background-color: rgba(255, 0, 0, 0.975);
+	color: white;
+	border-radius: 50%; /* Keeps the circular shape */
+	padding: 2px 4px; /* Reduces the size by lowering padding */
+	font-size: 9px; /* Smaller font size for a smaller badge */
+	height: 16px; /* Control the height of the circle */
+	min-width: 16px; /* Ensure it remains circular */
+	line-height: 16px; /* Vertically center the text within the circle */
+	text-align: center;
 }
 
-
 .dropdown-content {
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    top: 40px;
-    right: 0;
-    background-color: white;
-    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-    border-radius: 4px;
-    z-index: 1;
-    min-width: 150px;
+	display: flex;
+	flex-direction: column;
+	position: absolute;
+	top: 40px;
+	right: 0;
+	background-color: white;
+	box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+	border-radius: 4px;
+	z-index: 1;
+	min-width: 150px;
 }
 
 .dropdown-content a {
-    color: #222222;
-    padding: 10px;
-    text-decoration: none;
-    font-size: 14px;
+	color: #222222;
+	padding: 10px;
+	text-decoration: none;
+	font-size: 14px;
+}
+
+.dropdown-content i {
+	padding-right: 5px;
 }
 
 .dropdown-content a:hover {
-    background-color: #f0f0f0;
+	background-color: #f0f0f0;
 }
 
 .menu-icon {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    margin-left: 20px;
-    margin-bottom: 10px;
-    position: relative; 
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+	margin-left: 20px;
+	margin-bottom: 10px;
+	position: relative;
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+	margin-left: 20px;
+	margin-bottom: 10px;
 }
 
 mat-icon {
-    color: #222222;
-    font-size: 24px;
+	color: #222222;
+	font-size: 24px;
 }
 
-mat-icon:hover{
-    color: #585858
+mat-icon:hover {
+	color: #585858;
+}
+
+.shopping-cart {
+	display: flex;
+	align-items: center;
+	cursor: pointer;
 }
 
 /* Media queries for responsiveness */
 @media (max-width: 768px) {
-    .nav-links {
-        display: none;
-    }
+	.nav-links {
+		display: none;
+	}
 
-    .menu-icon {
-        display: flex;
-    }
+	.menu-icon {
+		display: flex;
+	}
 }
 .notification-dropdown {
-    position: fixed;
-    top: 55px;
-    right: 120px;
-    width: 350px;
-    max-height: 400px;
-    overflow-y: auto;
-    background-color: #bc1616ad;
-    border-radius: 10px;
-    padding: 0px;
-    z-index: 1000;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+	position: fixed;
+	top: 55px;
+	right: 120px;
+	width: 350px;
+	max-height: 400px;
+	overflow-y: auto;
+	background-color: #bc1616ad;
+	border-radius: 10px;
+	padding: 0px;
+	z-index: 1000;
+	-ms-overflow-style: none;
+	scrollbar-width: none;
 }
-  
+
 .notification-dropdown::-webkit-scrollbar {
-    display: none;
+	display: none;
+}
+
+.shopping-cart-container {
+	position: fixed;
+	top: 0;
+	left: 90%;
+	height: 100%;
+	z-index: 10;
+	background-color: var(--secondary-color);
+	width: 10%;
+	box-shadow: -15px 0px 20px rgba(0, 0, 0, 0.35);
 }

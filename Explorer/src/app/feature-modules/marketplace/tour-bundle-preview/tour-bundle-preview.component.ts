@@ -12,16 +12,17 @@ import { Item } from '../model/shopping-carts/item';
 import { HttpErrorResponse } from '@angular/common/http';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
 import { Currency, Price } from '../../tour-authoring/model/price.model';
+import { ShoppingCartService } from '../shopping-cart.service';
 
 @Component({
-  selector: 'xp-tour-bundle-preview',
-  templateUrl: './tour-bundle-preview.component.html',
-  styleUrls: ['./tour-bundle-preview.component.css']
+	selector: 'xp-tour-bundle-preview',
+	templateUrl: './tour-bundle-preview.component.html',
+	styleUrls: ['./tour-bundle-preview.component.css']
 })
-export class TourBundlePreviewComponent implements OnInit{
-  bundleId: number;
-  bundle: TourBundle;
-  tours: Tour[];
+export class TourBundlePreviewComponent implements OnInit {
+	bundleId: number;
+	bundle: TourBundle;
+	tours: Tour[];
 	user: User;
 
 	constructor(
@@ -29,11 +30,12 @@ export class TourBundlePreviewComponent implements OnInit{
 		private tourService: TourService,
 		private marketService: MarketplaceService,
 		private authService: AuthService,
+		private shoppingCartService: ShoppingCartService
 	) {}
 
 	ngOnInit(): void {
 		this.bundleId = Number(this.route.snapshot.paramMap.get('id'));
-    	this.getBundle();
+		this.getBundle();
 
 		this.authService.user$.subscribe({
 			next: (user: User) => {
@@ -42,8 +44,8 @@ export class TourBundlePreviewComponent implements OnInit{
 		});
 	}
 
-	getBundle():void{
-		if(this.bundleId !== undefined && this.bundleId !== null){
+	getBundle(): void {
+		if (this.bundleId !== undefined && this.bundleId !== null) {
 			this.marketService.getBundleById(this.bundleId).subscribe({
 				next: (result: TourBundle) => {
 					this.bundle = result;
@@ -54,42 +56,40 @@ export class TourBundlePreviewComponent implements OnInit{
 	}
 
 	getBundleTours(): void {
-		if(this.bundleId !== undefined && this.bundleId !== null){
-		this.tourService.getToursByBundleId(this.bundleId).subscribe({
-			next: (result: PagedResults<Tour>) => {
-			this.tours=result.results;
-			}
-		});
+		if (this.bundleId !== undefined && this.bundleId !== null) {
+			this.tourService.getToursByBundleId(this.bundleId).subscribe({
+				next: (result: PagedResults<Tour>) => {
+					this.tours = result.results;
+				}
+			});
 		}
 	}
 
 	getLevel(level: Level): string {
 		switch (level) {
-		  case Level.Easy:
-			return 'Easy';
-		  case Level.Advanced:
-			return 'Advanced';
-		  case Level.Expert:
-			return 'Expert';
-		  default:
-			return 'Unknown';
+			case Level.Easy:
+				return 'Easy';
+			case Level.Advanced:
+				return 'Advanced';
+			case Level.Expert:
+				return 'Expert';
+			default:
+				return 'Unknown';
 		}
 	}
 
 	getFormattedPrice(price: Price): string {
 		switch (price.currency) {
-		  case Currency.RSD:
-			return `${price.cost} RSD`;
-		  case Currency.EUR:
-			return `${price.cost} €`;
-		  case Currency.USD:
-			return `${price.cost} $`;
-		  default:
-			return `${price.cost}`;
+			case Currency.RSD:
+				return `${price.cost} RSD`;
+			case Currency.EUR:
+				return `${price.cost} €`;
+			case Currency.USD:
+				return `${price.cost} $`;
+			default:
+				return `${price.cost}`;
 		}
-	  }
-	  
-	  
+	}
 
 	addToCart(): void {
 		let item: ItemInput = {
@@ -98,13 +98,8 @@ export class TourBundlePreviewComponent implements OnInit{
 			productName: this.bundle.name,
 			adventureCoin: this.bundle.price
 		};
-		this.marketService.addToCart(item).subscribe({
-			next: (result: Item[]): void => {
-				alert('Added To Cart');
-			},
-			error: (err: HttpErrorResponse): void => {
-				console.log('Error: ', err);
-			}
+		this.shoppingCartService.addToCart(item).subscribe({
+			error: (error: HttpErrorResponse) => console.log(error.message)
 		});
 	}
 }
