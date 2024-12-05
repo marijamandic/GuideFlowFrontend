@@ -8,10 +8,10 @@
 		<h3>{{ item.productName }}</h3>
 		<div class="items-footer">
 			<p>AC {{ item.adventureCoin }}</p>
-			<button type="button"><i class="fa fa-trash" aria-hidden="true"></i></button>
+			<button type="button" (click)="handleRemoveFromCart(item.id)"><i class="fa fa-trash" aria-hidden="true"></i></button>
 		</div>
 	</div>
 </div>
 <ng-template #cartEmpty>
-	<p>Your shopping cart is empty!</p>
+	<p style="text-align: center">Your shopping cart is empty!</p>
 </ng-template>

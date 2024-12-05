@@ -3,6 +3,7 @@ import { ShoppingCart } from '../model/shopping-carts/shopping-cart';
 import { ShoppingCartService } from '../shopping-cart.service';
 import { Item } from '../model/shopping-carts/item';
 import { Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
 	selector: 'xp-shopping-cart-preview',
@@ -35,8 +36,14 @@ export class ShoppingCartPreviewComponent implements OnInit {
 		});
 	}
 
-	handleGoToCart() {
+	handleGoToCart(): void {
 		this.shoppingCartOpened.emit();
 		this.router.navigate(['/shoppingCart']);
+	}
+
+	handleRemoveFromCart(itemId: number): void {
+		this.shoppingCartService.removeFromCart(itemId).subscribe({
+			error: (error: HttpErrorResponse) => console.log(error.message)
+		});
 	}
 }
