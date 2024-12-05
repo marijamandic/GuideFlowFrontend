@@ -26,6 +26,7 @@ export class CheckpointFormComponent implements OnChanges {
   isViewMode:boolean = true;
   imageBase64:string;
   user : User;
+  publicPoint : PublicPoint;
 
   constructor(private authService: AuthService,private tourService:TourService,private publicPointService: PublicPointService) {}
 
@@ -147,4 +148,16 @@ export class CheckpointFormComponent implements OnChanges {
       longitude: coordinates.longitude
     });
   }
+
+  handlePublicPointSelection(point: any): void {
+    console.log('Selected Public Point:', point);
+
+    this.checkpointForm.patchValue({
+        name: point.name || '',         
+        description: point.description || '', 
+        latitude: point.latitude,       
+        longitude: point.longitude,     
+        imageUrl: point.imageUrl || ''
+    });
+  } 
 }

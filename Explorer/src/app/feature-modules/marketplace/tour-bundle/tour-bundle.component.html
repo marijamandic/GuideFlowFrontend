@@ -1,0 +1,67 @@
+<mat-tab-group class="tab-group">
+  <!-- Tab for Draft Bundles -->
+  <mat-tab label="Drafts">
+    <div class="tab-content">
+      <h2>Tour Bundle Drafts</h2>
+      <div class="bundle-cards-container">
+        <div class="bundle-card" *ngFor="let bundle of draftTourBundles">
+          <img src="https://static.wikia.nocookie.net/rezero/images/6/68/Regulus_Corneas_Anime.jpg" alt="Draft Bundle" class="bundle-img" />
+          <div class="bundle-details">
+            <h3>{{ bundle.name }}</h3>
+            <p>Price: ${{ bundle.price }}</p>
+            <div class="bundle-actions">
+              <button class="btn btn-success" (click)="publish(bundle)">Publish</button>
+              <button class="btn btn-warning" (click)="modifyDraft(bundle)">Edit</button>
+              <button class="btn btn-danger" (click)="delete(bundle)">Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="add-bundle-card"  (click)="openAddBundleDialog()">
+        <i class="plus-icon">+</i>
+      </div>
+    </div>
+  </mat-tab>
+
+  <!-- Tab for Published Bundles -->
+  <mat-tab label="Published">
+    <div class="tab-content">
+      <h2>Published Tour Bundles</h2>
+      <div class="bundle-cards-container">
+        <p *ngIf="!publishedTourBundles?.length" class="empty-placeholder">Empty</p>
+
+        <div class="bundle-card" *ngFor="let bundle of publishedTourBundles">
+          <img src="https://static.wikia.nocookie.net/rezero/images/6/68/Regulus_Corneas_Anime.jpg" alt="Published Bundle" class="bundle-img" />
+          <div class="bundle-details">
+            <h3>{{ bundle.name }}</h3>
+            <p>Price: ${{ bundle.price }}</p>
+            <div class="bundle-actions">
+              <button class="btn btn-info" (click)="archive(bundle)">Archive</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-tab>
+
+  <!-- Tab for Archived Bundles -->
+  <mat-tab label="Archived">
+    <div class="tab-content">
+      <h2>Archived Tour Bundles</h2>
+      <div class="bundle-cards-container">
+        <p *ngIf="!archivedTourBundles?.length" class="empty-placeholder">Empty</p>
+
+        <div class="bundle-card" *ngFor="let bundle of archivedTourBundles">
+          <img src="https://static.wikia.nocookie.net/rezero/images/6/68/Regulus_Corneas_Anime.jpg" alt="Archived Bundle" class="bundle-img" />
+          <div class="bundle-details">
+            <h3>{{ bundle.name }}</h3>
+            <p>Price: ${{ bundle.price }}</p>
+            <div class="bundle-actions">
+              <button class="btn btn-danger" (click)="delete(bundle)">Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-tab>
+</mat-tab-group>

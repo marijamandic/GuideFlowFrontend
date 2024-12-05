@@ -46,7 +46,6 @@ import { EncounterExecutionModule } from './feature-modules/encounter-execution/
 		MatFormFieldModule,
 		MatInputModule,
 		LayoutModule,
-		FormsModule
 	],
 	providers: [
 		{

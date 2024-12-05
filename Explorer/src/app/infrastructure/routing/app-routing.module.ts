@@ -40,12 +40,14 @@ import { PublicPointNotificationsComponent } from 'src/app/feature-modules/tour-
 import { TourExecutionMap } from 'src/app/feature-modules/tour-execution/tour-execution-map/tour-execution-map.component';
 import { TourDetailsComponent } from 'src/app/feature-modules/tour-authoring/tour-details/tour-details.component';
 import { ClubDashboardComponent } from 'src/app/feature-modules/administration/club/club-dashboard/club-dashboard.component';
+import { TourBundleComponent } from 'src/app/feature-modules/marketplace/tour-bundle/tour-bundle.component';
 import { CouponComponent } from 'src/app/feature-modules/marketplace/coupon/coupon.component';
 import { TourBundlePreviewComponent } from 'src/app/feature-modules/marketplace/tour-bundle-preview/tour-bundle-preview.component';
 import { EncounterComponent } from 'src/app/feature-modules/encounter-execution/encounter/encounter.component';
 import { EncounterFormComponent } from 'src/app/feature-modules/encounter-execution/encounter-form/encounter-form.component';
 import { AddEncounterComponent } from 'src/app/feature-modules/tour-authoring/add-encounter/add-encounter.component';
 import { ExecutionComponent } from 'src/app/feature-modules/encounter-execution/execution/execution.component';
+import { EncounterExecutionMapComponent } from 'src/app/feature-modules/encounter-execution/encounter-execution-map/encounter-execution-map.component';
 import { TourMoreDetailsComponent } from 'src/app/feature-modules/marketplace/tour-more-details/tour-more-details.component';
 
 const routes: Routes = [
@@ -74,7 +76,7 @@ const routes: Routes = [
   { path: 'ratingTheApp', component: RatingTheAppComponent },
   { path: 'allAppRatings', component: AllAppRatingsComponent },
   { path: 'purchased', component: PurchasedToursComponent },
-  { path: 'account', component: AccountComponent, canActivate: [AuthGuard] },
+  { path: 'account', component: AccountComponent},
   { path: 'tourView', component: TourViewComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'pending', component: PublicPointRequestsComponent },
@@ -88,6 +90,8 @@ const routes: Routes = [
 	{ path: '', redirectTo: '/home', pathMatch: 'full' },
   {path: 'tourPreview/:id', component: TourPreviewComponent},
   {path: 'shoppingCart', component: ShoppingCartComponent},
+  {path: 'tourBundleManagement', component: TourBundleComponent},
+  { path: 'tourBundlePreview/:id', component: TourBundlePreviewComponent},
   { path: 'coupons', component: CouponComponent},
   { path: 'tourBundlePreview/:id', component: TourBundlePreviewComponent},
   {path: 'tourExecutionMap', component: TourExecutionMap},
@@ -101,6 +105,7 @@ const routes: Routes = [
   { path: 'position-sim', component: PositionsimComponent},
   { path: 'position-sim/:tourExecutionId', component: PositionsimComponent },
   { path: 'position-sim/:tourExecutionId/:encounterExecutionId', component: PositionsimComponent },
+  {path: 'encounterMap', component: EncounterExecutionMapComponent},
   { path: 'tour-more-details/:id',component:TourMoreDetailsComponent}
 
 ];

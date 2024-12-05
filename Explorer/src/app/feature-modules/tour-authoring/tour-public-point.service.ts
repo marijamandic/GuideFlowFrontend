@@ -38,6 +38,10 @@ export class PublicPointService {
   getPendingPublicPoints(): Observable<PublicPoint[]> {
     return this.http.get<PublicPoint[]>(`${this.baseUrl}/pending`);
   }
+  
+  getAccpetedPublicPoints(): Observable<PublicPoint[]> {
+    return this.http.get<PublicPoint[]>(`${this.baseUrl}/accepted`);
+  }
 
   // Public Point Notifications
   createNotification(notification: PublicPointNotification): Observable<PublicPointNotification> {

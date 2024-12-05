@@ -13,13 +13,14 @@ import { AlertService } from '../alert.service';
 	styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
-  user: User | undefined;
-  isDropdownOpen: boolean = false;
-  notificationCount: number = 0;
-  showNotifications: boolean = false;
-  isMenuOpen: boolean = false;
+	user: User | undefined;
+	isDropdownOpen: boolean = false;
+	notificationCount: number = 0;
+	showNotifications: boolean = false;
+	showCart = false;
+	isMenuOpen: boolean = false;
 
-  constructor(private authService: AuthService, private publiPointService: PublicPointService, private alertService: AlertService) {}
+	constructor(private authService: AuthService, private publiPointService: PublicPointService, private alertService: AlertService) {}
 
 	ngOnInit(): void {
 		this.authService.user$.subscribe(user => {
@@ -35,32 +36,35 @@ export class NavbarComponent implements OnInit {
 		);
 	}
 
-  toggleDropdown(): void {
-    this.isDropdownOpen = !this.isDropdownOpen;
-    if (this.isDropdownOpen) {
-      this.isMenuOpen = false; 
-      this.showNotifications = false;
-  }
-  }
-
+	toggleDropdown(): void {
+		this.isDropdownOpen = !this.isDropdownOpen;
+		if (this.isDropdownOpen) {
+			this.isMenuOpen = false;
+			this.showNotifications = false;
+		}
+	}
 	onLogout(): void {
 		this.toggleDropdown();
 		this.authService.logout();
 	}
 
-  toggleNotifications(): void {
-    this.showNotifications = !this.showNotifications;
-    if (this.showNotifications) {
-      this.isMenuOpen = false; 
-      this.isDropdownOpen = false;
-  }
-  }
+	toggleNotifications(): void {
+		this.showNotifications = !this.showNotifications;
+		if (this.showNotifications) {
+			this.isMenuOpen = false;
+			this.isDropdownOpen = false;
+		}
+	}
 
-  toggleMenu(): void {
-    this.isMenuOpen = !this.isMenuOpen;
-    if (this.isMenuOpen) {
-      this.isDropdownOpen = false; 
-      this.showNotifications = false;
-  }
-  }
+	toggleMenu(): void {
+		this.isMenuOpen = !this.isMenuOpen;
+		if (this.isMenuOpen) {
+			this.isDropdownOpen = false;
+			this.showNotifications = false;
+		}
+	}
+
+	handleShoppingCartOpened() {
+		this.showCart = false;
+	}
 }

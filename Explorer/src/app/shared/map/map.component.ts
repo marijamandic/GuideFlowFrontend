@@ -2,6 +2,7 @@ import { Component, AfterViewInit, Input, Output, EventEmitter, OnChanges } from
 import * as L from 'leaflet';
 import { MapService } from './map.service';
 import 'leaflet-routing-machine';
+import { PublicPointService } from 'src/app/feature-modules/tour-authoring/tour-public-point.service';
 
 @Component({
   selector: 'xp-map',
@@ -19,14 +20,16 @@ export class MapComponent implements AfterViewInit,OnChanges {
   @Input() checkpoints: { latitude: number; longitude: number }[] = [];
   @Input() encounters: { latitude: number; longitude: number }[] = [];
   @Input() showSearchBar: boolean = true;
+  @Input() isAddCheckpoints: boolean = false;
   @Input() formWithoutSearchBar: boolean =false;
   @Input() userLocation: { latitude: number; longitude: number } | null = null;
   @Output() markerAdded = new EventEmitter<L.LatLng>();
   @Output() mapReset = new EventEmitter<void>();
   @Output() coordinatesSelected = new EventEmitter<{ latitude: number; longitude: number }>();
   @Output() distanceCalculated = new EventEmitter<{ transportType: string; time: number; distance: number }>();
+  @Output() publicPointSelected = new EventEmitter<any>();
 
-  constructor(private mapService: MapService) {}
+  constructor(private mapService: MapService, private publicPointService: PublicPointService) {}
 
   ngOnDestroy(): void {
     if (this.map) {
@@ -48,6 +51,11 @@ export class MapComponent implements AfterViewInit,OnChanges {
     if (!this.map) {
       this.initMap(); 
     }
+    this.loadPublicPoints();
+    (window as any).selectPublicPoint = (latitude: number, longitude: number, name: string, description: string, imageUrl: string) => {
+      const publicPoint = { latitude, longitude, name, description, imageUrl };
+      this.publicPointSelected.emit(publicPoint);
+    };
   }
 
   public initMap(): void {
@@ -242,6 +250,46 @@ export class MapComponent implements AfterViewInit,OnChanges {
 
     this.mapReset.emit();
   }
+  
+  private fixedMarkers: L.Marker[] = []; // Niz za javne fiksirane markere
+
+  loadPublicPoints(): void {
+    this.publicPointService.getAccpetedPublicPoints().subscribe({
+      next: (publicPoints) => {
+        publicPoints.forEach((point) => {
+          const latLng = new L.LatLng(point.latitude, point.longitude);
+  
+          const marker = L.marker(latLng, {
+            icon: L.icon({
+              iconUrl: 'assets/images/placeholder.png',
+              iconSize: [32, 41],
+              iconAnchor: [15, 41],
+            }),
+          });
+  
+          const popupContent = `
+            <div style="width: 150px; text-align: center; padding: 3px;">
+              <h5 style="margin: 0; font-size: 12px; font-weight: bold;">${point.name}</h5>
+              ${point.imageUrl ? `<img src="${point.imageUrl}" alt="${point.name}" style="width: 100%; height: auto; margin: 3px 0; border-radius: 3px;" />` : ''}
+              ${point.description ? `<p style="font-size: 11px; color: #666; margin: 0;">${point.description}</p>` : ''}
+              ${this.isAddCheckpoints ? `
+                <button 
+                  style="margin-top: 5px; padding: 5px 10px; font-size: 12px; background-color: #007bff; color: white; border: none; border-radius: 3px; cursor: pointer;" 
+                  onclick="selectPublicPoint(${point.latitude}, ${point.longitude}, '${point.name}', '${point.description}', '${point.imageUrl}')">
+                  Select Point
+                </button>` : ''}
+            </div>
+          `;
+          marker.bindPopup(popupContent).addTo(this.map);
+          this.fixedMarkers.push(marker);
+        });
+      },
+      error: (err) => {
+        console.error('Error loading public points:', err);
+      },
+    });
+  }
+   
   public resetPositionSimMap(): void {
     if (this.map) {
       setTimeout(() => this.map.invalidateSize(), 0);
