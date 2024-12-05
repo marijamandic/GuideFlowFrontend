@@ -40,7 +40,7 @@ export class EncounterExecutionService {
     return this.http.post<Execution>('https://localhost:44333/api/tourist/encounterExecution', execution);
   }
  
-  getExecution(executionId: string): Observable<Execution>{
+  getExecution(executionId: number): Observable<Execution>{
     return this.http.get<Execution>('https://localhost:44333/api/tourist/encounterExecution/' + executionId);
   }
 
