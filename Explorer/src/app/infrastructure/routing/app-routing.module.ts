@@ -50,11 +50,20 @@ import { ExecutionComponent } from 'src/app/feature-modules/encounter-execution/
 import { EncounterExecutionMapComponent } from 'src/app/feature-modules/encounter-execution/encounter-execution-map/encounter-execution-map.component';
 
 const routes: Routes = [
-  { path: 'home', component: HomeComponent },
+  //acount shit
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegistrationComponent },
-  { path: 'equipment', component: EquipmentComponent, canActivate: [AuthGuard] },
   { path: 'profileInfo', component: ProfileInfoComponent },
+  { path: 'pending', component: PublicPointRequestsComponent },
+  //tours
+  { path: 'tourView', component: TourViewComponent },
+  { path: 'purchased', component: PurchasedToursComponent },
+  { path: 'tour', component: TourComponent },
+   // --- tours/:id pregled pojedinacne ture, dodavanje checkpointa, reviews, equpimentm, redirect na edit ture?
+
+
+  { path: 'home', component: HomeComponent },
+  { path: 'equipment', component: EquipmentComponent, canActivate: [AuthGuard] },
   { path: 'equipmentManagement', component: EquipmentManagementComponent },
   //{ path: 'problem', component: ProblemComponent },
   { path: 'report', component: ReportProblemComponent },
@@ -70,15 +79,11 @@ const routes: Routes = [
   { path: 'tourObjects', component: TourObjectComponent, canActivate: [AuthGuard] },
   { path: 'checkpoints/:tourId', component: CheckpointListComponent },
   { path: 'tour-execution/:id', component: TourExecutionDetailsComponent},
-  { path: 'tour', component: TourComponent },
   { path: 'tourEquipment/:id', component: TourEquipmentComponent },
   { path: 'ratingTheApp', component: RatingTheAppComponent },
   { path: 'allAppRatings', component: AllAppRatingsComponent },
-  { path: 'purchased', component: PurchasedToursComponent },
   { path: 'account', component: AccountComponent},
-  { path: 'tourView', component: TourViewComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: 'pending', component: PublicPointRequestsComponent },
   { path: 'tourReview/:tourId/:touristId', component: TourReviewComponent },
   { path: 'author/notifications', component: PublicPointNotificationsComponent },
   { path: 'position-sim', component: PositionsimComponent },
@@ -96,6 +101,7 @@ const routes: Routes = [
   {path: 'tourExecutionMap', component: TourExecutionMap},
   {path: 'tourDetails/:tourId', component:TourDetailsComponent, children:[{path:'checkpoints/:tourId', component:CheckpointListComponent}]},
   {path: 'encounters', component: EncounterComponent},
+  {path: 'enconters/:encounterExecutionId/:tourExecutionId' , component:EncounterComponent},
   { path: 'encounter-add', component: EncounterFormComponent },
   { path: 'encounter-update/:id', component: EncounterFormComponent },
   { path: 'author-add-encounter/:id/:tourId', component: AddEncounterComponent},

@@ -52,7 +52,7 @@
       <div *ngIf="user.role == 'administrator' && encounter.encounterStatus === 3" class="encounter-footer">
         <button class="decline-button" (click)="declineEncounter(encounter.id)">Decline</button>
       </div>
-      <div *ngIf="user.role == 'tourist' &&  !encounter.isCreatedByAuthor" class="encounter-footer">
+      <div *ngIf="user.role == 'tourist' " class="encounter-footer">
         <button class="execute-button" (click)="Execute(encounter)">Execute</button>
       </div>
       <!--<div *ngIf="user.role == 'tourist' && encounter.isCreatedByAuthor" class="encounter-footer">
