@@ -1,0 +1,83 @@
+.map-frame {
+    position: relative;
+    width: 100%;
+    height: 91vh;
+    z-index: 8;
+}
+
+#map {
+    width: 98%;
+    height: 96%;
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0 10px 8px rgba(0, 0, 0, 0.2);
+}
+
+.search-container {
+    position: absolute;
+    top: 90px; /* Pozicija od vrha stranice */
+    left: 35%; /* Centriranje horizontalno */
+    transform: translateX(-50%);
+    z-index: 9;
+    display: flex;
+    flex-direction: column; /* Postavljanje elemenata jedan ispod drugog */
+    gap: 10px; /* Razmak između elemenata */
+    align-items: center; /* Centriranje elemenata horizontalno */
+}
+
+.input-wrapper {
+    position: relative;
+    width: 300px; /* Fiksna širina za input */
+}
+
+input[type="text"] {
+    width: 70%;
+    padding: 8px 16px; /* Manji padding */
+    border-radius: 20px; /* Zaobljeni krajevi */
+    border: 1px solid #ccc;
+    font-size: 14px;
+    background-color: white; /* Pozadina bela */
+    color: black; /* Tekst crne boje */
+    outline: none; /* Bez outline-a */
+    transition: border 0.3s ease;
+}
+
+input[type="text"]:focus {
+    border: 1px solid #40E0D0; /* Tirkizna boja na fokus */
+}
+
+.update-button {
+    width: 80%; /* Ista širina kao input */
+    padding: 8px 16px; /* Manji padding */
+    background-color: #40E0D0; /* Tirkizna boja */
+    color: white;
+    border: none;
+    border-radius: 20px; /* Zaobljeni krajevi */
+    cursor: pointer;
+    font-size: 14px;
+    text-align: center; /* Centriranje teksta */
+    transition: background-color 0.3s ease;
+    margin-right: 18%; /* Pomeranje dugmeta udesno da se poravna sa input poljem */
+}
+
+.update-button:hover {
+    background-color: #36c4b7; /* Tamnija nijansa tirkizne */
+}
+
+
+/* Stil za ikonu pretrage */
+.search-icon {
+    position: absolute;
+    top: 50%;
+    right: 70px;
+    transform: translateY(-50%);
+    width: 22px;
+    height: 22px;
+    cursor: pointer;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.search-icon:hover {
+    transform: translateY(-50%) scale(1.2); /* Povećanje ikone na hover */
+    opacity: 0.8; /* Blago smanjenje vidljivosti na hover */
+}

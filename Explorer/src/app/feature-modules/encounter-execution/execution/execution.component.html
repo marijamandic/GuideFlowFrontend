@@ -1,15 +1,15 @@
-<div class="execution-card book-now-container">
+<div class="card book-now-container">
   <div *ngIf="encounterExecution?.encounterType !== undefined && encounter && encounterExecution" class="encounter-details">
-     <!-- Desna strana: Poeni sa ikonicom -->
+
      <div class="header-right points">
       <mat-icon class="fire-icon">local_fire_department</mat-icon>
       {{ encounter.experiencePoints }}
      </div>
      <div class="card-header">
           <div class="header-left">
-            <strong>
-            <h1 class="title">{{ encounter.name }}</h1>
-            </strong>
+      
+            <h1>{{ encounter.name }}</h1>
+        
             <p class="subtitle challenge-type">
               <mat-icon>category</mat-icon>
               {{ mapToType(encounter.encounterType) }}
@@ -37,9 +37,9 @@
     <p >
       <strong>Opis:</strong> {{ encounter.description }}
     </p>
-    <p >
+   <!--<p >
       <strong>Status izazova:</strong> {{ mapToStatus(encounter.encounterStatus) }}
-    </p>
+    </p>-->
     
     
 
@@ -68,9 +68,7 @@
 
 </div>
 
-<div class="map-container">
-  <xp-map [encounters]="encounterCoordinates" [userLocation]="userMarker" [showSearchBar]="false"></xp-map>
-</div>
+
 
 <button *ngIf="tourExecutionId" (click)="navigateToTourExecution()">Go to tour</button>
 <button *ngIf="encounterExecution && encounter?.encounterType !== EncounterType.Social && encounter" 
@@ -84,3 +82,4 @@
   Position simulator
 </button>
 </div>
+

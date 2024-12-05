@@ -1,47 +1,70 @@
-/* Main container for the page */
-.container {
-  text-align: center;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
+.map-background {
+  width: 78%;
+  right: 0;
+  margin-left: 22.2%;
+  background-color: #f2f2f2;
+  padding-top: 0.45%;
+}
+.map-background xp-tour-execution-map {
+  position: relative;
+  top: 0;
+  right: 0;
+  width: 110vw;
+  height: 96vh;
+  object-fit: cover;
+  margin-right: 15px;
+  background-color: #FFF;
 }
 
-/* Title styling */
-.encounter-title {
-  font-size: 2rem;
-  margin-bottom: 20px;
+.left-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 21%;
+  height: 90vh;
+  overflow-y: auto;
+  padding-top: 70px;
+  padding-left: 20px;
+  background-color: #f2f2f2;
+  z-index: 9;
 }
 
-/* Encounter list container */
-.encounter-list {
+.left-container::-webkit-scrollbar {
+  display: none;
+}
+
+.left-container {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.encounter-container {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex-direction: column;
   gap: 20px;
-  margin-top: 30px;
 }
 
-/* Encounter card styling */
 .encounter-card {
-  width: 300px;
+  width: 87%;
   background-color: #fff;
   border: 1px solid #ddd;
-  border-radius: 8px;
+  border-radius: 20px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  transition: transform 0.3s ease-in-out;
-}
-
-/* Hover effect for the cards */
-.encounter-card:hover {
-  transform: translateY(-10px);
-}
-
-/* Encounter header */
-.encounter-header {
-  background-color: #f7f7f7;
   padding: 15px;
-  border-bottom: 1px solid #ddd;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.encounter-card:hover {
+  transform: translateY(-5px); /* Blago podizanje na hover */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Veća senka na hover */
+}
+
+/* Header encounter-a */
+.encounter-header {
+  display: flex;
+  justify-content: space-between; /* Razdvaja ime i poene */
+  align-items: center;
+  border-bottom: none; /* Uklanja liniju ispod zaglavlja */
 }
 
 .encounter-header h3 {
@@ -50,81 +73,167 @@
   color: #333;
 }
 
+.experience-points {
+  font-size: 1rem;
+  color: #40E0D0; /* Tirkizna boja za poene */
+  font-weight: bold;
+  margin: 0; /* Uklanja dodatne margine */
+  display: flex; /* Omogućava fleksibilno poravnanje ako dodate ikonu */
+  align-items: center; /* Centriranje simbola sa tekstom */
+}
+
+.xp-icon {
+  width: 20px; /* Prilagodite veličinu slike */
+  height: 20px; /* Prilagodite veličinu slike */
+  margin-right: 5px; /* Razmak između slike i broja */
+}
+
 .encounter-header p {
   font-size: 0.9rem;
   color: #777;
 }
 
-/* Encounter body */
+/* Telo encounter-a */
 .encounter-body {
-  padding: 15px;
   font-size: 1rem;
   color: #555;
+  margin-bottom: 15px;
 }
 
-/* Encounter footer with the update button */
+/* Dugmad u footer-u encounter-a */
 .encounter-footer {
-  padding: 10px;
-  background-color: #f7f7f7;
-  border-top: 1px solid #ddd;
+  display: flex;
+  justify-content: center; /* Centriranje dugmadi u kontejneru */
+  gap: 10px; /* Razmak između dugmadi */
+  margin-top: 10px; /* Razmak od sadržaja iznad */
 }
 
-/* Update button styling */
 .update-button {
-  background-color: #007bff;
+  width: 50%; /* Ista širina kao input */
+  padding: 8px 16px; /* Manji padding */
+  background-color: #40E0D0; /* Tirkizna boja */
   color: white;
   border: none;
-  padding: 10px;
-  width: 100%;
-  border-radius: 5px;
-  font-size: 1rem;
+  border-radius: 20px; /* Zaobljeni krajevi */
   cursor: pointer;
-  transition: background-color 0.3s;
-}
-.approve-button {
-  background-color: #28a745;
-  color: white;
-  border: none;
-  padding: 10px;
-  width: 100%;
-  border-radius: 5px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-.decline-button {
-  background-color: #960a0a;
-  color: white;
-  border: none;
-  padding: 10px;
-  width: 100%;
-  border-radius: 5px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s;
+  font-size: 14px;
+  text-align: center; /* Centriranje teksta */
+  transition: background-color 0.3s ease;
 }
 
 .update-button:hover {
-  background-color: #0056b3;
+  background-color: #36c4b7; /* Tamnija nijansa tirkizne */
 }
 
-/* Add Encounter button container */
-.add-encounter {
-  margin-top: 30px;
-}
-
-/* Add Encounter button styling */
-.add-button {
-  background-color: #28a745;
+.execute-button {
+  width: 50%; /* Ista širina kao input */
+  padding: 8px 16px; /* Manji padding */
+  background-color: #40E0D0; /* Tirkizna boja */
   color: white;
-  padding: 15px 30px;
-  font-size: 1.2rem;
   border: none;
-  border-radius: 5px;
+  border-radius: 20px; /* Zaobljeni krajevi */
   cursor: pointer;
-  transition: background-color 0.3s;
+  font-size: 14px;
+  text-align: center; /* Centriranje teksta */
+  transition: background-color 0.3s ease;
+}
+
+.execute-button:hover {
+  background-color: #36c4b7; /* Tamnija nijansa tirkizne */
+}
+
+.approve-button,
+.decline-button {
+  width: 45%; /* Manja širina da stanu jedno pored drugog */
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.approve-button {
+  background-color: #40E0D0;
+  color: white;
+}
+
+.approve-button:hover {
+  background-color: #36c4b7;
+}
+
+.decline-button {
+  background-color: #d80e00;
+  color: white;
+}
+
+.decline-button:hover {
+  background-color: #af1212;
+}
+.button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.add-button {
+  background-color: #f9f9f9; /* Svetlo siva pozadina */
+  border: none; /* Bez okvira */
+  border-radius: 20px; /* Zaobljeni uglovi */
+  width: 60px; /* Širina dugmeta */
+  height: 60px; /* Visina dugmeta */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Blaga senka */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .add-button:hover {
-  background-color: #218838;
+  transform: scale(1.1); /* Blago povećanje na hover */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Veća senka na hover */
+}
+
+.add-icon {
+  width: 24px; /* Širina ikone plus */
+  height: 24px; /* Visina ikone plus */
+  opacity: 0.7; /* Blaga providnost */
+  transition: opacity 0.2s ease;
+}
+
+.add-button:hover .add-icon {
+  opacity: 1; /* Povećava vidljivost ikone na hover */
+}
+
+.filter-buttons {
+  position: absolute; /* Pozicioniranje unutar roditelja */
+  top: 90px; /* Postavite dugmad 20px ispod vrha roditelja */
+  left: 50%; /* Centriranje horizontalno */
+  transform: translateX(-50%); /* Centriranje u odnosu na levo */
+  display: flex; /* Postavljanje dugmadi u red */
+  gap: 10px; /* Razmak između dugmadi */
+  z-index: 9; /* Vidljivost iznad svega */
+}
+
+.filter-button {
+  padding: 8px 16px;
+  background-color: white; /* Po defaultu bela boja */
+  color: black;
+  border: 2px solid #ddd;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  text-align: center;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.filter-button:hover {
+  background-color: #f0f0f0; /* Svetlo siva boja na hover */
+}
+
+.active-filter {
+  background-color: #40E0D0; /* Plava boja za aktivno dugme */
+  color: white; /* Tekst postaje beo */
+  border-color: #36c4b7; /* Tamnija nijansa za okvir */
 }
