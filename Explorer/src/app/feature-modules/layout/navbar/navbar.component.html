@@ -32,7 +32,13 @@
 				<a *ngIf="user && user.username !== ''" (click)="onLogout()"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a>
 				<a [routerLink]="['/settings']" (click)="toggleDropdown()"><i class="fa fa-cog" aria-hidden="true"></i> Settings</a>
 				<a [routerLink]="['/profile']" (click)="toggleDropdown()"><i class="fa fa-user" aria-hidden="true"></i> Profile</a>
+				<a *ngIf="user && user.role === 'tourist'" [routerLink]="['/purchased']" (click)="toggleDropdown()"
+					><i class="fa fa-flag" aria-hidden="true"></i> My Tours</a
+				>
 				<a *ngIf="user && user.role === 'administrator'" color="primary" mat-raised-button [routerLink]="['equipment']">Manage equipment</a>
+				<a *ngIf="user && user.role === 'author'" color="primary" mat-raised-button [routerLink]="['coupons']"
+					><i class="fa fa-gift" aria-hidden="true"></i>Coupons</a
+				>
 			</div>
 		</div>
 		<div class="menu-icon">

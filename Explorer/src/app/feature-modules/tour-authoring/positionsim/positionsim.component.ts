@@ -4,6 +4,7 @@ import { TourService } from '../tour.service';
 import { Tourist } from '../model/tourist';
 import { User } from 'src/app/infrastructure/auth/model/user.model';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 
 
 @Component({
@@ -14,16 +15,28 @@ import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 export class PositionsimComponent implements OnInit {
   latitude: number | null = null;  
   longitude: number | null = null; 
+  tourExecutionId: string | null = null;
+  encounterExecutionId: string | null = null;
   private marker: { latitude: number; longitude: number } | null = null; 
   private previousCoordinates: { latitude: number; longitude: number } | null = null; 
 
   @ViewChild(MapComponent) mapComponent!: MapComponent; 
 
-  constructor(private tourService: TourService, private authService : AuthService) {}
+  constructor(private tourService: TourService, private authService : AuthService , private route: ActivatedRoute , private router: Router) {}
   user : User;
+  ngOnInit(): void {
+    const alreadyReloaded = sessionStorage.getItem('reloaded');
 
+    if (!alreadyReloaded) {
+      sessionStorage.setItem('reloaded', 'true'); // Obeležite da je osveženo
+      window.location.reload(); // Osveži stranicu
+    } else {
+      sessionStorage.removeItem('reloaded'); // Uklonite nakon što se osveži
+    }
+    this.tourExecutionId = this.route.snapshot.paramMap.get('tourExecutionId');
+    this.encounterExecutionId = this.route.snapshot.paramMap.get('encounterExecutionId');
+  }
 
-  ngOnInit(): void {}
 
   onCoordinatesSelected(coordinates: { latitude: number; longitude: number }): void {
     if (!this.previousCoordinates || 
@@ -69,5 +82,20 @@ export class PositionsimComponent implements OnInit {
       console.error('No coordinates selected to save.');
     }
   }
-  
+  navigateToTourExecution(){
+    this.router.navigate(['tour-execution',this.tourExecutionId]);
+  }
+  navigateToEncounterExecution(){
+    if(Number(this.tourExecutionId)==0){
+      this.router.navigate(['encounter-execution',this.encounterExecutionId])
+    }else{
+      this.router.navigate(['encounter-execution',this.tourExecutionId,this.encounterExecutionId])
+    }
+  }
+  navigateToEncounters(){
+    this.router.navigate(['encounters'])
+  }
+  toNumber(numberAsString:string|null){
+    return Number(numberAsString);
+  }
 }

@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { TourService } from '../../tour-authoring/tour.service';
 import { MarketplaceService } from '../marketplace.service';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
-import { TourBundle } from '../model/tour-bundle';
+import { TourBundle } from '../model/tour-bundle.model';
 import { ItemInput } from '../model/shopping-carts/item-input';
 import { ProductType } from '../model/product-type';
 import { Item } from '../model/shopping-carts/item';

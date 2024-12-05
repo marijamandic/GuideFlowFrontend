@@ -6,5 +6,6 @@ export interface Club{
     imageUrl: string,
     imageBase64: string,
     requested?: boolean,
-    hasAccepted?: boolean
+    hasAccepted?: boolean,
+    memberCount: number;
 }

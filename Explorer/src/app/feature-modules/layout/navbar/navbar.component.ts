@@ -3,6 +3,9 @@ import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { User } from 'src/app/infrastructure/auth/model/user.model';
 import { PublicPointService } from '../../tour-authoring/tour-public-point.service';
 import { PublicPointNotification } from '../../tour-authoring/model/publicPointNotification.model';
+import { ShoppingCart } from '../../marketplace/model/shopping-carts/shopping-cart';
+import { MarketplaceService } from '../../marketplace/marketplace.service';
+import { AlertService } from '../alert.service';
 
 @Component({
 	selector: 'xp-navbar',
@@ -15,8 +18,9 @@ export class NavbarComponent implements OnInit {
 	notificationCount: number = 0;
 	showNotifications: boolean = false;
 	showCart = false;
+	isMenuOpen: boolean = false;
 
-	constructor(private authService: AuthService, private publiPointService: PublicPointService) {}
+	constructor(private authService: AuthService, private publiPointService: PublicPointService, private alertService: AlertService) {}
 
 	ngOnInit(): void {
 		this.authService.user$.subscribe(user => {
@@ -34,8 +38,11 @@ export class NavbarComponent implements OnInit {
 
 	toggleDropdown(): void {
 		this.isDropdownOpen = !this.isDropdownOpen;
+		if (this.isDropdownOpen) {
+			this.isMenuOpen = false;
+			this.showNotifications = false;
+		}
 	}
-
 	onLogout(): void {
 		this.toggleDropdown();
 		this.authService.logout();
@@ -43,6 +50,18 @@ export class NavbarComponent implements OnInit {
 
 	toggleNotifications(): void {
 		this.showNotifications = !this.showNotifications;
+		if (this.showNotifications) {
+			this.isMenuOpen = false;
+			this.isDropdownOpen = false;
+		}
+	}
+
+	toggleMenu(): void {
+		this.isMenuOpen = !this.isMenuOpen;
+		if (this.isMenuOpen) {
+			this.isDropdownOpen = false;
+			this.showNotifications = false;
+		}
 	}
 
 	handleShoppingCartOpened() {
