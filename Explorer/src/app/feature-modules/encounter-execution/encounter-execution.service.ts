@@ -5,6 +5,7 @@ import { Encounter } from './model/encounter.model';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
 import { environment } from 'src/env/environment';
 import { Execution } from './model/execution.model';
+import { EncounterSearch } from './model/encounter-search.model';
 
 @Injectable({
   providedIn: 'root'
@@ -62,6 +63,11 @@ export class EncounterExecutionService {
 
   findExecution(userId: number, encounterId: number): Observable<Execution | null> {
     return this.http.get<Execution | null>(`https://localhost:44333/api/tourist/encounterExecution/findExecution/${userId}/${encounterId}`);
+  }
+
+  searchAndFilter(params: EncounterSearch): Observable<PagedResults<Encounter>> {
+    const queryParams = new HttpParams({ fromObject: params as any });
+    return this.http.get<PagedResults<Encounter>>(`${this.baseUrl}/search`, { params: queryParams });
   }
 
   /*getActiveParticipants(execution: Execution, latitude: number, longitude: number): Observable<any> {

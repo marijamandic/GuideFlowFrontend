@@ -206,3 +206,34 @@
   opacity: 1; /* Povećava vidljivost ikone na hover */
 }
 
+.filter-buttons {
+  position: absolute; /* Pozicioniranje unutar roditelja */
+  top: 90px; /* Postavite dugmad 20px ispod vrha roditelja */
+  left: 50%; /* Centriranje horizontalno */
+  transform: translateX(-50%); /* Centriranje u odnosu na levo */
+  display: flex; /* Postavljanje dugmadi u red */
+  gap: 10px; /* Razmak između dugmadi */
+  z-index: 9; /* Vidljivost iznad svega */
+}
+
+.filter-button {
+  padding: 8px 16px;
+  background-color: white; /* Po defaultu bela boja */
+  color: black;
+  border: 2px solid #ddd;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  text-align: center;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.filter-button:hover {
+  background-color: #f0f0f0; /* Svetlo siva boja na hover */
+}
+
+.active-filter {
+  background-color: #40E0D0; /* Plava boja za aktivno dugme */
+  color: white; /* Tekst postaje beo */
+  border-color: #36c4b7; /* Tamnija nijansa za okvir */
+}

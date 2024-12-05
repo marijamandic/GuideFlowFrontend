@@ -9,6 +9,7 @@ import { TourService } from '../../tour-authoring/tour.service';
 import { Execution } from '../model/execution.model';
 import { EncounterTourist } from '../model/encounter-tourist.model';
 import { EncounterError } from '../model/encounter-error';
+import { EncounterSearch } from '../model/encounter-search.model';
 
 @Component({
   selector: 'xp-encounter',
@@ -18,6 +19,7 @@ import { EncounterError } from '../model/encounter-error';
 export class EncounterComponent implements OnInit {
 
   encounters: Encounter[] = [];
+  filteredEncounters: Encounter[] = [];
   encounterTourist: EncounterTourist;
   encounterCoordinates: { latitude: number, longitude: number }[] = [];
   userMarker: { latitude: number, longitude: number } | null = null;
@@ -26,6 +28,7 @@ export class EncounterComponent implements OnInit {
   tourist : Tourist;
   error : EncounterError;
   expandedEncounterId?: number;
+  selectedFilter?: number;
   @Output() encounterCoordinatesLoaded = new EventEmitter<{ latitude: number; longitude: number; }[]>();
 
   constructor(private service: EncounterExecutionService, private router: Router, private authService: AuthService, private tourService: TourService,){}
@@ -56,6 +59,38 @@ export class EncounterComponent implements OnInit {
     this.getEncounterTourist();
 
   };
+
+  filterEncounters(type?: number): void {
+    this.selectedFilter = type; // Postavlja selektovani filter
+
+    // Kreirajte objekat parametara koji odgovara EncounterSearch
+    const params: EncounterSearch = {
+        name: "",
+        userLatitude: this.tourist?.location?.latitude || 0, // Prosledite korisničku lokaciju ako postoji
+        userLongitude: this.tourist?.location?.longitude || 0 // Isto za longitude
+    };
+
+    // Dodajte `type` samo ako je definisan
+    if (type !== undefined) {
+        params.type = type;
+    }
+
+    // Pozovite servis sa ispravnim parametrima
+    this.service.searchAndFilter(params).subscribe({
+        next: (result) => {
+            this.filteredEncounters = result.results; // Ažurirajte listu encounter-a
+            this.encounterCoordinates = this.filteredEncounters.map(e => ({
+                latitude: e.encounterLocation.latitude,
+                longitude: e.encounterLocation.longitude,
+            }));
+
+            this.emitCoordinates(); // Emitujte koordinate za mapu
+        },
+        error: (err) => {
+            console.error('Error during filtering:', err);
+        }
+    });
+}
 
   toggleExpand(encounterId?: number): void {
     if (this.expandedEncounterId === encounterId) {
@@ -122,8 +157,7 @@ export class EncounterComponent implements OnInit {
 
   getEncounters(): void {
     let encounterObservable;
-  
-    // Odredi API poziv na osnovu korisničke uloge
+
     switch (this.user.role) {
       case 'administrator':
         encounterObservable = this.service.getEncounters();
@@ -133,25 +167,24 @@ export class EncounterComponent implements OnInit {
         break;
       case 'author':
         console.warn('Author nema dozvolu da pristupi encounterima.');
-        return; // Prekini izvršavanje ako je uloga author
+        return;
       default:
         console.warn(`Nepoznata uloga korisnika: ${this.user.role}`);
-        return; // Prekini izvršavanje za nepoznate uloge
+        return;
     }
-  
-    // Procesiraj rezultat API poziva
+
     encounterObservable.subscribe({
       next: (data) => {
         const activeEncounters = this.user.role === 'tourist' 
-        ? data.results.filter(e => e.encounterStatus === 0) 
-        : data.results.filter(e => e.encounterStatus === 0 || e.encounterStatus === 3);
-  
+          ? data.results.filter(e => e.encounterStatus === 0) 
+          : data.results.filter(e => e.encounterStatus === 0 || e.encounterStatus === 3);
+
         this.encounters = activeEncounters;
-        this.encounterCoordinates = this.encounters.map(e => ({ 
-          latitude: e.encounterLocation.latitude, 
-          longitude: e.encounterLocation.longitude 
+        this.filteredEncounters = this.encounters; // Prikaz svih encounter-a inicijalno
+        this.encounterCoordinates = this.filteredEncounters.map(e => ({
+          latitude: e.encounterLocation.latitude,
+          longitude: e.encounterLocation.longitude
         }));
-        console.log(this.encounterCoordinates)
         this.encounterCoordinatesLoaded.emit(this.encounterCoordinates);
       },
       error: (err) => {
@@ -167,15 +200,16 @@ export class EncounterComponent implements OnInit {
     }
     this.encounterCoordinatesLoaded.emit(allCoordinates);
   }
-  getEncounterTourist() : void{
-      this.authService.getTourist(this.user.id).subscribe({
-        next: (result: EncounterTourist) =>{
-          this.encounterTourist = result;
-        },
-        error: (err: any) => {
-          console.log(err);
-        }
-      })
+
+  getEncounterTourist(): void {
+    this.authService.getTourist(this.user.id).subscribe({
+      next: (result: EncounterTourist) => {
+        this.encounterTourist = result;
+      },
+      error: (err: any) => {
+        console.log(err);
+      }
+    });
   }
   get canAddEncounter(): boolean {
     return this.user.role === 'administrator' || 

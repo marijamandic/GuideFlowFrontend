@@ -1,6 +1,24 @@
 <div class="main-container">
 
 <div class="map-background">
+  <div class="filter-buttons">
+    <button 
+      (click)="filterEncounters(0)" 
+      class="filter-button" 
+      [ngClass]="{'active-filter': selectedFilter === 0}">Social</button>
+    <button 
+      (click)="filterEncounters(1)" 
+      class="filter-button" 
+      [ngClass]="{'active-filter': selectedFilter === 1}">Location</button>
+    <button 
+      (click)="filterEncounters(2)" 
+      class="filter-button" 
+      [ngClass]="{'active-filter': selectedFilter === 2}">Misc</button>
+    <button 
+      (click)="filterEncounters()" 
+      class="filter-button" 
+      [ngClass]="{'active-filter': selectedFilter === undefined}">All</button>
+  </div>
   <xp-encounter-execution-map [encounters]="encounterCoordinates"></xp-encounter-execution-map>
 </div>
 
