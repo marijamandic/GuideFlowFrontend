@@ -94,6 +94,34 @@ export class TourExecutionDetailsComponent implements OnInit{
         }) 
       })
   }
+  getUserWithTourist(): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      this.authService.user$.subscribe({
+        next: (user) => {
+          if (user) {
+            this.user = user;
+  
+            this.tourService.getTouristById(user.id).subscribe({
+              next: (result: Tourist) => {
+                this.tourist = result;
+                resolve(); // Signaliziramo da je operacija završena
+              },
+              error: (err) => {
+                console.error('Greška prilikom dobijanja turiste:', err);
+                reject(err); // Signaliziramo grešku
+              }
+            });
+          } else {
+            resolve(); // Ako nema korisnika, završavamo bez greške
+          }
+        },
+        error: (err) => {
+          console.error('Greška prilikom preuzimanja korisnika:', err);
+          reject(err);
+        }
+      });
+    });
+  }
 
   ngOnDestroy(): void {
     if (this.intervalId) {
@@ -158,8 +186,9 @@ export class TourExecutionDetailsComponent implements OnInit{
       }
     });
   }
-  updateTourExecution(){
+  async updateTourExecution(){
     this.dto.TourExecutionId= Number(this.tourExecutionId)
+    await this.getUserWithTourist();
     this.dto.Latitude = this.tourist?.location.latitude ?? 0;
     this.dto.Longitude = this.tourist?.location.longitude ?? 0;
     this.tourExecutionService.updateTourExecution(this.dto).subscribe({

@@ -21,6 +21,7 @@ export class EncounterComponent implements OnInit {
   encounters: Encounter[] = [];
   filteredEncounters: Encounter[] = [];
   encounterTourist: EncounterTourist;
+  activeExecutionId:number=-1;
   encounterCoordinates: { latitude: number, longitude: number }[] = [];
   userMarker: { latitude: number, longitude: number } | null = null;
   isViewMode: boolean = false;
@@ -124,7 +125,8 @@ export class EncounterComponent implements OnInit {
       (ex: Execution | null) => {
         if (ex) {
           console.log('Execution found:', ex);
-          this.router.navigate(['/encounter-execution', ex.id]);
+          this.activeExecutionId = ex.id || -1;
+          //this.router.navigate(['/encounter-execution', ex.id]);
         } else {
           console.log('Execution not found.');
           this.CreateExecution(execution);
@@ -141,9 +143,12 @@ export class EncounterComponent implements OnInit {
     this.service.addEncounterExecution(execution).subscribe({
       next: (response) => {
         const encounterExecutionId = response.id;
-  
+        console.log(encounterExecutionId);
         if (encounterExecutionId) {
-          this.router.navigate(['/encounter-execution',encounterExecutionId]);
+          //this.router.navigate(['/encounter-execution',encounterExecutionId]);
+
+          this.activeExecutionId = encounterExecutionId;
+          console.log(this.activeExecutionId);
         } else {
           console.error('EncounterExecution ID not found in response.');
         }
