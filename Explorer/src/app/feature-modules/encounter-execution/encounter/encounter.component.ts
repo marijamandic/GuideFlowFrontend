@@ -31,19 +31,25 @@ export class EncounterComponent implements OnInit {
   error : EncounterError;
   expandedEncounterId?: number;
   selectedFilter?: number;
+  completed?: number[];
+  isActive: boolean = false;
   @Output() encounterCoordinatesLoaded = new EventEmitter<{ latitude: number; longitude: number; }[]>();
 
-  constructor(private service: EncounterExecutionService,
+  constructor(
+    private service: EncounterExecutionService,
     private route: ActivatedRoute,
     private router: Router,
-      private authService: AuthService,
-       private tourService: TourService,){}
+    private authService: AuthService,
+    private tourService: TourService
+  ){}
 
   ngOnInit(): void {
     console.log("ovo su parametri koje sam dobio", this.route.snapshot.paramMap.get('encounterExecutionId'), this.route.snapshot.paramMap.get('tourExecutionId') );
+    console.log("active execution:", this.activeExecutionId);
     if(this.route.snapshot.paramMap.get('encounterExecutionId')!= null && this.route.snapshot.paramMap.get('tourExecutionId') != null ){
       this.activeExecutionId =Number(this.route.snapshot.paramMap.get('encounterExecutionId'));
       this.tourExecutionId = Number(this.route.snapshot.paramMap.get('tourExecutionId'));
+      this.isActive = true;
     }
 
     this.authService.user$.subscribe(user => {
@@ -67,11 +73,9 @@ export class EncounterComponent implements OnInit {
         })
       }
     });
+    this.getCompletedEncounters();
     this.getEncounters();
     this.getEncounterTourist();
-
-    
-    
   };
 
   filterEncounters(type?: number): void {
@@ -139,6 +143,7 @@ export class EncounterComponent implements OnInit {
         if (ex) {
           console.log('Execution found:', ex);
           this.activeExecutionId = ex.id || -1;
+          this.isActive = true;
           //this.router.navigate(['/encounter-execution', ex.id]);
         } else {
           console.log('Execution not found.');
@@ -161,6 +166,7 @@ export class EncounterComponent implements OnInit {
           //this.router.navigate(['/encounter-execution',encounterExecutionId]);
 
           this.activeExecutionId = encounterExecutionId;
+          this.isActive = true;
           console.log(this.activeExecutionId);
         } else {
           console.error('EncounterExecution ID not found in response.');
@@ -194,10 +200,11 @@ export class EncounterComponent implements OnInit {
     encounterObservable.subscribe({
       next: (data) => {
         const activeEncounters = this.user.role === 'tourist' 
-          ? data.results.filter(e => e.encounterStatus === 0) 
+          ? data.results.filter(e => e.encounterStatus === 0 && e.id && !this.completed?.includes(e.id)) 
           : data.results.filter(e => e.encounterStatus === 0 || e.encounterStatus === 3);
 
         this.encounters = activeEncounters;
+        console.log("encounteri za prikaz:", this.encounters);
         this.filteredEncounters = this.encounters; // Prikaz svih encounter-a inicijalno
         this.encounterCoordinates = this.filteredEncounters.map(e => ({
           latitude: e.encounterLocation.latitude,
@@ -296,4 +303,17 @@ export class EncounterComponent implements OnInit {
   navigateToPositionSimulator(){
     this.router.navigate(["position-sim"])
   }
+
+  getCompletedEncounters(): void{
+    this.service.getAllEncounterIdsByUserId(this.user.id).subscribe({
+      next: (result) => {
+        this.completed = result;
+        console.log("completed ids:", this.completed);
+      },
+      error: (err) => {
+        console.error("Error geting completed encounters:", err);
+      }
+    })
+  }
 }
+

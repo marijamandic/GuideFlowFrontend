@@ -9,6 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Encounter, EncounterType } from '../model/encounter.model';
 import { environment } from 'src/env/environment';
 import { timer } from 'rxjs';
+import { AlertService } from '../../layout/alert.service';
 
 @Component({
   selector: 'xp-execution',
@@ -37,7 +38,8 @@ export class ExecutionComponent implements OnInit{
     private tourService: TourService,
     private authService: AuthService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private alertService: AlertService
   ) {}
 
   ngOnInit(): void {
@@ -172,6 +174,17 @@ export class ExecutionComponent implements OnInit{
               this.encounterExecutionService.getExecution(this.encounterExecutionId!).subscribe({
                 next: (ex: Execution) => {
                   this.encounterExecution = ex;
+                  this.alertService.showAlert("You joined encounter successfully", "success", 5);
+                  if(ex.isComplete){
+                    this.alertService.showAlert("Encounter successfully completed", "success", 5);
+                    if(this.tourExecutionId){
+                      //window.location.reload();
+                      this.router.navigate(['tour-execution/',this.tourExecutionId]);
+                    }else{
+                      this.router.navigate(['encounters']);
+                      window.location.reload();
+                    }
+                  }
                 },
                 error: (error) => {
                   this.errorMessage = 'Došlo je do greške prilikom učitavanja podataka.';
@@ -181,6 +194,7 @@ export class ExecutionComponent implements OnInit{
             },
             error: (err) => {
               console.error('Došlo je do greške:', err);
+              this.alertService.showAlert("You can not complete encounter yet", "warning", 5)
             }
           });
         console.log('izvrsavam komplete na 10 sec');
@@ -193,17 +207,20 @@ completeExecution(): void {
         next: (updatedExecution: Execution) => {
           console.log('Execution successfully completed:', updatedExecution);
           this.encounterExecution = updatedExecution;
-          alert("Encounter successfully completed");
+          //alert("Encounter successfully completed");
+          this.alertService.showAlert("Encounter successfully completed", "success", 5);
           if(this.tourExecutionId){
             this.router.navigate(['tour-execution/',this.tourExecutionId]);
           }else{
-            this.router.navigate(['encounters']);
+           // this.router.navigate(['encounters']);
+            window.location.reload();
           }
         },
         error: (error) => {
           if (error.status === 500) {
             console.log('Ne mozes jos zavrsiti.');
-            alert("You can not complete encounter yet");
+            //alert("You can not complete encounter yet");
+            this.alertService.showAlert("You can not complete encounter yet", "warning", 5);
 
           } else {
             console.error('Došlo je do greške:', error);
