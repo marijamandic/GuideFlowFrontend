@@ -13,6 +13,11 @@
 
         <label for="email">Email</label>
         <input id="email" formControlName="email" class="form-control" type="text"/>
+        
+        <label for="role">Role</label>
+            <select id="role" formControlName="role" class="form-control">
+                <option *ngFor="let role of roles" [value]="role">{{ role }}</option>
+            </select>
 
         <label for="password">Password</label>
         <input id="password" formControlName="password" class="form-control" type="password"/>
