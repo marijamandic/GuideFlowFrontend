@@ -20,7 +20,6 @@ import { CreateBlogComponent } from 'src/app/feature-modules/blog/create-blog/cr
 import { PostInfoComponent } from 'src/app/feature-modules/blog/post-info/post-info.component';
 import { RatingTheAppComponent } from 'src/app/feature-modules/layout/rating-the-app/rating-the-app.component';
 import { AllAppRatingsComponent } from 'src/app/feature-modules/administration/all-app-ratings/all-app-ratings.component';
-import { AccountComponent } from 'src/app/feature-modules/administration/account/account.component';
 import { ClubFormComponent } from 'src/app/feature-modules/administration/club/club-form/club-form.component';
 import { ClubInfoComponent } from 'src/app/feature-modules/administration/club/club-info/club-info.component';
 import { TourViewComponent } from 'src/app/feature-modules/tour-execution/tour-view/tour-view.component';
@@ -48,6 +47,7 @@ import { EncounterFormComponent } from 'src/app/feature-modules/encounter-execut
 import { AddEncounterComponent } from 'src/app/feature-modules/tour-authoring/add-encounter/add-encounter.component';
 import { ExecutionComponent } from 'src/app/feature-modules/encounter-execution/execution/execution.component';
 import { EncounterExecutionMapComponent } from 'src/app/feature-modules/encounter-execution/encounter-execution-map/encounter-execution-map.component';
+import { AdminDashboardComponenet } from 'src/app/feature-modules/administration/admin-dashboard/admin-dashboard.component';
 
 const routes: Routes = [
 
@@ -55,12 +55,11 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegistrationComponent },
   { path: 'profile', component: ProfileInfoComponent }, // svaka čast onome ko je ovo radio je nije nigde bilo bindovano
-  { path: 'account', component: AccountComponent},
 
-
-  // Admin
-  { path: 'admin-dashboard', component: AccountComponent, canActivate: [AuthGuard] }, // Ovo je buduci admin dashboard
+  
+  // Admin // Ovo je buduci admin dashboard
   { path: 'pending', component: PublicPointRequestsComponent }, // ovo treba spojiti sa admin-dashboard, za prihvatane tour objecta
+  { path: 'admin-dashboard', component: AdminDashboardComponenet},
 
 
   // ### Misc

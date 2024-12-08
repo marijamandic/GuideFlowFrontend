@@ -7,19 +7,28 @@ import { User } from 'src/app/infrastructure/auth/model/user.model';
 
 @Component({
   selector: 'xp-account',
-  templateUrl: './account.component.html',
-  styleUrls: ['./account.component.css']
+  templateUrl: './admin-dashboard.component.html',
+  styleUrls: ['./admin-dashboard.component.css']
 })
-export class AccountComponent implements OnInit {
+export class AdminDashboardComponenet implements OnInit {
 
-accounts: Account[] = []
-  
+users: Account[] = []
 public UserRole = UserRole;
   
   constructor(private service: AdministrationService, private notificationService: LayoutService, private authService: AuthService) {}
   
   user: User
 
+  roles = {
+    0: 'Admin',
+    1: 'Author',
+    2: 'Tourist'
+  } as const;
+  
+  getRoleLabel(role: number): string {
+    return this.roles[role as keyof typeof this.roles] || 'Unknown';
+  }
+  
   ngOnInit(): void {
     this.getAccounts();
     this.authService.user$.subscribe((user)=>{
@@ -41,7 +50,7 @@ public UserRole = UserRole;
   getAccounts() : void {
      this.service.getAccounts().subscribe({
       next: (result: Array<Account>) => {
-      this.accounts = result
+      this.users = result
       },
       error: (err: any) => {
         console.log(err)
@@ -49,18 +58,18 @@ public UserRole = UserRole;
     })
   }
 
-  selectedAccountId: number | null = null; // Praćenje selektovanog naloga
-  moneyInput: number = 0; // Unos novca
+  selectedAccountId: number | null = null; 
+  moneyInput: number = 0; 
   clicked: boolean = false;
 
   toggleMoneyInput(account: Account): void {
-    if (this.selectedAccountId === account.userId) {
-      this.selectedAccountId = null; // Zatvori input ako je već otvoren
+    if (this.selectedAccountId === account.id) {
+      this.selectedAccountId = null;
       this.moneyInput = 0;
       this.clicked = false;
     } else {
-      this.selectedAccountId = account.userId; // Postavi trenutno selektovanog korisnika
-      this.moneyInput = 0; // Resetuj unos
+      this.selectedAccountId = account.id; 
+      this.moneyInput = 0;
       this.clicked = true;
     }
   }
@@ -72,7 +81,7 @@ public UserRole = UserRole;
     }
     
     console.log(`Depositing ${this.moneyInput} for user: ${account.username}`);
-    this.service.updateMoney(account.userId, this.moneyInput).subscribe({
+    this.service.updateMoney(account.id, this.moneyInput).subscribe({
       next: () => {
         alert(`Money successfully deposited for ${account.username}`);
         this.selectedAccountId = null; 
@@ -84,7 +93,7 @@ public UserRole = UserRole;
     });
     this.notificationService.createNotification({
       id: 0,
-      userId: account.userId,
+      userId: account.id,
       sender: this.user.username,
       message: `Your account has been credited with ${this.moneyInput} AC`,
       createdAt: new Date(),

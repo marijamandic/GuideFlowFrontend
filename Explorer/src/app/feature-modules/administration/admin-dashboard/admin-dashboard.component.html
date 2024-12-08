@@ -1,0 +1,42 @@
+<div class="user-list-card">
+  <div class="user-card-header">
+    <h2>Users</h2>
+    <input type="text" placeholder="Search" class="search-input">
+    <select class="sort-dropdown">
+      <option value="latest">Sort by: Latest</option>
+      <option value="oldest">Sort by: Oldest</option>
+    </select>
+  </div>
+  <table class="user-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Last Online</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users">
+        <td>{{ user.id }}</td>
+        <td>{{ user.username }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ getRoleLabel(user.role) }}</td>
+        <td>{{ user.lastOnline }}</td>
+        <td [ngClass]="{'status-active': user.isActive, 'status-inactive': !user.isActive}" >
+          <button class="status-badge">
+            {{ user.isActive ? 'Active' : 'Inactive' }}
+          </button>
+        </td>        
+        <td class="actions">
+          <button class="action-btn table-btn "><i class="fa-solid fa-user"></i></button>
+          <button class="action-btn table-btn "><i class="fa-solid fa-ban"></i></button>
+          <button class="action-btn table-btn "><i class="fa-solid fa-wallet"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

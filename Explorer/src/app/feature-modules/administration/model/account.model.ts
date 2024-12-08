@@ -1,8 +1,9 @@
 export interface Account{
-    userId: number,
+    id: number,
     username: string,
     email: string,
     role: UserRole,
+    lastOnline: Date;
     isActive: boolean
 }
 export enum UserRole {
