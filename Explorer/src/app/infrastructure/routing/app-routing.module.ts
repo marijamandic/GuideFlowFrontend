@@ -90,7 +90,7 @@ const routes: Routes = [
   // -- ne gde ovo uvezati u frontu
   { path: 'tour-preview/:id', component: TourPreviewComponent},
   { path: 'tour-objects', component: TourObjectComponent, canActivate: [AuthGuard] },
-  {path: 'tourExecutionMap', component: TourExecutionMap},
+  { path: 'tourExecutionMap', component: TourExecutionMap},
   
   // --- ne znam šta spada u šta, treba mi pomoc 
   { path: 'tour-equipment/:id', component: TourEquipmentComponent },

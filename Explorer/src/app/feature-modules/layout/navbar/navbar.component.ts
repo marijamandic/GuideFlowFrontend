@@ -19,12 +19,14 @@ export class NavbarComponent implements OnInit {
 	showNotifications: boolean = false;
 	showCart = false;
 	isMenuOpen: boolean = false;
+	username: string;
 
 	constructor(private authService: AuthService, private publiPointService: PublicPointService, private alertService: AlertService) {}
 
 	ngOnInit(): void {
 		this.authService.user$.subscribe(user => {
 			this.user = user;
+			this.username = user.username;
 		});
 		this.publiPointService.getUnreadNotificationsByAuthor(this.user?.id || 0).subscribe(
 			(notifications: PublicPointNotification[]) => {
