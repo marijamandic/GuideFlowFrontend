@@ -7,6 +7,9 @@ import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { environment } from 'src/env/environment';
 import { Follower } from '../model/follower.model';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Tourist } from '../../tour-authoring/model/tourist';
+import { TourService } from '../../tour-authoring/tour.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'xp-profile-info',
@@ -18,37 +21,47 @@ export class ProfileInfoComponent implements OnInit{
   
   @Output() profileInfoUpdated = new EventEmitter<null>();
 
-  profileInfo: ProfileInfo[] = [];
+  profileInfo: ProfileInfo | undefined;
   selectedProfileInfo : ProfileInfo;
   followers: Follower[] = []
+  tourist: Tourist | undefined;
   shouldEdit: boolean;
   shouldRenderProfileInfoForm: boolean=false;
-  public userId: number;
+  userId: number;
   imageUrl: string;
   imageBase64: string;
   isEditMode = false; 
 
-  constructor(private service : AdministrationService, private authService: AuthService) {
-    this.authService.user$.subscribe((user : User) => {
-      this.userId = user.id;
-    });
+  constructor(private route: ActivatedRoute, private service : AdministrationService, private authService: AuthService,private tourService: TourService) {
   }
-
+  
   ngOnInit(): void {
+    this.userId = Number(this.route.snapshot.paramMap.get('id'));
     this.getProfileInfoById(this.userId);
+    this.getTouristInfoById(this.userId);
   }
-
+  getTouristInfoById(userId: number){
+    if (userId){
+      this.tourService.getTouristById(userId).subscribe({
+        next: (result:Tourist) => {
+          this.tourist = result;
+          console.log(this.tourist)
+        }
+      })
+    }
+  }
   getProfileInfoById(userId: number) : void
   {
-    this.service.getProfileInfoByUserId(userId).subscribe({
-      next: (result: ProfileInfo) => {
-        console.log("API response:", result);
-        this.profileInfo = [result];
-      },
-      error: (err:any) => {
-        console.log("Error fetching profile info", err);
-      }
-    });
+    if(userId){
+      this.service.getProfileInfoByUserId(userId).subscribe({
+        next: (result: ProfileInfo) => {
+          this.profileInfo = result;
+        },
+        error: (err:any) => {
+          console.log("Error fetching profile info", err);
+        }
+      });
+    }
   }
 
   onEditClicked(profileInfo: ProfileInfo): void {
@@ -95,7 +108,7 @@ export class ProfileInfoComponent implements OnInit{
        // this.selectedProfileInfo.imageUrl = this.imageBase64;
     
         // Osvežavanje liste za prikaz
-        this.profileInfo = [this.selectedProfileInfo];
+        this.profileInfo = this.selectedProfileInfo;
 
         /*this.profileInfo.patchValue({
           imageBase64: this.imageBase64

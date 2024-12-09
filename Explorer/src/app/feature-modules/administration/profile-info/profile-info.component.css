@@ -108,3 +108,58 @@ body{
     margin: 0;
     padding: 0;
 }
+.profile-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.center-content {
+  justify-content: center;
+}
+
+.profile-detail {
+  margin-bottom: 20px;
+}
+
+.profile-image {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.input-border {
+  border: 1px solid #ccc;
+  padding: 5px;
+}
+
+.input-no-border {
+  border: none;
+  background: transparent;
+  padding: 5px;
+}
+
+.cta-button {
+  background-color: #007BFF;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.cta-button:hover {
+  background-color: #0056b3;
+}
+
+.follower-row {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.follower-row span {
+  font-weight: bold;
+}

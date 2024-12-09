@@ -2,120 +2,90 @@
   <p>ProfileInfo</p>
   <hr>
   <div id="profileInfo-details">
-      <div class="profile-info">
-          <table>
-              <tbody>
-                  <!-- Profile Information Rows -->
-                  <tr *ngFor="let pi of profileInfo">
-                      <td colspan="2" style="text-align: center;">
-                          <img 
-                            [src]="getImagePath(pi.imageUrl)" 
-                            alt="Profile image" 
-                            *ngIf="pi.imageUrl" 
-                            class="profile-image" 
-                          />
-                      </td>
-                  </tr>
-                  <tr><td class="profile-row">First name:</td></tr>
-                  <tr *ngFor="let pi of profileInfo; let i = index">
-                      <td class="pod">
-                        <input type="text" [(ngModel)]="pi.firstName" [disabled]="!isEditMode" [ngClass]="isEditMode ? 'input-border' : 'input-no-border'" />
-                      </td>
-                  </tr>
-
-                      <tr>
-                        <td class="profile-row">Last name:</td>
-                      </tr>
-                   <tr *ngFor="let pi of profileInfo" class="profile-row">
-                      <td class="pod">
-                          <input 
-                          type="text" 
-                          [(ngModel)]="pi.lastName" 
-                          [disabled]="!isEditMode" 
-                          [ngClass]="isEditMode ? 'input-border' : 'input-no-border'"
-                        />
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <td class="profile-row">Moto:</td>
-                    </tr>
-                    <tr *ngFor="let pi of profileInfo">
-                      <td class="pod">
-                          <input 
-                          type="text" 
-                          [(ngModel)]="pi.moto" 
-                          [disabled]="!isEditMode" 
-                          [ngClass]="isEditMode ? 'input-border' : 'input-no-border'"
-                        />
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <td class="profile-row">Biography:</td>
-                    </tr>
-                    <tr *ngFor="let pi of profileInfo">
-                      <td class="pod">
-                        <textarea
-                          [(ngModel)]="pi.biography"
-                          [disabled]="!isEditMode"
-                          [ngClass]="isEditMode ? 'input-border' : 'input-no-border'"
-                          rows="4"  
-                          cols="20" 
-                          placeholder="Enter biography"
-                        ></textarea>
-                      </td>
-                    </tr>
-                    
-                    <tr *ngIf="isEditMode">
-                      <td class="profile-row">Image:</td>
-                    </tr>
-                    <tr *ngIf="isEditMode" class="profile-row">
-                      <td>
-                        <!-- Ovaj red je vidljiv samo kada je isEditMode true -->
-                        <div *ngFor="let pi of profileInfo" class="profile-row">
-                          <input 
-                            type="file" 
-                            (change)="onFileSelected($event)" 
-                            [readonly]="!isEditMode" style="color: transparent"
-                          />
-                        </div>
-                      </td>
-                    </tr>
-
-                    <!-- Akcije -->
-                    <tr *ngFor="let pi of profileInfo">
-                      <td colspan="2" style="text-align: center;">
-                        <!--<button color="primary" (click)="onEditClicked(pi)" mat-icon-button>
-                          <mat-icon>edit</mat-icon>
-                        </button>-->
-                        <button (click)="onEditClicked(pi)" class="cta-button">
-                          {{ isEditMode ? 'Save' : 'Edit' }}
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
-                  
-                  
-            </table>
-          </div>
-          <!-- Followers Section -->
-        <div class="followers">
-          <h3>Followers</h3>
-          <table>
-            <thead>
-              <tr>
-                <th>Follower First Name</th>
-                <th>Follower Last Name</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let follower of followers">
-                <td>{{ follower.followedId }}</td>
-                <td>{{ follower.followedId }}</td>
-              </tr>
-            </tbody>
-          </table>
+    <div *ngIf="profileInfo" class="profile-info">
+      <!-- Profile Image -->
+      <div class="profile-row center-content">
+        <img 
+          [src]="getImagePath(profileInfo.imageUrl)" 
+          alt="Profile image" 
+          *ngIf="profileInfo.imageUrl" 
+          class="profile-image" 
+        />
       </div>
+
+      <!-- Profile Details -->
+      <div class="profile-row">
+        <label>First name:</label>
+        <input 
+          type="text" 
+          [(ngModel)]="profileInfo.firstName" 
+          [disabled]="!isEditMode" 
+          [ngClass]="isEditMode ? 'input-border' : 'input-no-border'"
+        />
+      </div>
+
+      <div class="profile-row">
+        <label>Last name:</label>
+        <input 
+          type="text" 
+          [(ngModel)]="profileInfo.lastName" 
+          [disabled]="!isEditMode" 
+          [ngClass]="isEditMode ? 'input-border' : 'input-no-border'"
+        />
+      </div>
+
+      <div class="profile-row">
+        <label>Moto:</label>
+        <input 
+          type="text" 
+          [(ngModel)]="profileInfo.moto" 
+          [disabled]="!isEditMode" 
+          [ngClass]="isEditMode ? 'input-border' : 'input-no-border'"
+        />
+      </div>
+
+      <div class="profile-row">
+        <label>Biography:</label>
+        <textarea
+          [(ngModel)]="profileInfo.biography"
+          [disabled]="!isEditMode"
+          [ngClass]="isEditMode ? 'input-border' : 'input-no-border'"
+          rows="4"  
+          cols="20" 
+          placeholder="Enter biography"
+        ></textarea>
+      </div>
+      <div *ngIf="tourist">
+        <p *ngIf="tourist.xp">Xp: {{tourist.xp}}</p>
+      </div>
+      <div *ngIf="tourist">
+        <p *ngIf="tourist.level">Level: {{tourist.level}}</p>
+      </div>
+      <!-- Image Upload -->
+      <div *ngIf="isEditMode" class="profile-row">
+        <label>Image:</label>
+        <input 
+          type="file" 
+          (change)="onFileSelected($event)" 
+          [readonly]="!isEditMode" 
+        />
+      </div>
+
+      <!-- Action Button -->
+      <div class="profile-row center-content">
+        <button (click)="onEditClicked(profileInfo)" class="cta-button">
+          {{ isEditMode ? 'Save' : 'Edit' }}
+        </button>
+      </div>
+    </div>
+
+    <!-- Followers Section -->
+    <div class="followers">
+      <h3>Followers</h3>
+      <div *ngFor="let follower of followers" class="follower-row">
+        <span>Follower First Name:</span> {{ follower.followedId }}
+        <span>Follower Last Name:</span> {{ follower.followedId }}
+      </div>
+    </div>
   </div>
 </div>
