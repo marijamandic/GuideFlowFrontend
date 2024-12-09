@@ -3,23 +3,32 @@
 <div class="map-background">
   <div class="filter-buttons">
     <button 
-      (click)="filterEncounters(0)" 
+      (click)="filterEncounters(undefined, 0, 0, 0)" 
       class="filter-button" 
       [ngClass]="{'active-filter': selectedFilter === 0}">Social</button>
     <button 
-      (click)="filterEncounters(1)" 
+      (click)="filterEncounters(undefined, 1, 0, 0)" 
       class="filter-button" 
       [ngClass]="{'active-filter': selectedFilter === 1}">Location</button>
     <button 
-      (click)="filterEncounters(2)" 
+      (click)="filterEncounters(undefined, 2, 0, 0)" 
       class="filter-button" 
       [ngClass]="{'active-filter': selectedFilter === 2}">Misc</button>
     <button 
-      (click)="filterEncounters()" 
+      (click)="filterEncounters(undefined, undefined, undefined, undefined)" 
       class="filter-button" 
       [ngClass]="{'active-filter': selectedFilter === undefined}">All</button>
+    <button *ngIf="user.role == 'tourist'"
+      (click)="filterEncounters(undefined, undefined, tourist.location.latitude, tourist.location.longitude)" 
+      class="filter-button" 
+      [ngClass]="{'active-filter': selectedFilter === 3}">Nearby</button>
+      <input 
+        type="text" 
+        class="search-input" 
+        placeholder="Pretraga izazova:" 
+        (keyup)="onSearch($event)" />
   </div>
-  <xp-encounter-execution-map [encounters]="encounterCoordinates"></xp-encounter-execution-map>
+  <xp-encounter-execution-map [encounters]="encounterCoordinates" (locationChanged)="onLocationChanged($event)"></xp-encounter-execution-map>
 </div>
 
 <div class="left-container">

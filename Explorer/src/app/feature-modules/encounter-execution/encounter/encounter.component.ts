@@ -9,7 +9,6 @@ import { TourService } from '../../tour-authoring/tour.service';
 import { Execution } from '../model/execution.model';
 import { EncounterTourist } from '../model/encounter-tourist.model';
 import { EncounterError } from '../model/encounter-error';
-import { EncounterSearch } from '../model/encounter-search.model';
 
 @Component({
   selector: 'xp-encounter',
@@ -30,7 +29,7 @@ export class EncounterComponent implements OnInit {
   tourist : Tourist;
   error : EncounterError;
   expandedEncounterId?: number;
-  selectedFilter?: number;
+  selectedFilter?: any;
   completed?: number[];
   isActive: boolean = false;
   @Output() encounterCoordinatesLoaded = new EventEmitter<{ latitude: number; longitude: number; }[]>();
@@ -78,37 +77,96 @@ export class EncounterComponent implements OnInit {
     this.getEncounterTourist();
   };
 
-  filterEncounters(type?: number): void {
-    this.selectedFilter = type; // Postavlja selektovani filter
-
-    // Kreirajte objekat parametara koji odgovara EncounterSearch
-    const params: EncounterSearch = {
-        name: "",
-        userLatitude: this.tourist?.location?.latitude || 0, // Prosledite korisničku lokaciju ako postoji
-        userLongitude: this.tourist?.location?.longitude || 0 // Isto za longitude
-    };
-
-    // Dodajte `type` samo ako je definisan
-    if (type !== undefined) {
-        params.type = type;
-    }
-
-    // Pozovite servis sa ispravnim parametrima
-    this.service.searchAndFilter(params).subscribe({
-        next: (result) => {
-            this.filteredEncounters = result.results; // Ažurirajte listu encounter-a
-            this.encounterCoordinates = this.filteredEncounters.map(e => ({
-                latitude: e.encounterLocation.latitude,
-                longitude: e.encounterLocation.longitude,
-            }));
-
-            this.emitCoordinates(); // Emitujte koordinate za mapu
-        },
-        error: (err) => {
-            console.error('Error during filtering:', err);
-        }
+  onLocationChanged(location: { latitude: number; longitude: number }): void {
+    this.authService.user$.subscribe(user => {
+      this.user = user;
+  
+      if (this.user.role === 'tourist') {
+        this.tourService.getTouristById(user.id).subscribe({
+          next: (result: Tourist) => {
+            this.tourist = result;
+  
+            if (this.tourist.location) {
+              // Ažuriranje koordinata turiste
+              this.tourist.location.latitude = location.latitude;
+              this.tourist.location.longitude = location.longitude;
+  
+              // Pozivanje servisa za ažuriranje turiste u bazi
+              this.tourService.updateTourist(this.tourist).subscribe({
+                next: () => {
+                  console.log('Coordinates updated successfully');
+                  this.emitCoordinates();
+                },
+                error: (err: any) => {
+                  console.log('Error updating tourist:', err);
+                }
+              });
+            }
+          },
+          error: (err: any) => {
+            console.log('Error fetching tourist:', err);
+          }
+        });
+      }
     });
-}
+    this.selectedFilter = 3;  
+    this.filterEncounters(undefined, undefined, location.latitude, location.longitude);
+  }
+
+  filterEncounters(name?: string, type?: number, userLatitude?: number, userLongitude?: number): void {
+    // Postavite selektovani filter
+    if (name === undefined && type === undefined && userLatitude !== undefined && userLongitude !== undefined) {
+      this.selectedFilter = 3; // Filter prema lokaciji
+    } else {
+      this.selectedFilter = type; // Filter prema tipu, ako postoji
+    }
+  
+    // Kreirajte objekat parametara dinamički za slanje na server
+    const params: any = {};
+  
+    if (name) {
+      params.name = name; // Dodajte ime ako je definisano
+    }
+  
+    if (type !== undefined) {
+      params.type = type; // Dodajte tip ako je definisan
+    }
+  
+    if (userLatitude !== undefined && userLongitude !== undefined) {
+      params.userLatitude = userLatitude;
+      params.userLongitude = userLongitude;
+    }
+  
+    // Pozivajte API za pretragu i filtriranje
+    this.service.searchAndFilter(params).subscribe({
+      next: (result) => {
+        // Ažurirajte filtrirane encountere prema vraćenim rezultatima
+        this.filteredEncounters = result.results.filter((encounter: Encounter) => {
+          // Ako je ime prosleđeno, filtrirajte prema nazivu (case-insensitive)
+          if (name) {
+            return encounter.name.toLowerCase().includes(name.toLowerCase());
+          }
+          return true; // Ako nema imena, ne filtrirajte
+        });
+  
+        // Ažurirajte koordinate za mapu
+        this.encounterCoordinates = this.filteredEncounters.map(e => ({
+          latitude: e.encounterLocation.latitude,
+          longitude: e.encounterLocation.longitude,
+        }));
+  
+        this.emitCoordinates(); // Emitujte koordinate za mapu
+      },
+      error: (err) => {
+        console.error('Error during filtering:', err);
+      }
+    });
+  }
+  
+  onSearch(event: KeyboardEvent): void {
+    const input = (event.target as HTMLInputElement).value.trim(); // Uzimanje vrednosti iz polja za unos
+    this.filterEncounters(input); // Filtrirajte Encounter-e po nazivu
+  }
 
   toggleExpand(encounterId?: number): void {
     if (this.expandedEncounterId === encounterId) {
