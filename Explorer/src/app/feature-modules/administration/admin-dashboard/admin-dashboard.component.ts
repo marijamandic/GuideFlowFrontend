@@ -13,17 +13,18 @@ import { User } from 'src/app/infrastructure/auth/model/user.model';
 export class AdminDashboardComponenet implements OnInit {
 
 users: Account[] = []
-public UserRole = UserRole;
-  
-  constructor(private service: AdministrationService, private notificationService: LayoutService, private authService: AuthService) {}
-  
-  user: User
-
+  public UserRole = UserRole;
   roles = {
     0: 'Admin',
     1: 'Author',
     2: 'Tourist'
   } as const;
+  selectedAccountId: number | null = null;
+  moneyInput: number = 0;
+  user: User;
+  clicked: boolean = false;
+
+  constructor(private service: AdministrationService, private notificationService: LayoutService, private authService: AuthService) {}
   
   getRoleLabel(role: number): string {
     return this.roles[role as keyof typeof this.roles] || 'Unknown';
@@ -33,6 +34,18 @@ public UserRole = UserRole;
     this.getAccounts();
     this.authService.user$.subscribe((user)=>{
       this.user = user;
+    })
+  }
+
+  getAccounts() : void {
+     this.service.getAccounts().subscribe({
+      next: (result: Array<Account>) => {
+      this.users = result
+      // console.log(result);
+      },
+      error: (err: any) => {
+        console.log(err)
+      }
     })
   }
 
@@ -47,63 +60,50 @@ public UserRole = UserRole;
     account.isActive = account.isActive ? false : true
   }
 
-  getAccounts() : void {
-     this.service.getAccounts().subscribe({
-      next: (result: Array<Account>) => {
-      this.users = result
-      },
-      error: (err: any) => {
-        console.log(err)
-      }
-    })
-  }
-
-  selectedAccountId: number | null = null; 
-  moneyInput: number = 0; 
-  clicked: boolean = false;
-
-  toggleMoneyInput(account: Account): void {
-    if (this.selectedAccountId === account.id) {
+  toggleMoneyInput(user: Account): void {
+    console.log('Clicked user:', user);
+    if (this.selectedAccountId === user.id) { 
       this.selectedAccountId = null;
       this.moneyInput = 0;
-      this.clicked = false;
     } else {
-      this.selectedAccountId = account.id; 
+      this.selectedAccountId = user.id; 
       this.moneyInput = 0;
-      this.clicked = true;
     }
+    console.log('Updated selectedAccountId:', this.selectedAccountId);
+  }
+
+  getUsername(userId: number): string {
+    const user = this.users.find((u) => u.id === userId);
+    return user ? user.username : 'Unknown User';
   }
   
-  depositMoney(account: Account): void {
-    if (this.moneyInput <= 0 && this.clicked) {
+  closeModal(): void {
+    this.selectedAccountId = null; 
+    this.moneyInput = 0; 
+  }
+
+  depositMoney(): void {
+    if (this.moneyInput <= 0) {
       alert('Please enter a valid amount');
       return;
     }
-    
-    console.log(`Depositing ${this.moneyInput} for user: ${account.username}`);
+  
+    const account = this.users.find((user) => user.id === this.selectedAccountId); // Use userId if required
+    if (!account) {
+      alert('Invalid account selected');
+      return;
+    }
+  
+    console.log('Sending updateMoney request:', account.id, this.moneyInput);
+  
     this.service.updateMoney(account.id, this.moneyInput).subscribe({
       next: () => {
-        alert(`Money successfully deposited for ${account.username}`);
-        this.selectedAccountId = null; 
-        this.moneyInput = 0; 
+        alert(`Successfully added ${this.moneyInput} AC to ${account.username}`);
+        this.closeModal();
       },
       error: (err) => {
         console.error('Error depositing money:', err);
-      }
+      },
     });
-    this.notificationService.createNotification({
-      id: 0,
-      userId: account.id,
-      sender: this.user.username,
-      message: `Your account has been credited with ${this.moneyInput} AC`,
-      createdAt: new Date(),
-      isOpened: false,
-      type: 1
-    }).subscribe({
-      next: () => console.log('Notification created successfully'),
-      error: err => console.error('Error creating notification', err)
-  });
-  
-  }
-  
+  }  
 }

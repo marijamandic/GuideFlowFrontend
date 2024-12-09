@@ -18,7 +18,7 @@
         <th>Status</th>
         <th>Actions</th>
       </tr>
-    </thead>
+    </thead>  
     <tbody>
       <tr *ngFor="let user of users">
         <td>{{ user.id }}</td>
@@ -33,10 +33,36 @@
         </td>        
         <td class="actions">
           <button class="action-btn table-btn "><i class="fa-solid fa-user"></i></button>
-          <button class="action-btn table-btn "><i class="fa-solid fa-ban"></i></button>
-          <button class="action-btn table-btn "><i class="fa-solid fa-wallet"></i></button>
+          <button class="action-btn table-btn " (click)="ToggleAcountActivty(user)"><i class="fa-solid fa-ban"></i></button>
+          <button *ngIf="user.role === UserRole.Tourist" class="action-btn table-btn" (click)="toggleMoneyInput(user)">
+            <i class="fa-solid fa-wallet"></i>
+          </button>
         </td>
       </tr>
     </tbody>
   </table>
+
+  <div class="modal" *ngIf="selectedAccountId !== null">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Add adventure coins <i class="fa-solid fa-coins"></i></h2>
+        <button class="close-btn" (click)="closeModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>Adding to account: <strong>@{{ getUsername(selectedAccountId) }}</strong></p>
+        <input
+          type="number"
+          [(ngModel)]="moneyInput"
+          placeholder="Enter amount"
+          class="input-money"
+          min="1"
+        />
+      </div>
+      <div class="modal-footer">
+        <button class="cta-button" (click)="depositMoney()">Confirm transaction</button>
+      </div>
+    </div>
+  </div>
+  
+
 </div>
