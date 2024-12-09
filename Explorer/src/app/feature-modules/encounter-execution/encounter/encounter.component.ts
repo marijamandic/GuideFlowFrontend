@@ -175,6 +175,7 @@ export class EncounterComponent implements OnInit {
       error: (err) => {
         console.error('Failed to create EncounterExecution:', err);
         this.error = {errorMessage: "Morate biti na lokaciji izazova",encounterId:execution.encounterId}
+        this.expandedEncounterId = execution.encounterId;
       }
     });
   }

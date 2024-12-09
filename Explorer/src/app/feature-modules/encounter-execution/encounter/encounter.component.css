@@ -210,7 +210,7 @@
   position: absolute; /* Pozicioniranje unutar roditelja */
   top: 90px; /* Postavite dugmad 20px ispod vrha roditelja */
   left: 50%; /* Centriranje horizontalno */
-  transform: translateX(-50%); /* Centriranje u odnosu na levo */
+  transform: translateX(-10%); /* Centriranje u odnosu na levo */
   display: flex; /* Postavljanje dugmadi u red */
   gap: 10px; /* Razmak između dugmadi */
   z-index: 9; /* Vidljivost iznad svega */
