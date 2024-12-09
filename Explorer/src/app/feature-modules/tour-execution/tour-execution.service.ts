@@ -15,6 +15,7 @@ import { UpdateTourExecutionDto } from './model/update-tour-execution.dto';
 import { PurchasedTours } from './model/purchased-tours.model';
 import { CreateTourExecutionDto } from './model/create-tour-execution.dto';
 import { TourSpecification } from './model/tour-specification.model';
+import { Sales } from './model/sales.model';
 
 @Injectable({
 	providedIn: 'root'
@@ -103,5 +104,9 @@ export class TourExecutionService {
 	
 	deleteTourSpecification(tourSpecification: TourSpecification): Observable<TourSpecification>{
 		return this.http.delete<TourSpecification>(environment.apiHost + 'tourist/tourspecifications/' + tourSpecification.id);
+	}
+
+	getAllSales(): Observable<Sales[]> {
+		return this.http.get<Sales[]>('https://localhost:44333/api/sales');
 	}
 }

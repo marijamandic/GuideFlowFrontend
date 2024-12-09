@@ -36,7 +36,7 @@
         </div>
 
         <div class="map-container">
-            <xp-map (coordinatesSelected)="onCoordinatesSelected($event)" [showSearchBar]="isViewMode"></xp-map>
+            <xp-map [isAddCheckpoints]="true" (coordinatesSelected)="onCoordinatesSelected($event)" (publicPointSelected)="handlePublicPointSelection($event)" [showSearchBar]="isViewMode"></xp-map>
         </div>
     </div>
     <button color="primary" type="submit" (click)="addCheckpoint()" mat-raised-button>Done</button>

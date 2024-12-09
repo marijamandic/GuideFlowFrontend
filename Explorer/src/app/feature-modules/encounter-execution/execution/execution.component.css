@@ -1,0 +1,151 @@
+.execution-card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  width: 450px;
+  font-family: Arial;
+}
+
+.error-message {
+  color: red;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+.execution-details {
+  margin-bottom: 16px;
+}
+
+.status, .participants, .encounter-name, .encounter-description, .encounter-status, .encounter-type, .encounter-participants {
+  font-size: 0.9em;
+  margin: 8px 0;
+}
+
+.social-encounter, .location-encounter, .misc-encounter {
+  margin-top: 16px;
+  display: flex;
+	justify-content: space-around;
+	align-items: center;
+}
+
+.encounter-image {
+  max-width: 100%;
+  border-radius: 4px;
+}
+
+.coordinates-list {
+  list-style: none;
+  padding: 0;
+}
+
+.coordinates-list li {
+  font-size: 0.9em;
+}
+
+.complete-button, .simulator-button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-size: 0.9em;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 16px;
+}
+
+.complete-button:hover, .simulator-button:hover {
+  background-color: #0056b3;
+}
+.icon {
+  margin-right: 8px;
+  color: #007bff; /* Plava boja ikone */
+  font-size: 20px; /* Veličina ikone */
+  vertical-align: middle; /* Poravnanje s tekstom */
+}
+.header-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.points {
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--primary-color);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.challenge-type {
+  display: flex;
+  align-items: center;
+  font-size: 14px; /* Manji font */
+  color: gray; /* Siva boja teksta */
+  font-style: italic; /* Italic stil */
+  gap: 5px; /* Razmak između ikonice i teksta */
+  margin-top: 5px;
+}
+
+.challenge-type mat-icon {
+  font-size: 16px; /* Veličina ikonice smanjena */
+  color: gray; /* Boja ikonice */
+}
+
+.header-left {
+  display: flex;
+  flex-direction: column;
+}
+
+.cta-button {
+  background-color: var(--primary-color);
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  padding: 12px 30px;
+  border-radius: 25px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s ease;
+}
+
+.cta-button:hover {
+  background-color: var(--hover-color);
+  transform: scale(1.1);
+  transition: 0.5s ease;
+}
+
+.button {
+	display: inline-block;
+	background-color: var(--primary-color);
+	color: white;
+	padding: 12px 25px;
+	border-radius: 30px;
+	transition: background-color 0.3s ease, transform 0.3s ease;
+	text-align: center;
+	margin: 20px auto;
+	display: block;
+	width: fit-content;
+	outline: none;
+	border: none;
+}
+
+.button:focus {
+	outline: none;
+}
+
+.button:hover {
+	background-color: var(--hover-color);
+	transform: scale(1.05);
+}

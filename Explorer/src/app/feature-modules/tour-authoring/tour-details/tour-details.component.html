@@ -82,6 +82,7 @@
             <p>{{ checkpoint.description }}</p>
             <p><strong>Latitude:</strong> {{ checkpoint.latitude }}</p>
             <p><strong>Longitude:</strong> {{ checkpoint.longitude }}</p>
+            <button *ngIf="!checkpoint.encounterId" (click)="navigateToAddEncounter(checkpoint.id)">Add encounter</button>
           </div>
         </div>
       </div>

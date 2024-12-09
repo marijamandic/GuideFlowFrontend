@@ -1,0 +1,75 @@
+<div class="main-container">
+
+<div class="map-background">
+  <div class="filter-buttons">
+    <button 
+      (click)="filterEncounters(0)" 
+      class="filter-button" 
+      [ngClass]="{'active-filter': selectedFilter === 0}">Social</button>
+    <button 
+      (click)="filterEncounters(1)" 
+      class="filter-button" 
+      [ngClass]="{'active-filter': selectedFilter === 1}">Location</button>
+    <button 
+      (click)="filterEncounters(2)" 
+      class="filter-button" 
+      [ngClass]="{'active-filter': selectedFilter === 2}">Misc</button>
+    <button 
+      (click)="filterEncounters()" 
+      class="filter-button" 
+      [ngClass]="{'active-filter': selectedFilter === undefined}">All</button>
+  </div>
+  <xp-encounter-execution-map [encounters]="encounterCoordinates"></xp-encounter-execution-map>
+</div>
+
+<div class="left-container">
+  <div class="encounter-container">
+  <div class="encounter-list" >
+    <div *ngFor="let encounter of encounters" (click)="toggleExpand(encounter.id)" class="encounter-card">
+      <div class="encounter-header">
+        <h3><strong>{{ encounter.name }}</strong></h3>
+        <div class="experience-points">
+          <img src="assets/images/xp.png" alt="XP Icon" class="xp-icon" />
+          {{ encounter.experiencePoints }}
+        </div>
+      </div>
+      <div *ngIf="expandedEncounterId === encounter.id" class="encounter-body">
+        <p>Status: 
+          <span *ngIf="encounter.encounterStatus === 0">Active</span>
+          <span *ngIf="encounter.encounterStatus === 1">Draft</span>
+          <span *ngIf="encounter.encounterStatus === 2">Archived</span>
+          <span *ngIf="encounter.encounterStatus === 3">Pending</span>
+          <span *ngIf="encounter.encounterStatus === 4">Canceled</span>
+        </p>
+        <p><strong>Description:</strong> {{ encounter.description }}</p>
+        <p style="color: red;" *ngIf="error && error.encounterId==encounter.id">{{error.errorMessage}}</p>
+      <div *ngIf="user.role == 'administrator' && encounter.encounterStatus !== 3" class="encounter-footer">
+        <button class="update-button" (click)="navigateToForm(encounter.id)">Edit</button>
+      </div>
+      <div *ngIf="user.role == 'administrator' && encounter.encounterStatus === 3" class="encounter-footer">
+        <button class="approve-button" (click)="approveEncounter(encounter.id)">Approve</button>
+      </div>
+      <div *ngIf="user.role == 'administrator' && encounter.encounterStatus === 3" class="encounter-footer">
+        <button class="decline-button" (click)="declineEncounter(encounter.id)">Decline</button>
+      </div>
+      <div *ngIf="user.role == 'tourist' " class="encounter-footer">
+        <button class="execute-button" (click)="Execute(encounter)">Execute</button>
+      </div>
+      <!--<div *ngIf="user.role == 'tourist' && encounter.isCreatedByAuthor" class="encounter-footer">
+        <p>You can execute this encounter only from tour execution</p>
+      </div>-->
+    </div>
+  </div>
+
+  <div *ngIf="canAddEncounter" class="button-container">
+    <button class="add-button" (click)="navigateToForm()">
+      <img src="assets/images/plus.png" alt="Add" class="add-icon" />
+    </button>
+  </div>
+</div>
+<div *ngIf = "activeExecutionId !== -1">
+  <xp-execution [encounterExecutionId] = "activeExecutionId"></xp-execution>
+</div>
+
+
+</div>

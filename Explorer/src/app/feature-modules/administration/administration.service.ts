@@ -13,6 +13,8 @@ import { ClubMemberList } from './model/club-member-list.model';
 import { Account } from './model/account.model';
 import { ClubPost } from './model/club-post.model';
 import { User } from 'src/app/infrastructure/auth/model/user.model';
+import { Tourist } from '../tour-authoring/model/tourist';
+import { TouristRegistraion } from 'src/app/infrastructure/auth/model/touristRegister.model';
 
 @Injectable({
 	providedIn: 'root'
@@ -172,6 +174,22 @@ export class AdministrationService {
 		return this.http.get<{ username: string }>(`${environment.apiHost}user/username/${userId}`)
 		  .pipe(map(response => response.username));
 	}
+
+	updateMoney(touristId: number, amount: number): Observable<User> {
+		return this.http.put<User>(
+		  `${environment.apiHost}user/updateMoney/${touristId}`,
+		  amount
+		);
+	  }
 	  
-	  
+	createTourist(userDto: TouristRegistraion): Observable<User> {
+	const headers = new HttpHeaders({
+		'Content-Type': 'application/json',
+		});
+		return this.http.post<User>(
+			`${environment.apiHost}tourists`,
+			userDto,
+			{ headers }
+		);
+	} 
 }

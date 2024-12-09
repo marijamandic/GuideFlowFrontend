@@ -4,6 +4,9 @@ import { Problem } from 'src/app/shared/model/problem.model';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
 import { Category } from 'src/app/shared/model/details.model';
 import { Priority } from 'src/app/shared/model/details.model';
+import { TourService } from '../../tour-authoring/tour.service';
+import { Level, Tour, TourStatus } from '../../tour-authoring/model/tour.model';
+import { Currency } from '../../tour-authoring/model/price.model';
 
 @Component({
 	selector: 'xp-admin-problem',
@@ -14,20 +17,53 @@ export class AdminProblemComponent implements OnInit {
     problems: Problem[] = [];
     selectedProblemId: number | null = null;
     selectedDate: string = '';
-
-    constructor(private service: AdministrationService) { }
+	tours: Tour[] = [];
+	problemTourMap: Map<number, boolean> = new Map<number, boolean>();
+    constructor(private service: AdministrationService, private tourService: TourService) { }
 
     ngOnInit(): void {
-        this.service.getProblems().subscribe({
+		this.loadProblems();
+    }
+	loadProblems() : void{
+		this.service.getProblems().subscribe({
             next: (result: PagedResults<Problem>) => {
                 this.problems = result.results;
+				this.fetchAllTours();
             },
             error: (err: any) => {
                 console.log(err);
             }
         });
-    }
-
+	}
+	fetchAllTours(): void {
+		this.tourService.getTour().subscribe({
+		  next: (result: PagedResults<Tour>) => {
+			this.tours = result.results;
+	
+			// Kreiranje mape problema
+			this.validateProblems();
+		  },
+		  error: (err: any) => {
+			console.error('Error fetching tours:', err);
+		  }
+		});
+	}
+	
+	  // Validacija problema
+	validateProblems(): void {
+		this.problems.forEach(problem => {
+		if (problem.id !== undefined) {  // Proveravamo da li id nije undefined
+			const exists = this.tours.some(tour => tour.id === problem.tourId);
+			this.problemTourMap.set(problem.id, exists);
+		}
+		  
+		});
+	}
+	
+	  // Provera statusa problema
+	isTourAvailable(problemId: number): boolean {
+		return this.problemTourMap.get(problemId) ?? false;
+	}
     getCategoryName(category: Category): string {
         return Category[category];
     }
@@ -96,8 +132,34 @@ export class AdminProblemComponent implements OnInit {
         const today = new Date();
         return new Date(deadline) < today;
     }
+	isPassed5Days(deadline: Date): boolean {
+		const today = new Date();
+		const extendedDeadline = new Date(deadline);
+		extendedDeadline.setDate(extendedDeadline.getDate() + 5); // Dodaje 5 dana na deadline
+		return extendedDeadline < today;
+	}
 
     cancelDeadline(): void {
         this.toggleDatePicker(0);
     }
+	updateTourStatus(tourId: number): void {
+		this.tourService.getTourById(tourId).subscribe({
+			next: (tour: Tour) => {
+				tour.status = TourStatus.Deleted;
+				
+				this.tourService.updateTour(tour).subscribe({
+					next: (updatedTour: Tour) => {
+						console.log('Tour successfully updated:', updatedTour);
+						this.loadProblems();
+					},
+					error: (err: any) => {
+						console.error('Error updating tour:', err);
+					}
+				});
+			},
+			error: (err: any) => {
+				console.error('Error fetching tour by ID:', err);
+			}
+		});
+	}
 }

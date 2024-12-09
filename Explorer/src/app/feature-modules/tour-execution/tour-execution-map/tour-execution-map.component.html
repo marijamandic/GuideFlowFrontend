@@ -1,0 +1,16 @@
+<div class="map-frame">
+  <div id="map"></div>
+</div>
+
+<div class="search-container" *ngIf="showSearchBar">
+  <div class="input-wrapper">
+    <input type="text" [(ngModel)]="searchAddress" placeholder="Unesite adresu" />
+    <img 
+      (click)="search()" 
+      src="assets/images/search.png" 
+      alt="Search" 
+      class="search-icon" 
+    />
+  </div>
+  <button (click)="saveCoordinates()" class="add-button">Update My Location</button>
+</div>

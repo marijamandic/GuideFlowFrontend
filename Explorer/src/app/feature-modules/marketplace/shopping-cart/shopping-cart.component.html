@@ -1,10 +1,10 @@
 <div class="main">
 	<div class="container">
 		<h1>Shopping cart</h1>
-		<div *ngIf="cart && cart.items.length > 0; else cartEmpty" class="items-checkout">
+		<div *ngIf="cart$ && cart$.items.length > 0; else cartEmpty" class="items-checkout">
 			<div class="items">
 				<hr />
-				<div *ngFor="let item of cart.items" class="cart-item">
+				<div *ngFor="let item of cart$.items" class="cart-item">
 					<div>
 						<b> {{ item.productName }} </b>
 					</div>
@@ -14,11 +14,23 @@
 					</div>
 				</div>
 			</div>
+
 			<div class="checkout">
+				<label for="coupon">Enter Coupon Code:</label>
+				<div style="display: flex; align-items: center; gap: 10px;">
+					<input
+						type="text"
+						id="coupon"
+						[(ngModel)]="couponCode"
+						placeholder="Enter your code"
+					/>
+					<button type="button" class="apply-coupon-button" (click)="applyCoupon()">Apply</button>
+				</div>
 				<h3>Total price:</h3>
 				<h2>{{ totalAdventureCoins }} AC</h2>
 				<button type="button" class="checkout-button" (click)="goToCheckout()">Checkout</button>
 			</div>
+			
 		</div>
 		<ng-template #cartEmpty>
 			<h3>Shopping cart empty</h3>

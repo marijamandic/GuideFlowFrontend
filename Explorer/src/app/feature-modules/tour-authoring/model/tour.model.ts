@@ -5,7 +5,7 @@ import { TourReview } from "./tourReview";
 import { TransportDuration } from "./transportDuration.model";
 
 export interface Tour {
-    id?: number;
+    id: number;
     authorId: number;
     name: string;
     description: string;
@@ -24,7 +24,8 @@ export interface Tour {
 export enum TourStatus {
     Draft = 0,
     Published = 1,
-    Archived = 2
+    Archived = 2,
+    Deleted = 3
 }
 
 export enum Level {
