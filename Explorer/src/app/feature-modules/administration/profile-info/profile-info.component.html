@@ -55,11 +55,11 @@
           placeholder="Enter biography"
         ></textarea>
       </div>
-      <div *ngIf="tourist">
-        <p *ngIf="tourist.xp">Xp: {{tourist.xp}}</p>
+      <div *ngIf="tourist?.role===2">
+        <p>Xp: {{tourist?.xp}}</p>
       </div>
-      <div *ngIf="tourist">
-        <p *ngIf="tourist.level">Level: {{tourist.level}}</p>
+      <div *ngIf="tourist?.role===2">
+        <p>Level {{tourist?.level}}</p>
       </div>
       <!-- Image Upload -->
       <div *ngIf="isEditMode" class="profile-row">
