@@ -121,6 +121,7 @@ const routes: Routes = [
 
   // ## Encounter
   { path: 'encounters', component: EncounterComponent},
+  {path: 'encounters/:encounterExecutionId/:tourExecutionId' , component:EncounterComponent},
   { path: 'encounter-add', component: EncounterFormComponent },
   { path: 'encounter-update/:id', component: EncounterFormComponent },
   { path: 'author-add-encounter/:id/:tourId', component: AddEncounterComponent},
