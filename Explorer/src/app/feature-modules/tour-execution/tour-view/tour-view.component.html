@@ -1,42 +1,69 @@
-<div class="layout">
-
-<div class="filter-container">
-  <h3>Filter by:</h3>
-
-  <div class="slider-container">
-    <label for="level">Level</label>
-    <input type="range" id="level" name="level" min="0" max="2" [(ngModel)]="ts.level" class="slider"/>
+<div class="main-container">
+  <!-- Full-width Search Bar -->
+  <div class="search-bar">
+    <input type="text" placeholder="Search tours..." />
+    <i class="fa-solid fa-caret-down"></i>
   </div>
 
-  <div class="slider-container" *ngIf="ts.transportRatings.length > 2">
-    <label for="car">Car</label>
-    <input type="range" id="car" name="car" min="0" max="3" [(ngModel)]="ts.transportRatings[2].rating" class="slider"/>
-  </div>
-  
+  <!-- Main Content -->
+  <div class="content-container">
+    <!-- Filters Section -->
+    <div class="filter-container">
+      <h3>Filter by:</h3>
+      <div class="slider-container">
+        <label for="level">Level</label>
+        <input type="range" id="level" name="level" min="0" max="2" [(ngModel)]="ts.level" />
+      </div>
+      <div class="slider-container" *ngIf="ts.transportRatings.length > 2">
+        <label for="car">Car</label>
+        <input type="range" id="car" name="car" min="0" max="3" [(ngModel)]="ts.transportRatings[2].rating" />
+      </div>
+      <div class="slider-container">
+        <label for="boat">Boat</label>
+        <input type="range" id="boat" name="boat" min="0" max="3" [(ngModel)]="ts.transportRatings[3].rating" />
+      </div>
+      <div class="slider-container">
+        <label for="walk">Walk</label>
+        <input type="range" id="walk" name="walk" min="0" max="3" [(ngModel)]="ts.transportRatings[0].rating" />
+      </div>
+      <div class="slider-container">
+        <label for="bike">Bike</label>
+        <input type="range" id="bike" name="bike" min="0" max="3" [(ngModel)]="ts.transportRatings[1].rating" />
+      </div>
+      <div class="tags-container">
+        <label for="tagsInput">Tags</label>
+        <textarea [(ngModel)]="tagsInputValue" id="tagsInput" placeholder="Enter tags separated by commas"></textarea>
+      </div>
+      <div class="button-container">
+        <button id="reset" (click)="deleteTourSpecification()" class="cta-button">Reset</button>
+        <button id="apply" (click)="applyChanges()" class="cta-button">Apply</button>
+      </div>
+    </div>
 
-  <div class="slider-container">
-    <label for="boat">Boat</label>
-    <input type="range" id="boat" name="boat" min="0" max="3" [(ngModel)]="ts.transportRatings[3].rating" class="slider"/>
-  </div>
-
-  <div class="slider-container">
-    <label for="walk">Walk</label>
-    <input type="range" id="walk" name="walk" min="0" max="3" [(ngModel)]="ts.transportRatings[0].rating" class="slider"/>
-  </div>
-
-  <div class="slider-container">
-    <label for="bike">Bike</label>
-    <input type="range" id="bike" name="bike" min="0" max="3" [(ngModel)]="ts.transportRatings[1].rating" class="slider"/>
-  </div>
-
-  <div class="tags-container">
-    <label for="tagsInput">Tags</label>
-    <textarea [(ngModel)]="tagsInputValue" type="text" id="tagsInput" placeholder="Enter tags separated by comma"></textarea>
-  </div>
-
-  <div class="button-container">
-    <button id="reset" class="button" (click)="deleteTourSpecification()">Reset</button>
-    <button id="apply" class="button" (click)="applyChanges()">Apply</button>
+    <!-- Tour Cards Section -->
+    <div class="tour-container">
+      <div class="tour-card" *ngFor="let tour of allTours">
+        <div class="tour-card-image">
+          <img src="assets/images/tour9.jpg" alt="{{ tour.name }}" />
+        </div>
+        <div class="tour-card-content">
+          <div class="tour-card-header">
+            <h2>{{ tour.name }}</h2>
+            <!--button class="kebab-menu"><i class="fa-solid fa-ellipsis-vertical"></i></button-->
+          </div>
+          <p>{{ tour.description }}</p>
+          <div class="tour-card-details">
+            <span><i class="fa-solid fa-dollar-sign"></i> 280 USD</span>
+            <span><i class="fa-solid fa-fire"></i> Easy</span>
+            <span><i class="fas fa-walking"></i> {{ tour.lengthInKm }} km</span>
+          </div>
+        </div>
+        <div class="buttons">
+          <button class="kebab-menu"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+          <button class="cta-button add-to-cart"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="sort-container">
@@ -55,59 +82,5 @@
   </div>
   
   
-  
-</div>
-
-<div class="tour-container">
-  <div *ngFor="let tour of allTours" class="tour-card">
-    <button class="top-right-button" (click)="onEditTour(tour)">⋮</button>
-      
-    <h3>{{ tour.name }}</h3>
-    <p><strong>Description:</strong> {{ tour.description }}</p>
-    <!--
-    <p><strong>Price:</strong> {{ tour.price.cost }} 
-      {{ tour.price.currency === 0 ? 'RSD' : (tour.price.currency === 1 ? 'EUR' : 'USD') }}
-    </p>
-    -->
-    <p><strong>Average Grade:</strong> {{ calculateAverageRating(tour.reviews) | number:'1.1-1' }}</p>
-    <p><strong>Length:</strong> {{ tour.lengthInKm }} km</p>
-    <p><strong>Tags:</strong> {{ tour.taggs.join(', ') }}</p>
-  
-    <div *ngIf="tour.checkpoints.length > 0" class="tour-checkpoints">
-      <h4>Checkpoints</h4>
-      <ul>
-        <li>{{ tour.checkpoints[0].name }} - {{ tour.checkpoints[0].description }}</li>
-      </ul>
-    </div>
-  
-    <div *ngIf="tour.reviews.length > 0" class="tour-reviews">
-      <h4>Reviews</h4>
-      <ul>
-        <li *ngFor="let review of tour.reviews">
-          <p><strong>Review by:</strong> {{ getUsernameByTouristId(review.touristId) }}</p>
-          <p><strong>Rating:</strong> {{ review.rating }}</p>
-          <p>{{ review.comment }}</p>
-        </li>
-      </ul>
-    </div>
-  
-
-    <div class="buy-button-container">
-      <button class="buy-button">Buy</button>
-    </div>
-  </div>
-  
-  <div class="tour-card-empty">
-    <span class="plus-icon">
-      <i class="fas fa-plus"></i> 
-    </span>
-  </div>
-
-
-</div>
-  
-  <ng-template #noTours>
-    <p>No tours available.</p>
-  </ng-template>
   
 </div>

@@ -176,15 +176,15 @@ p{
 }
 
 .card {
-	display: flex;
-	flex-direction: column;
-	background-color: var(--secondary-color);
-	border-radius: 10px;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-	transition: transform 0.3s ease, box-shadow 0.3s ease;
-	padding: 20px;
-	max-width: 300px;
-	min-width: 220px;
+	width: 100%;
+	background-color: #fff;
+    padding: 15px;
+    margin: 15px auto;
+    border-radius: 15px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
 }
 
 .card-image {
@@ -246,3 +246,24 @@ p{
 	border-radius: 10px;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
+.floating-add-button {
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
+	background-color: #84dcc6;
+	color: white;
+	padding: 15px 30px;
+	border-radius: 25px;
+	font-weight: bold;
+	box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+	cursor: pointer;
+	transition: background-color 0.3s, transform 0.3s;
+	z-index: 1000;
+	animation: pulseGlow 3s ease-in-out infinite; /* Apply pulsing animation */
+  }
+  
+  .floating-add-button:hover {
+	background-color: #66c5af;
+	transform: scale(1.1);
+  }

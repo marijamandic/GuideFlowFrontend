@@ -36,7 +36,7 @@ export class TourDetailsComponent {
   constructor(private route : ActivatedRoute, private router: Router, private tourService:TourService){}
 
   ngOnInit():void{
-    this.tourId = Number(this.route.snapshot.paramMap.get('tourId'));
+    this.tourId = Number(this.route.snapshot.paramMap.get('id'));
    
     this.getTour();
   }

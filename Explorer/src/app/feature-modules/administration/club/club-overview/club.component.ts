@@ -66,7 +66,7 @@ export class ClubComponent implements OnInit {
 
   navigateToClubInfo(clubId: number | undefined): void {
     if (clubId !== undefined) {
-      this.router.navigate([`/club-info`, clubId]);
+      this.router.navigate([`/club/`, clubId]);
     }
   }
   
