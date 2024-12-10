@@ -463,4 +463,45 @@ getReviewMessage(): string {
         }
       });
   }
+
+  onLocationChanged(location: { latitude: number; longitude: number }): void {
+    this.authService.user$.subscribe(user => {
+      this.user = user;
+  
+      if (this.user.role === 'tourist') {
+        this.tourService.getTouristById(user.id).subscribe({
+          next: (result: Tourist) => {
+            this.tourist = result;
+  
+            if (this.tourist.location) {
+              // Ažuriranje koordinata turiste
+              this.tourist.location.latitude = location.latitude;
+              this.tourist.location.longitude = location.longitude;
+  
+              // Pozivanje servisa za ažuriranje turiste u bazi
+              this.tourService.updateTourist(this.tourist).subscribe({
+                next: () => {
+                  console.log('Nove koordinate turiste: ', this.tourist.location.latitude, this.tourist.location.longitude);
+                  this.emitCoordinates();
+                },
+                error: (err: any) => {
+                  console.log('Error updating tourist:', err);
+                }
+              });
+            }
+          },
+          error: (err: any) => {
+            console.log('Error fetching tourist:', err);
+          }
+        });
+      }
+    });
+  }
+
+  emitCoordinates(): void {
+    const allCoordinates = [...this.checkpointCoordinates];
+    if (this.userMarker) {
+      allCoordinates.push(this.userMarker);
+    }
+  }
 }
