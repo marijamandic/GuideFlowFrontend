@@ -84,6 +84,14 @@
 
     <!-- Tour Cards Section -->
     <div class="tour-container">
+
+      <!--plus kartica-->
+      <div *ngIf="user && user.role ==='author' " (click) = "openModal()"class="tour-card add-tour-card" >
+        <div class="plus-icon">
+          <i class="fa-solid fa-plus"></i>
+        </div>
+      </div>
+
       <div class="tour-card" *ngFor="let tour of allTours">
         <div class="tour-card-image">
           <img src="assets/images/tour9.jpg" alt="{{ tour.name }}" />
@@ -95,9 +103,10 @@
           </div>
           <p>{{ tour.description }}</p>
           <div class="tour-card-details">
-            <span><i class="fa-solid fa-dollar-sign"></i> 280 USD</span>
-            <span><i class="fa-solid fa-fire"></i> Easy</span>
+            <span><i class="fa-solid fa-dollar-sign"></i>{{ tour.price.cost }} {{ CurrencyMap[tour.price.currency] }}</span>
+            <span><i class="fa-solid fa-fire"></i> {{ LevelMap[tour.level] }}</span>
             <span><i class="fas fa-walking"></i> {{ tour.lengthInKm }} km</span>
+            <span><i class="fas fa-tag"></i>{{tour.taggs}}</span>
           </div>
         </div>
         <div class="buttons">
@@ -131,3 +140,43 @@
   
   
 </div>
+
+<!-- Modal za kreiranje ture -->
+<div class="modal-backdrop" *ngIf="isModalOpen">
+  <div class="modal-content">
+    <h2>Create New Tour</h2>
+    <form (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" id="name" [(ngModel)]="newTour.name" name="name" required />
+      </div>
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea id="description" [(ngModel)]="newTour.description" name="description" required></textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="price">Price</label>
+          <input type="number" id="price" [(ngModel)]="newTour.price.cost" name="price" required />
+        </div>
+        <div class="form-group">
+          <label for="currency">Currency</label>
+          <input type="text" id="currency" [(ngModel)]="newTour.price.currency" name="currency" required />
+        </div>
+        <div class="form-group">
+          <label for="level">Level</label>
+          <input type="text" id="level" [(ngModel)]="newTour.level" name="level" required />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="tags">Tags</label>
+        <input type="text" id="tags" [(ngModel)]="newTour.taggs" name="tags" />
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" (click)="closeModal()">Cancel</button>
+        <button type="submit" class="btn-add">Add</button>
+      </div>
+    </form>
+  </div>
+</div>
+

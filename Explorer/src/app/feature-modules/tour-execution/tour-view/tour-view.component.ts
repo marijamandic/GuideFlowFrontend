@@ -9,7 +9,7 @@ import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { User } from 'src/app/infrastructure/auth/model/user.model';
 import { AdministrationService } from '../../administration/administration.service';
 import { Sales } from '../model/sales.model';
-import { Price } from '../../tour-authoring/model/price.model';
+import { Currency, Price } from '../../tour-authoring/model/price.model';
 
 @Component({
   selector: 'xp-tour-view',
@@ -20,14 +20,15 @@ export class TourViewComponent implements OnInit {
 
   allTours: Tour[] = [];
   tours: Tour[] = [];
-
   allUsers: User[] = [];  
   allSales: Sales[] = [];
+  newTour: Tour = this.initializeTour();
+
 
  tourSpecification: TourSpecification[] = [];
  public TransportMode = TransportMode;
  public userId: number;
- public user : User;
+ user : User;
 
   ts = {
    id: 0,
@@ -50,6 +51,8 @@ export class TourViewComponent implements OnInit {
   searchDistance: number | null = null;
   openMap: boolean = false;
   currentView: string = 'published';
+  isModalOpen = false; // Praćenje stanja modala
+
 
   constructor(
       private service: TourExecutionService,
@@ -98,6 +101,38 @@ export class TourViewComponent implements OnInit {
   onEditTour(tour: Tour): void {
     console.log('Edit clicked for tour:', tour.name);
   }  
+  
+  initializeTour(): Tour {
+    return {
+      id: 0,
+      authorId:-1,
+      name: '',
+      description: '',
+      price: { cost: 0, currency: Currency.EUR },
+      level: Level.Easy,
+      status: TourStatus.Draft,
+      lengthInKm: 0,
+      averageGrade: 0.0,
+      taggs: [],
+      checkpoints: [],
+      transportDurations: [],
+      reviews: []
+    };
+  }
+  openModal(): void {
+    this.isModalOpen = true;
+  }
+
+  closeModal(): void {
+    this.isModalOpen = false;
+  }
+
+  onSubmit(): void {
+    console.log('Nova tura:', this.newTour);
+    // Logika za dodavanje ture ili slanje podataka na backend
+    this.closeModal();
+  }
+
 
 
   getAllTours():void{
@@ -426,4 +461,17 @@ export class TourViewComponent implements OnInit {
       console.log('Please select a point on the map and enter a search distance.');
     }
   }
+
+
+  CurrencyMap = {
+    0: 'RSD',
+    1: 'EUR',
+    2: 'USD'
+  };
+
+  LevelMap = {
+      0: 'Easy',
+      1: 'Advanced',
+      2: 'Expert'
+  };
 }

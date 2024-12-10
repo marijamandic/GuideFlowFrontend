@@ -347,3 +347,112 @@ input[type="radio"]:checked + .status-button {
   background-color: #ddd; /* Svetlo siva na hover */
 }
 
+.add-tour-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f2f2f2; /* Svetlo siva pozadina */
+  border-radius: 15px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 10px;
+  width: 100%;
+  height: 50px; /* Isto kao i ostale kartice */
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.add-tour-card:hover {
+  background-color: #e0e0e0; /* Promena boje na hover */
+}
+
+.plus-icon i {
+  font-size: 60px;
+  color: #666;
+}
+
+.plus-icon:hover i {
+  color: #333; /* Tamnija boja na hover */
+}
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: #fff;
+  border-radius: 15px;
+  padding: 20px;
+  width: 500px;
+  max-width: 90%;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+h2 {
+  margin-top: 0;
+  font-size: 24px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.form-row {
+  display: flex;
+  gap: 10px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.btn-cancel {
+  background-color: #ccc;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 15px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-cancel:hover {
+  background-color: #aaa;
+}
+
+.btn-add {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 15px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-add:hover {
+  background-color: #45a049;
+}
