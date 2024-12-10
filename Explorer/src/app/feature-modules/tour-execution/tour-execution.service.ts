@@ -114,4 +114,9 @@ export class TourExecutionService {
 		const url = `${environment.apiHost}authoring/tour/search/${latitude}/${longitude}/${distance}?page=${page}&pageSize=${pageSize}`;
 		return this.http.get<Tour[]>(url);
 	  }
+
+	changeStatus(tourId:number,status:string):Observable<Tour>{
+		return this.http.put<Tour>(environment.apiHost + 'authoring/tour/changeStatus/'+ tourId,JSON.stringify(status),
+		  { headers: { 'Content-Type': 'application/json' } })
+	}
 }

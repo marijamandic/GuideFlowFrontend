@@ -99,6 +99,7 @@ export class TourViewComponent implements OnInit {
     console.log('Edit clicked for tour:', tour.name);
   }  
 
+
   getAllTours():void{
     this.service.getAllTours().subscribe({
       next: (result: PagedResults<Tour>) => {
@@ -144,6 +145,39 @@ export class TourViewComponent implements OnInit {
       this.allTours = [...this.tours]; // Ako nema filtra, prikaži sve ture
   }
   console.log('sve ture nakon currentViewChanged', this.allTours)
+  }
+
+  archiveTour(event: MouseEvent,tour:Tour):void{
+    event.stopPropagation();
+    if(tour.id !== null && tour.id !== undefined){
+      this.service.changeStatus(tour.id,"Archive").subscribe({
+        next: () => {
+          this.getAllTours();
+        },
+        error: (err: any)=>{
+          console.log(err)
+        }
+      })
+    }
+  }
+
+  onPublish(event: MouseEvent,tour:Tour): void {
+    event.stopPropagation();
+    if(tour.id !== null && tour.id !== undefined){
+      console.log(tour.id);
+      this.service.changeStatus(tour.id,"Publish").subscribe({
+        next: () => {
+          console.log("promenjeno");
+          this.getAllTours();
+        },
+        error: (err: any)=>{
+          if(err.status===400){
+            alert("You can't publish this tour!");
+          }
+          console.log(err)
+        }
+      })
+    }
   }
 
   getUsernameByTouristId(touristId: number): string {
