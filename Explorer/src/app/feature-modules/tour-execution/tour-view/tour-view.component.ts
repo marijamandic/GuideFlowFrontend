@@ -23,8 +23,10 @@ export class TourViewComponent implements OnInit {
   allSales: Sales[] = [];
 
  tourSpecification: TourSpecification[] = [];
-  public TransportMode = TransportMode;
+ public TransportMode = TransportMode;
  public userId: number;
+ public user : User;
+
   ts = {
    id: 0,
    userId: 0,
@@ -40,10 +42,21 @@ export class TourViewComponent implements OnInit {
   levels = Level;
   tagsInputValue: string = '';
   currentTourSpecId: number | undefined;
+  initialMarkers: L.LatLng[] = [];
+  latitude: number | null = null;
+  longitude: number | null = null;
+  searchDistance: number | null = null;
+  openMap: boolean = false;
 
-  constructor(private service: TourExecutionService, authService: AuthService, private cdr: ChangeDetectorRef, private adminService: AdministrationService) {
+  constructor(
+      private service: TourExecutionService,
+      authService: AuthService,
+      private cdr: ChangeDetectorRef,
+      private adminService: AdministrationService) 
+      {
     authService.user$.subscribe((user: User) => {
       this.userId = user.id;
+      this.user = user;
     })
    }
 
@@ -93,6 +106,14 @@ export class TourViewComponent implements OnInit {
     console.log('Edit clicked for tour:', tour.name);
   }  
 
+  changeOpenMap():void{
+    if(this.openMap){
+      this.openMap = false;
+    }else{
+      this.openMap = true;
+    }
+    
+  }
   getUsernameByTouristId(touristId: number): string {
     const user = this.allUsers.find(u => u.id === touristId);
     return user ? user.username : 'Unknown User';  
@@ -103,7 +124,7 @@ export class TourViewComponent implements OnInit {
     const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
     return totalRating / reviews.length;
   }
-
+//**FILTER* */
   getFilteredTours(tourSpecification : TourSpecification): Tour[] {
     return this.allTours.filter(tour => {
       const matchesTags = tourSpecification.taggs.some(tag => tour.taggs.includes(tag));
@@ -124,6 +145,7 @@ export class TourViewComponent implements OnInit {
     });
   }
 
+  //**TOUR SPECIFICATION* */
   async deleteTourSpecification(): Promise<void> {
     if (!this.currentTourSpecId) {
       console.error("Invalid tourSpecification id, cannot delete.");
@@ -248,7 +270,7 @@ export class TourViewComponent implements OnInit {
       console.error('Error applying changes:', error);
     }
   }
-  
+  //**SORTING***
   sortAscending(): void {
     this.allTours.sort((a, b) => {
       const aPrice = this.getCostFromPrice(a.price);
@@ -309,4 +331,33 @@ export class TourViewComponent implements OnInit {
     return price?.cost ?? 0;
   }
   
+
+  //**SEARCH BY MAP* */
+  onCoordinatesSelected(coordinates: { latitude: number; longitude: number }): void {
+    console.log('Coordinates selected:', coordinates);
+    this.latitude = coordinates.latitude;
+    this.longitude = coordinates.longitude;
+    this.searchTours();
+  }
+  onMarkerAdded(latlng: L.LatLng): void {
+    console.log('New marker added at:', latlng);
+  }
+  onMapReset(): void {
+    console.log('Map reset');
+  }
+
+  searchTours(): void {
+    if (this.latitude !== null && this.longitude !== null && this.searchDistance !== null) {
+      this.service.searchTours(this.latitude, this.longitude, this.searchDistance).subscribe({
+        next: (tours: Tour[]) => {
+          this.allTours = tours;
+        },
+        error: (err: any) => {
+          console.error('Error fetching search results:', err);
+        }
+      });
+    } else {
+      console.log('Please select a point on the map and enter a search distance.');
+    }
+  }
 }

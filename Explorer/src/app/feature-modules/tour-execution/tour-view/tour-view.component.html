@@ -1,9 +1,36 @@
 <div class="main-container">
   <!-- Full-width Search Bar -->
-  <div class="search-bar">
-    <input type="text" placeholder="Search tours..." />
-    <i class="fa-solid fa-caret-down"></i>
+   
+  <div class="search-toggle-container">
+    <div class="search-bar">
+      <input type="text" placeholder="Search tours..." />
+      <i class="fa-solid fa-caret-down" (click)="changeOpenMap()"></i>
+    </div>
+  
+    <div class="toggle-switch">
+      <input type="radio" id="regular" name="toggle" checked />
+      <label for="regular" class="toggle-option">Regular</label>
+      
+      <input type="radio" id="bundles" name="toggle" />
+      <label for="bundles" class="toggle-option">Bundles</label>
+    </div>
   </div>
+  
+  <!--Search map-->
+  <div *ngIf="user && user.role === 'tourist' && openMap">
+      <xp-map [allowMultipleMarkers]="false"
+      [initialMarkers]="initialMarkers"
+      (markerAdded)="onMarkerAdded($event)"
+      (mapReset)="onMapReset()"
+      (coordinatesSelected)="onCoordinatesSelected($event)">
+      </xp-map>
+    <div class="search-container">
+      <input type="text" [(ngModel)]="searchDistance" placeholder="Unesite distancu od tačke" />
+      <button class="button" (click)="searchTours()" color="primary">Pretraži ture</button>
+    </div>
+  </div>
+  
+  
 
   <!-- Main Content -->
   <div class="content-container">

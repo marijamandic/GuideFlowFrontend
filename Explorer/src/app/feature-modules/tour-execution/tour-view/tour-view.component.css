@@ -25,8 +25,11 @@
   box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
 }
 
-.slider-container, .tags-container, .button-container {
+.slider-container, .button-container {
   margin-bottom: 20px;
+}
+.tags-container{
+  margin-right: 15px;
 }
 
 .slider-container label,
@@ -56,6 +59,16 @@ textarea {
 }
 
 /* Full-width Search Bar */
+
+/* Glavni kontejner koji drži search bar i toggle dugme */
+.search-toggle-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  width: 100%;
+}
+
+
 .search-bar {
   display: flex;
   align-items: center;
@@ -253,4 +266,44 @@ input[type="range"]::-ms-thumb {
 .sort-buttons {
   display: flex;
   gap: 0.5rem;
+}
+
+.toggle-switch {
+  display: inline-flex;
+  align-items: center;
+  background-color: #ffffff; /* Bela boja pozadine */
+  border-radius: 25px;
+  position: relative;
+  width: 200px; /* Širina dugmeta */
+  overflow: hidden; /* Sakriva višak ako ima preklapanja */
+  border: 2px solid #e0e0e0; /* Lagani okvir */
+}
+
+.toggle-option {
+  flex: 1;
+  text-align: center;
+  color: #333;
+  cursor: pointer;
+  padding: 10px 0;
+  border-radius: 25px;
+  transition: all 0.3s ease;
+  margin: 0 -10px; /* Negativna margina za preklapanje */
+  z-index: 1;
+  background-color: #ffffff; /* Belo za neaktivno dugme */
+}
+
+.toggle-option:hover {
+  background-color: #f7f7f7; /* Svetlo siva kada se prelazi mišem */
+}
+
+input[type="radio"] {
+  display: none;
+}
+
+input[type="radio"]:checked + label {
+  background-color: #a5e7dc; /* Svetlo zelena boja za aktivnu opciju */
+  color: white;
+  z-index: 2; /* Aktivno dugme je iznad ostalih */
+  margin: 0; /* Resetujemo marginu za aktivno dugme */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Mali efekat senke */
 }
