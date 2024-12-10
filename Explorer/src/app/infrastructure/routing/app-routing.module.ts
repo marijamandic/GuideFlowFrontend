@@ -23,13 +23,11 @@ import { AllAppRatingsComponent } from 'src/app/feature-modules/administration/a
 import { AccountComponent } from 'src/app/feature-modules/administration/account/account.component';
 import { ClubFormComponent } from 'src/app/feature-modules/administration/club/club-form/club-form.component';
 import { ClubInfoComponent } from 'src/app/feature-modules/administration/club/club-info/club-info.component';
-import { TourViewComponent } from 'src/app/feature-modules/tour-execution/tour-view/tour-view.component';
 import { ProblemComponent } from 'src/app/feature-modules/tour-authoring/problem/problem.component';
 import { NotificationsComponent } from 'src/app/feature-modules/layout/notifications/notifications.component';
 import { ProblemStatusComponent } from 'src/app/feature-modules/tour-execution/problem-status/problem-status.component';
 import { AdminProblemComponent } from 'src/app/feature-modules/administration/admin-problem/admin-problem.component';
 import { PublicPointRequestsComponent } from 'src/app/feature-modules/tour-authoring/public-point-requests/public-point-requests.component';
-import { TourReviewFormComponent } from 'src/app/feature-modules/tour-execution/tour-review-form/tour-review-form.component';
 import { TourReviewComponent } from 'src/app/feature-modules/tour-execution/tour-review/tour-review.component';
 import { TourPreviewComponent } from 'src/app/feature-modules/marketplace/tour-preview/tour-preview.component';
 import { ShoppingCartComponent } from 'src/app/feature-modules/marketplace/shopping-cart/shopping-cart.component';
@@ -49,65 +47,94 @@ import { AddEncounterComponent } from 'src/app/feature-modules/tour-authoring/ad
 import { ExecutionComponent } from 'src/app/feature-modules/encounter-execution/execution/execution.component';
 import { EncounterExecutionMapComponent } from 'src/app/feature-modules/encounter-execution/encounter-execution-map/encounter-execution-map.component';
 import { TourMoreDetailsComponent } from 'src/app/feature-modules/marketplace/tour-more-details/tour-more-details.component';
+import { TourViewComponent } from 'src/app/feature-modules/tour-execution/tour-view/tour-view.component';
 
 const routes: Routes = [
-  { path: 'home', component: HomeComponent },
+
+  // ### Account stuff
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegistrationComponent },
-  { path: 'equipment', component: EquipmentComponent, canActivate: [AuthGuard] },
-  { path: 'profileInfo', component: ProfileInfoComponent },
-  { path: 'equipmentManagement', component: EquipmentManagementComponent },
-  //{ path: 'problem', component: ProblemComponent },
-  { path: 'report', component: ReportProblemComponent },
-  { path: 'club', component: ClubComponent, canActivate: [AuthGuard] },
-  { path: 'club-info/:id', component: ClubInfoComponent, canActivate: [AuthGuard] },
-  { path: 'club-dashboard/:id', component: ClubDashboardComponent, canActivate: [AuthGuard] },
-  { path: 'new-club', component: ClubFormComponent, canActivate: [AuthGuard]},
-  { path: 'blog', component: PostComponent, canActivate: [AuthGuard] },
-  { path: 'blog/:id', component: PostInfoComponent, canActivate: [AuthGuard] },
-  { path: 'comment', component: CommentComponent },
-  { path: 'edit-post/:id', component: CreateBlogComponent },
-  { path: 'create-blog', component: CreateBlogComponent },
-  { path: 'tourObjects', component: TourObjectComponent, canActivate: [AuthGuard] },
-  { path: 'checkpoints/:tourId', component: CheckpointListComponent },
-  { path: 'tour-execution/:id', component: TourExecutionDetailsComponent},
-  { path: 'tour', component: TourComponent },
-  { path: 'tourEquipment/:id', component: TourEquipmentComponent },
-  { path: 'ratingTheApp', component: RatingTheAppComponent },
-  { path: 'allAppRatings', component: AllAppRatingsComponent },
-  { path: 'purchased', component: PurchasedToursComponent },
+  { path: 'profile', component: ProfileInfoComponent }, // svaka čast onome ko je ovo radio je nije nigde bilo bindovano
   { path: 'account', component: AccountComponent},
-  { path: 'tourView', component: TourViewComponent },
+
+
+  // Admin
+  { path: 'admin-dashboard', component: AccountComponent, canActivate: [AuthGuard] }, // Ovo je buduci admin dashboard
+  { path: 'pending', component: PublicPointRequestsComponent }, // ovo treba spojiti sa admin-dashboard, za prihvatane tour objecta
+
+
+  // ### Misc
+  { path: 'home', component: HomeComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: 'pending', component: PublicPointRequestsComponent },
-  { path: 'tourReview/:tourId/:touristId', component: TourReviewComponent },
-  { path: 'author/notifications', component: PublicPointNotificationsComponent },
-  { path: 'position-sim', component: PositionsimComponent },
+  { path: 'allAppRatings', component: AllAppRatingsComponent },
+  { path: 'position-sim', component: PositionsimComponent},
+  { path: 'position-sim/:tourExecutionId', component: PositionsimComponent },
+  { path: 'position-sim/:tourExecutionId/:encounterExecutionId', component: PositionsimComponent },
+
+  // ### TOURS 
+  // --- /all-tours pregled svih tura (za s ve role), dodavanje tura, search tura
+  { path: 'all-tours', component: TourViewComponent },  
+  { path: 'toursForAuthor', component: TourComponent }, // ovo treba spojiti u ovo iznad
+  { path: 'purchased', component: PurchasedToursComponent }, // ovo treba napraviti da izgleda kao tours samo sto se druge ucitavaju
+  { path: 'tourBundlePreview/:id', component: TourBundlePreviewComponent}, // takođe treba spojiti u ono gore
+  { path: 'tourBundleManagement', component: TourBundleComponent}, // isto u ovo gore
+
+  // --- tour/:id pregled pojedinacne ture, dodavanje checkpointa, reviews, equpimentm, redirect na edit ture?
+  { path: 'tour/:id', component:TourDetailsComponent, children:[{path:'checkpoints/:tourId', component:CheckpointListComponent}]},
+  { path: 'checkpoints/:tourId', component: CheckpointListComponent },  // ovo spajamo u tours/:id
+  { path: 'tour-review/:tourId/:touristId', component: TourReviewComponent }, // ovo isto spajamo u tours/:id
+  { path: 'tour-more-details/:id',component:TourMoreDetailsComponent},
+
+  // --- /tour-execution/:id 
+  { path: 'tour-execution/:id', component: TourExecutionDetailsComponent}, // blizanac, blizanac 
+
+  // -- ne gde ovo uvezati u frontu
+  { path: 'tour-preview/:id', component: TourPreviewComponent},
+  { path: 'tour-objects', component: TourObjectComponent, canActivate: [AuthGuard] },
+  { path: 'tourExecutionMap', component: TourExecutionMap},
+  
+  // --- ne znam šta spada u šta, treba mi pomoc 
+  { path: 'tour-equipment/:id', component: TourEquipmentComponent },
+  { path: 'equipment', component: EquipmentComponent, canActivate: [AuthGuard] },
+  { path: 'equipment-management', component: EquipmentManagementComponent },
+
+  // --- report
 	{ path: 'author-problems', component: ProblemComponent },
-	{ path: 'notifications', component: NotificationsComponent },
 	{ path: 'tourist-problems', component: ProblemStatusComponent },
 	{ path: 'admin-problems', component: AdminProblemComponent },
-	{ path: '', redirectTo: '/home', pathMatch: 'full' },
-  {path: 'tourPreview/:id', component: TourPreviewComponent},
-  {path: 'shoppingCart', component: ShoppingCartComponent},
-  {path: 'tourBundleManagement', component: TourBundleComponent},
-  { path: 'tourBundlePreview/:id', component: TourBundlePreviewComponent},
-  { path: 'coupons', component: CouponComponent},
-  { path: 'tourBundlePreview/:id', component: TourBundlePreviewComponent},
-  {path: 'tourExecutionMap', component: TourExecutionMap},
-  {path: 'tourDetails/:tourId', component:TourDetailsComponent, children:[{path:'checkpoints/:tourId', component:CheckpointListComponent}]},
-  {path: 'encounters', component: EncounterComponent},
+
+
+  // ### Club
+  { path: 'club', component: ClubComponent, canActivate: [AuthGuard] },
+  { path: 'club/:id', component: ClubInfoComponent, canActivate: [AuthGuard] },
+  { path: 'club-dashboard/:id', component: ClubDashboardComponent, canActivate: [AuthGuard] },
+  { path: 'new-club', component: ClubFormComponent, canActivate: [AuthGuard]},
+  { path: 'comment', component: CommentComponent },
+
+
+  // ## Blog
+  { path: 'blog', component: PostComponent, canActivate: [AuthGuard] },
+  { path: 'blog/:id', component: PostInfoComponent, canActivate: [AuthGuard] },
+  { path: 'edit-post/:id', component: CreateBlogComponent },
+  { path: 'create-blog', component: CreateBlogComponent },
+
+
+  // ## Encounter
+  { path: 'encounters', component: EncounterComponent},
   { path: 'encounter-add', component: EncounterFormComponent },
   { path: 'encounter-update/:id', component: EncounterFormComponent },
   { path: 'author-add-encounter/:id/:tourId', component: AddEncounterComponent},
   { path: 'encounter-execution/:id', component: ExecutionComponent},
   { path: 'encounter-execution/:id/:tourExecutionId', component: ExecutionComponent},
-  { path: 'position-sim', component: PositionsimComponent},
-  { path: 'position-sim/:tourExecutionId', component: PositionsimComponent },
-  { path: 'position-sim/:tourExecutionId/:encounterExecutionId', component: PositionsimComponent },
-  {path: 'encounterMap', component: EncounterExecutionMapComponent},
-  { path: 'tour-more-details/:id',component:TourMoreDetailsComponent}
+  { path: 'encounterMap', component: EncounterExecutionMapComponent},
 
+  // ## Payment
+  { path: 'shoppingCart', component: ShoppingCartComponent},
+  { path: 'coupons', component: CouponComponent},
+
+  // ### Notification
+  { path: 'notifications', component: NotificationsComponent }, // ne znam da li je ikada radilo?
+  { path: 'author-notifications', component: PublicPointNotificationsComponent }, // ne znam (menjati)
 ];
 
 @NgModule({
