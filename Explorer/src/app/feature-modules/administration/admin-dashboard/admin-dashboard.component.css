@@ -26,7 +26,7 @@ p{
 /* --- Card thingy I guess --- */
 .user-list-card {
   background-color: #fff;
-  border-radius: 10px;
+  border-radius: 15px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 20px;
   margin: 20px auto;
@@ -39,7 +39,7 @@ p{
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 
 .search-input {
@@ -52,7 +52,7 @@ p{
 .sort-dropdown {
   padding: 8px;
   border: 1px solid white;
-  border-radius: 5px;
+  border-radius: 15px;
 }
 
 /* --- TABLE --- */
@@ -101,6 +101,21 @@ p{
   background-color: #f8d7da;
 }
 
+.status-unresolved {
+  background-color: #fdffca; /* Yellow for unresolved */
+  color: #fbb13c;
+}
+
+.status-overdue {
+  color: #dc3545;
+  background-color: #f8d7da;
+}
+
+.status-resolved {
+  color: #28a745;
+  background-color: #d4edda;
+}
+
 .status-badge {
   border-radius: 15px;
   text-align: center;
@@ -136,10 +151,53 @@ p{
   color: #222222;
 }
 
+/* -- PORBLEMS --*/
+.problem-list-card {
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin: 20px auto;
+  width: 100%;
+  max-width: 1400px;
+  color: #333;
+}
+
+.problem-table th,
+.problem-table td {
+  text-align: left;
+  padding: 8px 10px;
+}
+
+.status-resolved {
+  color: #28a745;
+}
+
+.status-unresolved {
+  color: #dc3545;
+}
+
+.problem-card-header{
+  margin-bottom: 20px;
+}
+
+
+/* -- SEARCH AND SORT THINGY --*/
+.search-input {
+  flex: 1; 
+  width: 100%;
+  max-width: 500px; 
+  margin-bottom: 20px;
+}
+
+.sort-dropdown {
+  margin-left: auto;
+  align-self: right;
+}
+
 /* -- MODAL --*/
-/* Modal Overlay */
 .modal {
-  display: none; /* Hidden by default */
+  display: none; 
   position: fixed;
   top: 0;
   left: 0;

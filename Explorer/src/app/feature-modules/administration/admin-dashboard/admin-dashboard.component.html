@@ -1,12 +1,14 @@
 <div class="user-list-card">
   <div class="user-card-header">
     <h2>Users</h2>
+  </div>
+  <div class="user-card-controls">
     <input type="text" placeholder="Search" class="search-input">
     <select class="sort-dropdown">
       <option value="latest">Sort by: Latest</option>
       <option value="oldest">Sort by: Oldest</option>
     </select>
-  </div>
+  </div>  
   <table class="user-table">
     <thead>
       <tr>
@@ -18,7 +20,7 @@
         <th>Status</th>
         <th>Actions</th>
       </tr>
-    </thead>  
+    </thead>
     <tbody>
       <tr *ngFor="let user of users">
         <td>{{ user.id }}</td>
@@ -32,8 +34,8 @@
           </button>
         </td>        
         <td class="actions">
-          <button class="action-btn table-btn "><i class="fa-solid fa-user"></i></button>
-          <button class="action-btn table-btn " (click)="ToggleAcountActivty(user)"><i class="fa-solid fa-ban"></i></button>
+          <button class="action-btn table-btn"><i class="fa-solid fa-user"></i></button>
+          <button class="action-btn table-btn" (click)="ToggleAcountActivty(user)"><i class="fa-solid fa-ban"></i></button>
           <button *ngIf="user.role === UserRole.Tourist" class="action-btn table-btn" (click)="toggleMoneyInput(user)">
             <i class="fa-solid fa-wallet"></i>
           </button>
@@ -41,28 +43,69 @@
       </tr>
     </tbody>
   </table>
+</div>
 
-  <div class="modal" *ngIf="selectedAccountId !== null">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2>Add adventure coins <i class="fa-solid fa-coins"></i></h2>
-        <button class="close-btn" (click)="closeModal()">&times;</button>
-      </div>
-      <div class="modal-body">
-        <p>Adding to account: <strong>@{{ getUsername(selectedAccountId) }}</strong></p>
-        <input
-          type="number"
-          [(ngModel)]="moneyInput"
-          placeholder="Enter amount"
-          class="input-money"
-          min="1"
-        />
-      </div>
-      <div class="modal-footer">
-        <button class="cta-button" (click)="depositMoney()">Confirm transaction</button>
-      </div>
+<!-- Problems Section -->
+<div class="problem-list-card">
+  <div class="problem-card-header">
+    <h2>Problems</h2>
+  </div>
+  <div class="problem-card-controls">
+    <input type="text" placeholder="Search" class="search-input">
+    <select class="sort-dropdown">
+      <option value="latest">Sort by: Latest</option>
+      <option value="oldest">Sort by: Oldest</option>
+    </select>
+  </div>  
+  <table class="problem-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Tourist</th>
+        <th>Tour</th>
+        <th>Category</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let problem of problems">
+        <td>{{ problem.id }}</td>
+        <td>{{ getTouristName(problem.userId) }}</td>
+        <td>{{ getTourName(problem.tourId) }}</td>
+        <td>{{ getCategoryName(problem.details.category) }}</td>
+        <td>
+          <button class="status-badge" 
+                  [ngClass]="{
+                    'status-unresolved': getProblemStatus(problem) === 'Unresolved',
+                    'status-overdue': getProblemStatus(problem) === 'Overdue',
+                    'status-resolved': getProblemStatus(problem) === 'Resolved'
+                  }">
+            {{ getProblemStatus(problem) }}
+          </button>
+        </td>          
+      </tr>        
+    </tbody>
+  </table>
+</div>
+  
+<div class="modal" *ngIf="selectedAccountId !== null">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Add adventure coins <i class="fa-solid fa-coins"></i></h2>
+      <button class="close-btn" (click)="closeModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p>Adding to account: <strong>@{{ getUsername(selectedAccountId) }}</strong></p>
+      <input
+        type="number"
+        [(ngModel)]="moneyInput"
+        placeholder="Enter amount"
+        class="input-money"
+        min="1"
+      />
+    </div>
+    <div class="modal-footer">
+      <button class="cta-button" (click)="depositMoney()">Confirm transaction</button>
     </div>
   </div>
-  
-
 </div>
