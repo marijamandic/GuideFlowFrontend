@@ -27,7 +27,7 @@
         <td>{{ user.username }}</td>
         <td>{{ user.email }}</td>
         <td>{{ getRoleLabel(user.role) }}</td>
-        <td>{{ user.lastOnline }}</td>
+        <td>{{ user.lastLogout }}</td>
         <td [ngClass]="{'status-active': user.isActive, 'status-inactive': !user.isActive}" >
           <button class="status-badge">
             {{ user.isActive ? 'Active' : 'Inactive' }}

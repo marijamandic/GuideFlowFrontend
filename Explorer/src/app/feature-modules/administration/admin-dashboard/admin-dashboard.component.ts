@@ -55,7 +55,7 @@ users: Account[] = []
      this.service.getAccounts().subscribe({
       next: (result: Array<Account>) => {
       this.users = result
-      // console.log(result);
+      console.log(result);
       },
       error: (err: any) => {
         console.log(err)
@@ -129,6 +129,7 @@ users: Account[] = []
       next: (result: PagedResults<Problem>) => {
         this.problems = result.results;
         this.fetchAllTours();
+        console.log(result);
       },
       error: (err: any) => {
         console.error('Error fetching problems:', err);
