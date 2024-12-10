@@ -13,6 +13,7 @@ import { TourBundle } from '../model/tour-bundle.model';
 import { ShoppingCartService } from '../shopping-cart.service';
 import { convertEnumToString } from 'src/app/shared/utils/enumToStringConverter';
 import { TourDetails } from '../model/shopping-carts/tour-details';
+import { PagedResults } from 'src/app/shared/model/paged-results.model';
 
 @Component({
 	selector: 'xp-shopping-cart',
@@ -148,8 +149,8 @@ export class ShoppingCartComponent implements OnInit {
 			next: () => {
 				console.log(`Item ${item.id} removed from cart.`);
 				this.shoppingCartService.addToCart(itemInput).subscribe({
-					next: (result: Item[]) => {
-						console.log('Discount applied and item updated in cart:', result);
+					next: (result: PagedResults<Item>) => {
+						console.log('Discount applied and item updated in cart:', result.results);
 						this.loadShoppingCart();
 						this.calculateAc(this.cart$.items);
 					},

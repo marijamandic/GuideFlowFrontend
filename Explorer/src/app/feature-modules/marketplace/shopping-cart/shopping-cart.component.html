@@ -8,8 +8,11 @@
 			<button type="button" class="header-buttons" (click)="goToCheckout()">Checkout</button>
 		</div>
 		<div class="coupon-bar">
-			<input type="text" placeholder="Enter coupon code" />
-			<button type="button" class="header-buttons" (click)="applyCoupon()">Apply</button>
+			<h2>Enter coupon code</h2>
+			<div class="coupon-bar-input">
+				<input type="text" placeholder="Enter coupon code" />
+				<button type="button" class="header-buttons" (click)="applyCoupon()">Apply</button>
+			</div>
 		</div>
 		<ng-container *ngIf="cart$ && cart$.items.length > 0; else cartEmpty">
 			<ng-container *ngFor="let item of cart$.items">
