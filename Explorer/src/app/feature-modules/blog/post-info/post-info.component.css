@@ -184,7 +184,7 @@
     background-color: #e60000; 
 }
 
-.vote-container, .interaction-container {
+.vote-container, .interaction-container,.share-container {
     display: inline-flex;
     align-items: center;
     border: none;
@@ -194,7 +194,7 @@
     margin-right: 15px;
   }
   
-  .vote-button, .interaction-button {
+  .vote-button, .interaction-button,.share-button {
     font-size: 1.2em;
     color: white; 
     background: none;
@@ -204,11 +204,11 @@
     padding: 5px;
   }
   
-  .vote-button:hover, .interaction-button:hover {
+  .vote-button:hover, .interaction-button:hover,.share-button:hover {
     box-shadow: white 0px 7px 29px 0px;
   }
   
-  .vote-button:focus, .interaction-button:focus {
+  .vote-button:focus, .interaction-button:focus,.share-button:focus {
     outline: none;
   }
   

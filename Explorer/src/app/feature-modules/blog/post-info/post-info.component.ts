@@ -32,6 +32,8 @@ export class PostInfoComponent implements OnInit {
   ratingCounts: { [postId: number]: { positive: number; negative: number } } = {};
 
   engagementStatus: number | null = null;
+  isShareModalOpen: boolean = false;
+  IdOfPost : number = 0;
 
 
   constructor(
@@ -50,6 +52,8 @@ export class PostInfoComponent implements OnInit {
 
   ngOnInit(): void {
     this.postId = this.route.snapshot.paramMap.get('id');
+    const id = this.route.snapshot.paramMap.get('id');
+    this.IdOfPost = id ? +id : 0; // Ako id nije prisutan, dodeli vrednost 0
     this.authService.user$.subscribe(user => {
       this.user = user;
       this.loggedInUserId = user.id;
@@ -366,6 +370,34 @@ export class PostInfoComponent implements OnInit {
         return 'Inactive';
     }
   }  
+  toogleShareModal() {
+    this.isShareModalOpen = true;
+  }
   
+  closeShareModal() {
+    this.isShareModalOpen = false;
+  }
+  handleShareSubmit(description: string) {
+    console.log('Description submitted:', description);
+    
+    // Parsiranje stringa Description: <opis>, FollowerId: <id>
+    const descriptionMatch = description.match(/Description: (.*?), FollowerId: (\d+)/);
+    
+    if (descriptionMatch) {
+      const parsedDescription = descriptionMatch[1];  // Deo nakon "Description: "
+      const followerId = parseInt(descriptionMatch[2], 10);  // FollowerId nakon "FollowerId: "
+      
+      console.log('OPIS:', parsedDescription);
+      console.log('ID OD FOLLOWERA:', followerId);
+      
+      // Ovde pozovi funkciju koja salje podatke na backend KOZZICCUUUUU LEGENDO
+      //MOZDA BAS I NIJE NAJBOLJI NACIN DA SE PROSLEDJUJE SVE KAO STRING PA DA SE ONDA PARSIRA
+      //ALI LAKSE JE OVAKO
+    } else {
+      console.log('Nesto nije dobro sa parsiranjem');
+    }
+  
+    this.closeShareModal();
+  }
 }
 
