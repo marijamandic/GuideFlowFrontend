@@ -1,3 +1,5 @@
+import { Follower } from "./follower.model";
+
 export interface ProfileInfo{
     id?: number,
     userId: number,
@@ -7,10 +9,5 @@ export interface ProfileInfo{
     imageBase64: string, 
     biography: string, 
     moto: string,
-    followers?: FollowerDto[]; // Dodato polje Followers
-}
-export interface FollowerDto {
-    followerId: number; // Samo potrebna polja
-    followerUsername: string;
-    imageUrl: string;
+    followers?: Follower[]; // Dodato polje Followers
 }

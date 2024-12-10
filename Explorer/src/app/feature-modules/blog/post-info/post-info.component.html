@@ -28,7 +28,7 @@
                   <button class="interaction-button fa fa-comment"></button>
                   <span class="interaction-count">{{ commentCount }}</span>
                 </div>
-                <div class="share-container">
+                <div *ngIf="user?.role=='tourist'" class="share-container">
                   <button class="share-button fa fa-share" (click)="toogleShareModal()"></button>
                 </div>
               </div>

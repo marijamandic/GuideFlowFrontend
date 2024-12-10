@@ -1,4 +1,6 @@
 export interface Follower{
-    followedId: number,
-    followingId: number
+    userId: number,
+    followerId: number,
+    followerUsername: string,
+    imageUrl: string
 }

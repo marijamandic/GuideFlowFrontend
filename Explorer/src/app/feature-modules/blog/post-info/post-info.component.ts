@@ -10,6 +10,8 @@ import { User } from 'src/app/infrastructure/auth/model/user.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RatingService } from '../rating.service';
 import { Rating } from '../model/rating.model';
+import { MessageNotification } from '../model/message-notification.model';
+import { MessageNotificationService } from '../message-notification.service';
 
 @Component({
   selector: 'xp-post-info',
@@ -28,6 +30,7 @@ export class PostInfoComponent implements OnInit {
   openMenuId: number | null = null;
   isEditing = false;
   editingComment: Comment | null = null;
+  message: MessageNotification;
   loggedInUserId: number = 0;
   ratingCounts: { [postId: number]: { positive: number; negative: number } } = {};
 
@@ -43,7 +46,8 @@ export class PostInfoComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder,
-    private ratingService: RatingService
+    private ratingService: RatingService,
+    private messageNotificationService: MessageNotificationService
   ) {
     this.commentForm = this.fb.group({
       content: ['', Validators.required]
@@ -379,21 +383,25 @@ export class PostInfoComponent implements OnInit {
     this.isShareModalOpen = false;
   }
   handleShareSubmit(description: string) {
-    console.log('Description submitted:', description);
-    
-    // Parsiranje stringa Description: <opis>, FollowerId: <id>
     const descriptionMatch = description.match(/Description: (.*?), FollowerId: (\d+)/);
     
     if (descriptionMatch) {
       const parsedDescription = descriptionMatch[1];  // Deo nakon "Description: "
       const followerId = parseInt(descriptionMatch[2], 10);  // FollowerId nakon "FollowerId: "
-      
-      console.log('OPIS:', parsedDescription);
-      console.log('ID OD FOLLOWERA:', followerId);
-      
-      // Ovde pozovi funkciju koja salje podatke na backend KOZZICCUUUUU LEGENDO
-      //MOZDA BAS I NIJE NAJBOLJI NACIN DA SE PROSLEDJUJE SVE KAO STRING PA DA SE ONDA PARSIRA
-      //ALI LAKSE JE OVAKO
+      if(this.user && this.postId){
+        this.message = {senderId: this.user?.id,
+          message:parsedDescription,
+          userId:followerId,
+          sender: this.user.username,
+          objectId: Number(this.postId),
+          isBlog:true,
+          isOpened:false,
+          createdAt: new Date()}
+          this.messageNotificationService.createMessageNotification(this.message).subscribe({
+            next: () => console.log(this.message),
+            error: (err) => console.error("Failed")
+          })
+      }
     } else {
       console.log('Nesto nije dobro sa parsiranjem');
     }
