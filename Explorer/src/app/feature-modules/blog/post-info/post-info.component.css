@@ -112,7 +112,9 @@
 .comment-author {
     font-weight: bold;
 }
-
+.clickable {
+  cursor: pointer; /* Promenjuje kursor na pointer */
+}
 .comment-date {
     color: #777;
 }

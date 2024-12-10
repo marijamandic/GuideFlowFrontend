@@ -366,6 +366,8 @@ export class PostInfoComponent implements OnInit {
         return 'Inactive';
     }
   }  
-  
+  navigateToProfile(userId : number){
+    this.router.navigate(["profile",userId])
+  }
 }
 
