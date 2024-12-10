@@ -45,7 +45,7 @@
 }
 
 .encounter-card {
-  width: 87%;
+  width: 85%;
   background-color: #fff;
   border: 1px solid #ddd;
   border-radius: 20px;
@@ -233,7 +233,7 @@
 }
 
 .active-filter {
-  background-color: #40E0D0; /* Plava boja za aktivno dugme */
+  background-color: var(--primary-color); /* Plava boja za aktivno dugme */
   color: white; /* Tekst postaje beo */
   border-color: #36c4b7; /* Tamnija nijansa za okvir */
 }
