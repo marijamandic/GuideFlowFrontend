@@ -17,7 +17,7 @@ export class MapComponent implements AfterViewInit,OnChanges {
 
   @Input() initialMarkers: L.LatLng[] = [];
   @Input() allowMultipleMarkers: boolean = true;
-  @Input() checkpoints: { latitude: number; longitude: number }[] = [];
+  @Input() checkpoints: { latitude: number; longitude: number; name?: string; description?: string; imageUrl?: string; }[] = [];
   @Input() encounters: { latitude: number; longitude: number }[] = [];
   @Input() showSearchBar: boolean = true;
   @Input() isAddCheckpoints: boolean = false;
@@ -98,6 +98,9 @@ export class MapComponent implements AfterViewInit,OnChanges {
       const marker = L.marker(latLng).addTo(this.map);
       this.addMarker(marker);
     });
+    if(!this.showSearchBar){
+      this.updateCheckpointMarkers();
+    }
   }
 
   setRoute(waypoints: L.LatLng[]): void {
@@ -119,7 +122,7 @@ export class MapComponent implements AfterViewInit,OnChanges {
         const summary = routes[0].summary;
         const totalDistanceKm = (summary.totalDistance / 1000).toFixed(2);
         const totalTimeMinutes = Math.round(summary.totalTime / 60);
-        alert(`Total distance is ${totalDistanceKm} km and total time is ${totalTimeMinutes} minutes for walking`);
+        //alert(`Total distance is ${totalDistanceKm} km and total time is ${totalTimeMinutes} minutes for walking`);
         this.distanceCalculated.emit({
           transportType: 'walking',
           time: totalTimeMinutes,
@@ -143,18 +146,29 @@ export class MapComponent implements AfterViewInit,OnChanges {
   }
 
   private updateCheckpointMarkers(): void {
-    this.resetMap();
-
+    this.resetMap(); 
     this.checkpoints.forEach(checkpoint => {
       const latLng = new L.LatLng(checkpoint.latitude, checkpoint.longitude);
-      const marker = L.marker(latLng).addTo(this.map);
+      const popupContent = `
+      <div style="width: 75px; text-align: center; padding: 3px;">
+        <h5 style="margin: 0; font-size: 12px; font-weight: bold;">${checkpoint.name}</h5>
+        ${checkpoint.imageUrl ? `<img src="${checkpoint.imageUrl}" alt="Checkpoint Image" style="width: 100%; height: auto; margin: 3px 0; border-radius: 3px;" />` : ''}
+        ${checkpoint.description ? `<p style="font-size: 11px; color: #666; margin: 0;">${checkpoint.description}</p>` : ''}
+      </div>
+      `;
+      const marker = L.marker(latLng).bindPopup(popupContent).addTo(this.map);
+      marker.on('click', () => {
+        marker.openPopup();
+      });
       this.addMarker(marker);
     });
-
+    
+  
     if (this.markers.length > 1) {
       const waypoints = this.markers.map(m => m.getLatLng());
       this.setRoute(waypoints);
     }
+
     this.encounters.forEach((encounter) => {
       const latLng = new L.LatLng(encounter.latitude, encounter.longitude);
       const marker = L.marker(latLng).addTo(this.map);
