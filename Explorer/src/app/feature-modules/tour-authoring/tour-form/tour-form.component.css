@@ -12,7 +12,7 @@
     border-radius: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 100%;
-    max-width: 600px; /* Moguće je proširiti širinu */
+    max-width: 830px; /* Moguće je proširiti širinu */
 }
 
 .tour-form h2 {
@@ -81,7 +81,7 @@
     border: 1px solid #cccccc;
     border-radius: 4px;
     padding: 10px;
-    width: calc(100% - 22px); /* Oduzimamo padding */
+    width: calc(20% - 22px); /* Oduzimamo padding */
 }
 
 @media (max-width: 600px) {
@@ -96,3 +96,68 @@
     font-weight: bold; /* Podebljaj tekst */
     color: #333; /* Boja teksta */
 }
+
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .modal-content {
+    background-color: #fff;
+    border-radius: 15px;
+    padding: 20px;
+    width: 900px;
+    max-width: 90%;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
+  }
+  
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .modal-header h2 {
+    margin: 0;
+  }
+  
+  .close-button {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+  .form-row {
+    display: flex;
+    gap: 20px; /* Razmak između polja */
+    justify-content: space-between; /* Rasporedi elemente */
+  }
+  
+  .form-group {
+    flex: 1; /* Sva polja zauzimaju jednaku širinu */
+    display: flex;
+    flex-direction: column; /* Labela iznad polja */
+  }
+  
+  .form-group select,
+  .form-group input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+  }
+  

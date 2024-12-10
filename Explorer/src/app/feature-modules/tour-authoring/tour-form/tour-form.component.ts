@@ -25,10 +25,12 @@ export enum Level {
   styleUrls: ['./tour-form.component.css']
 })
 export class TourFormComponent implements OnChanges {
-  
-  @Output() tourUpdated = new EventEmitter<null>();
-  @Input() tour: Tour ;
+  @Input() tour: Tour;
   @Input() shouldEdit: boolean = false;
+  @Output() closeModal = new EventEmitter<void>(); // Emiter za zatvaranje modala
+  @Output() tourUpdated = new EventEmitter<void>(); // Emiter za obaveštavanje glavne komponente o promeni
+
+
   
   userId:number=-1;
   tags: string[] = [''];
@@ -67,6 +69,10 @@ export class TourFormComponent implements OnChanges {
     };
   }
 
+  close(): void {
+    this.closeModal.emit(); // Emituj događaj za zatvaranje
+  }
+
   addTag(): void {
     this.tags.push(''); // Dodaj novo prazno polje za tag
   }
@@ -101,7 +107,7 @@ export class TourFormComponent implements OnChanges {
         this.router.navigate(['/checkpoints', result.id]);
       }
     });
-
+    this.close();
   }
 
     updateTour(): void {
@@ -132,6 +138,7 @@ export class TourFormComponent implements OnChanges {
         this.service.updateTour(tour).subscribe({
           next: () => { this.tourUpdated.emit();}
         });
+        this.close();
       }
 
       ConvertCurrency(): number {

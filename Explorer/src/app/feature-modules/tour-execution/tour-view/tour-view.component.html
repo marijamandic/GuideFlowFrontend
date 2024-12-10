@@ -86,11 +86,20 @@
     <div class="tour-container">
 
       <!--plus kartica-->
-      <div *ngIf="user && user.role ==='author' " (click) = "openModal()"class="tour-card add-tour-card" >
+      <div class="tour-card add-tour-card" (click)="openModal()">
         <div class="plus-icon">
           <i class="fa-solid fa-plus"></i>
         </div>
       </div>
+      
+      <xp-tour-form
+        *ngIf="isModalOpen"
+        [tour]="newTour"
+        [shouldEdit]="false"
+        (closeModal)="closeModal()"
+        (tourUpdated)="getAllTours()">
+      </xp-tour-form>
+      
 
       <div class="tour-card" *ngFor="let tour of allTours">
         <div class="tour-card-image">
@@ -139,44 +148,5 @@
   
   
   
-</div>
-
-<!-- Modal za kreiranje ture -->
-<div class="modal-backdrop" *ngIf="isModalOpen">
-  <div class="modal-content">
-    <h2>Create New Tour</h2>
-    <form (ngSubmit)="onSubmit()">
-      <div class="form-group">
-        <label for="name">Name</label>
-        <input type="text" id="name" [(ngModel)]="newTour.name" name="name" required />
-      </div>
-      <div class="form-group">
-        <label for="description">Description</label>
-        <textarea id="description" [(ngModel)]="newTour.description" name="description" required></textarea>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label for="price">Price</label>
-          <input type="number" id="price" [(ngModel)]="newTour.price.cost" name="price" required />
-        </div>
-        <div class="form-group">
-          <label for="currency">Currency</label>
-          <input type="text" id="currency" [(ngModel)]="newTour.price.currency" name="currency" required />
-        </div>
-        <div class="form-group">
-          <label for="level">Level</label>
-          <input type="text" id="level" [(ngModel)]="newTour.level" name="level" required />
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="tags">Tags</label>
-        <input type="text" id="tags" [(ngModel)]="newTour.taggs" name="tags" />
-      </div>
-      <div class="form-actions">
-        <button type="button" class="btn-cancel" (click)="closeModal()">Cancel</button>
-        <button type="submit" class="btn-add">Add</button>
-      </div>
-    </form>
-  </div>
 </div>
 
