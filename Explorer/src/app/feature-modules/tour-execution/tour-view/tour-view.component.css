@@ -239,10 +239,12 @@ input[type="range"]::-ms-thumb {
 }
 
 .sort-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
+  flex: 0 0 30%; 
+  max-width: 30%;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
 }
 
 .sort-label {
@@ -307,3 +309,41 @@ input[type="radio"]:checked + label {
   margin: 0; /* Resetujemo marginu za aktivno dugme */
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Mali efekat senke */
 }
+
+.status-filter {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Razmak između "Status" i dugmadi */
+  font-family: Arial, sans-serif;
+  color: #333;
+}
+
+.status-buttons {
+  display: flex;
+  gap: 10px; /* Razmak između dugmadi */
+}
+
+.status-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  background-color: #f2f2f2; /* Siva za neaktivno dugme */
+  color: #666;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+input[type="radio"] {
+  display: none; /* Sakrij radio dugmad */
+}
+
+input[type="radio"]:checked + .status-button {
+  background-color: #a5e7dc; /* Svetlo zelena za aktivno dugme */
+  color: white;
+}
+
+.status-button:hover {
+  background-color: #ddd; /* Svetlo siva na hover */
+}
+

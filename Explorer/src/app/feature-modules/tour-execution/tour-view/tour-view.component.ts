@@ -19,6 +19,8 @@ import { Price } from '../../tour-authoring/model/price.model';
 export class TourViewComponent implements OnInit {
 
   allTours: Tour[] = [];
+  tours: Tour[] = [];
+
   allUsers: User[] = [];  
   allSales: Sales[] = [];
 
@@ -47,6 +49,7 @@ export class TourViewComponent implements OnInit {
   longitude: number | null = null;
   searchDistance: number | null = null;
   openMap: boolean = false;
+  currentView: string = 'published';
 
   constructor(
       private service: TourExecutionService,
@@ -68,17 +71,7 @@ export class TourViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.getTourSpecificationPromise();  
-    this.service.getAllTours().subscribe({
-      next: (result: PagedResults<Tour>) => {
-        this.allTours = result.results.filter(tour => tour.status === TourStatus.Published);
-        console.log(this.allTours); 
-        console.log(this.allTours[1].reviews); 
-      },
-      error: (err: any) => {
-        console.log(err);
-      }
-    });
-
+    this.getAllTours();
     this.service.getAllSales().subscribe({
       next: (sales: Sales[]) => {
         this.allSales = sales;
@@ -106,14 +99,53 @@ export class TourViewComponent implements OnInit {
     console.log('Edit clicked for tour:', tour.name);
   }  
 
+  getAllTours():void{
+    this.service.getAllTours().subscribe({
+      next: (result: PagedResults<Tour>) => {
+        if(this.user.role == 'author'){
+          this.tours = result.results;
+          this.onCurrentViewChanged();
+        }
+        if(this.user.role =='tourist'){
+          this.allTours = result.results.filter(tour => tour.status === TourStatus.Published);
+        }
+
+        console.log(this.allTours); 
+        console.log(this.allTours[1].reviews); 
+      },
+      error: (err: any) => {
+        console.log(err);
+      }
+    });
+  }
+
   changeOpenMap():void{
     if(this.openMap){
       this.openMap = false;
     }else{
       this.openMap = true;
     }
-    
   }
+
+  onStatusChange(status: string): void {
+    this.currentView = status; // Ažuriraj trenutni pogled
+    this.onCurrentViewChanged(); // Pozovi metodu za filtriranje
+}
+
+
+  onCurrentViewChanged(): void {
+    if (this.currentView === 'draft') {
+      this.allTours = this.tours.filter(tour => tour.status === TourStatus.Draft);
+  } else if (this.currentView === 'published') {
+    this.allTours = this.tours.filter(tour => tour.status === TourStatus.Published);
+  } else if (this.currentView === 'archived') {
+    this.allTours = this.tours.filter(tour => tour.status === TourStatus.Archived);
+  } else {
+      this.allTours = [...this.tours]; // Ako nema filtra, prikaži sve ture
+  }
+  console.log('sve ture nakon currentViewChanged', this.allTours)
+  }
+
   getUsernameByTouristId(touristId: number): string {
     const user = this.allUsers.find(u => u.id === touristId);
     return user ? user.username : 'Unknown User';  

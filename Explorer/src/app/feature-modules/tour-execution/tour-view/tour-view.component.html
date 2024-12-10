@@ -37,6 +37,21 @@
     <!-- Filters Section -->
     <div class="filter-container">
       <h3>Filter by:</h3>
+
+      <div class="status-filter" *ngIf="user && user.role ==='author'">
+        <span>Status</span>
+        <div class="status-buttons">
+          <input type="radio" id="published" name="status" (change)="onStatusChange('published')" checked />
+          <label for="published" class="status-button">Published</label>
+      
+          <input type="radio" id="draft" name="status" (change)="onStatusChange('draft')" />
+          <label for="draft" class="status-button">Draft</label>
+      
+          <input type="radio" id="archive" name="status" (click) = "onStatusChange('archived')" />
+          <label for="archive" class="status-button">Archived</label>
+        </div>
+      </div>
+      
       <div class="slider-container">
         <label for="level">Level</label>
         <input type="range" id="level" name="level" min="0" max="2" [(ngModel)]="ts.level" />
@@ -93,6 +108,7 @@
     </div>
   </div>
 
+  <!--sorting-->
   <div class="sort-container">
     <div class="sort-label">
       <h3>Sort By:</h3>
