@@ -1,12 +1,8 @@
 .notifications-container {
-    max-width: 350px;
+    max-width: 500px;
     background-color: #fcfcfc;
-    border-radius: 8px;
+    border-radius: 12px;
     box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.2);
-    border-top: 4px solid #e4dfdf;  
-    border-bottom: 2.5px solid #e4dfdf;
-    border-left: 2px solid #e4dfdf;
-    border-right: 2px solid #e4dfdf;
     margin: 0px;
   }
   
@@ -33,7 +29,7 @@
 
   h4 {
     margin-bottom: 0px;
-    margin-left: 10px;
+    margin-left: 16px;
     font-weight: 600;
     font-size: 14px; /* Manji font */
     letter-spacing: 1px; /* Veći razmak između slova */
@@ -41,10 +37,10 @@
 
   .notification-table {
     margin-top: 0px;
-    padding: 5px 10px 5px 10px;
+    padding: 0px;
   }
   .scrollable {
-    max-height: 400px; /* Maksimalna visina za prikaz elemenata */
+    max-height: 500px; /* Maksimalna visina za prikaz elemenata */
     overflow-y: auto; /* Omogućava vertikalno skrolovanje */
     scrollbar-width: none; /* Sakriva skrolbar u Firefox-u */
     -ms-overflow-style: none; /* Sakriva skrolbar u IE i Edge-u */
@@ -54,18 +50,22 @@
     display: none; /* Sakriva skrolbar u Chrome-u, Safari-u i WebKit browser-ima */
 }
 
-  .notification-row {
-    display: flex;
-    align-items: center;
-    padding: 0px; /* Manja visina i padding */
-    height: auto; /* Manja visina reda */
-    overflow: hidden;
-    margin-bottom: 10px;
-    border-radius: 8px 8px 12px 12px;
-    box-shadow: 1px 4px 8px rgba(0, 0, 0, 0.2);
-    transition: transform 0.2s ease, box-shadow 0.2s ease; /* Animacija za glatko povećanje */
-    cursor: pointer; /* Postavlja kursor kao ruku */
+.notification-row {
+  display: flex;
+  align-items: center;
+  padding: 0px; /* Manja visina i padding */
+  height: auto; /* Manja visina reda */
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease; /* Animacija za glatke promene */
+  cursor: pointer; /* Postavlja kursor kao ruku */
+  border-bottom: 1px solid #dfdada;
+  background-color: white; /* Početna boja */
   }
+
+  .notification-row:hover {
+    background-color: #f0f1f1; /* Svetlosiva boja na hover */
+  }
+
   
   .unread {
     background-color: #fefefe80;
@@ -134,41 +134,39 @@
   }
 
   .notification-button {
+    margin-top: 10px;
+    margin-bottom: 10px;
     display: flex;
     font-size: 14px;
     margin-left: 10px;
     margin-right: 10px;
     font-weight: 500;
-    gap: 0px; /* Razmak između dugmadi i linije (opciono) */
+    gap: 10px; /* Razmak između dugmadi i linije (opciono) */
   }
   
   .button-decline {
-    width: 53%;
+    width: 20%;
     font-size: 12px; /* Prilagodite veličinu teksta */
-    padding: 5px 20px; /* Prilagodite unutrašnji razmak */
+    padding: 5px 5px; /* Prilagodite unutrašnji razmak */
     border-radius: 10px;
-    margin-left: -10px; 
+    margin-left: 40px; 
     border-radius: 0px;
     border-top-right-radius: 0px; /* Zaobljenje donjeg desnog ugla */
     height: 30px; /* Opciona visina */
     background-color: #333;
     color: white;
+    border-radius: 6px;
     border-right: 0px solid #333;
-    border-radius: 12px;
-    border-top-right-radius: 0px; /* Zaobljenje donjeg desnog ugla */
-    border-top-left-radius: 0px;
-    border-bottom-right-radius: 0px;
   }
 
   .button-accept {
-    width: 53%;
+    width: 20%;
     font-size: 12px; /* Prilagodite veličinu teksta */
     padding: 5px 10px; /* Prilagodite unutrašnji razmak */
     border-radius: 10px;
     margin-left: 0px;
     margin-right: -10px;
-    border-radius: 0px;
-    border-top-left-radius: 0px; /* Zaobljenje donjeg desnog ugla */
+    border-radius: 6px;
     height: 30px; /* Opciona visina */
     background-color: #333;
     color: white;
@@ -191,6 +189,8 @@
 
   .notification-link:hover {
       color: #007bff; /* Tamnija plava boja na hover */
+      font-size: 15px;
+      margin-left: 24px;
   }
 
   
@@ -260,7 +260,7 @@
     height: auto;
     object-fit: cover;
     border-radius: 0px;
-    margin-top: 25px;
+    margin-top: 0px;
 }
 p {
   margin-left: 80px;
@@ -269,6 +269,25 @@ p {
 /* Card content details */
 .card-details {
     padding: 15px;
+}
+/* Zajednički stil za status header */
+.status-header {
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+  padding: 10px;
+  border-radius: 8px 8px 0 0;
+}
+
+/* Zeleno za prihvaćene */
+.status-accepted {
+  background-color: #28a745; /* Zelena boja */
+}
+
+/* Crveno za odbijene */
+.status-rejected {
+  background-color: #dc3545; /* Crvena boja */
 }
 
 .card-details h2 {
@@ -284,24 +303,25 @@ p {
 
 .card-details .label {
     font-weight: bold;
+    margin: 0px;
     color: #007bff;
 }
 
 /* Close button */
 .close-button {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 20px;
+    right: 20px;
     background: none;
     border: none;
     font-size: 18px;
     cursor: pointer;
     color: #000000;
-    font-weight: 800;
+    font-weight: 300;
     margin-top: -10px;
 }
 
 .close-button:hover {
-    color: #dc3545; /* Red color on hover */
+    color: #333; /* Red color on hover */
 }
 

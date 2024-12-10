@@ -114,7 +114,7 @@
 }
 
 .dropdown-content a {
-    color: #222222;
+    color: transparent;
     padding: 10px;
     text-decoration: none;
     font-size: 14px;
@@ -154,13 +154,13 @@ mat-icon:hover{
 }
 .notification-dropdown {
     position: fixed;
-    top: 55px;
-    right: 120px;
-    width: 350px;
-    max-height: 550px;
+    top: 65px;
+    right: 70px;
+    width: 400px;
+    max-height: 600px;
     overflow-y: auto;
-    background-color: #bc161600;
-    border-radius: 10px;
+    background-color: red;
+    border-radius: 12px;
     padding: 0px;
     z-index: 1000;
     -ms-overflow-style: none;

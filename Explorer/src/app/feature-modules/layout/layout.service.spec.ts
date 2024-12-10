@@ -1,16 +1,16 @@
 import { TestBed } from '@angular/core/testing';
 
-import { AppRatingService } from './layout.service';
+import { LayoutService } from './layout.service';
 
 describe('LayoutService', () => {
-  let service: AppRatingService;
+    let service: LayoutService;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(AppRatingService);
-  });
+    beforeEach(() => {
+        TestBed.configureTestingModule({});
+        service = TestBed.inject(LayoutService);
+    });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
+    it('should be created', () => {
+        expect(service).toBeTruthy();
+    });
 });

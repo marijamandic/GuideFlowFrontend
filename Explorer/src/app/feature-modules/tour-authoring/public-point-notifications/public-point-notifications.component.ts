@@ -41,9 +41,9 @@ export class PublicPointNotificationsComponent implements OnInit {
         }, error => {
             console.error('Error fetching public points:', error);
         });
+        this.loadAllNotifications();
         this.loadNotifications();
         this.loadNotificationsMoneyExchange();
-        this.loadAllNotifications();
     }
 
     loadNotifications(page: number = 1, pageSize: number = 10): void {
@@ -89,16 +89,35 @@ export class PublicPointNotificationsComponent implements OnInit {
         );
     }
 
+    markAsRead(notification: Notification): void {
+        this.notificationService.updateNotification(notification.id, {
+            ...notification,
+            isOpened: true
+        }).subscribe({
+            next: () => {
+                console.log('Notification marked as read');
+                // Nakon uspešnog ažuriranja, osvežite notifikacije
+                this.loadAllNotifications();
+            },
+            error: (err) => console.error('Error marking notification as read:', err)
+        });
+    }
+    
     problemButton(notification: Notification): void {  
+        notification.isOpened == false;
+        this.markAsRead(notification);
     }
 
-    moneyButton(notification: Notification): void {  
+    moneyButton(notification: Notification): void { 
+        this.markAsRead(notification); 
     }
 
     clubButton(notification: Notification): void { 
+        this.markAsRead(notification);
     }
 
     messageButton(notification: Notification): void {
+        this.markAsRead(notification);
     }
     
 
@@ -157,7 +176,7 @@ export class PublicPointNotificationsComponent implements OnInit {
     
     loadAllNotifications(): void {
         const userId = this.user?.id || 0;
-    
+        this.combinedNotifications = [];
         this.publicPointService.getNotificationsByAuthor(userId).subscribe(
             (publicPointNotifications) => {
                 const publicPointMapped = publicPointNotifications.map(notification => ({
