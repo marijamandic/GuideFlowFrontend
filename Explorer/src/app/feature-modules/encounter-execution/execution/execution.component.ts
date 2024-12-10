@@ -178,11 +178,15 @@ export class ExecutionComponent implements OnInit{
                   if(ex.isComplete){
                     this.alertService.showAlert("Encounter successfully completed", "success", 5);
                     if(this.tourExecutionId){
-                      //window.location.reload();
+                      setTimeout(() => {
                       this.router.navigate(['tour-execution/',this.tourExecutionId]);
+                        }, 3000);
                     }else{
-                      this.router.navigate(['encounters']);
+                     // this.router.navigate(['encounters']);
+                     setTimeout(() => {
                       window.location.reload();
+                      }, 3000);
+                      
                     }
                   }
                 },
@@ -210,10 +214,15 @@ completeExecution(): void {
           //alert("Encounter successfully completed");
           this.alertService.showAlert("Encounter successfully completed", "success", 5);
           if(this.tourExecutionId){
+            setTimeout(() => {
             this.router.navigate(['tour-execution/',this.tourExecutionId]);
+              }, 3000);
           }else{
            // this.router.navigate(['encounters']);
+           setTimeout(() => {
             window.location.reload();
+            }, 3000);
+            
           }
         },
         error: (error) => {
