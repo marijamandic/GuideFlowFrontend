@@ -1,3 +1,4 @@
+
 /* General Tour Details Container */
 .tour-details-container {
   display: flex;
@@ -7,6 +8,7 @@
   background-color: #f8f9fa;
   border-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 10px;
+  display: flex; /* Aktivira Flexbox */
 }
 
 /* Tour Card */
@@ -19,8 +21,8 @@
   padding: 15px;
   gap: 15px; /* Razmak između slike i sadržaja */
   max-width: 500px; /* Smanjena maksimalna širina */
-  margin: 0 auto; /* Centriranje */
   transition: transform 0.3s;
+  position: relative;
 }
 
 /* Tour Card Left Section */
@@ -83,6 +85,11 @@
   gap: 5px;
 }
 
+.tour-author {
+  font-size: 14px;
+  color: gray;
+}
+
 /* Rating Stars */
 .rating {
   display: flex;
@@ -94,26 +101,36 @@
   font-size: 16px; /* Smanjen font zvezdica */
 }
 
-/* Buttons */
+/* Buttons container */
 .buttons {
   display: flex;
-  justify-content: flex-end;
-  margin-top: auto;
+  justify-content: flex-end; /* Dugme ide u desni ugao */
+  align-items: flex-end; /* Poravnanje sa donjim delom */
+  margin-top: auto; /* Osigurava da dugme ostane na dnu */
 }
 
+/* Add to Cart Button */
 .add-to-cart {
+  position: absolute; /* Absolutno pozicioniranje */
+  bottom: 15px; /* Razmak od dna */
+  right: 15px; /* Razmak od desne strane */
   cursor: pointer;
-  padding: 8px 12px; /* Manje dugme */
-  background-color: #007bff;
+  padding: 8px 12px;
+  background-color: var(--primary-color);
   border: none;
   border-radius: 5px;
   color: white;
-  font-size: 12px; /* Smanjen font */
+  font-size: 12px;
   display: flex;
   align-items: center;
   gap: 5px;
   transition: background-color 0.3s;
 }
+
+.add-to-cart:hover {
+  background-color: #0056b3;
+}
+
 
 .add-to-cart:hover {
   background-color: #0056b3;
@@ -235,5 +252,15 @@
   color: #999;
   text-align: right;
   margin-top: 10px;
+}
+
+.no-reviews-message {
+  font-size: 1rem;
+  color: black; /* Crvena boja za upozorenje */
+  text-align: center;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9; /* Svetla pozadina za kontrast */
 }
 

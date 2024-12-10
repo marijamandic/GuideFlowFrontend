@@ -6,5 +6,6 @@ export interface TourReview{
     tourDate?: Date,
     percentageCompleted?: number,
     touristId: number,
+    username?:string,
     tourId: number
 }

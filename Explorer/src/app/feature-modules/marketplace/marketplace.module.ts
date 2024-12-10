@@ -25,7 +25,8 @@ import { TourMoreDetailsComponent } from './tour-more-details/tour-more-details.
 		TourBundleDialogComponent,
 		CouponComponent,
 		TourBundlePreviewComponent,
-		ShoppingCartPreviewComponent
+		ShoppingCartPreviewComponent,
+    TourMoreDetailsComponent
 	],
 	imports: [
 		MatRadioModule,
@@ -36,31 +37,9 @@ import { TourMoreDetailsComponent } from './tour-more-details/tour-more-details.
 		ReactiveFormsModule,
 		MatTabsModule,
 		FormsModule,
+    SharedModule,
 		MatDialogModule
 	],
-	exports: [TourPreviewComponent, ShoppingCartComponent, CouponComponent, ShoppingCartPreviewComponent]
-  declarations: [
-    TourPreviewComponent,
-    ShoppingCartComponent,
-    CouponComponent,
-    TourBundlePreviewComponent,
-    TourMoreDetailsComponent
-  ],
-  imports: [
-    MatRadioModule,
-    MatFormFieldModule,
-    MatInputModule,
-    CommonModule,
-    MaterialModule,
-    ReactiveFormsModule,
-    FormsModule,
-    SharedModule
-  ],
-  exports: [
-    TourPreviewComponent,
-    ShoppingCartComponent,
-    CouponComponent,
-    TourMoreDetailsComponent
-  ]
+	exports: [TourPreviewComponent, ShoppingCartComponent, CouponComponent, ShoppingCartPreviewComponent,TourMoreDetailsComponent]
 })
 export class MarketplaceModule {}
