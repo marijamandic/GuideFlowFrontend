@@ -209,8 +209,8 @@
 .filter-buttons {
   position: absolute; /* Pozicioniranje unutar roditelja */
   top: 90px; /* Postavite dugmad 20px ispod vrha roditelja */
-  left: 50%; /* Centriranje horizontalno */
-  transform: translateX(-10%); /* Centriranje u odnosu na levo */
+  left: 62%; /* Centriranje horizontalno */
+  transform: translateX(-50%); /* Centriranje u odnosu na levo */
   display: flex; /* Postavljanje dugmadi u red */
   gap: 10px; /* Razmak između dugmadi */
   z-index: 9; /* Vidljivost iznad svega */
@@ -236,4 +236,21 @@
   background-color: #40E0D0; /* Plava boja za aktivno dugme */
   color: white; /* Tekst postaje beo */
   border-color: #36c4b7; /* Tamnija nijansa za okvir */
+}
+
+.search-input {
+  width: 70%; /* Širina polja za unos */
+  max-width: 400px; /* Maksimalna širina polja */
+  padding: 10px 15px; /* Unutrašnji razmak */
+  border: 1px solid #ddd; /* Svetlo sivi okvir */
+  border-radius: 20px; /* Zaobljeni uglovi */
+  font-size: 14px; /* Veličina teksta */
+  outline: none; /* Uklanja plavi fokus okvir */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Blaga senka */
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.search-input:focus {
+  border-color: #40E0D0; /* Promena boje okvira na fokus */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Pojačana senka na fokus */
 }
