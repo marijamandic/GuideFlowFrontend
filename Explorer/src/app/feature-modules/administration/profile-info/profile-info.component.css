@@ -1,125 +1,48 @@
 body, html {
   margin: 0;
   padding: 0;
-  width: 100%;
-  height: 100%;
+  font-family: 'Roboto', Arial, sans-serif;
+  background: #f5f5f5;
+  color: #333;
 }
 
-#profileInfo {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #f9f9f9;
+.profile-container {
+  display: flex; /* Aktiviraj flexbox */
+  justify-content: center; /* Horizontalo centriranje */
+  align-items: center; /* Vertikalno centriranje */
+  flex-direction: row; /* Kartice ostaju horizontalno poređane */
   padding: 20px;
+  height: 100vh; /* Visina ekrana za centralizaciju */
+  gap: 20px; /* Razmak između kartica */
+}
+
+
+/* Kartica sa informacijama o profilu */
+.profile-card {
+  background-color: #fff;
+  width: 400px; /* Fiksna širina za karticu */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   box-sizing: border-box;
+  margin-right: 10px; /* Smanjen razmak između kartica */
 }
 
-#profileInfo {
-    margin-left: 20px;
+.section-title {
+  margin-top: 0;
+  text-align: center;
+  color: #333;
+  font-size: 24px; /* Veći font za naslov */
+  font-weight: 500; /* Polubold */
 }
 
-#profileInfo-details {
-    display: flex;
-    flex-direction: row;
-    gap: 50px;
-    align-items: flex-start;
-}
-
-p {
-    font-size: 20px;
-}
-
-table {
-    border-collapse: collapse;
-    font-size: 0.9em;
-    font-family: sans-serif;
-    min-width: 300px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-    border-radius: 10px;
-}
-
-thead tr {
-    background-color: #84dcc6;
-    color: #ffffff;
-    text-align: center;
-}
-
-th {
-    padding: 0px 15px;
-}
-
-tbody tr:last-of-type {
-    margin-top: 100px;
-}
-
-.profile-image{
-    border-radius: 20px;
-    border: 1px solid #84dcc6;
-    margin-top: 30px;
-}
-
-button {
-    background-color: #84dcc6;
-    padding: 10px 20px;
-    border: none;
-    color: white;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-left: auto; /* Ovo pomera dugme ka desnoj strani */
-    display: block; /* Obezbeđuje da dugme koristi ceo red */
-    margin-right: 20px;
-    margin-bottom: 10px;
-}
-
-.input-no-border {
-    border: none; /* Uklanja okvir */
-    background-color: transparent; /* Uklanja pozadinu */
-    pointer-events: none; /* Sprečava interakciju */
-    font-weight: bold;
-    font-size: 15px;
-    margin-left: 47px;
-  }
-  
-  .input-border {
-    border: 1px solid #ccc; /* Dodaje okvir */
-    background-color: #fff; /* Dodaje pozadinu */
-    pointer-events: auto;
-    margin-left: 50px;
-  }
-
-  textarea {
-    resize: none; /* Sprečava korisnike da promene veličinu */
-  }
-
-  .profile-row{
-    padding: 0px 50px;
-  }
-
-body{
-    font-size: 14px;
-    font-weight: lighter;
-    margin: 0;
-    padding: 0;
-}
-.profile-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 10px 0;
+hr {
+  margin: 15px 0;
+  border: none;
 }
 
 .center-content {
-  justify-content: center;
-}
-
-.profile-detail {
+  text-align: center;
   margin-bottom: 20px;
 }
 
@@ -130,36 +53,112 @@ body{
   object-fit: cover;
 }
 
+.profile-row {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.profile-row label {
+  font-weight: 300; /* Tanji font za labelu */
+  color: #888; /* Svetlija nijansa sive */
+  margin-bottom: 5px;
+  font-size: 14px; /* Manja veličina za labelu */
+}
+
+.profile-value {
+  font-size: 16px; /* Standardna veličina fonta za vrednosti */
+  font-weight: 400; /* Normalna težina fonta */
+  color: #333; /* Tamnija boja */
+}
+
+.profile-row.name-row .profile-value {
+  font-size: 20px; /* Veća veličina fonta za nameSurname */
+  font-weight: 500; /* Polubold za isticanje */
+}
+
+.profile-row input[type="text"],
+.profile-row textarea,
+.profile-row input[type="file"] {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-family: 'Roboto', Arial, sans-serif;
+  font-size: 14px;
+}
+
 .input-border {
-  border: 1px solid #ccc;
-  padding: 5px;
+  border: 1px solid #4ad0a7 !important;
 }
 
 .input-no-border {
-  border: none;
-  background: transparent;
-  padding: 5px;
+  border: none !important;
 }
 
 .cta-button {
-  background-color: #007BFF;
-  color: white;
-  padding: 10px 20px;
+  background-color: #4ad0a7;
+  color: #fff;
   border: none;
+  padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
 }
 
 .cta-button:hover {
-  background-color: #0056b3;
+  background-color: #3cb090;
 }
 
-.follower-row {
+/* Kartica za Tourist Level */
+.level-card {
+  background-color: #fff;
+  width: 450px; /* Povećana širina za progress bar */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.level-card h3 {
+  font-size: 18px;
+  font-weight: 500;
+  color: #333;
+  margin-top: 0;
+}
+
+/* Kontejner za progress bar */
+.progress-container {
+  background-color: #ddd;
+  border-radius: 10px;
+  overflow: hidden;
+  height: 10px;
+  margin: 15px 0;
+  position: relative;
+  width: 100%;
+}
+
+/* Progress bar */
+.progress-bar {
+  height: 100%;
+  background-color: #4ad0a7;
+  transition: width 0.3s ease;
+}
+
+/* Oznake za minimum i maksimum */
+.progress-labels {
   display: flex;
-  flex-direction: column;
-  margin-bottom: 10px;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #888;
+  margin-top: 5px;
 }
 
-.follower-row span {
+/* Trenutni XP */
+.current-xp {
+  font-size: 14px;
   font-weight: bold;
+  color: #333;
+  margin-top: 10px;
 }

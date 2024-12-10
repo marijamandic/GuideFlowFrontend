@@ -68,7 +68,7 @@
       
         <div *ngFor="let comment of comments" class="comment-card">
           <div class="comment-header">
-              <span class="comment-author">{{ comment.username || 'Anonymous' }}</span> •
+              <span (click)="navigateToProfile(comment.userId)" class="comment-author clickable">{{ comment.username || 'Anonymous' }}</span> •
               <span class="comment-date">{{ comment.createdAt | date:'medium' }}</span>
       
               <!-- Kebab icon for dropdown menu -->

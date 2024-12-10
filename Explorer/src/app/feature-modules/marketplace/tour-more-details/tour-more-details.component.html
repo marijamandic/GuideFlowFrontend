@@ -1,0 +1,74 @@
+<div class="tour-details-container" *ngIf="tour !== null && tour !== undefined">
+  <div style="display: flex; justify-content:center; align-items: center;gap: 20px;">
+   <div class="tour-card">
+    <div class="tour-card-left">
+      <img [src]="getImagePath(checkpoints[0].imageUrl)" alt="Tour Image" *ngIf="checkpoints[0].imageUrl" />
+    </div>
+    <div class="tour-card-right">
+      <div class="tour-card-header">
+        <h2>{{ tour.name }}</h2>
+        <div class="rating">
+          <i *ngFor="let star of getStars()" 
+             [class.fa-star]="star === 'full'" 
+             [class.fa-star-half-stroke]="star === 'half'" 
+             [class.fa-star-o]="star === 'empty'" 
+             class="fa-solid"></i>
+        </div>
+      </div>
+      <p (click)="navigateToProfile(tour.authorId)" class="tour-author clickable">By: {{ tour.authorName }}</p>
+      <p class="description">{{ tour.description }}</p>
+      <div class="tour-card-details">
+        <span><i class="fa-solid fa-dollar-sign"></i> {{ getFormattedPrice(tour.price) }}</span>
+        <span><i class="fa-solid fa-fire"></i> {{ getLevel(tour.level) }}</span>
+        <span><i class="fas fa-walking"></i> {{ tour.lengthInKm }} km</span>
+      </div>
+      <div class="buttons" *ngIf="!isPurchased" >
+        <button class="cta-button add-to-cart" (click)="addToCart()">
+          <i class="fa-solid fa-cart-plus"></i> Add to Cart
+        </button>
+      </div>
+    </div>
+   </div>
+   <div class="tour-map">
+    <xp-map [showSearchBar]="MapViewMode" [checkpoints]="checkpointCoordinates"></xp-map>
+   </div>
+  </div>
+
+  <div class="checkpoints-grid">
+    <div class="checkpoint-card" *ngFor="let checkpoint of checkpoints">
+      <div class="checkpoint-card-image">
+        <img
+          [src]="checkpoint.imageUrl ? getImagePath(checkpoint.imageUrl) : '/assets/default-image.png'"
+          alt="Checkpoint Image"
+          class="checkpoint-image"
+        />
+      </div>
+      <div class="checkpoint-card-content">
+        <h3>{{ checkpoint.name }}</h3>
+        <div class="checkpoint-card-details">
+          <p>{{ checkpoint.description }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="reviews-section">
+    <div *ngIf="reviews.length > 0; else noReviews">
+      <div *ngFor="let review of reviews" class="review-card">
+        <div class="review-header">
+          <p (click)="navigateToProfile(review.touristId)" class="review-username">{{ review.username }}</p>
+          <div class="rating">
+            <i *ngFor="let star of getStarsFromRating(review.rating)" 
+               [class.fa-star]="star === 'full'" 
+               [class.fa-star-half-stroke]="star === 'half'" 
+               [class.fa-star-o]="star === 'empty'" 
+               class="fa-solid"></i>
+          </div>
+        </div>
+        <p class="review-comment">{{ review.comment || 'No comment provided.' }}</p>
+        <p class="review-date"><strong>Posted on:</strong> {{ review.creationDate | date:'medium' }}</p>
+      </div>
+  </div>
+    <ng-template #noReviews>
+      <p class="no-reviews-message">There are no reviews for this tour.</p>
+    </ng-template>
+</div>

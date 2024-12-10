@@ -23,13 +23,11 @@ import { AllAppRatingsComponent } from 'src/app/feature-modules/administration/a
 import { AccountComponent } from 'src/app/feature-modules/administration/account/account.component';
 import { ClubFormComponent } from 'src/app/feature-modules/administration/club/club-form/club-form.component';
 import { ClubInfoComponent } from 'src/app/feature-modules/administration/club/club-info/club-info.component';
-import { TourViewComponent } from 'src/app/feature-modules/tour-execution/tour-view/tour-view.component';
 import { ProblemComponent } from 'src/app/feature-modules/tour-authoring/problem/problem.component';
 import { NotificationsComponent } from 'src/app/feature-modules/layout/notifications/notifications.component';
 import { ProblemStatusComponent } from 'src/app/feature-modules/tour-execution/problem-status/problem-status.component';
 import { AdminProblemComponent } from 'src/app/feature-modules/administration/admin-problem/admin-problem.component';
 import { PublicPointRequestsComponent } from 'src/app/feature-modules/tour-authoring/public-point-requests/public-point-requests.component';
-import { TourReviewFormComponent } from 'src/app/feature-modules/tour-execution/tour-review-form/tour-review-form.component';
 import { TourReviewComponent } from 'src/app/feature-modules/tour-execution/tour-review/tour-review.component';
 import { TourPreviewComponent } from 'src/app/feature-modules/marketplace/tour-preview/tour-preview.component';
 import { ShoppingCartComponent } from 'src/app/feature-modules/marketplace/shopping-cart/shopping-cart.component';
@@ -48,6 +46,8 @@ import { EncounterFormComponent } from 'src/app/feature-modules/encounter-execut
 import { AddEncounterComponent } from 'src/app/feature-modules/tour-authoring/add-encounter/add-encounter.component';
 import { ExecutionComponent } from 'src/app/feature-modules/encounter-execution/execution/execution.component';
 import { EncounterExecutionMapComponent } from 'src/app/feature-modules/encounter-execution/encounter-execution-map/encounter-execution-map.component';
+import { TourMoreDetailsComponent } from 'src/app/feature-modules/marketplace/tour-more-details/tour-more-details.component';
+import { TourViewComponent } from 'src/app/feature-modules/tour-execution/tour-view/tour-view.component';
 
 const routes: Routes = [
 
@@ -83,6 +83,7 @@ const routes: Routes = [
   { path: 'tour/:id', component:TourDetailsComponent, children:[{path:'checkpoints/:tourId', component:CheckpointListComponent}]},
   { path: 'checkpoints/:tourId', component: CheckpointListComponent },  // ovo spajamo u tours/:id
   { path: 'tour-review/:tourId/:touristId', component: TourReviewComponent }, // ovo isto spajamo u tours/:id
+  { path: 'tour-more-details/:id',component:TourMoreDetailsComponent},
 
   // --- /tour-execution/:id 
   { path: 'tour-execution/:id', component: TourExecutionDetailsComponent}, // blizanac, blizanac 
@@ -105,7 +106,7 @@ const routes: Routes = [
 
   // ### Club
   { path: 'club', component: ClubComponent, canActivate: [AuthGuard] },
-  { path: 'club-info/:id', component: ClubInfoComponent, canActivate: [AuthGuard] },
+  { path: 'club/:id', component: ClubInfoComponent, canActivate: [AuthGuard] },
   { path: 'club-dashboard/:id', component: ClubDashboardComponent, canActivate: [AuthGuard] },
   { path: 'new-club', component: ClubFormComponent, canActivate: [AuthGuard]},
   { path: 'comment', component: CommentComponent },
@@ -134,13 +135,6 @@ const routes: Routes = [
   // ### Notification
   { path: 'notifications', component: NotificationsComponent }, // ne znam da li je ikada radilo?
   { path: 'author-notifications', component: PublicPointNotificationsComponent }, // ne znam (menjati)
-
-
-  
-	
-  
-
-  
 ];
 
 @NgModule({

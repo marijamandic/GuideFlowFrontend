@@ -370,6 +370,7 @@ export class PostInfoComponent implements OnInit {
         return 'Inactive';
     }
   }  
+
   toogleShareModal() {
     this.isShareModalOpen = true;
   }
@@ -398,6 +399,10 @@ export class PostInfoComponent implements OnInit {
     }
   
     this.closeShareModal();
+  }
+  navigateToProfile(userId : number){
+    this.router.navigate(["profile",userId])
+
   }
 }
 
