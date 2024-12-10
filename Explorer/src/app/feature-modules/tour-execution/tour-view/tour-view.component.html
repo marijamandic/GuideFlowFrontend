@@ -102,8 +102,15 @@
       
 
       <div class="tour-card" *ngFor="let tour of allTours">
-        <div class="tour-card-image">
-          <img src="assets/images/tour9.jpg" alt="{{ tour.name }}" />
+        <div class="tour-card-image" *ngIf = "currentView === 'draft'">
+          <img src="assets/images/tour9_draft.jpg" alt="{{ tour.name }}" />
+        </div>
+        <div class="tour-card-image" *ngIf="currentView !== 'draft'">
+          <!--<img *ngIf="tour.checkpoints  " [src]="getImagePath(tour.checkpoints[1].imageUrl)" alt="Checkpoint image" />-->
+          <img *ngIf="tour.checkpoints  " [src]="getImagePath(tour.checkpoints[currentImageIndex].imageUrl)" alt="Checkpoint image" />
+
+
+
         </div>
         <div class="tour-card-content">
           <div class="tour-card-header">

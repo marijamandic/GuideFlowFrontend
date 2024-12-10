@@ -10,6 +10,8 @@ import { User } from 'src/app/infrastructure/auth/model/user.model';
 import { AdministrationService } from '../../administration/administration.service';
 import { Sales } from '../model/sales.model';
 import { Currency, Price } from '../../tour-authoring/model/price.model';
+import { Checkpoint } from '../../tour-authoring/model/tourCheckpoint.model';
+import { environment } from 'src/env/environment';
 
 @Component({
   selector: 'xp-tour-view',
@@ -22,6 +24,7 @@ export class TourViewComponent implements OnInit {
   tours: Tour[] = [];
   allUsers: User[] = [];  
   allSales: Sales[] = [];
+  tourCheckpoints: Checkpoint[]=[];
   newTour: Tour = this.initializeTour();
 
 
@@ -52,6 +55,7 @@ export class TourViewComponent implements OnInit {
   openMap: boolean = false;
   currentView: string = 'published';
   isModalOpen = false; // Praćenje stanja modala
+  currentImageIndex: number = 1;// Čuva trenutni indeks slike za svaku turu
 
 
   constructor(
@@ -92,6 +96,9 @@ export class TourViewComponent implements OnInit {
         console.log(err);
       }
     });
+
+  
+    
   }
 
   onViewDetails(tour: Tour): void {
@@ -153,6 +160,21 @@ export class TourViewComponent implements OnInit {
         console.log(err);
       }
     });
+  }
+
+  getCheckpointsByTourId(id:number):void{
+    const selectedTour = this.allTours.find(t => t.id === id);
+
+    // Ako tura postoji, preuzmi njene checkpoint-ove
+    if (selectedTour) {
+      this.tourCheckpoints = selectedTour.checkpoints || [];
+      console.log('dobavio sam checkpointe za turu', id);
+      console.log(this.tourCheckpoints);
+    } else {
+      console.error('Tour not found with id:', id);
+      this.tourCheckpoints = [];
+    }  
+    
   }
 
   changeOpenMap():void{
@@ -460,6 +482,22 @@ export class TourViewComponent implements OnInit {
     } else {
       console.log('Please select a point on the map and enter a search distance.');
     }
+  }
+  
+  /*startImageCarousel(): void {
+    setInterval(() => {
+      this.allTours.forEach(tour => {
+        if (tour.checkpoints && tour.checkpoints.length > 0) {
+          // Smenjuj slike samo za trenutnu turu
+          this.currentImageIndex[tour.id] =
+            (this.currentImageIndex[tour.id] + 1) % tour.checkpoints.length;
+        }
+      });
+    }, 3000); // Interval od 3 sekunde
+  }*/
+  
+  getImagePath(imageUrl: string | undefined) {
+    return environment.webRootHost + imageUrl;
   }
 
 

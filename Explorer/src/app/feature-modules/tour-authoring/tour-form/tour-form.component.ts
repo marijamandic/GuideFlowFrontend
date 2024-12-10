@@ -104,7 +104,8 @@ export class TourFormComponent implements OnChanges {
     };
     this.service.addTour(newTour).subscribe({
       next: (result:Tour) => {
-        this.router.navigate(['/checkpoints', result.id]);
+        //this.router.navigate(['/checkpoints', result.id]);
+        console.log('dodata nova tura', newTour);
       }
     });
     this.close();
