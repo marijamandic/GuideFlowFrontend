@@ -27,6 +27,14 @@ export class ShoppingCartService {
 		);
 	}
 
+	getPopulatedByTouristId(): Observable<ShoppingCart> {
+		return this.http.get<ShoppingCart>(`${environment.apiHost}shopping-cart/populated`, { headers: Headers }).pipe(
+			tap(cart => {
+				this.setCart(cart);
+			})
+		);
+	}
+
 	addToCart(item: ItemInput): Observable<Item[]> {
 		return this.http.post<Item[]>(`${environment.apiHost}shopping-cart/items`, item, { headers: Headers }).pipe(
 			tap(items => {
