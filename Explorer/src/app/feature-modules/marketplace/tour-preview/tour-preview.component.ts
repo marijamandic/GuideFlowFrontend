@@ -109,7 +109,7 @@ export class TourPreviewComponent implements OnInit {
 			type: ProductType.Tour,
 			productId: this.currentTour.id!,
 			productName: this.currentTour.name,
-			adventureCoin: 20
+			adventureCoin: this.currentTour.price.cost
 		};
 		this.shoppingCartService.addToCart(item).subscribe({
 			error: (error: HttpErrorResponse) => console.log(error.message)

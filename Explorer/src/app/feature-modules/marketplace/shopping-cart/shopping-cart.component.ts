@@ -11,6 +11,9 @@ import { TourService } from '../../tour-authoring/tour.service';
 import { Tour } from '../../tour-authoring/model/tour.model';
 import { TourBundle } from '../model/tour-bundle.model';
 import { ShoppingCartService } from '../shopping-cart.service';
+import { convertEnumToString } from 'src/app/shared/utils/enumToStringConverter';
+import { TourDetails } from '../model/shopping-carts/tour-details';
+import { PagedResults } from 'src/app/shared/model/paged-results.model';
 
 @Component({
 	selector: 'xp-shopping-cart',
@@ -21,11 +24,13 @@ export class ShoppingCartComponent implements OnInit {
 	cart$: ShoppingCart;
 	totalAdventureCoins: number;
 	couponCode = '';
+	showTours = true;
 
 	constructor(private shoppingCartService: ShoppingCartService, private marketplaceService: MarketplaceService, private tourService: TourService) {}
 
 	ngOnInit(): void {
 		this.subscribeCart();
+		this.fetchPopulatedCart();
 	}
 
 	private subscribeCart() {
@@ -39,6 +44,12 @@ export class ShoppingCartComponent implements OnInit {
 		this.totalAdventureCoins = 0;
 		items.forEach(i => {
 			this.totalAdventureCoins += i.adventureCoin;
+		});
+	}
+
+	private fetchPopulatedCart() {
+		this.shoppingCartService.getPopulatedByTouristId().subscribe({
+			error: (error: HttpErrorResponse) => console.log(error.message)
 		});
 	}
 
@@ -138,8 +149,8 @@ export class ShoppingCartComponent implements OnInit {
 			next: () => {
 				console.log(`Item ${item.id} removed from cart.`);
 				this.shoppingCartService.addToCart(itemInput).subscribe({
-					next: (result: Item[]) => {
-						console.log('Discount applied and item updated in cart:', result);
+					next: (result: PagedResults<Item>) => {
+						console.log('Discount applied and item updated in cart:', result.results);
 						this.loadShoppingCart();
 						this.calculateAc(this.cart$.items);
 					},
@@ -206,5 +217,17 @@ export class ShoppingCartComponent implements OnInit {
 				console.error('Error fetching bundles:', error);
 				return []; // Return an empty array in case of an error
 			});
+	}
+
+	convertLevelEnumToString(value: number, type: string): string {
+		return convertEnumToString(value, type);
+	}
+
+	isTour(product: TourDetails | TourBundle): product is TourDetails {
+		return 'level' in product;
+	}
+
+	isBundle(product: TourDetails | TourBundle): product is TourBundle {
+		return 'tourIds' in product;
 	}
 }
