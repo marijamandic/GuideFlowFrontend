@@ -21,6 +21,11 @@ export class ProfileInfoComponent implements OnInit{
   
   @Output() profileInfoUpdated = new EventEmitter<null>();
 
+  progressPercent: number = 0;
+  minXp: number = 0;
+  maxXp: number = 0;
+  currentXp: number = 0;
+  nameSurname: string = ''; 
   profileInfo: ProfileInfo | undefined;
   selectedProfileInfo : ProfileInfo;
   followers: Follower[] = []
@@ -46,24 +51,46 @@ export class ProfileInfoComponent implements OnInit{
         next: (result:Tourist) => {
           this.tourist = result;
           console.log(this.tourist)
+          this.calculateProgress();
         }
       })
     }
   }
-  getProfileInfoById(userId: number) : void
-  {
-    if(userId){
+  getProfileInfoById(userId: number): void {
+    if (userId) {
       this.service.getProfileInfoByUserId(userId).subscribe({
         next: (result: ProfileInfo) => {
           this.profileInfo = result;
+          console.log('Fetched Profile Info:', this.profileInfo); // Provera
+          this.nameSurname = `${this.profileInfo.firstName || ''} ${this.profileInfo.lastName || ''}`.trim();
         },
-        error: (err:any) => {
+        error: (err: any) => {
           console.log("Error fetching profile info", err);
         }
       });
     }
   }
-
+  
+  getImagePath(imageUrl: string): string {
+    const fullPath = environment.webRootHost + imageUrl;
+    console.log('Generated Image Path:', fullPath); // Provera
+    return fullPath;
+  }
+  
+  calculateProgress() {
+    if (this.tourist) {
+      const level = this.tourist.level || 1;
+      const xp = this.tourist.xp || 0;
+  
+      this.minXp = level * 20;
+      this.maxXp = (level + 1) * 20;
+      this.currentXp = this.minXp + xp;
+  
+      // Procenat za progress bar
+      this.progressPercent = (xp / 20) * 100;
+    }
+  }
+  
   onEditClicked(profileInfo: ProfileInfo): void {
       this.selectedProfileInfo = profileInfo;
       //this.shouldEdit = true;
@@ -82,9 +109,6 @@ export class ProfileInfoComponent implements OnInit{
     this.shouldRenderProfileInfoForm = false; // Zatvori formu nakon ažuriranja
   }
 
-    getImagePath(imageUrl: string){
-      return environment.webRootHost+imageUrl;
-    }
 
     onFileSelected(event : any){
       const file : File = event.target.files[0];

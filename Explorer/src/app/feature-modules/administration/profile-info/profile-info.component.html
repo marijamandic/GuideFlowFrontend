@@ -1,91 +1,47 @@
 <div id="profileInfo" class="profile-container">
-  <p>ProfileInfo</p>
-  <hr>
-  <div id="profileInfo-details">
-    <div *ngIf="profileInfo" class="profile-info">
-      <!-- Profile Image -->
-      <div class="profile-row center-content">
-        <img 
-          [src]="getImagePath(profileInfo.imageUrl)" 
-          alt="Profile image" 
-          *ngIf="profileInfo.imageUrl" 
-          class="profile-image" 
-        />
-      </div>
-
-      <!-- Profile Details -->
-      <div class="profile-row">
-        <label>First name:</label>
-        <input 
-          type="text" 
-          [(ngModel)]="profileInfo.firstName" 
-          [disabled]="!isEditMode" 
-          [ngClass]="isEditMode ? 'input-border' : 'input-no-border'"
-        />
-      </div>
-
-      <div class="profile-row">
-        <label>Last name:</label>
-        <input 
-          type="text" 
-          [(ngModel)]="profileInfo.lastName" 
-          [disabled]="!isEditMode" 
-          [ngClass]="isEditMode ? 'input-border' : 'input-no-border'"
-        />
-      </div>
-
-      <div class="profile-row">
-        <label>Moto:</label>
-        <input 
-          type="text" 
-          [(ngModel)]="profileInfo.moto" 
-          [disabled]="!isEditMode" 
-          [ngClass]="isEditMode ? 'input-border' : 'input-no-border'"
-        />
-      </div>
-
-      <div class="profile-row">
-        <label>Biography:</label>
-        <textarea
-          [(ngModel)]="profileInfo.biography"
-          [disabled]="!isEditMode"
-          [ngClass]="isEditMode ? 'input-border' : 'input-no-border'"
-          rows="4"  
-          cols="20" 
-          placeholder="Enter biography"
-        ></textarea>
-      </div>
-      <div *ngIf="tourist?.role===2">
-        <p>Xp: {{tourist?.xp}}</p>
-      </div>
-      <div *ngIf="tourist?.role===2">
-        <p>Level {{tourist?.level}}</p>
-      </div>
-      <!-- Image Upload -->
-      <div *ngIf="isEditMode" class="profile-row">
-        <label>Image:</label>
-        <input 
-          type="file" 
-          (change)="onFileSelected($event)" 
-          [readonly]="!isEditMode" 
-        />
-      </div>
-
-      <!-- Action Button -->
-      <div class="profile-row center-content">
-        <button (click)="onEditClicked(profileInfo)" class="cta-button">
-          {{ isEditMode ? 'Save' : 'Edit' }}
-        </button>
-      </div>
+  <!-- Kartica sa informacijama o profilu -->
+  <div class="profile-card" *ngIf="profileInfo as pi">
+    <hr>
+    <!-- Profilna slika -->
+    <div class="center-content">
+      <img 
+        [src]="getImagePath(pi.imageUrl)" 
+        alt="Profile image" 
+        *ngIf="pi.imageUrl" 
+        class="profile-image" 
+      />
     </div>
+    <div class="profile-row name-row">
+      <label>Name:</label>
+      <span class="profile-value">{{ nameSurname }}</span>
+    </div>
+    <div class="profile-row">
+      <label>Moto:</label>
+      <span class="profile-value">{{ pi.moto }}</span>
+    </div>
+    <div class="profile-row">
+      <label>Biography:</label>
+      <span class="profile-value">{{ pi.biography }}</span>
+    </div>
+    <div class="profile-row center-content">
+      <button (click)="onEditClicked(pi)" class="cta-button small-button">
+        {{ isEditMode ? 'Save' : 'Edit' }}
+      </button>
+    </div>
+  </div>
 
-    <!-- Followers Section -->
-    <div class="followers">
-      <h3>Followers</h3>
-      <div *ngFor="let follower of followers" class="follower-row">
-        <span>Follower First Name:</span> {{ follower.followedId }}
-        <span>Follower Last Name:</span> {{ follower.followedId }}
-      </div>
+  <!-- Kartica za Tourist Level -->
+  <div class="level-card">
+    <h3>Tourist Level {{ tourist?.level }}</h3>
+    <div class="progress-container">
+      <div class="progress-bar" [style.width.%]="progressPercent"></div>
+    </div>
+    <div class="progress-labels">
+      <span>{{ minXp }}</span>
+      <span>{{ maxXp }}</span>
+    </div>
+    <div class="current-xp">
+      Total XP: {{ currentXp }}
     </div>
   </div>
 </div>
