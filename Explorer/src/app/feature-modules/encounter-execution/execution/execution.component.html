@@ -70,16 +70,12 @@
 
 
 
-<button *ngIf="tourExecutionId" (click)="navigateToTourExecution()">Go to tour</button>
-<button *ngIf="encounterExecution && encounter?.encounterType !== EncounterType.Social && encounter" 
+<button class="button" *ngIf="tourExecutionId" (click)="navigateToTourExecution()">Go to tour</button>
+<button *ngIf="encounterExecution && encounter?.encounterType === EncounterType.Misc && encounter" 
         (click)="completeExecution()" 
         class="button">
   <mat-icon>check_circle</mat-icon>
   Complete
-</button>
-<button (click)="navigateToPositionSimulator()" class="cta-button-cancel">
-  <mat-icon>navigation</mat-icon>
-  Position simulator
 </button>
 </div>
 

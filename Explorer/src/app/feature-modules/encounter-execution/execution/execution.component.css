@@ -127,18 +127,18 @@
 }
 
 .button {
-	display: inline-block;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
 	background-color: var(--primary-color);
 	color: white;
 	padding: 12px 25px;
 	border-radius: 30px;
 	transition: background-color 0.3s ease, transform 0.3s ease;
 	text-align: center;
-	margin: 20px auto;
-	display: block;
-	width: fit-content;
 	outline: none;
 	border: none;
+	gap: 8px;
 }
 
 .button:focus {
