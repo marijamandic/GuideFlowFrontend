@@ -22,11 +22,12 @@
         </div>
         <div class="profile-menu">
             <mat-icon  *ngIf="user && user.username != ''" class="shopping-cart-icon" [routerLink]="['/shoppingCart']">shopping_cart</mat-icon>
+            <span *ngIf="user && user.username !== '' && notificationCount > 0" class="notification-badge" (click)="toggleNotifications()">{{ notificationCount }}</span>   
             <mat-icon *ngIf="user && user.username !== ''" class="notification-icon" (click)="toggleNotifications()">notifications</mat-icon>
-            <span *ngIf="user && user.username !== '' && notificationCount > 0" class="notification-badge">{{ notificationCount }}</span>
             <mat-icon class="profile-icon" (click)="toggleDropdown()">account_circle</mat-icon>
-            
-            <mat-icon>notifcations</mat-icon>
+            <div>
+                <mat-icon>notifcations</mat-icon>
+            </div>
             <div class="dropdown-content" *ngIf="isDropdownOpen">
                 <a *ngIf="user && user.username === ''" [routerLink]="['/login']"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a>
                 <a *ngIf="user && user.username !== ''" (click)="onLogout()"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a>

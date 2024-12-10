@@ -7,6 +7,8 @@ import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { LayoutService } from '../../layout/layout.service';
 import { Notification } from '../../layout/model/Notification.model';
 import { retry } from 'rxjs';
+import { PagedResults } from 'src/app/shared/model/paged-results.model';
+import { ProblemNotification } from '../../layout/model/problem-notification.model';
 
 @Component({
     selector: 'app-public-point-notifications',
@@ -24,6 +26,7 @@ export class PublicPointNotificationsComponent implements OnInit {
     unreadNotification: { type: number; data: PublicPointNotification | Notification, creationTime: Date, isOpened: boolean }[] = []; // Dodato
     combinedNotifications: { type: number; data: PublicPointNotification | Notification, creationTime: Date, isOpened: boolean }[] = [];
     selectedPoint: PublicPoint | null = null;
+    public publicPoints: PublicPoint[] = [];
     showModal: boolean = false;
     private user: User | undefined;
 
@@ -33,6 +36,11 @@ export class PublicPointNotificationsComponent implements OnInit {
         this.authService.user$.subscribe((user) => {
             this.user = user;
           });
+        this.publicPointService.getPublicPoints(1, 100).subscribe(response => {
+            this.publicPoints = response.results;
+        }, error => {
+            console.error('Error fetching public points:', error);
+        });
         this.loadNotifications();
         this.loadNotificationsMoneyExchange();
         this.loadAllNotifications();
@@ -59,11 +67,14 @@ export class PublicPointNotificationsComponent implements OnInit {
         );
     }
 
-    loadPublicPoint(publicPointId: number): void {
-    }
+    loadPublicPoint(publicPointId: number): string {
+        const publicPoint = this.publicPoints.find(point => point.id === publicPointId);
+        return publicPoint ? publicPoint.name : 'Unknown Public Point';
+    }    
 
     openNotificationDialog(notification: PublicPointNotification): void {
         this.selectedNotification = notification;
+        console.log("EEE");
         this.publicPointService.getPublicPointsByTour(notification.publicPointId).subscribe(
             (point) => {
                 console.log(point)
@@ -77,6 +88,19 @@ export class PublicPointNotificationsComponent implements OnInit {
             }
         );
     }
+
+    problemButton(notification: Notification): void {  
+    }
+
+    moneyButton(notification: Notification): void {  
+    }
+
+    clubButton(notification: Notification): void { 
+    }
+
+    messageButton(notification: Notification): void {
+    }
+    
 
     closeModal(): void {
         this.showModal = false;
@@ -160,10 +184,35 @@ export class PublicPointNotificationsComponent implements OnInit {
                 }));
                 this.combinedNotifications = [...this.combinedNotifications, ...moneyExchangeMapped];
                 this.splitNotifications();
+                this.sortNotifications();
             },
             (error) => {
                 console.error('Error loading money exchange notifications:', error);
             }
+        );
+        
+        this.notificationService.getProblemNotificationsByUserId(this.user?.role || "tourist").subscribe(
+            (problemNotifications: PagedResults<ProblemNotification>) => {
+                const problemNotificationMapped = problemNotifications.results.map(notification => ({
+                    type: 2,
+                    data: notification,
+                    creationTime: notification.createdAt,
+                    isOpened: notification.isOpened
+                }));
+                this.combinedNotifications = [...this.combinedNotifications, ...problemNotificationMapped];
+                console.log("PROBLEM", problemNotificationMapped);
+                this.sortNotifications();
+                this.splitNotifications();
+            },
+            (error) => {
+                console.error('Error loading problem notifications:', error);
+            }
+        );                        
+        this.sortNotifications();
+    }
+    sortNotifications(): void {
+        this.combinedNotifications = this.combinedNotifications.sort(
+            (a, b) => new Date(b.creationTime).getTime() - new Date(a.creationTime).getTime()
         );
     }
     
@@ -176,9 +225,6 @@ export class PublicPointNotificationsComponent implements OnInit {
         this.readNotificatio = this.combinedNotifications
             .filter(n => n.isOpened)
             .sort((a, b) => new Date(b.creationTime).getTime() - new Date(a.creationTime).getTime());
-
-        console.log("OPENED: ", this.readNotificatio);
-        console.log("UNREAD: ", this.unreadNotification)
     }
     isPublicPointNotification(notification: { type: number; data: any }): notification is { type: 0; data: PublicPointNotification } {
         return notification.type === 0;

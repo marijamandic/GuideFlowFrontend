@@ -27,7 +27,7 @@ export class NavbarComponent implements OnInit {
 		});
 		this.publiPointService.getUnreadNotificationsByAuthor(this.user?.id || 0).subscribe(
 			(notifications: PublicPointNotification[]) => {
-				this.notificationCount = notifications.length;
+				this.notificationCount = 3;
 			},
 			error => {
 				console.error('Error fetching notifications:', error);

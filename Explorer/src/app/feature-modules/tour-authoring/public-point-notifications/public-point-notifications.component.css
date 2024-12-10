@@ -20,6 +20,7 @@
     padding-left: 10px;
     padding-right: 10px;
     border-radius: 5px;
+    background-color: white;
   }
   
   .mark-read-text {
@@ -32,7 +33,7 @@
 
   h4 {
     margin-bottom: 0px;
-    margin-left: 15px;
+    margin-left: 10px;
     font-weight: 600;
     font-size: 14px; /* Manji font */
     letter-spacing: 1px; /* Veći razmak između slova */
@@ -47,15 +48,17 @@
     display: flex;
     align-items: center;
     padding: 0px; /* Manja visina i padding */
-    height: 90px; /* Manja visina reda */
+    height: auto; /* Manja visina reda */
     overflow: hidden;
     margin-bottom: 10px;
     border-radius: 8px 8px 12px 12px;
-    box-shadow: 0 3px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 1px 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease, box-shadow 0.2s ease; /* Animacija za glatko povećanje */
+    cursor: pointer; /* Postavlja kursor kao ruku */
   }
   
   .unread {
-    background-color: #d4f1f380;
+    background-color: #fefefe80;
   }
   
   .read {
@@ -83,43 +86,89 @@
   
   .notification-point {
     font-size: 14px; /* Manji font za komentar */
-    margin-left: 10px;
+    margin-left: 10px; /* Uklonite ovo ako ne želite razmak između tačke i teksta */
     font-weight: 500;
     color: black;
-    position: relative;
-  }
-  .notification-point::after {
+    position: relative; /* Omogućava pozicioniranje pseudo-elementa */
+    padding-left: 15px; /* Dodajte prostor za tačku ispred teksta */
+}
+
+.notification-point::before {
     content: "";
     width: 7px;
     height: 7px;
-    background-color: rgba(255, 0, 0, 0.74);
-    border-radius: 50%;
+    background-color:#333;
+    border-radius: 50%; /* Da tačka bude kružna */
     position: absolute;
-    right: -15px; /* Pozicija tačke na desnoj strani */
-    top: 50%; /* Poravnanje vertikalno u sredini naslova */
+    left: 0; /* Pozicija tačke na levoj strani */
+    top: 50%; /* Vertikalno centriranje sa tekstom */
     transform: translateY(-50%); /* Precizno centriranje tačke */
-    box-shadow: 0 1px 4px rgba(255, 0, 0, 1);
-  }
-  .notification-point-read {
-    font-size: 14px; /* Manji font za komentar */
-    margin-left: 10px;
-    font-weight: 500;
-    color: black;
-    position: relative;
-  }
+    bottom: -20px;
+}
+
+.notification-point-read {
+  font-size: 14px; /* Manji font za komentar */
+  margin-left: 10px;
+  font-weight: 500;
+  color: black;
+  position: relative;
+  margin-left: 26px;
+}
+
 
   .notification-comment {
     font-size: 14px; /* Manji font za komentar */
-    margin-left: 10px;
+    margin-left: 26px;
     font-weight: 400;
     padding-right: 10px;
   }
+
+  .notification-button {
+    display: flex;
+    font-size: 14px;
+    margin-left: 10px;
+    margin-right: 10px;
+    font-weight: 500;
+    gap: 0px; /* Razmak između dugmadi i linije (opciono) */
+  }
   
+  .button-decline {
+    width: 53%;
+    font-size: 12px; /* Prilagodite veličinu teksta */
+    padding: 5px 20px; /* Prilagodite unutrašnji razmak */
+    border-radius: 10px;
+    margin-left: -10px; 
+    border-radius: 0px;
+    border-top-right-radius: 0px; /* Zaobljenje donjeg desnog ugla */
+    height: 30px; /* Opciona visina */
+    background-color: #333;
+    color: white;
+    border-right: 0px solid #333;
+    border-radius: 12px;
+    border-top-right-radius: 0px; /* Zaobljenje donjeg desnog ugla */
+    border-top-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+  }
+
+  .button-accept {
+    width: 53%;
+    font-size: 12px; /* Prilagodite veličinu teksta */
+    padding: 5px 10px; /* Prilagodite unutrašnji razmak */
+    border-radius: 10px;
+    margin-left: 0px;
+    margin-right: -10px;
+    border-radius: 0px;
+    border-top-left-radius: 0px; /* Zaobljenje donjeg desnog ugla */
+    height: 30px; /* Opciona visina */
+    background-color: #333;
+    color: white;
+  }
+
   .notification-date {
     color: #888;
     font-size: 11px; /* Manji font za datum */
     margin-top: 0px; /* Manji razmak između datuma i komentara */
-    margin-left: 10px;
+    margin-left: 26px;
     margin-bottom: 2px;
   }
   
@@ -130,6 +179,7 @@
     font-size: 12px; /* Manji font za status */
     color: #ffffff;
     letter-spacing: 4px; /* Veći razmak između slova */
+    padding-top: 2px;
   }
   .status-accepted {
     background-color: #19ba3e; /* Svetlo zelena za accepted */
@@ -137,7 +187,7 @@
 }
 
     .status-rejected {
-        background-color: #dc3545; /* Crvena za rejected */
+        background-color: #84dcc6; /* Crvena za rejected */
     font-weight: bold;
 }
   
@@ -145,7 +195,7 @@
     width: 0px;
     height: 100%;
     background-color: transparent;
-    margin-left: 0px; /* Manji razmak između statusa i linije */
+    margin-left: 0px;
   }
   
   .accepted .status-line {

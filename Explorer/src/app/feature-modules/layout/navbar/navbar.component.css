@@ -84,16 +84,19 @@
 .notification-badge {
     position: absolute;
     top: -8px; /* You can keep or adjust this value to control the vertical position */
-    right: -10px; /* You can adjust this for horizontal positioning */
-    background-color: rgba(255, 0, 0, 0.975);
+    right: 95px; /* You can adjust this for horizontal positioning */
+    left: 45px;
+    background-color: #84dcc6; 
     color: white;
     border-radius: 50%; /* Keeps the circular shape */
     padding: 2px 4px; /* Reduces the size by lowering padding */
-    font-size: 9px; /* Smaller font size for a smaller badge */
+    font-size: 10px; /* Smaller font size for a smaller badge */
     height: 16px; /* Control the height of the circle */
     min-width: 16px; /* Ensure it remains circular */
     line-height: 16px; /* Vertically center the text within the circle */
     text-align: center;
+    z-index: 10;
+    border: 2px solid white; /* Dodaje beli border */
 }
 
 
@@ -156,7 +159,7 @@ mat-icon:hover{
     width: 350px;
     max-height: 400px;
     overflow-y: auto;
-    background-color: #bc1616ad;
+    background-color: #bc161600;
     border-radius: 10px;
     padding: 0px;
     z-index: 1000;
