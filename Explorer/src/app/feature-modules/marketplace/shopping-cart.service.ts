@@ -6,6 +6,7 @@ import { environment } from 'src/env/environment';
 import Headers from 'src/app/shared/utils/headers';
 import { ItemInput } from './model/shopping-carts/item-input';
 import { Item } from './model/shopping-carts/item';
+import { PagedResults } from 'src/app/shared/model/paged-results.model';
 
 @Injectable({
 	providedIn: 'root'
@@ -27,11 +28,19 @@ export class ShoppingCartService {
 		);
 	}
 
-	addToCart(item: ItemInput): Observable<Item[]> {
-		return this.http.post<Item[]>(`${environment.apiHost}shopping-cart/items`, item, { headers: Headers }).pipe(
+	getPopulatedByTouristId(): Observable<ShoppingCart> {
+		return this.http.get<ShoppingCart>(`${environment.apiHost}shopping-cart/populated`, { headers: Headers }).pipe(
+			tap(cart => {
+				this.setCart(cart);
+			})
+		);
+	}
+
+	addToCart(item: ItemInput): Observable<PagedResults<Item>> {
+		return this.http.post<PagedResults<Item>>(`${environment.apiHost}shopping-cart/items`, item, { headers: Headers }).pipe(
 			tap(items => {
 				let oldCart = this.cart$.getValue();
-				oldCart.items = items;
+				oldCart.items = items.results;
 				this.setCart(oldCart);
 			})
 		);
