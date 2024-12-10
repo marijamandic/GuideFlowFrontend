@@ -43,7 +43,17 @@
     margin-top: 0px;
     padding: 5px 10px 5px 10px;
   }
-  
+  .scrollable {
+    max-height: 400px; /* Maksimalna visina za prikaz elemenata */
+    overflow-y: auto; /* Omogućava vertikalno skrolovanje */
+    scrollbar-width: none; /* Sakriva skrolbar u Firefox-u */
+    -ms-overflow-style: none; /* Sakriva skrolbar u IE i Edge-u */
+}
+
+.scrollable::-webkit-scrollbar {
+    display: none; /* Sakriva skrolbar u Chrome-u, Safari-u i WebKit browser-ima */
+}
+
   .notification-row {
     display: flex;
     align-items: center;
@@ -171,6 +181,18 @@
     margin-left: 26px;
     margin-bottom: 2px;
   }
+  .notification-link {
+    color: #007bff; /* Plava boja za link */
+    text-decoration: underline; /* Podvlačenje za link */
+    font-size: 14px; /* Veličina fonta */
+    cursor: pointer; /* Kursor u obliku ruke */
+    margin-left: 26px;
+  }
+
+  .notification-link:hover {
+      color: #007bff; /* Tamnija plava boja na hover */
+  }
+
   
   .notification-status {
     font-weight: bold;
