@@ -48,6 +48,10 @@ export class MarketplaceService {
 		return this.http.get<Tour>(environment.apiHost + 'execution/tourExecution/purchased/' + userId + '/' + tourId);
 	}
 
+	checkIfPurchased(tourId:number): Observable<TourPurchaseToken> {
+		return this.http.get<TourPurchaseToken>(environment.apiHost + 'shopping/tourPurchaseToken/tour/' + tourId);
+	}
+
 	// updateCart(shoppingCart: ShoppingCart): Observable<ShoppingCart> {
 	// 	return this.http.put<ShoppingCart>(environment.apiHost + 'shoppingCart/', shoppingCart);
 	// }

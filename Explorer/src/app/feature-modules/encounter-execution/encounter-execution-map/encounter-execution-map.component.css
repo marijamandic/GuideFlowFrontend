@@ -49,7 +49,7 @@ input[type="text"]:focus {
 .update-button {
     width: 80%; /* Ista širina kao input */
     padding: 8px 16px; /* Manji padding */
-    background-color: #40E0D0; /* Tirkizna boja */
+    background-color: var(--primary-color); /* Tirkizna boja */
     color: white;
     border: none;
     border-radius: 20px; /* Zaobljeni krajevi */

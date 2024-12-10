@@ -1,0 +1,266 @@
+
+/* General Tour Details Container */
+.tour-details-container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 10px;
+  display: flex; /* Aktivira Flexbox */
+}
+
+/* Tour Card */
+.tour-card {
+  display: flex;
+  flex-direction: row; /* Slika sa leve strane */
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 10px;
+  padding: 15px;
+  gap: 15px; /* Razmak između slike i sadržaja */
+  max-width: 500px; /* Smanjena maksimalna širina */
+  transition: transform 0.3s;
+  position: relative;
+}
+
+/* Tour Card Left Section */
+.tour-card-left {
+  flex-shrink: 0; /* Sprečava da se slika smanji */
+  width: 300px; /* Širina sekcije za sliku */
+  height: 300px; /* Visina sekcije za sliku */
+}
+
+.tour-card-left img {
+  width: 100%; /* Širina slike */
+  height: 100%; /* Visina slike */
+  border-radius: 10px; /* Zaobljeni uglovi slike */
+  object-fit: cover; /* Prilagođava sliku unutar sekcije */
+}
+
+
+.tour-card:hover {
+  transform: scale(1.05);
+}
+
+.tour-card-image img {
+  width: 120px; /* Manja širina slike */
+  height: 120px; /* Manja visina slike */
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.tour-card-content {
+  flex: 1; /* Proširi sadržaj */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.tour-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tour-card-header h2 {
+  font-size: 20px; /* Smanjen font */
+  font-weight: bold;
+  color: #333;
+  margin: 0;
+}
+
+.tour-card-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px; /* Manji razmak između detalja */
+  font-size: 12px; /* Manji font */
+  color: #666;
+}
+
+.tour-card-details span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.tour-author {
+  font-size: 14px;
+  color: gray;
+}
+
+/* Rating Stars */
+.rating {
+  display: flex;
+  gap: 4px; /* Smanjen razmak između zvezdica */
+}
+
+.rating i {
+  color: #f5c518; /* Zlatna boja za zvezdice */
+  font-size: 16px; /* Smanjen font zvezdica */
+}
+
+/* Buttons container */
+.buttons {
+  display: flex;
+  justify-content: flex-end; /* Dugme ide u desni ugao */
+  align-items: flex-end; /* Poravnanje sa donjim delom */
+  margin-top: auto; /* Osigurava da dugme ostane na dnu */
+}
+
+/* Add to Cart Button */
+.add-to-cart {
+  position: absolute; /* Absolutno pozicioniranje */
+  bottom: 15px; /* Razmak od dna */
+  right: 15px; /* Razmak od desne strane */
+  cursor: pointer;
+  padding: 8px 12px;
+  background-color: var(--primary-color);
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: background-color 0.3s;
+}
+
+.add-to-cart:hover {
+  background-color: #0056b3;
+}
+
+
+.add-to-cart:hover {
+  background-color: #0056b3;
+}
+
+.kebab-menu {
+  background: none;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  font-size: 14px; /* Smanjen font */
+}
+
+/* Checkpoints Section */
+.checkpoints-grid {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 auto; /* Centriranje */
+  gap: 15px; /* Smanjen razmak između kartica */
+}
+
+.checkpoint-card {
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 10px;
+  padding: 15px;
+  width: 250px; /* Manja širina kartice */
+  transition: transform 0.3s;
+}
+
+.checkpoint-card:hover {
+  transform: scale(1.05);
+}
+
+.checkpoint-card-image img {
+  width: 100%;
+  height: 150px; /* Manja visina slike */
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.checkpoint-card-content {
+  margin-top: 10px;
+}
+
+.checkpoint-card-content h3 {
+  margin: 0;
+  font-size: 16px; /* Manji font */
+  font-weight: bold;
+  color: #333;
+}
+
+.checkpoint-card-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px; /* Manji razmak */
+  font-size: 12px; /* Manji font */
+  color: #666;
+}
+
+.checkpoint-card-details span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Reviews Section */
+.reviews-section {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 10px;
+}
+
+.review-card {
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 2px 5px;
+  margin-bottom: 20px;
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.review-username {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  margin: 0;
+}
+
+.rating {
+  display: flex;
+  gap: 5px;
+}
+
+.rating i {
+  color: #f5c518; /* Zlatna boja za zvezdice */
+  font-size: 18px;
+}
+
+.review-comment {
+  font-size: 14px;
+  color: #666;
+  margin: 10px 0;
+}
+
+.review-date {
+  font-size: 12px;
+  color: #999;
+  text-align: right;
+  margin-top: 10px;
+}
+
+.no-reviews-message {
+  font-size: 1rem;
+  color: black; /* Crvena boja za upozorenje */
+  text-align: center;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9; /* Svetla pozadina za kontrast */
+}
+

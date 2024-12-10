@@ -46,6 +46,7 @@ import { EncounterFormComponent } from 'src/app/feature-modules/encounter-execut
 import { AddEncounterComponent } from 'src/app/feature-modules/tour-authoring/add-encounter/add-encounter.component';
 import { ExecutionComponent } from 'src/app/feature-modules/encounter-execution/execution/execution.component';
 import { EncounterExecutionMapComponent } from 'src/app/feature-modules/encounter-execution/encounter-execution-map/encounter-execution-map.component';
+import { TourMoreDetailsComponent } from 'src/app/feature-modules/marketplace/tour-more-details/tour-more-details.component';
 import { TourViewComponent } from 'src/app/feature-modules/tour-execution/tour-view/tour-view.component';
 
 const routes: Routes = [
@@ -82,6 +83,7 @@ const routes: Routes = [
   { path: 'tour/:id', component:TourDetailsComponent, children:[{path:'checkpoints/:tourId', component:CheckpointListComponent}]},
   { path: 'checkpoints/:tourId', component: CheckpointListComponent },  // ovo spajamo u tours/:id
   { path: 'tour-review/:tourId/:touristId', component: TourReviewComponent }, // ovo isto spajamo u tours/:id
+  { path: 'tour-more-details/:id',component:TourMoreDetailsComponent},
 
   // --- /tour-execution/:id 
   { path: 'tour-execution/:id', component: TourExecutionDetailsComponent}, // blizanac, blizanac 
@@ -133,13 +135,6 @@ const routes: Routes = [
   // ### Notification
   { path: 'notifications', component: NotificationsComponent }, // ne znam da li je ikada radilo?
   { path: 'author-notifications', component: PublicPointNotificationsComponent }, // ne znam (menjati)
-
-
-  
-	
-  
-
-  
 ];
 
 @NgModule({

@@ -247,10 +247,17 @@ export class TourViewComponent implements OnInit {
     return user ? user.username : 'Unknown User';  
   }
 
-  calculateAverageRating(reviews: { rating: number }[]): number {
+  calculateAverageRating(reviews: { rating?: number }[]): number {
     if (reviews.length === 0) return 0;
-    const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
-    return totalRating / reviews.length;
+  
+    const validRatings = reviews
+      .map(review => review.rating) // Uzimamo samo ocene
+      .filter((rating): rating is number => rating !== undefined); // Filtriramo undefined vrednosti
+  
+    if (validRatings.length === 0) return 0;
+  
+    const totalRating = validRatings.reduce((sum, rating) => sum + rating, 0);
+    return totalRating / validRatings.length;
   }
 //**FILTER* */
   getFilteredTours(tourSpecification : TourSpecification): Tour[] {

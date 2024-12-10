@@ -14,6 +14,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { CouponComponent } from './coupon/coupon.component';
 import { TourBundlePreviewComponent } from './tour-bundle-preview/tour-bundle-preview.component';
 import { ShoppingCartPreviewComponent } from './shopping-cart-preview/shopping-cart-preview.component';
+import { SharedModule } from 'src/app/shared/shared.module';
+import { TourMoreDetailsComponent } from './tour-more-details/tour-more-details.component';
 
 @NgModule({
 	declarations: [
@@ -23,7 +25,8 @@ import { ShoppingCartPreviewComponent } from './shopping-cart-preview/shopping-c
 		TourBundleDialogComponent,
 		CouponComponent,
 		TourBundlePreviewComponent,
-		ShoppingCartPreviewComponent
+		ShoppingCartPreviewComponent,
+    TourMoreDetailsComponent
 	],
 	imports: [
 		MatRadioModule,
@@ -34,8 +37,9 @@ import { ShoppingCartPreviewComponent } from './shopping-cart-preview/shopping-c
 		ReactiveFormsModule,
 		MatTabsModule,
 		FormsModule,
+    SharedModule,
 		MatDialogModule
 	],
-	exports: [TourPreviewComponent, ShoppingCartComponent, CouponComponent, ShoppingCartPreviewComponent]
+	exports: [TourPreviewComponent, ShoppingCartComponent, CouponComponent, ShoppingCartPreviewComponent,TourMoreDetailsComponent]
 })
 export class MarketplaceModule {}
