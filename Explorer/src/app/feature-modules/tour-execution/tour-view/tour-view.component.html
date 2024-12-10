@@ -4,7 +4,9 @@
   <div class="search-toggle-container">
     <div class="search-bar">
       <input type="text" placeholder="Search tours..." />
-      <i class="fa-solid fa-caret-down" (click)="changeOpenMap()"></i>
+      <i *ngIf="user && user.role === 'tourist' && !openMap" class="fa-solid fa-caret-down" (click)="changeOpenMap()"></i>
+      <i *ngIf="user && user.role === 'tourist' && openMap" class="fa-solid fa-caret-up" (click)="changeOpenMap()"></i>
+
     </div>
   
     <div class="toggle-switch">
@@ -36,6 +38,16 @@
   <div class="content-container">
     <!-- Filters Section -->
     <div class="filter-container">
+
+        <!--sort-->
+        <h3>Sort By:</h3>
+        <select id="sort-menu" (change)="onSortChange($event)" class="sort-dropdown">
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+          <option value="sales">Sales</option>
+        </select>
+      
+      
       <h3>Filter by:</h3>
 
       <div class="status-filter" *ngIf="user && user.role ==='author'">
@@ -86,7 +98,7 @@
     <div class="tour-container">
 
       <!--plus kartica-->
-      <div class="tour-card add-tour-card" (click)="openModal()">
+      <div *ngIf ="user && user.role ==='author'" class="tour-card add-tour-card" (click)="openModal()">
         <div class="plus-icon">
           <i class="fa-solid fa-plus"></i>
         </div>
@@ -106,11 +118,7 @@
           <img src="assets/images/tour9_draft.jpg" alt="{{ tour.name }}" />
         </div>
         <div class="tour-card-image" *ngIf="currentView !== 'draft'">
-          <!--<img *ngIf="tour.checkpoints  " [src]="getImagePath(tour.checkpoints[1].imageUrl)" alt="Checkpoint image" />-->
           <img *ngIf="tour.checkpoints  " [src]="getImagePath(tour.checkpoints[currentImageIndex].imageUrl)" alt="Checkpoint image" />
-
-
-
         </div>
         <div class="tour-card-content">
           <div class="tour-card-header">
@@ -137,7 +145,7 @@
     </div>
   </div>
 
-  <!--sorting-->
+  <!--sorting
   <div class="sort-container">
     <div class="sort-label">
       <h3>Sort By:</h3>
@@ -151,7 +159,7 @@
       <button class="button" (click)="sortAscending()">Asc</button>
       <button class="button" (click)="sortDescending()">Desc</button>
     </div>
-  </div>
+  </div>-->
   
   
   

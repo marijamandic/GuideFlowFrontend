@@ -51,6 +51,11 @@ export class TourFormComponent implements OnChanges {
     });
   }
 
+  trackByIndex(index: number, item: string): number {
+    return index; 
+  }
+  
+
   initializeTour(): Tour {
     return {
       id: 0,

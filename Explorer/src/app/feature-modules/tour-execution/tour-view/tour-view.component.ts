@@ -12,6 +12,7 @@ import { Sales } from '../model/sales.model';
 import { Currency, Price } from '../../tour-authoring/model/price.model';
 import { Checkpoint } from '../../tour-authoring/model/tourCheckpoint.model';
 import { environment } from 'src/env/environment';
+import { AlertService } from '../../layout/alert.service';
 
 @Component({
   selector: 'xp-tour-view',
@@ -62,7 +63,8 @@ export class TourViewComponent implements OnInit {
       private service: TourExecutionService,
       authService: AuthService,
       private cdr: ChangeDetectorRef,
-      private adminService: AdministrationService) 
+      private adminService: AdministrationService,
+      private alertService: AlertService) 
       {
     authService.user$.subscribe((user: User) => {
       this.userId = user.id;
@@ -132,6 +134,8 @@ export class TourViewComponent implements OnInit {
 
   closeModal(): void {
     this.isModalOpen = false;
+    window.location.reload();
+
   }
 
   onSubmit(): void {
@@ -229,7 +233,8 @@ export class TourViewComponent implements OnInit {
         },
         error: (err: any)=>{
           if(err.status===400){
-            alert("You can't publish this tour!");
+            //alert("You can't publish this tour!");
+            this.alertService.showAlert('You cannot publish this tour yet',"error", 5);
           }
           console.log(err)
         }
@@ -394,6 +399,25 @@ export class TourViewComponent implements OnInit {
     }
   }
   //**SORTING***
+
+  onSortChange(event: Event): void {
+    const value = (event.target as HTMLSelectElement).value;
+  
+    switch (value) {
+      case 'price-asc':
+        this.sortAscending(); // Sortiraj po ceni rastuće
+        break;
+      case 'price-desc':
+        this.sortDescending(); // Sortiraj po ceni opadajuće
+        break;
+      case 'sales':
+        this.sortBySales(); // Sortiraj po prodaji
+        break;
+      default:
+        console.warn('Unknown sort option:', value);
+    }
+  }
+  
   sortAscending(): void {
     this.allTours.sort((a, b) => {
       const aPrice = this.getCostFromPrice(a.price);
@@ -471,9 +495,11 @@ export class TourViewComponent implements OnInit {
 
   searchTours(): void {
     if (this.latitude !== null && this.longitude !== null && this.searchDistance !== null) {
+      console.log('usao sam u search');
       this.service.searchTours(this.latitude, this.longitude, this.searchDistance).subscribe({
         next: (tours: Tour[]) => {
           this.allTours = tours;
+          console.log('allTours iz search :', this.allTours);
         },
         error: (err: any) => {
           console.error('Error fetching search results:', err);

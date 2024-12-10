@@ -17,7 +17,8 @@
 
 /* Filters Section */
 .filter-container {
-  flex: 0 0 30%; 
+  flex: 0 0 30%;
+  max-height: 700px;
   max-width: 30%;
   padding: 20px;
   background-color: #fff;
@@ -25,8 +26,12 @@
   box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
 }
 
-.slider-container, .button-container {
+.slider-container {
   margin-bottom: 20px;
+
+}
+.button-container{
+  justify-content: space-between;
 }
 .tags-container{
   margin-right: 15px;
@@ -455,4 +460,16 @@ h2 {
 
 .btn-add:hover {
   background-color: #45a049;
+}
+.sort-label {
+  font-size: 16px;
+}
+
+
+.sort-dropdown {
+  padding: 5px 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
 }
