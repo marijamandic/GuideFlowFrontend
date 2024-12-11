@@ -113,7 +113,7 @@
 .add-to-cart {
   position: absolute; /* Absolutno pozicioniranje */
   bottom: 15px; /* Razmak od dna */
-  right: 15px; /* Razmak od desne strane */
+  right: 50px; /* Razmak od desne strane */
   cursor: pointer;
   padding: 8px 12px;
   background-color: var(--primary-color);
@@ -265,4 +265,19 @@
 }
 .clickable{
   cursor: pointer;
+}
+.share-button{
+  position: absolute; /* Absolutno pozicioniranje */
+  bottom: 15px; /* Razmak od dna */
+  right: 15px;
+  font-size: 1.2em;
+  color: white; 
+  background-color: var(--primary-color);
+  border: none;
+  border-radius: 30px; 
+  cursor: pointer;
+  padding: 5px;
+}
+.share-button:hover {
+  box-shadow: white 0px 7px 29px 0px;
 }
