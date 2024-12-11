@@ -50,6 +50,7 @@ export class AuthService {
 
   logout(): void {
     console.log("Logging out.")
+    this.http.patch<void>(environment.apiHost + `users/logout/${this.user$.value.id}`, {}).subscribe()
     this.router.navigate(['/home']).then(_ => {
       this.tokenStorage.clear();
       this.user$.next({username: "", id: 0, role: "", location: {longitude: 0, latitude: 0} });
