@@ -67,7 +67,7 @@ export class LayoutService {
 		});
 		return this.http.put<void>(`${environment.apiHost}notifications/tourist/problem/message/${id}`, isOpened, { headers });
 	}
-	
+
 	createMessageNotification(messageNotification: MessageNotification): Observable<MessageNotification> {
 		const headers = new HttpHeaders({
 			Authorization: `Bearer ${localStorage.getItem('access-token')}`,
@@ -83,6 +83,18 @@ export class LayoutService {
 		});
 		return this.http.post<void>(
 			`${environment.apiHost}notifications/administrator/problem/money-exchange`,
+			notification,
+			{ headers }
+		);
+	}	
+
+	createTouristNotifaction(notification: Notification): Observable<void> {
+		const headers = new HttpHeaders({
+			Authorization: `Bearer ${localStorage.getItem('access-token')}`,
+			'Content-Type': 'application/json'
+		});
+		return this.http.post<void>(
+			`${environment.apiHost}notifications/tourist/problem/notification`,
 			notification,
 			{ headers }
 		);

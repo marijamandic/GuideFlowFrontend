@@ -21,6 +21,7 @@ export class ClubInfoComponent implements OnInit {
   shouldEdit: boolean = false;
   ownerId: number = 0;
   role: string = "";
+  userName: string = "";
   users: User[] = [];
   filteredUsers: User[] = [];
   showModal: boolean = false;
@@ -42,6 +43,7 @@ export class ClubInfoComponent implements OnInit {
     this.authService.user$.subscribe(user => {
       this.ownerId = user.id;
       this.role = user.role;
+      this.userName = user.username;
     });
 
     this.administrationService.getAllUsers().subscribe((users) => {
@@ -212,7 +214,12 @@ export class ClubInfoComponent implements OnInit {
       const clubRequest: ClubRequest = {
         clubId: this.club.id,
         touristId: this.ownerId,
-        status: ClubRequestStatus.PENDING, 
+        status: ClubRequestStatus.PENDING,
+        createdAt: new Date(),
+        isOpened: false,
+        ownerId: this.club.ownerId,
+        clubName: this.club.name,
+        touristName: this.userName
       };
   
       this.administrationService.addRequest(clubRequest).subscribe({

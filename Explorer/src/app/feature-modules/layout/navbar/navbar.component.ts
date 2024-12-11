@@ -7,6 +7,7 @@ import { ShoppingCart } from '../../marketplace/model/shopping-carts/shopping-ca
 import { MarketplaceService } from '../../marketplace/marketplace.service';
 import { AlertService } from '../alert.service';
 import { LayoutService } from '../layout.service';
+import { AdministrationService } from '../../administration/administration.service';
 
 @Component({
 	selector: 'xp-navbar',
@@ -22,7 +23,7 @@ export class NavbarComponent implements OnInit {
 	isMenuOpen: boolean = false;
 	username: string;
 
-  constructor(private authService: AuthService, private publiPointService: PublicPointService, private alertService: AlertService, private notificationService: LayoutService) {}
+  constructor(private authService: AuthService, private publiPointService: PublicPointService, private alertService: AlertService, private notificationService: LayoutService, private adminService: AdministrationService) {}
 
 	ngOnInit(): void {
 		this.authService.user$.subscribe(user => {
@@ -59,7 +60,16 @@ export class NavbarComponent implements OnInit {
       (error) => {
           console.error('Error loading money exchange notifications:', error);
       }
-    );  
+    ); 
+	this.adminService.getClubRequestByOwner(this.user?.id || 0).subscribe(
+		(messageNotifications) => {
+			const unopenedCount = messageNotifications.filter(notification => !notification.isOpened).length;
+			console.log(`Number of unopened notifications: ${unopenedCount}`);
+			this.notificationCount += unopenedCount;      },
+		  (error) => {
+			  console.error('Error loading money exchange notifications:', error);
+		  }
+	)
   }
 
 	toggleDropdown(): void {

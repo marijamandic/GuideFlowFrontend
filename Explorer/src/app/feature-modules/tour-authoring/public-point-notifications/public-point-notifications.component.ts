@@ -6,11 +6,13 @@ import { User } from 'src/app/infrastructure/auth/model/user.model';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { LayoutService } from '../../layout/layout.service';
 import { Notification } from '../../layout/model/Notification.model';
-import { retry } from 'rxjs';
+import { Observable, retry } from 'rxjs';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
 import { ProblemNotification } from '../../layout/model/problem-notification.model';
 import { MessageNotification } from '../../layout/model/MessageNotification.model';
 import { Router } from '@angular/router';
+import { ClubRequest, ClubRequestStatus } from '../../administration/model/club-request.model';
+import { AdministrationService } from '../../administration/administration.service';
 
 @Component({
     selector: 'app-public-point-notifications',
@@ -20,13 +22,13 @@ import { Router } from '@angular/router';
 export class PublicPointNotificationsComponent implements OnInit {
     totalCount: number = 0;
     selectedNotification: PublicPointNotification | null = null;
-    combinedNotifications: { type: number; data: PublicPointNotification | Notification | ProblemNotification | MessageNotification, creationTime: Date, isOpened: boolean }[] = [];
+    combinedNotifications: { type: number; data: PublicPointNotification | Notification | ProblemNotification | MessageNotification | ClubRequest, creationTime: Date, isOpened: boolean }[] = [];
     selectedPoint: PublicPoint | null = null;
     public publicPoints: PublicPoint[] = [];
     showModal: boolean = false;
     private user: User | undefined;
 
-    constructor(private publicPointService: PublicPointService, private authService: AuthService, private notificationService: LayoutService, private router: Router) {}
+    constructor(private publicPointService: PublicPointService, private authService: AuthService, private notificationService: LayoutService, private router: Router, private clubRequestService: AdministrationService) {}
 
     ngOnInit(): void {
         this.authService.user$.subscribe((user) => {
@@ -207,7 +209,25 @@ export class PublicPointNotificationsComponent implements OnInit {
             (error) => {
                 console.error('Error loading money exchange notifications:', error);
             }
-        );         
+        );   
+
+        this.clubRequestService.getClubRequestByOwner(userId).subscribe(
+            (clubRequests) => {
+                const publicPointMapped = clubRequests
+                    .filter(notification => notification.status === ClubRequestStatus.PENDING)
+                    .map(notification => ({
+                        type: 4, // ClubRequest
+                        data: notification,
+                        creationTime: notification.createdAt,
+                        isOpened: notification.isOpened
+                    }));
+                this.combinedNotifications = [...this.combinedNotifications, ...publicPointMapped];
+            },
+            (error) => {
+                console.error('Error loading public point notifications:', error);
+            }
+        );        
+
         this.sortNotifications();
     }
     sortNotifications(): void {
@@ -227,6 +247,12 @@ export class PublicPointNotificationsComponent implements OnInit {
     }
     isMessageNotification(notification: {type: number; data: any }): notification is { type: 3; data: MessageNotification} {
         return notification.type === 3;
+    }
+    isClubRequest(notification: {type: number; data: any}): notification is { type: 4; data: ClubRequest} {
+        return notification.type === 4;
+    }
+    isPending(notification: {type: number; data: any}): boolean {
+        return notification.data.status == ClubRequestStatus.PENDING;
     }
 
     markAllAsRead(): void {
@@ -256,6 +282,83 @@ export class PublicPointNotificationsComponent implements OnInit {
     
         console.log("All notifications marked as read.");
     }
+
+    getStatusLabel(status: ClubRequestStatus): string {
+        switch (status) {
+            case ClubRequestStatus.PENDING:
+                return 'Pending';
+            case ClubRequestStatus.ACCEPTED:
+                return 'Accepted';
+            case ClubRequestStatus.DECLINED:
+                return 'Declined';
+            case ClubRequestStatus.CANCELLED:
+                return 'Cancelled';
+            default:
+                return 'Unknown';
+        }
+    }
     
+    acceptRequest(request: ClubRequest): void {
+        this.clubRequestService.acceptClubRequest(request.id || 0).subscribe({
+          next: () => {
+            console.log(`Request ${request.id} accepted.`);
+          },
+          error: (err) => {
+            console.error(`Error accepting request ${request.id}:`, err);
+          },
+        });
+        const newNotification: Notification = {
+          id: 0,
+          userId: request.touristId, // Postavite ID korisnika
+          sender: this.user?.username || '', // Pošiljalac, može biti statički ili dinamički
+          message: `The request for ${request.clubName} has been accepted.`, // Poruka sa imenom kluba
+          createdAt: new Date(), // Trenutno vreme
+          isOpened: false, // Podrazumevano nije pročitano
+          type: 2, // Tip je 2 (ClubNotification)
+        };
+        
+        this.notificationService.createTouristNotifaction(newNotification).subscribe({
+            next: () => {
+                console.log('Notification successfully created');
+                this.loadAllNotifications();
+            },
+            error: (err) => {
+                console.error('Error creating notification:', err);
+                this.loadAllNotifications();
+            },
+        });
+      }
+      
+      declineRequest(request: ClubRequest & { username?: string; firstName?: string; lastName?: string }): void {
+        this.clubRequestService.declineClubRequest(request.id || 0).subscribe({
+          next: () => {
+            console.log(`Request ${request.id} declined.`);
+          },
+          error: (err) => {
+            console.error(`Error declining request ${request.id}:`, err);
+          },
+        });
     
+        const newNotification: Notification = {
+          id: 0,
+          userId: request.touristId, // Postavite ID korisnika
+          sender: this.user?.username || '', // Pošiljalac, može biti statički ili dinamički
+          message: `The request for ${request.clubName} has been rejected.`, // Poruka sa imenom kluba
+          createdAt: new Date(), // Trenutno vreme
+          isOpened: false, // Podrazumevano nije pročitano
+          type: 2, // Tip je 2 (ClubNotification)
+        };
+        
+        this.notificationService.createTouristNotifaction(newNotification).subscribe({
+            next: () => {
+                console.log('Notification successfully created');
+                this.loadAllNotifications();
+            },
+            error: (err) => {
+                console.error('Error creating notification:', err);
+                this.loadAllNotifications();
+            },
+        });
+      } 
+            
 }
