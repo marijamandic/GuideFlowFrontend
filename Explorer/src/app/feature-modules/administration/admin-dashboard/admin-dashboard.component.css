@@ -95,24 +95,23 @@ p{
   background-color: #d4edda;
 }
 
-
 .status-inactive .status-badge {
   color: #dc3545;
   background-color: #f8d7da;
 }
 
 .status-unresolved {
-  background-color: #fdffca; /* Yellow for unresolved */
-  color: #fbb13c;
+  color: #ffb700 !important;
+  background-color: #fdffca;
 }
 
 .status-overdue {
-  color: #dc3545;
+  color: #dc3545 !important;
   background-color: #f8d7da;
 }
 
-.status-resolved {
-  color: #28a745;
+.status-resolved  {
+  color: #28a745 !important;
   background-color: #d4edda;
 }
 
@@ -162,6 +161,17 @@ p{
   max-width: 1400px;
   color: #333;
 }
+
+.problem-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.problem-table th, .problem-table td {
+  text-align: left;
+  padding: 8px 10px;
+}
+
 
 .problem-table th,
 .problem-table td {

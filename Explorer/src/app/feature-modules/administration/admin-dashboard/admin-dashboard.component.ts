@@ -5,7 +5,7 @@ import { LayoutService } from '../../layout/layout.service';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { User } from 'src/app/infrastructure/auth/model/user.model';
 import { Problem } from 'src/app/shared/model/problem.model';
-import { Tour } from '../../tour-authoring/model/tour.model';
+import { Tour, TourStatus } from '../../tour-authoring/model/tour.model';
 import { TourService } from '../../tour-authoring/tour.service';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
 import { Category } from 'src/app/shared/model/details.model';
@@ -31,7 +31,7 @@ users: Account[] = []
   problems: Problem[] = [];
   tours: Tour[] = [];
   problemTourMap: Map<number, boolean> = new Map<number, boolean>();
-  selectedProblemId: number | null = null;
+  selectedProblem: Problem | null = null;
   selectedDate: string = '';
 
   constructor(
@@ -46,6 +46,7 @@ users: Account[] = []
   
   ngOnInit(): void {
     this.getAccounts();
+    this.loadProblems();
     this.authService.user$.subscribe((user)=>{
       this.user = user;
     })
@@ -124,6 +125,7 @@ users: Account[] = []
   }  
 
   // PROBLEMS
+  // PROBLEMS
   loadProblems(): void {
     this.service.getProblems().subscribe({
       next: (result: PagedResults<Problem>) => {
@@ -136,6 +138,7 @@ users: Account[] = []
       },
     });
   }
+
 
   fetchAllTours(): void {
     this.tourService.getTour().subscribe({
@@ -177,19 +180,69 @@ users: Account[] = []
   }
 
   getProblemStatus(problem: Problem): string {
+    const currentDate = new Date();
+    const dueDate = new Date(problem.resolution.deadline);
+  
     if (problem.resolution.isResolved) {
       return 'Resolved';
+    } else if (currentDate > dueDate) {
+      return 'Overdue';
     } else {
-      const today = new Date();
-      const deadline = new Date(problem.resolution.deadline);
+      return 'Unresolved';
+    }
+  }   
+
+  // MODAL
+  toggleProblemModal(problem: Problem): void {
+    this.selectedProblem = problem;
+  }
+
+  closeProblemModal(): void {
+    this.selectedProblem = null;
+  }
+
+  updateSelectedDate(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    this.selectedDate = inputElement.value;
+  }
+
+  saveDeadline(): void {
+    if (this.selectedProblem && this.selectedDate) {
+      const problemId = this.selectedProblem.id;
   
-      if (deadline < today) {
-        return 'Overdue';
+      // Ensure problemId is defined
+      if (problemId !== undefined) {
+        this.service.updateDeadline(problemId, this.selectedDate).subscribe({
+          next: (updatedProblem) => {
+            this.selectedProblem = updatedProblem;
+            this.closeProblemModal(); // Ensure the modal is closed after the operation
+          },
+          error: (err) => console.error(err),
+        });
       } else {
-        return 'Unresolved';
+        console.error('Problem ID is undefined');
       }
+    } else {
+      console.error('Selected problem or date is missing');
     }
   }
   
-  
+
+  shutDownTour(): void {
+    if (this.selectedProblem) {
+      this.tourService.getTourById(this.selectedProblem.tourId).subscribe({
+        next: (tour) => {
+          tour.status = TourStatus.Archived;  // Let's just archive the tour as punishment.
+          this.tourService.updateTour(tour).subscribe({
+            next: () => {
+              this.closeModal();
+              console.log('Tour successfully deleted.');
+            },
+            error: (err) => console.error(err),
+          });
+        },
+        error: (err) => console.error(err),
+      });
+    }
+  }
 }

@@ -64,15 +64,19 @@
         <th>Tourist</th>
         <th>Tour</th>
         <th>Category</th>
+        <th>Reported At</th>
+        <th>Deadline</th>
         <th>Status</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let problem of problems">
+      <tr *ngFor="let problem of problems" (click)="toggleProblemModal(problem)">
         <td>{{ problem.id }}</td>
         <td>{{ getTouristName(problem.userId) }}</td>
         <td>{{ getTourName(problem.tourId) }}</td>
         <td>{{ getCategoryName(problem.details.category) }}</td>
+        <td>{{ problem.resolution.reportedAt | date:'medium' }}</td>
+        <td>{{ problem.resolution.deadline | date:'medium' }}</td>
         <td>
           <button class="status-badge" 
                   [ngClass]="{
@@ -82,7 +86,7 @@
                   }">
             {{ getProblemStatus(problem) }}
           </button>
-        </td>          
+        </td>              
       </tr>        
     </tbody>
   </table>
@@ -106,6 +110,29 @@
     </div>
     <div class="modal-footer">
       <button class="cta-button" (click)="depositMoney()">Confirm transaction</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal" *ngIf="selectedProblem">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Manage Problem</h2>
+      <button class="close-btn" (click)="closeProblemModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <p><strong>Problem ID:</strong> {{ selectedProblem.id }}</p>
+      <p><strong>Reported At:</strong> {{ selectedProblem.resolution.reportedAt | date:'medium' }}</p>
+      <p><strong>Deadline:</strong> {{ selectedProblem.resolution.deadline | date:'medium' }}</p>
+      <p><strong>Tour Name:</strong> {{ getTourName(selectedProblem.tourId) }}</p>
+
+      <label for="deadline">Set New Deadline:</label>
+      <input id="deadline" type="date" (change)="updateSelectedDate($event)" />
+      <button (click)="saveDeadline()">Save Deadline</button>
+    </div>
+    <div class="modal-footer">
+      <button (click)="shutDownTour()">Shut Down Tour</button>
     </div>
   </div>
 </div>
