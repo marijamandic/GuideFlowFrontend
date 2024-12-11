@@ -12,6 +12,8 @@ import { RatingService } from '../rating.service';
 import { Rating } from '../model/rating.model';
 import { MessageNotification } from '../model/message-notification.model';
 import { MessageNotificationService } from '../message-notification.service';
+import { ClubPost, ResourceType } from '../../administration/model/club-post.model';
+import { AdministrationService } from '../../administration/administration.service';
 
 @Component({
   selector: 'xp-post-info',
@@ -33,10 +35,12 @@ export class PostInfoComponent implements OnInit {
   message: MessageNotification;
   loggedInUserId: number = 0;
   ratingCounts: { [postId: number]: { positive: number; negative: number } } = {};
+  clubPost: ClubPost;
 
   engagementStatus: number | null = null;
   isShareModalOpen: boolean = false;
   IdOfPost : number = 0;
+  ResourceType: any;
 
 
   constructor(
@@ -47,7 +51,8 @@ export class PostInfoComponent implements OnInit {
     private router: Router,
     private fb: FormBuilder,
     private ratingService: RatingService,
-    private messageNotificationService: MessageNotificationService
+    private messageNotificationService: MessageNotificationService,
+    private adminService: AdministrationService
   ) {
     this.commentForm = this.fb.group({
       content: ['', Validators.required]
@@ -383,7 +388,9 @@ export class PostInfoComponent implements OnInit {
     this.isShareModalOpen = false;
   }
   handleShareSubmit(description: string) {
+    console.log('radim buraz')
     const descriptionMatch = description.match(/Description: (.*?), FollowerId: (\d+)/);
+    const clubMatch = description.match(/Description: (.*?), ClubId: (\d+)/);
     
     if (descriptionMatch) {
       const parsedDescription = descriptionMatch[1];  // Deo nakon "Description: "
@@ -402,7 +409,24 @@ export class PostInfoComponent implements OnInit {
             error: (err) => console.error("Failed")
           })
       }
-    } else {
+    } else if(clubMatch){
+      const parsedDescription = clubMatch[1];  
+      const parseclubId = parseInt(clubMatch[2], 10);
+      if(this.user && this.post){
+        this.clubPost = {
+          clubId: parseclubId,
+          memberId: this.user?.id,
+          content: parsedDescription,
+          resourceId: this.post.id,
+          resourceType: ResourceType.BLOG
+        }
+        this.adminService.addClubPost(this.clubPost).subscribe({
+          next: () => console.log(this.clubPost),
+            error: (err) => console.error("Failed club post")
+        })
+      }
+
+    }else {
       console.log('Nesto nije dobro sa parsiranjem');
     }
   
