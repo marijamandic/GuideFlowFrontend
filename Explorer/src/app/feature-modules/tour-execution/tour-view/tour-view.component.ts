@@ -117,7 +117,7 @@ export class TourViewComponent implements OnInit {
       authorId:-1,
       name: '',
       description: '',
-      price: { cost: 0, currency: Currency.EUR },
+      price: 0,
       level: Level.Easy,
       status: TourStatus.Draft,
       lengthInKm: 0,
@@ -481,8 +481,8 @@ export class TourViewComponent implements OnInit {
     this.allTours = sortedTours;
   }
   
-  private getCostFromPrice(price: Price): number {
-    return price?.cost ?? 0;
+  private getCostFromPrice(price: number): number {
+    return price ?? 0;
   }
   
 

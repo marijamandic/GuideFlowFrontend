@@ -109,18 +109,19 @@ export class TourMoreDetailsComponent implements OnInit{
     }
   }
   
-  getFormattedPrice(price: Price): string {
-    if (!price) return '';
+  getFormattedPrice(price: number): string {
+    /*if (!price) return '';
     switch (price.currency) {
       case Currency.RSD:
-        return `${price.cost} RSD`;
+        return `${price} RSD`;
       case Currency.EUR:
         return `${price.cost} €`;
       case Currency.USD:
         return `${price.cost} $`;
       default:
         return `${price.cost}`;
-    }
+    }*/
+   return `${price}`;
   }
   
   getStars(): string[] {
@@ -170,7 +171,7 @@ export class TourMoreDetailsComponent implements OnInit{
 			type: ProductType.Tour,
 			productId: this.tourId!,
 			productName: this.tour.name,
-			adventureCoin: this.tour.price.cost
+			adventureCoin: this.tour.price
 		};
 		this.shoppingCartService.addToCart(item).subscribe({
       next: () =>{
