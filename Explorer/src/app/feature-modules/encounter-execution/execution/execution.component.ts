@@ -12,6 +12,7 @@ import { timer } from 'rxjs';
 import { AlertService } from '../../layout/alert.service';
 import { MatDialog } from '@angular/material/dialog';
 import { SuggestedToursComponent } from '../../tour-execution/suggested-tours/suggested-tours.component';
+import { TourExecutionService } from '../../tour-execution/tour-execution.service';
 
 @Component({
   selector: 'xp-execution',
@@ -42,7 +43,8 @@ export class ExecutionComponent implements OnInit{
     private router: Router,
     private route: ActivatedRoute,
     private alertService: AlertService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private tourExecutionService: TourExecutionService
   ) {}
 
   ngOnInit(): void {
@@ -359,18 +361,29 @@ completeExecution(): void {
     });
   }
 
-  openSuggestedToursModal(): void{
-    console.log('otvara se modal');
-    const dialogRef = this.dialog.open(SuggestedToursComponent, {
-      // width: '800px',
-      // height: 'auto',
-      data: {
-        longitude: this.encounter.encounterLocation.longitude,
-        latitude: this.encounter.encounterLocation.latitude
+  openSuggestedToursModal(): void {
+    console.log('Proveravam da li ima predloženih tura');
+    this.tourExecutionService.getSuggestedTours(this.encounter.encounterLocation.longitude, this.encounter.encounterLocation.latitude).subscribe({
+      next: (result: any) => {
+        if (result && result.length > 0) {
+          console.log('Otvaram modal sa predloženim turama');
+          const dialogRef = this.dialog.open(SuggestedToursComponent, {
+            data: {
+              longitude: this.encounter.encounterLocation.longitude,
+              latitude: this.encounter.encounterLocation.latitude
+            }
+          });
+          dialogRef.afterClosed().subscribe(result => {
+            console.log('Modal zatvoren', result);
+          });
+        } else {
+          console.log('Nema predloženih tura, modal se neće otvoriti');
+        }
+      },
+      error: (error) => {
+        console.error('Greška prilikom dobijanja predloženih tura:', error);
       }
     });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('Modal zatvoren', result);
-    })
   }
+  
 }
