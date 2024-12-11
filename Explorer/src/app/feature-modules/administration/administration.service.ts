@@ -109,6 +109,12 @@ export class AdministrationService {
 		  `${environment.apiHost}request/clubRequest/for-tourist/${userId}`
 		);
 	}
+
+	getClubRequestByOwner(userId: number): Observable<ClubRequest[]> {
+		return this.http.get<ClubRequest[]>(
+		  `${environment.apiHost}request/clubRequest/for-owner/${userId}`
+		);
+	}
 			  
 	cancelClubRequest(id: number): Observable<ClubRequest> {
 		return this.http.put<ClubRequest>(environment.apiHost + `request/clubRequest/${id}/cancel`, {});
