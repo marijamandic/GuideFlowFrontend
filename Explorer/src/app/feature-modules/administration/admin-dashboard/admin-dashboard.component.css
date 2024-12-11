@@ -23,6 +23,25 @@ p{
   padding: 0;
 }
 
+.controls-container {
+  display: flex;
+  justify-content: space-between; 
+  gap: 5px; 
+  flex-wrap: wrap; 
+  align-items: center; 
+  margin-bottom: 10px; 
+}
+
+.search-input {
+  flex: 0 1 auto; 
+}
+
+.sort-dropdown {
+  flex: 0 1 auto; 
+  border-radius: 15px;
+}
+
+
 /* --- Card thingy I guess --- */
 .user-list-card {
   background-color: #fff;
@@ -57,6 +76,7 @@ p{
 
 /* --- TABLE --- */
 .user-table {
+  margin-top: 10px;
   width: 100%;
   border-collapse: collapse;
 }
@@ -163,6 +183,7 @@ p{
 }
 
 .problem-table {
+  margin-top: 10px;
   width: 100%;
   border-collapse: collapse;
 }

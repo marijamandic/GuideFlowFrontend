@@ -3,23 +3,27 @@
     <h2>Users</h2>
   </div>
   <div class="user-card-controls">
-    <form  (ngSubmit)="searchUsers($event)" >
-      <input type="text" placeholder="Search Username" class="search-input" >
-    </form>
-    <select class="sort-dropdown"  (change)="sortUsers($event)">
-      <option value="latest">Sort by: Latest</option>
-      <option value="oldest">Sort by: Oldest</option>
-    </select>
-    <select class="sort-dropdown"  (change)="filterUsersByRole($event)">
-      <option value="all">All</option>
-      <option value="Tourist">Filter by: Tourist</option>
-      <option value="Author">Filter by: Author</option>
-    </select>
-    <select class="sort-dropdown"  (change)="filterUsersByActivity($event)">
-      <option value="all">All</option>
-      <option value="true">Filter by: Active</option>
-      <option value="false">Filter by: Inactive</option>
-    </select>
+    <div class="controls-container">
+      <form (ngSubmit)="searchUsers($event)">
+        <input type="text" placeholder="Search Username" class="search-input">
+      </form>
+      <div class="dropdown-container">
+        <select class="sort-dropdown" (change)="sortUsers($event)">
+          <option value="latest">Latest</option>
+          <option value="oldest">Oldest</option>
+        </select>
+        <select class="sort-dropdown" (change)="filterUsersByRole($event)">
+          <option value="all">All roles</option>
+          <option value="Tourist">Tourist</option>
+          <option value="Author">Author</option>
+        </select>
+        <select class="sort-dropdown" (change)="filterUsersByActivity($event)">
+          <option value="all">All statuses</option>
+          <option value="true">Active</option>
+          <option value="false">Inactive</option>
+        </select>
+      </div>
+    </div>
   </div>  
   <table class="user-table">
     <thead>
@@ -65,24 +69,28 @@
     <h2>Problems</h2>
   </div>
   <div class="problem-card-controls">
-    <form (ngSubmit)="searchProblems($event)">
-      <input type="text" placeholder="Search" class="search-input">
-    </form>
-    <select class="sort-dropdown" (change)="sortProblemsByReportDate($event)">
-      <option value="latest">Sort by: Latest Report</option>
-      <option value="oldest">Sort by: Oldest Report</option>
-    </select>
-    <select class="sort-dropdown" (change)="sortProblemsByDeadlineDate($event)">
-      <option value="latest">Sort by: Latest Deadline</option>
-      <option value="oldest">Sort by: Oldest Deadline</option>
-    </select>
-    <select class="sort-dropdown" (change)="filterByStatus($event)">
-      <option value="all">All</option>
-      <option value="Resolved">Filter by: Resolved</option>
-      <option value="Unresloved">Filter by: Unresloved</option>
-      <option value="Overdue">Filter by: Overdue</option>
-    </select>
-  </div>  
+    <div class="controls-container">
+      <form (ngSubmit)="searchProblems($event)">
+        <input type="text" placeholder="Search" class="search-input">
+      </form>
+      <div class="dropdown-container">
+        <select class="sort-dropdown" (change)="sortProblemsByReportDate($event)">
+          <option value="latest">Latest</option>
+          <option value="oldest">Oldest</option>
+        </select>
+        <select class="sort-dropdown" (change)="sortProblemsByDeadlineDate($event)">
+          <option value="latest">Nearest</option>
+          <option value="oldest">Furthest</option>
+        </select>
+        <select class="sort-dropdown" (change)="filterByStatus($event)">
+          <option value="all">All statuses</option>
+          <option value="Resolved">Resolved</option>
+          <option value="Unresolved">Unresolved</option>
+          <option value="Overdue">Overdue</option>
+        </select>
+      </div>
+    </div>
+  </div>   
   <table class="problem-table">
     <thead>
       <tr>
