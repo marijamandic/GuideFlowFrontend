@@ -175,6 +175,11 @@ export class AdministrationService {
 		  .pipe(map(response => response.username));
 	}
 
+	getUserById(userId: number): Observable<User> {
+		const url = `${environment.apiHost}user/getUser/${userId}`;
+		return this.http.get<User>(url);
+	  }
+
 	updateMoney(touristId: number, amount: number): Observable<User> {
 		return this.http.put<User>(
 		  `${environment.apiHost}user/updateMoney/${touristId}`,
@@ -192,4 +197,18 @@ export class AdministrationService {
 			{ headers }
 		);
 	} 
+	getFollowedProfiles(userId: number): Observable<number[]> {
+		return this.http.get<number[]>(`${environment.apiHost}administration/profileInfo/followed/${userId}`);
+	  }
+
+	  followUser(followedId: number, followerId: number, followerUsername: string, imageUrl: string): Observable<void> {
+		const body = {
+		  followerId: followerId,
+		  followerUsername: followerUsername,
+		  imageUrl: imageUrl,
+		};
+		return this.http.put<void>(`${environment.apiHost}administration/profileInfo/follower/${followedId}`, body);
+	  }
+	  
+	  
 }

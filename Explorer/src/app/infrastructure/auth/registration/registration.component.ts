@@ -43,7 +43,7 @@ export class RegistrationComponent {
     if (this.registrationForm.valid) {
       if(registration.role == UserRole.Tourist){
         registration.xp = 0;
-        registration.level = 0;
+        registration.level = 1;
         registration.wallet = 0;
         registration.$type  = "turista";
       }
