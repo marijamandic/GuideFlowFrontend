@@ -33,10 +33,9 @@
                 <a [routerLink]="['/settings']" (click) = "toggleDropdown()"><i class="fa fa-cog" aria-hidden="true"></i> Settings</a>
                 <a *ngIf="user && user.role === 'administrator'" color="primary" mat-raised-button [routerLink]="['admin-dashboard']"><i class="fa-solid fa-gauge-simple"></i>Dashboard</a>
                 <a *ngIf="user && user.role === 'author'"color="primary" mat-raised-button [routerLink]="['author-dashboard']"><i class="fa-solid fa-gauge-simple"></i>Dashboard</a>
-                <a class="username" [routerLink]="['/profile',user?.id]" (click) = "toggleDropdown()"><i class="fa fa-user" aria-hidden="true"></i>{{ username || 'Guest' }}</a>
+                <a *ngIf="user && user.role !== 'administrator'" class="username" [routerLink]="['/profile',user?.id]" (click) = "toggleDropdown()"><i class="fa fa-user" aria-hidden="true"></i>{{ username || 'Guest' }}</a>
                 
             </div>
-            <mat-icon *ngIf="user && user.role === 'tourist'" class="shopping-cart-icon" [routerLink]="['/shoppingCart']">shopping_cart</mat-icon>
         </div>
     </div>
 </mat-toolbar>
