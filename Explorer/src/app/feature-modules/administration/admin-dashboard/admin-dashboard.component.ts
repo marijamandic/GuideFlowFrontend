@@ -210,22 +210,26 @@ users: Account[] = []
     if (this.selectedProblem && this.selectedDate) {
       const problemId = this.selectedProblem.id;
   
-      // Ensure problemId is defined
       if (problemId !== undefined) {
+        console.log('Saving deadline:', { problemId, selectedDate: this.selectedDate });
         this.service.updateDeadline(problemId, this.selectedDate).subscribe({
           next: (updatedProblem) => {
+            console.log('Deadline saved successfully:', updatedProblem);
             this.selectedProblem = updatedProblem;
-            this.closeProblemModal(); // Ensure the modal is closed after the operation
+            this.closeProblemModal(); 
           },
-          error: (err) => console.error(err),
+          error: (err) => {
+            console.error('Error saving deadline:', err);
+          },
         });
       } else {
         console.error('Problem ID is undefined');
       }
     } else {
-      console.error('Selected problem or date is missing');
+      console.error('Selected problem or date is missing:', { selectedProblem: this.selectedProblem, selectedDate: this.selectedDate });
     }
   }
+  
   
 
   shutDownTour(): void {
