@@ -37,6 +37,7 @@
   <xp-share-modal
       *ngIf="isShareModalOpen && tourId"
       [postId]="tourId"
+      [isTour]="true"
       (close)="closeShareModal()"
       (submit)="handleShareSubmit($event)"
     ></xp-share-modal>

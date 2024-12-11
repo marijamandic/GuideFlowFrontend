@@ -15,6 +15,7 @@ export class ShareModalComponent implements OnInit {
   followersMap: Map<number, string> = new Map(); // Mapa za praćenje followerId i followerUsername
   selectedFollowerId: number | undefined = undefined; // Selektovani followerId
   @Input() postId!: number; // Prosleđeni ID posta
+  @Input() isTour : boolean;
   @Output() close = new EventEmitter<void>();
   @Output() submit = new EventEmitter<string>();
 

@@ -1,6 +1,6 @@
 <div class="modal-overlay" (click)="closeModal()"></div>
 <div class="modal-content">
-  <h2>Share Post</h2>
+  <h2>Share {{isTour ? 'Tour' : 'Post'}}</h2>
   <form [formGroup]="modalForm" (ngSubmit)="submitDescription()">
     <div class="inputContainer">
       <label for="description">Description</label>
