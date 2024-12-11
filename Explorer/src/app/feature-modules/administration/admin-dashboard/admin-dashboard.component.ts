@@ -233,8 +233,8 @@ users: Account[] = []
   archiveTour(tourId: number): void {
     this.tourService.getTourById(tourId).subscribe({
       next: (tour) => {
-        tour.status = TourStatus.Archived; 
-        this.selectedProblem!.resolution.isResolved = true;// Mark the problem as resolved
+        tour.status = TourStatus.Archived; // Treba dodati notifikaciju koja se salje i turisti i ovog levog.
+        this.selectedProblem!.resolution.isResolved = true; 
         this.tourService.updateTour(tour).subscribe({
           next: () => {
             console.log('Tour successfully archived.');
