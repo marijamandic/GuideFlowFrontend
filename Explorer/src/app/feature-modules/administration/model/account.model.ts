@@ -3,7 +3,8 @@ export interface Account{
     username: string,
     email: string,
     role: UserRole,
-    lastOnline: Date;
+    lastLogout: Date,
+    lastLogin: Date,
     isActive: boolean
 }
 export enum UserRole {

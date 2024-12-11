@@ -1,12 +1,26 @@
 <div class="user-list-card">
   <div class="user-card-header">
     <h2>Users</h2>
-    <input type="text" placeholder="Search" class="search-input">
-    <select class="sort-dropdown">
+  </div>
+  <div class="user-card-controls">
+    <form  (ngSubmit)="searchUsers($event)" >
+      <input type="text" placeholder="Search Username" class="search-input" >
+    </form>
+    <select class="sort-dropdown"  (change)="sortUsers($event)">
       <option value="latest">Sort by: Latest</option>
       <option value="oldest">Sort by: Oldest</option>
     </select>
-  </div>
+    <select class="sort-dropdown"  (change)="filterUsersByRole($event)">
+      <option value="all">All</option>
+      <option value="Tourist">Filter by: Tourist</option>
+      <option value="Author">Filter by: Author</option>
+    </select>
+    <select class="sort-dropdown"  (change)="filterUsersByActivity($event)">
+      <option value="all">All</option>
+      <option value="true">Filter by: Active</option>
+      <option value="false">Filter by: Inactive</option>
+    </select>
+  </div>  
   <table class="user-table">
     <thead>
       <tr>
@@ -18,22 +32,24 @@
         <th>Status</th>
         <th>Actions</th>
       </tr>
-    </thead>  
+    </thead>
     <tbody>
-      <tr *ngFor="let user of users">
+      <tr *ngFor="let user of ResultUsers">
         <td>{{ user.id }}</td>
         <td>{{ user.username }}</td>
         <td>{{ user.email }}</td>
         <td>{{ getRoleLabel(user.role) }}</td>
-        <td>{{ user.lastOnline }}</td>
+        <td>
+           {{ user.lastLogin > user.lastLogout ? 'Now' : calculateTimeSince(user.lastLogout) }}
+        </td>
         <td [ngClass]="{'status-active': user.isActive, 'status-inactive': !user.isActive}" >
           <button class="status-badge">
             {{ user.isActive ? 'Active' : 'Inactive' }}
           </button>
         </td>        
         <td class="actions">
-          <button class="action-btn table-btn "><i class="fa-solid fa-user"></i></button>
-          <button class="action-btn table-btn " (click)="ToggleAcountActivty(user)"><i class="fa-solid fa-ban"></i></button>
+          <button class="action-btn table-btn"><i class="fa-solid fa-user"></i></button>
+          <button class="action-btn table-btn" (click)="ToggleAcountActivty(user)"><i class="fa-solid fa-ban"></i></button>
           <button *ngIf="user.role === UserRole.Tourist" class="action-btn table-btn" (click)="toggleMoneyInput(user)">
             <i class="fa-solid fa-wallet"></i>
           </button>
@@ -41,28 +57,134 @@
       </tr>
     </tbody>
   </table>
+</div>
 
-  <div class="modal" *ngIf="selectedAccountId !== null">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2>Add adventure coins <i class="fa-solid fa-coins"></i></h2>
-        <button class="close-btn" (click)="closeModal()">&times;</button>
+<!-- Problems Section -->
+<div class="problem-list-card">
+  <div class="problem-card-header">
+    <h2>Problems</h2>
+  </div>
+  <div class="problem-card-controls">
+    <form (ngSubmit)="searchProblems($event)">
+      <input type="text" placeholder="Search" class="search-input">
+    </form>
+    <select class="sort-dropdown" (change)="sortProblemsByReportDate($event)">
+      <option value="latest">Sort by: Latest Report</option>
+      <option value="oldest">Sort by: Oldest Report</option>
+    </select>
+    <select class="sort-dropdown" (change)="sortProblemsByDeadlineDate($event)">
+      <option value="latest">Sort by: Latest Deadline</option>
+      <option value="oldest">Sort by: Oldest Deadline</option>
+    </select>
+    <select class="sort-dropdown" (change)="filterByStatus($event)">
+      <option value="all">All</option>
+      <option value="Resolved">Filter by: Resolved</option>
+      <option value="Unresloved">Filter by: Unresloved</option>
+      <option value="Overdue">Filter by: Overdue</option>
+    </select>
+  </div>  
+  <table class="problem-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Tourist</th>
+        <th>Tour</th>
+        <th>Category</th>
+        <th>Reported At</th>
+        <th>Deadline</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let problem of resultProblems" >
+        <td>{{ problem.id }}</td>
+        <td>{{ getTouristName(problem.userId) }}</td>
+        <td>{{ getTourName(problem.tourId) }}</td>
+        <td>{{ getCategoryName(problem.details.category) }}</td>
+        <td>{{ problem.resolution.reportedAt | date:'medium' }}</td>
+        <td>{{ problem.resolution.deadline | date:'medium' }}</td>
+        <td>
+          <button class="status-badge" 
+                  [ngClass]="{
+                    'status-unresolved': getProblemStatus(problem) === 'Unresolved',
+                    'status-overdue': getProblemStatus(problem) === 'Overdue',
+                    'status-resolved': getProblemStatus(problem) === 'Resolved'
+                  }">
+            {{ getProblemStatus(problem) }}
+          </button>
+        </td>       
+        <td >
+          <button class="action-btn table-btn" *ngIf="isDeadlineExpired(problem.resolution.deadline)" (click)="archiveTour(problem.tourId)"><i class="fa-solid fa-box-archive"></i></button>
+          <button class="action-btn table-btn" (click)="toggleProblemModal(problem)"><i class="fa-solid fa-circle-info"></i></button>
+        </td>       
+      </tr>        
+    </tbody>
+  </table>
+</div>
+  
+<div class="modal" *ngIf="selectedAccountId !== null">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Add adventure coins <i class="fa-solid fa-coins"></i></h2>
+      <button class="close-btn" (click)="closeModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p>Adding to account: <strong>{{ getUsername(selectedAccountId) }}</strong></p>
+      <input
+        type="number"
+        [(ngModel)]="moneyInput"
+        placeholder="Enter amount"
+        class="input-money"
+        min="1"
+      />
+    </div>
+    <div class="modal-footer">
+      <button class="cta-button" (click)="depositMoney()">Confirm transaction</button>
+    </div>
+  </div>
+</div>
+
+<!-- Problem Modal -->
+<div class="problem-modal" *ngIf="selectedProblem">
+  <div class="problem-modal-content">
+    <div class="modal-header">
+      <h2>Problem Info</h2>
+      <!-- Messages Section -->
+      <div class="modal-messages">
+        <p *ngFor="let message of selectedProblem.messages" class="modal-message">
+          {{ message.content }} // poruke napraviti
+        </p>
       </div>
-      <div class="modal-body">
-        <p>Adding to account: <strong>{{ getUsername(selectedAccountId) }}</strong></p>
+      <button class="close-btn" (click)="closeProblemModal()">×</button>
+    </div>
+
+    <!-- Table for problem details -->
+    <table class="problem-details-table">
+      <tr>
+        <th>Tour Name:</th>
+        <th>Reported At:</th>
+        <th>Deadline:</th>
+      </tr>
+      <tr>
+        <td>{{ getTourName(selectedProblem.tourId) }}</td>
+        <td>{{ selectedProblem.resolution.reportedAt | date:'medium' }}</td>
+        <td>{{ selectedProblem.resolution.deadline | date:'medium' }}</td>
+      </tr>
+    </table>
+
+    <!-- Field for changing the deadline -->
+    <div class="deadline-field">
+      <label for="deadline">Set New Deadline:</label>
+      <div class="input-button-container">
         <input
-          type="number"
-          [(ngModel)]="moneyInput"
-          placeholder="Enter amount"
-          class="input-money"
-          min="1"
+          id="deadline"
+          type="date"
+          (change)="updateSelectedDate($event)"
         />
-      </div>
-      <div class="modal-footer">
-        <button class="cta-button" (click)="depositMoney()">Confirm transaction</button>
+        <button class="cta-button " (click)="saveDeadline()">Save Deadline</button>
       </div>
     </div>
   </div>
-  
-
 </div>
+
