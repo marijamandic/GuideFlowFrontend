@@ -51,7 +51,7 @@
             {{ isEditMode ? 'Save' : 'Edit' }}
           </button>
         </ng-container>
-        <ng-container *ngIf="loggedInUser?.id !== userId">
+        <ng-container *ngIf="loggedInUser?.id !== userId && loggedInUser?.role !== 'author'">
           <button
             class="cta-button"
             [ngClass]="followedProfiles.includes(userId) ? 'unfollow-button' : 'follow-button'"
