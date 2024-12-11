@@ -48,6 +48,7 @@ import { ExecutionComponent } from 'src/app/feature-modules/encounter-execution/
 import { EncounterExecutionMapComponent } from 'src/app/feature-modules/encounter-execution/encounter-execution-map/encounter-execution-map.component';
 import { TourMoreDetailsComponent } from 'src/app/feature-modules/marketplace/tour-more-details/tour-more-details.component';
 import { TourViewComponent } from 'src/app/feature-modules/tour-execution/tour-view/tour-view.component';
+import { AuthorDashboardComponent } from 'src/app/feature-modules/administration/author-dashboard/author-dashboard.component';
 
 const routes: Routes = [
 
@@ -99,9 +100,11 @@ const routes: Routes = [
   { path: 'equipment-management', component: EquipmentManagementComponent },
 
   // --- report
+  { path: 'report-problem', component: ReportProblemComponent},
 	{ path: 'author-problems', component: ProblemComponent },
 	{ path: 'tourist-problems', component: ProblemStatusComponent },
 	{ path: 'admin-problems', component: AdminProblemComponent },
+  { path: 'author-dashboard', component: AuthorDashboardComponent},
 
 
   // ### Club
