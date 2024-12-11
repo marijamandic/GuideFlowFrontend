@@ -10,6 +10,8 @@ import { Encounter, EncounterType } from '../model/encounter.model';
 import { environment } from 'src/env/environment';
 import { timer } from 'rxjs';
 import { AlertService } from '../../layout/alert.service';
+import { MatDialog } from '@angular/material/dialog';
+import { SuggestedToursComponent } from '../../tour-execution/suggested-tours/suggested-tours.component';
 
 @Component({
   selector: 'xp-execution',
@@ -39,7 +41,8 @@ export class ExecutionComponent implements OnInit{
     private authService: AuthService,
     private router: Router,
     private route: ActivatedRoute,
-    private alertService: AlertService
+    private alertService: AlertService,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -183,10 +186,10 @@ export class ExecutionComponent implements OnInit{
                         }, 3000);
                     }else{
                      // this.router.navigate(['encounters']);
-                     setTimeout(() => {
-                      window.location.reload();
-                      }, 3000);
-                      
+                     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+                      this.router.navigate(['encounters']); // Navigacija na trenutnu rutu
+                      this.openSuggestedToursModal();
+                    });
                     }
                   }
                 },
@@ -218,11 +221,16 @@ completeExecution(): void {
             this.router.navigate(['tour-execution/',this.tourExecutionId]);
               }, 3000);
           }else{
+            this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+              this.router.navigate(['encounters']); // Navigacija na trenutnu rutu
+              this.openSuggestedToursModal();
+            });
            // this.router.navigate(['encounters']);
-           setTimeout(() => {
-            window.location.reload();
-            }, 3000);
-            
+           //setTimeout(() => {
+            //window.location.reload();
+           // }, 3000);
+            //this.router.navigate(['suggested-tours/' + this.encounter.encounterLocation.longitude + '/' + this.encounter.encounterLocation.latitude]);
+           // this.openSuggestedToursModal();
           }
         },
         error: (error) => {
@@ -349,5 +357,20 @@ completeExecution(): void {
         }
       });
     });
+  }
+
+  openSuggestedToursModal(): void{
+    console.log('otvara se modal');
+    const dialogRef = this.dialog.open(SuggestedToursComponent, {
+      // width: '800px',
+      // height: 'auto',
+      data: {
+        longitude: this.encounter.encounterLocation.longitude,
+        latitude: this.encounter.encounterLocation.latitude
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Modal zatvoren', result);
+    })
   }
 }

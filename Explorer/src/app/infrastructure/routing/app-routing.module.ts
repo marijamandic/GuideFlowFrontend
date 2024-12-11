@@ -48,6 +48,7 @@ import { ExecutionComponent } from 'src/app/feature-modules/encounter-execution/
 import { EncounterExecutionMapComponent } from 'src/app/feature-modules/encounter-execution/encounter-execution-map/encounter-execution-map.component';
 import { TourMoreDetailsComponent } from 'src/app/feature-modules/marketplace/tour-more-details/tour-more-details.component';
 import { TourViewComponent } from 'src/app/feature-modules/tour-execution/tour-view/tour-view.component';
+import { SuggestedToursComponent } from 'src/app/feature-modules/tour-execution/suggested-tours/suggested-tours.component';
 
 const routes: Routes = [
 
@@ -128,6 +129,7 @@ const routes: Routes = [
   { path: 'encounter-execution/:id', component: ExecutionComponent},
   { path: 'encounter-execution/:id/:tourExecutionId', component: ExecutionComponent},
   { path: 'encounterMap', component: EncounterExecutionMapComponent},
+  { path: 'suggested-tours/:longitude/:latitude', component: SuggestedToursComponent},
 
   // ## Payment
   { path: 'shoppingCart', component: ShoppingCartComponent},

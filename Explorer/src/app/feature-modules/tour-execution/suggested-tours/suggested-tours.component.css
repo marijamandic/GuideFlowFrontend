@@ -1,0 +1,125 @@
+/* Stil za modal */
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.8); /* Zatamljenje pozadine */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    overflow-y: auto; /* Omogućava skrolovanje ako ima mnogo tura */
+    padding: 0;
+}
+
+/* Stil za sadržaj modala */
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 1200px; /* Ograničava širinu modala */
+    height: 100%;
+    overflow-y: auto; /* Omogućava vertikalno skrolovanje unutar sadržaja */
+    padding: 20px;
+    border-radius: 10px;
+    box-sizing: border-box;
+}
+
+/* Stil za h2 */
+h2 {
+    font-size: 28px;
+    font-weight: bold;
+    color: white; /* Bele boje za h2 */
+    margin-top: 20px; /* Razmak iznad h2 */
+    margin-bottom: 40px; /* Razmak ispod h2 */
+    text-align: center;
+}
+
+/* Stil za kontejner kartica */
+.tour-cards-container {
+    display: flex;
+    flex-wrap: wrap; /* Omogućava prelazak u novi red */
+    justify-content: center;
+    gap: 30px; /* Razmak između kartica */
+    padding: 10px;
+    box-sizing: border-box;
+    max-height: 80vh; /* Ograničava visinu unutar kontejnera da bude skrolabilno */
+    overflow-y: auto;
+}
+
+/* Stil za pojedinačnu karticu */
+.tour-card {
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Blaga senka */
+    text-align: left;
+    width: 300px; /* Fiksna širina kartice */
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-sizing: border-box;
+}
+
+/* Efekat podizanja kartice pri hoveru */
+.tour-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Stil za sliku unutar kartice */
+.tour-image img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+/* Stil za informacije o turi */
+.tour-info {
+    padding: 15px;
+}
+
+.tour-info h3 {
+    margin: 0 0 10px;
+    font-size: 18px;
+    color: #333;
+}
+
+.tour-info p {
+    margin: 0;
+    font-size: 14px;
+    color: #666;
+}
+
+/* Sakrivanje skrolbara u kontejneru tura */
+.tour-cards-container::-webkit-scrollbar {
+    display: none;
+}
+
+.button {
+	display: inline-block;
+	background-color: var(--primary-color);
+	color: white;
+	padding: 12px 25px;
+	border-radius: 30px;
+	transition: background-color 0.3s ease, transform 0.3s ease;
+	text-align: center;
+	margin: 20px auto;
+	display: block;
+	width: fit-content;
+	outline: none;
+	border: none;
+}
+
+.button:focus {
+	outline: none;
+}
+
+.button:hover {
+	background-color: var(--hover-color);
+	transform: scale(1.05);
+}
