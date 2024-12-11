@@ -66,7 +66,15 @@ export class LayoutService {
 			'Content-Type': 'application/json',
 		});
 		return this.http.put<void>(`${environment.apiHost}notifications/tourist/problem/message/${id}`, isOpened, { headers });
-	}	
+	}
+	
+	createMessageNotification(messageNotification: MessageNotification): Observable<MessageNotification> {
+		const headers = new HttpHeaders({
+			Authorization: `Bearer ${localStorage.getItem('access-token')}`,
+			'Content-Type': 'application/json',
+		});
+		return this.http.post<MessageNotification>(`${environment.apiHost}message`, messageNotification, { headers });
+	}		
 	
 	createNotification(notification: Notification): Observable<void> {
 		const headers = new HttpHeaders({

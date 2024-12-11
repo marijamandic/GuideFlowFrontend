@@ -10,6 +10,7 @@ import { retry } from 'rxjs';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
 import { ProblemNotification } from '../../layout/model/problem-notification.model';
 import { MessageNotification } from '../../layout/model/MessageNotification.model';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-public-point-notifications',
@@ -25,7 +26,7 @@ export class PublicPointNotificationsComponent implements OnInit {
     showModal: boolean = false;
     private user: User | undefined;
 
-    constructor(private publicPointService: PublicPointService, private authService: AuthService, private notificationService: LayoutService) {}
+    constructor(private publicPointService: PublicPointService, private authService: AuthService, private notificationService: LayoutService, private router: Router) {}
 
     ngOnInit(): void {
         this.authService.user$.subscribe((user) => {
@@ -99,6 +100,10 @@ export class PublicPointNotificationsComponent implements OnInit {
         });        
     }
     
+    navigate(notification: MessageNotification): void {
+        var url = `${notification.isBlog? "blog" : "tour-more-detail"}`
+        this.router.navigate([url, notification.objectId])
+    }
 
     closeModal(): void {
         this.showModal = false;
