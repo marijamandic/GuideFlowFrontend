@@ -35,6 +35,7 @@ export class LoginComponent {
 		if (this.loginForm.valid) {
 			this.authService.login(login).subscribe({
 				next: () => {
+					this.setCart();
 					this.router.navigate(['/']);
 				}
 			});
