@@ -1,20 +1,21 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, OnDestroy } from '@angular/core';
 import { ProfileInfo } from '../model/profile-info.model';
 import { AdministrationService } from '../administration.service';
 import { environment } from 'src/env/environment';
 import { Follower } from '../model/follower.model';
 import { Tourist } from '../../tour-authoring/model/tourist';
 import { TourService } from '../../tour-authoring/tour.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { User } from 'src/app/infrastructure/auth/model/user.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'xp-profile-info',
   templateUrl: './profile-info.component.html',
   styleUrls: ['./profile-info.component.css']
 })
-export class ProfileInfoComponent implements OnInit {
+export class ProfileInfoComponent implements OnInit, OnDestroy {
   @Output() profileInfoUpdated = new EventEmitter<null>();
 
   progressPercent: number = 0;
@@ -24,7 +25,7 @@ export class ProfileInfoComponent implements OnInit {
   nameSurname: string = '';
   profileInfo: ProfileInfo;
   selectedProfileInfo: ProfileInfo;
-  followers: Follower[] = []; // Inicijalizovano kao prazna lista
+  followers: Follower[] = [];
   tourist: Tourist | undefined;
   shouldEdit: boolean = false;
   shouldRenderProfileInfoForm: boolean = false;
@@ -32,39 +33,78 @@ export class ProfileInfoComponent implements OnInit {
   imageUrl: string = '';
   imageBase64: string = '';
   isEditMode: boolean = false;
-  followedProfiles: number[] = []; 
+  followedProfiles: number[] = [];
   loggedInUser: User;
   loggedInProfile: ProfileInfo;
+  isUserLoggedIn: boolean = true;
+  isAuthor: boolean = false;
+  routeSubscription: Subscription;
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private service: AdministrationService,
     private tourService: TourService,
     private authService: AuthService
-) {}
+  ) {}
 
   ngOnInit(): void {
-    this.userId = Number(this.route.snapshot.paramMap.get('id'));
-    this.authService.user$.subscribe((user)=>{
-      this.loggedInUser = user;
+    this.routeSubscription = this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.reloadComponent();
+      }
+    });
 
-      this.service.getProfileInfoByUserId(this.loggedInUser.id).subscribe({
-        next: (profile) => {
-          this.loggedInProfile = profile;
-          console.log("Logged-in profile fetched:", this.loggedInProfile);
-        },
-        error: (err) => {
-          console.error("Error fetching logged-in profile:", err);
-        }
-      });
-    })
-    this.loadData(this.userId);
+    this.initializeComponent();
   }
 
-  // Kombinovano učitavanje podataka
+  ngOnDestroy(): void {
+    if (this.routeSubscription) {
+      this.routeSubscription.unsubscribe();
+    }
+  }
+
+  private initializeComponent(): void {
+    this.userId = Number(this.route.snapshot.paramMap.get('id'));
+    if (!this.userId) {
+      this.isUserLoggedIn = false;
+      return;
+    }
+
+    this.authService.user$.subscribe({
+      next: (user) => {
+        if (!user) {
+          this.isUserLoggedIn = false;
+        } else {
+          this.loggedInUser = user;
+          this.isAuthor = user.role === 'author';
+          this.service.getProfileInfoByUserId(this.loggedInUser.id).subscribe({
+            next: (profile) => {
+              this.loggedInProfile = profile;
+              console.log('Logged-in profile fetched:', this.loggedInProfile);
+            },
+            error: (err) => {
+              console.error('Error fetching logged-in profile:', err);
+            }
+          });
+        }
+      },
+      error: () => {
+        this.isUserLoggedIn = false;
+      }
+    });
+
+    if (this.isUserLoggedIn) {
+      this.loadData(this.userId);
+    }
+  }
+
+  private reloadComponent(): void {
+    this.initializeComponent();
+  }
+
   private loadData(userId: number): void {
     if (userId) {
-      // Učitavanje profila i turista paralelno
       this.getProfileInfoById(userId);
       this.getTouristInfoById(userId);
       this.loadFollowedProfiles();
@@ -79,7 +119,7 @@ export class ProfileInfoComponent implements OnInit {
           this.calculateProgress();
         },
         error: (err: any) => {
-          console.error("Error fetching tourist info", err);
+          console.error('Error fetching tourist info', err);
         }
       });
     }
@@ -89,10 +129,10 @@ export class ProfileInfoComponent implements OnInit {
     this.service.getFollowedProfiles(this.loggedInUser?.id).subscribe({
       next: (ids: number[]) => {
         this.followedProfiles = ids;
-        console.log("Followed profiles:", this.followedProfiles);
+        console.log('Followed profiles:', this.followedProfiles);
       },
       error: (err: any) => {
-        console.error("Error fetching followed profiles", err);
+        console.error('Error fetching followed profiles', err);
       }
     });
   }
@@ -110,15 +150,14 @@ export class ProfileInfoComponent implements OnInit {
           console.log('Followers loaded:', this.followers);
         },
         error: (err: any) => {
-          console.error("Error fetching profile info", err);
+          console.error('Error fetching profile info', err);
         }
       });
     }
   }
 
-  /*getImagePath(imageUrl: string): string {
-    return `${environment.webRootHost}${imageUrl}`;
-  }*/
+
+
 
   calculateProgress(): void {
     if (this.tourist) {
@@ -140,28 +179,13 @@ export class ProfileInfoComponent implements OnInit {
     this.service.updateProfileInfo(profileInfo).subscribe({
       next: () => {
         this.profileInfoUpdated.emit();
-        this.loadData(this.userId); // Ponovno učitavanje podataka
+        this.loadData(this.userId); 
       },
       error: (err: any) => {
         console.error("Error updating profile info", err);
       }
     });
   }
-
-  /*onFileSelected(event: any): void {
-    const file: File = event.target.files[0];
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.imageBase64 = reader.result as string;
-
-      if (this.selectedProfileInfo) {
-        this.selectedProfileInfo.imageBase64 = this.imageBase64;
-        this.profileInfo = this.selectedProfileInfo;
-      }
-    };
-    reader.readAsDataURL(file);
-  }*/
 
   onFollowButtonClick(followedId: number): void {
     const followerId = this.loggedInUser.id; 
@@ -180,30 +204,9 @@ export class ProfileInfoComponent implements OnInit {
     });
   }
   
-/*  onEditOrSaveClicked(): void {
-    if (this.isEditMode) {
-      // Save changes
-      this.service.updateProfileInfo(this.profileInfo).subscribe({
-        next: (updatedProfile) => {
-          console.log('Profile updated successfully:', updatedProfile);
-          this.profileInfo = updatedProfile; // Ažuriraj prikaz
-          this.isEditMode = false; // Zatvori režim uređivanja
-          this.imageBase64 = ''; // Resetuj privremenu sliku
-        },
-        error: (err) => {
-          console.error('Error updating profile:', err);
-        }
-      });
-    } else {
-      // Enter edit mode
-      this.isEditMode = true;
-    }
-  }
-*/
 
 onEditOrSaveClicked(): void {
   if (this.isEditMode) {
-    // Dodaj sliku u podatke za ažuriranje
     this.profileInfo.imageBase64 = this.imageBase64 || this.profileInfo.imageBase64;
     this.profileInfo.imageUrl = this.imageUrl || this.profileInfo.imageUrl;
 
@@ -211,16 +214,15 @@ onEditOrSaveClicked(): void {
     this.service.updateProfileInfo(this.profileInfo).subscribe({
       next: (updatedProfile) => {
         console.log('Profile updated successfully:', updatedProfile);
-        this.profileInfo = updatedProfile; // Ažuriraj podatke
-        this.isEditMode = false; // Zatvori režim uređivanja
-        this.imageBase64 = ''; // Resetuj privremenu sliku
+        this.profileInfo = updatedProfile; 
+        this.isEditMode = false; 
+        this.imageBase64 = ''; 
       },
       error: (err) => {
         console.error('Error updating profile:', err);
       }
     });
   } else {
-    // Aktiviraj režim uređivanja
     this.isEditMode = true;
   }
 }
@@ -242,7 +244,7 @@ getImagePath(imageUrl: string | undefined): string {
         this.imageBase64 = reader.result as string;
   
         if (this.selectedProfileInfo) {
-          this.selectedProfileInfo.imageBase64 = this.imageBase64; // Postavi bazu64 za slanje na server
+          this.selectedProfileInfo.imageBase64 = this.imageBase64;
         }
       };
       reader.readAsDataURL(file);
