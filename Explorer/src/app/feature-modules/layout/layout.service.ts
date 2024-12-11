@@ -73,10 +73,10 @@ export class LayoutService {
 	}
 
 
-	// Clubs & Tours for HomePage
-	getAllTours(): Observable<Tour[]> {
-		return this.http.get<Tour[]>(`${environment.apiHost}tours`);
+	getAllTours(): Observable<{ results: Tour[], totalCount: number }> {
+		return this.http.get<{ results: Tour[], totalCount: number }>(`${environment.apiHost}authoring/tour`);
 	}
+	
 
 	getAllClubs(): Observable<Club[]> {
 		return this.http.get<{ results: Club[]; totalCount: number }>(`${environment.apiHost}manageclub/club`).pipe(
@@ -96,15 +96,24 @@ export class LayoutService {
 	}
 	
 	getAllTourPreviews(): Observable<TourPreview[]> {
-		return this.http.get<Tour[]>(`${environment.apiHost}tours`).pipe(
-			map((tours: Tour[]) =>
-				tours.map((tour) => ({
-					id: tour.id || 0, 
-					name: tour.name || 'Unnamed Tour',
-					description: tour.description || 'No description available.',
-					imageUrl: tour.checkpoints?.[0]?.imageUrl || 'assets/images/default-tour.jpg', // Fallback image
-				}))
+		return this.http.get<Tour[]>(`${environment.apiHost}authoring/tour`).pipe(
+			map((tours: Tour[]) => 
+				tours.map((tour) => {
+					try {
+						return {
+							id: tour.id || 0,
+							name: tour.name || 'Unnamed Tour',
+							description: tour.description || 'No description available.',
+							imageUrl: tour.checkpoints?.[0]?.imageUrl || 'assets/images/default-tour.jpg',
+						};
+					} catch (error) {
+						console.error('Error mapping tour:', tour, error);
+						return null; // Return null if mapping fails
+					}
+				}).filter((tour): tour is TourPreview => tour !== null) // Remove null values
 			)
 		);
-	}	
+	}
+	
+		
 }
