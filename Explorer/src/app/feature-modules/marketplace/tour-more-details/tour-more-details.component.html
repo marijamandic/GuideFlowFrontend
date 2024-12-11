@@ -15,7 +15,7 @@
              class="fa-solid"></i>
         </div>
       </div>
-      <p class="tour-author">By: {{ tour.authorName }}</p>
+      <p (click)="navigateToProfile(tour.authorId)" class="tour-author clickable">By: {{ tour.authorName }}</p>
       <p class="description">{{ tour.description }}</p>
       <div class="tour-card-details">
         <span><i class="fa-solid fa-dollar-sign"></i> {{ getFormattedPrice(tour.price) }}</span>
@@ -55,7 +55,7 @@
     <div *ngIf="reviews.length > 0; else noReviews">
       <div *ngFor="let review of reviews" class="review-card">
         <div class="review-header">
-          <p class="review-username">{{ review.username }}</p>
+          <p (click)="navigateToProfile(review.touristId)" class="review-username">{{ review.username }}</p>
           <div class="rating">
             <i *ngFor="let star of getStarsFromRating(review.rating)" 
                [class.fa-star]="star === 'full'" 

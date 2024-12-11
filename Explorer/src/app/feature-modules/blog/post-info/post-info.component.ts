@@ -10,6 +10,8 @@ import { User } from 'src/app/infrastructure/auth/model/user.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RatingService } from '../rating.service';
 import { Rating } from '../model/rating.model';
+import { MessageNotification } from '../model/message-notification.model';
+import { MessageNotificationService } from '../message-notification.service';
 
 @Component({
   selector: 'xp-post-info',
@@ -28,10 +30,13 @@ export class PostInfoComponent implements OnInit {
   openMenuId: number | null = null;
   isEditing = false;
   editingComment: Comment | null = null;
+  message: MessageNotification;
   loggedInUserId: number = 0;
   ratingCounts: { [postId: number]: { positive: number; negative: number } } = {};
 
   engagementStatus: number | null = null;
+  isShareModalOpen: boolean = false;
+  IdOfPost : number = 0;
 
 
   constructor(
@@ -41,7 +46,8 @@ export class PostInfoComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder,
-    private ratingService: RatingService
+    private ratingService: RatingService,
+    private messageNotificationService: MessageNotificationService
   ) {
     this.commentForm = this.fb.group({
       content: ['', Validators.required]
@@ -50,6 +56,8 @@ export class PostInfoComponent implements OnInit {
 
   ngOnInit(): void {
     this.postId = this.route.snapshot.paramMap.get('id');
+    const id = this.route.snapshot.paramMap.get('id');
+    this.IdOfPost = id ? +id : 0; // Ako id nije prisutan, dodeli vrednost 0
     this.authService.user$.subscribe(user => {
       this.user = user;
       this.loggedInUserId = user.id;
@@ -366,6 +374,43 @@ export class PostInfoComponent implements OnInit {
         return 'Inactive';
     }
   }  
+
+  toogleShareModal() {
+    this.isShareModalOpen = true;
+  }
   
+  closeShareModal() {
+    this.isShareModalOpen = false;
+  }
+  handleShareSubmit(description: string) {
+    const descriptionMatch = description.match(/Description: (.*?), FollowerId: (\d+)/);
+    
+    if (descriptionMatch) {
+      const parsedDescription = descriptionMatch[1];  // Deo nakon "Description: "
+      const followerId = parseInt(descriptionMatch[2], 10);  // FollowerId nakon "FollowerId: "
+      if(this.user && this.postId){
+        this.message = {senderId: this.user?.id,
+          message:parsedDescription,
+          userId:followerId,
+          sender: this.user.username,
+          objectId: Number(this.postId),
+          isBlog:true,
+          isOpened:false,
+          createdAt: new Date()}
+          this.messageNotificationService.createMessageNotification(this.message).subscribe({
+            next: () => console.log(this.message),
+            error: (err) => console.error("Failed")
+          })
+      }
+    } else {
+      console.log('Nesto nije dobro sa parsiranjem');
+    }
+  
+    this.closeShareModal();
+  }
+  navigateToProfile(userId : number){
+    this.router.navigate(["profile",userId])
+
+  }
 }
 

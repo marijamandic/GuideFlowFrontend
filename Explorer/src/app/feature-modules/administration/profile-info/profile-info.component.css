@@ -1,110 +1,224 @@
-body, html {
+body,
+html {
   margin: 0;
   padding: 0;
-  width: 100%;
-  height: 100%;
+  font-family: 'Roboto', Arial, sans-serif;
+  background: #f5f5f5;
+  color: #333;
 }
 
-#profileInfo {
+.profile-container {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #f9f9f9;
+  align-items: flex-start;
+  flex-direction: row;
   padding: 20px;
+  gap: 20px;
+}
+
+/* Levi kontejner */
+.profile-card {
+  background-color: #fff;
+  width: 400px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   box-sizing: border-box;
 }
 
-#profileInfo {
-    margin-left: 20px;
+.profile-row.name-row .profile-value {
+  font-size: 24px; /* Povećana veličina fonta */
+  font-weight: bold; /* Podebljan font */
+  color: #333; /* Tamno siva boja */
+  margin-bottom: 12px;
 }
 
-#profileInfo-details {
-    display: flex;
-    flex-direction: row;
-    gap: 50px;
-    align-items: flex-start;
+.profile-row {
+  margin-bottom: 12px;
 }
 
-p {
-    font-size: 20px;
+.profile-header {
+  display: flex;
+  justify-content: center;
+  align-items: center; /* Vertikalno centriranje */
+  flex-grow: 1;
 }
 
-table {
-    border-collapse: collapse;
-    font-size: 0.9em;
-    font-family: sans-serif;
-    min-width: 300px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-    border-radius: 10px;
+.profile-footer {
+  display: flex;
+  justify-content: flex-end; /* Dugme na desni kraj */
 }
 
-thead tr {
-    background-color: #84dcc6;
-    color: #ffffff;
-    text-align: center;
+
+hr {
+  display: none; /* Sakriva liniju */
 }
 
-th {
-    padding: 0px 15px;
+/* Promena za Name, Moto i Biography */
+.profile-row label {
+  font-weight: 300; /* Tanji font za labelu */
+  color: #888; /* Svetlija siva boja */
+  margin-bottom: 15px;
+  font-size: 14px; /* Manja veličina za labelu */
+  margin-top: 15px; /* Dodata margina na vrhu */
 }
 
-tbody tr:last-of-type {
-    margin-top: 100px;
+/* Desni kontejner */
+.right-container {
+  display: flex;
+  flex-direction: column; /* Vertikalna raspodela */
+  gap: 20px; /* Razmak između kartica */
+  width: 400px; /* Širina za desnu kolonu */
 }
 
-.profile-image{
-    border-radius: 20px;
-    border: 1px solid #84dcc6;
-    margin-top: 30px;
+/* Kartica za level */
+.level-card,
+.followers-card {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
 }
 
-button {
-    background-color: #84dcc6;
-    padding: 10px 20px;
-    border: none;
-    color: white;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-left: auto; /* Ovo pomera dugme ka desnoj strani */
-    display: block; /* Obezbeđuje da dugme koristi ceo red */
-    margin-right: 20px;
-    margin-bottom: 10px;
+.level-card h3,
+.followers-card h3 {
+  font-size: 18px;
+  font-weight: 500;
+  color: #333;
+  margin: 0 0 15px 0;
 }
 
-.input-no-border {
-    border: none; /* Uklanja okvir */
-    background-color: transparent; /* Uklanja pozadinu */
-    pointer-events: none; /* Sprečava interakciju */
-    font-weight: bold;
-    font-size: 15px;
-    margin-left: 47px;
-  }
-  
-  .input-border {
-    border: 1px solid #ccc; /* Dodaje okvir */
-    background-color: #fff; /* Dodaje pozadinu */
-    pointer-events: auto;
-    margin-left: 50px;
-  }
+/* Progress bar */
+.progress-container {
+  background-color: #ddd;
+  border-radius: 10px;
+  overflow: hidden;
+  height: 10px;
+  margin: 15px 0;
+  width: 100%;
+}
 
-  textarea {
-    resize: none; /* Sprečava korisnike da promene veličinu */
-  }
+.progress-bar {
+  height: 100%;
+  background-color: #4ad0a7;
+  transition: width 0.3s ease;
+}
 
-  .profile-row{
-    padding: 0px 50px;
-  }
+.progress-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #888;
+  margin-top: 5px;
+}
 
-body{
-    font-size: 14px;
-    font-weight: lighter;
-    margin: 0;
-    padding: 0;
+.current-xp {
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+  margin-top: 10px;
+}
+
+/* Follower tabela */
+.followers-card table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.followers-card th,
+.followers-card td {
+  text-align: center;
+  padding: 10px;
+  font-size: 14px;
+  color: #333;
+}
+
+.followers-card th {
+  background-color: #f5f5f5;
+  font-weight: 500;
+}
+
+.followers-card td {
+  border-top: 1px solid #ddd;
+}
+
+.follower-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Dugme Follow */
+.follow-button {
+  background-color: #4ad0a7;
+  color: #fff;
+  border: none;
+  padding: 5px 5px; /* Manji padding */
+  border-radius: 5px;
+  font-size: 12px;
+  cursor: pointer;
+  width: 90px; /* Fiksna širina */
+}
+
+.follow-button:hover {
+  background-color: #3cb090;
+}
+
+/* Dugme Unfollow */
+.unfollow-button {
+  background-color: #e74c3c;
+  color: #fff;
+  border: none;
+  padding: 5px 12px;
+  border-radius: 5px;
+  font-size: 12px;
+  cursor: pointer;
+  width: 90px; /* Fiksna širina */
+}
+
+.unfollow-button:hover {
+  background-color: #c0392b;
+}
+
+/* Pozicioniranje dugmeta u tabeli */
+.action-cell {
+  text-align: right; 
+  padding-right: 0px; 
+}
+
+.profile-row input,
+.profile-row textarea {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.profile-value {
+  font-size: 16px;
+  font-weight: 400;
+  color: #333;
+  word-wrap: break-word; /* Omogućava prelamanje teksta */
+  white-space: normal; /* Prelomi tekst u novi red */
+  overflow-wrap: break-word; /* Prelomi reči na bilo kojoj tački */
+}
+
+
+.profile-image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.profile-image {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
 }

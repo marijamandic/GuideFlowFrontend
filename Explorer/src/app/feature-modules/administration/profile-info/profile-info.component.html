@@ -1,121 +1,105 @@
 <div id="profileInfo" class="profile-container">
-  <p>ProfileInfo</p>
-  <hr>
-  <div id="profileInfo-details">
-      <div class="profile-info">
-          <table>
-              <tbody>
-                  <!-- Profile Information Rows -->
-                  <tr *ngFor="let pi of profileInfo">
-                      <td colspan="2" style="text-align: center;">
-                          <img 
-                            [src]="getImagePath(pi.imageUrl)" 
-                            alt="Profile image" 
-                            *ngIf="pi.imageUrl" 
-                            class="profile-image" 
-                          />
-                      </td>
-                  </tr>
-                  <tr><td class="profile-row">First name:</td></tr>
-                  <tr *ngFor="let pi of profileInfo; let i = index">
-                      <td class="pod">
-                        <input type="text" [(ngModel)]="pi.firstName" [disabled]="!isEditMode" [ngClass]="isEditMode ? 'input-border' : 'input-no-border'" />
-                      </td>
-                  </tr>
-
-                      <tr>
-                        <td class="profile-row">Last name:</td>
-                      </tr>
-                   <tr *ngFor="let pi of profileInfo" class="profile-row">
-                      <td class="pod">
-                          <input 
-                          type="text" 
-                          [(ngModel)]="pi.lastName" 
-                          [disabled]="!isEditMode" 
-                          [ngClass]="isEditMode ? 'input-border' : 'input-no-border'"
-                        />
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <td class="profile-row">Moto:</td>
-                    </tr>
-                    <tr *ngFor="let pi of profileInfo">
-                      <td class="pod">
-                          <input 
-                          type="text" 
-                          [(ngModel)]="pi.moto" 
-                          [disabled]="!isEditMode" 
-                          [ngClass]="isEditMode ? 'input-border' : 'input-no-border'"
-                        />
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <td class="profile-row">Biography:</td>
-                    </tr>
-                    <tr *ngFor="let pi of profileInfo">
-                      <td class="pod">
-                        <textarea
-                          [(ngModel)]="pi.biography"
-                          [disabled]="!isEditMode"
-                          [ngClass]="isEditMode ? 'input-border' : 'input-no-border'"
-                          rows="4"  
-                          cols="20" 
-                          placeholder="Enter biography"
-                        ></textarea>
-                      </td>
-                    </tr>
-                    
-                    <tr *ngIf="isEditMode">
-                      <td class="profile-row">Image:</td>
-                    </tr>
-                    <tr *ngIf="isEditMode" class="profile-row">
-                      <td>
-                        <!-- Ovaj red je vidljiv samo kada je isEditMode true -->
-                        <div *ngFor="let pi of profileInfo" class="profile-row">
-                          <input 
-                            type="file" 
-                            (change)="onFileSelected($event)" 
-                            [readonly]="!isEditMode" style="color: transparent"
-                          />
-                        </div>
-                      </td>
-                    </tr>
-
-                    <!-- Akcije -->
-                    <tr *ngFor="let pi of profileInfo">
-                      <td colspan="2" style="text-align: center;">
-                        <!--<button color="primary" (click)="onEditClicked(pi)" mat-icon-button>
-                          <mat-icon>edit</mat-icon>
-                        </button>-->
-                        <button (click)="onEditClicked(pi)" class="cta-button">
-                          {{ isEditMode ? 'Save' : 'Edit' }}
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
-                  
-                  
-            </table>
-          </div>
-          <!-- Followers Section -->
-        <div class="followers">
-          <h3>Followers</h3>
-          <table>
-            <thead>
-              <tr>
-                <th>Follower First Name</th>
-                <th>Follower Last Name</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let follower of followers">
-                <td>{{ follower.followedId }}</td>
-                <td>{{ follower.followedId }}</td>
-              </tr>
-            </tbody>
-          </table>
+  <!-- Levi deo: Profilna kartica -->
+  <div class="profile-card" *ngIf="profileInfo as pi">
+    <hr />
+    <div class="profile-header">
+      <div class="profile-image-container">
+        <!-- Prikaz slike u normalnom režimu -->
+        <img 
+          [src]="getImagePath(profileInfo.imageUrl)" 
+          alt="Profile image" 
+          *ngIf="!isEditMode && profileInfo.imageUrl" 
+          class="profile-image" 
+        />
+        <!-- U režimu uređivanja prikaži dugme za odabir slike -->
+        <ng-container *ngIf="isEditMode">
+          <img 
+            *ngIf="imageBase64" 
+            [src]="imageBase64" 
+            alt="Preview image" 
+            class="profile-image preview-image" 
+          />
+          <input 
+            type="file" 
+            (change)="onFileSelected($event)" 
+            class="upload-input"
+          />
+        </ng-container>
       </div>
+    </div>
+    
+    <div class="profile-row name-row">
+      <label>Name:</label>
+      <div *ngIf="!isEditMode" class="profile-value">{{ nameSurname }}</div>
+      <input *ngIf="isEditMode" type="text" [(ngModel)]="profileInfo.firstName" placeholder="First Name" />
+      <input *ngIf="isEditMode" type="text" [(ngModel)]="profileInfo.lastName" placeholder="Last Name" />
+    </div>
+    <div class="profile-row">
+      <label>Moto:</label>
+      <div *ngIf="!isEditMode" class="profile-value">{{ pi.moto }}</div>
+      <input *ngIf="isEditMode" type="text" [(ngModel)]="profileInfo.moto" placeholder="Your motto" />
+    </div>
+    <div class="profile-row">
+      <label>Biography:</label>
+      <div *ngIf="!isEditMode" class="profile-value">{{ pi.biography }}</div>
+      <input *ngIf="isEditMode" type="text" [(ngModel)]="profileInfo.biography" placeholder="Your biography" />
+    </div>
+    <div class="profile-footer">
+      <ng-container *ngIf="loggedInUser?.id === userId">
+        <button (click)="onEditOrSaveClicked()" class="cta-button small-button">
+          {{ isEditMode ? 'Save' : 'Edit' }}
+        </button>
+      </ng-container>
+      <ng-container *ngIf="loggedInUser?.id !== userId">
+        <button
+          class="cta-button"
+          [ngClass]="followedProfiles.includes(userId) ? 'unfollow-button' : 'follow-button'"
+          (click)="onFollowButtonClick(userId)"
+        >
+          {{ followedProfiles.includes(userId) ? 'Unfollow' : 'Follow' }}
+        </button>
+      </ng-container>
+    </div>
+  </div>
+
+  <!-- Desni deo: Kartica za level -->
+  <div class="right-container">
+    <div class="level-card">
+      <h3>Tourist Level {{ tourist?.level }}</h3>
+      <div class="progress-container">
+        <div class="progress-bar" [style.width.%]="progressPercent"></div>
+      </div>
+      <div class="progress-labels">
+        <span>{{ minXp }}</span>
+        <span>{{ maxXp }}</span>
+      </div>
+      <div class="current-xp">Total XP: {{ currentXp }}</div>
+    </div>
+
+    <!-- Kartica za pratioce -->
+    <div class="followers-card">
+      <h3>Followers</h3>
+      <table>
+        <tbody>
+          <tr *ngFor="let follower of followers">
+            <td>
+              <img [src]="getImagePath(follower.imageUrl)" alt="Follower image" class="follower-image" />
+            </td>
+            <td>{{ follower.followerUsername }}</td>
+            <td class="action-cell">
+              <ng-container *ngIf="follower.followerId !== loggedInUser?.id">
+                <button
+                  class="cta-button"
+                  [ngClass]="followedProfiles.includes(follower.followerId) ? 'unfollow-button' : 'follow-button'"
+                  (click)="onFollowButtonClick(follower.followerId)"
+                >
+                  {{ followedProfiles.includes(follower.followerId) ? 'Unfollow' : 'Follow' }}
+                </button>
+              </ng-container>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>

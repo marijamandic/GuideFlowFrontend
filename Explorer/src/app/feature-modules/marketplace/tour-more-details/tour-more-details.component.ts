@@ -4,7 +4,7 @@ import { Level, Tour } from '../../tour-authoring/model/tour.model';
 import { Checkpoint } from '../../tour-authoring/model/tourCheckpoint.model';
 import { TourReview } from '../../tour-authoring/model/tourReview';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TourService } from '../../tour-authoring/tour.service';
 import { environment } from 'src/env/environment';
 import { Currency, Price } from '../../tour-authoring/model/price.model';
@@ -31,7 +31,7 @@ export class TourMoreDetailsComponent implements OnInit{
   MapViewMode:boolean = false;
   isPurchased:boolean = false;
   
-  constructor(private authService: AuthService,private route: ActivatedRoute,private tourService:TourService,private marketService: MarketplaceService,private shoppingCartService:ShoppingCartService){}
+  constructor(private authService: AuthService,private route: ActivatedRoute,private tourService:TourService,private marketService: MarketplaceService,private shoppingCartService:ShoppingCartService,private router: Router){}
 
   ngOnInit(): void {
     this.authService.user$.subscribe(user => {
@@ -179,5 +179,7 @@ export class TourMoreDetailsComponent implements OnInit{
 			error: (error: HttpErrorResponse) => console.log(error.message)
 		});
 	}
-  
+  navigateToProfile(authorId : number){
+    this.router.navigate(["profile",authorId])
+  }
 }

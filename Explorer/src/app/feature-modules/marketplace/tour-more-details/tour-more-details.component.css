@@ -263,4 +263,6 @@
   border-radius: 5px;
   background-color: #f9f9f9; /* Svetla pozadina za kontrast */
 }
-
+.clickable{
+  cursor: pointer;
+}
