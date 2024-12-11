@@ -22,10 +22,11 @@
         <span><i class="fa-solid fa-fire"></i> {{ getLevel(tour.level) }}</span>
         <span><i class="fas fa-walking"></i> {{ tour.lengthInKm }} km</span>
       </div>
-      <div class="buttons" *ngIf="!isPurchased" >
-        <button class="cta-button add-to-cart" (click)="addToCart()">
+      <div class="buttons">
+        <button *ngIf="!isPurchased" class="cta-button add-to-cart" (click)="addToCart()">
           <i class="fa-solid fa-cart-plus"></i> Add to Cart
         </button>
+        <button class="share-button fa fa-share" *ngIf="user?.role=='tourist'" (click)="toogleShareModal()"></button>
       </div>
     </div>
    </div>
@@ -33,7 +34,12 @@
     <xp-map [showSearchBar]="MapViewMode" [checkpoints]="checkpointCoordinates"></xp-map>
    </div>
   </div>
-
+  <xp-share-modal
+      *ngIf="isShareModalOpen && tourId"
+      [postId]="tourId"
+      (close)="closeShareModal()"
+      (submit)="handleShareSubmit($event)"
+    ></xp-share-modal>
   <div class="checkpoints-grid">
     <div class="checkpoint-card" *ngFor="let checkpoint of checkpoints">
       <div class="checkpoint-card-image">
