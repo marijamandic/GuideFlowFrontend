@@ -54,7 +54,7 @@ const routes: Routes = [
   // ### Account stuff
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegistrationComponent },
-  { path: 'profile', component: ProfileInfoComponent }, // svaka čast onome ko je ovo radio je nije nigde bilo bindovano
+  { path: 'profile/:id', component: ProfileInfoComponent }, // svaka čast onome ko je ovo radio je nije nigde bilo bindovano
   { path: 'account', component: AccountComponent},
 
 
@@ -121,6 +121,7 @@ const routes: Routes = [
 
   // ## Encounter
   { path: 'encounters', component: EncounterComponent},
+  {path: 'encounters/:encounterExecutionId/:tourExecutionId' , component:EncounterComponent},
   { path: 'encounter-add', component: EncounterFormComponent },
   { path: 'encounter-update/:id', component: EncounterFormComponent },
   { path: 'author-add-encounter/:id/:tourId', component: AddEncounterComponent},

@@ -1,0 +1,30 @@
+<div class="modal-overlay" (click)="closeModal()"></div>
+<div class="modal-content">
+  <h2>Share {{isTour ? 'Tour' : 'Post'}}</h2>
+  <form [formGroup]="modalForm" (ngSubmit)="submitDescription()">
+    <div class="inputContainer">
+      <label for="description">Description</label>
+      <textarea
+        formControlName="description"
+        rows="4"
+        placeholder="Enter your description here..."
+      ></textarea>
+    </div>
+    <br>
+    <div class="inputContainer">
+      <label for="follower">Select Follower</label>
+      <select formControlName="selectedFollower" (change)="selectedFollowerId = modalForm.value.selectedFollower">
+        <option *ngFor="let follower of followersMap | keyvalue" [value]="follower.key">
+          {{ follower.value }}
+        </option>
+      </select>
+    </div>
+
+    <div class="bottom-interaction-bar">
+        <div class="submit-container">
+            <button class="submit-button" type="submit" [disabled]="modalForm.invalid">Submit</button>
+        </div>
+    </div>
+    <br>
+  </form>
+</div>

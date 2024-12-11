@@ -4,7 +4,7 @@ import { Level, Tour } from '../../tour-authoring/model/tour.model';
 import { Checkpoint } from '../../tour-authoring/model/tourCheckpoint.model';
 import { TourReview } from '../../tour-authoring/model/tourReview';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TourService } from '../../tour-authoring/tour.service';
 import { environment } from 'src/env/environment';
 import { Currency, Price } from '../../tour-authoring/model/price.model';
@@ -13,6 +13,8 @@ import { ShoppingCartService } from '../shopping-cart.service';
 import { ProductType } from '../model/product-type';
 import { ItemInput } from '../model/shopping-carts/item-input';
 import { HttpErrorResponse } from '@angular/common/http';
+import { MessageNotification } from '../../blog/model/message-notification.model';
+import { MessageNotificationService } from '../../blog/message-notification.service';
 
 @Component({
   selector: 'xp-tour-more-details',
@@ -23,6 +25,7 @@ export class TourMoreDetailsComponent implements OnInit{
   user : User
   tourId : number | null;
   tour: Tour;
+  message: MessageNotification;
   checkpoints: Checkpoint[] = [];
   reviews:TourReview[];
   checkpointCoordinates: { latitude: number; longitude: number; name: string; description: string; imageUrl?: string; }[] = [];
@@ -30,8 +33,9 @@ export class TourMoreDetailsComponent implements OnInit{
   @Output() checkpointsLoaded = new EventEmitter<{ latitude: number; longitude: number; name: string; description: string; imageUrl?: string; }[]>();
   MapViewMode:boolean = false;
   isPurchased:boolean = false;
+  isShareModalOpen: boolean = false;
   
-  constructor(private authService: AuthService,private route: ActivatedRoute,private tourService:TourService,private marketService: MarketplaceService,private shoppingCartService:ShoppingCartService){}
+  constructor(private authService: AuthService,private route: ActivatedRoute,private tourService:TourService,private marketService: MarketplaceService,private shoppingCartService:ShoppingCartService,private router: Router,private messageService: MessageNotificationService){}
 
   ngOnInit(): void {
     this.authService.user$.subscribe(user => {
@@ -180,5 +184,40 @@ export class TourMoreDetailsComponent implements OnInit{
 			error: (error: HttpErrorResponse) => console.log(error.message)
 		});
 	}
+  navigateToProfile(authorId : number){
+    this.router.navigate(["profile",authorId])
+  }
+  toogleShareModal() {
+    this.isShareModalOpen = true;
+  }
   
+  closeShareModal() {
+    this.isShareModalOpen = false;
+  }
+  handleShareSubmit(description: string) {
+    const descriptionMatch = description.match(/Description: (.*?), FollowerId: (\d+)/);
+    
+    if (descriptionMatch) {
+      const parsedDescription = descriptionMatch[1];  // Deo nakon "Description: "
+      const followerId = parseInt(descriptionMatch[2], 10);  // FollowerId nakon "FollowerId: "
+      if(this.user && this.tourId){
+        this.message = {senderId: this.user?.id,
+          message:parsedDescription,
+          userId:followerId,
+          sender: this.user.username,
+          objectId: this.tourId,
+          isBlog:false,
+          isOpened:false,
+          createdAt: new Date()}
+          this.messageService.createMessageNotification(this.message).subscribe({
+            next: () => console.log(this.message),
+            error: (err) => console.error("Failed")
+          })
+      }
+    } else {
+      console.log('Nesto nije dobro sa parsiranjem');
+    }
+  
+    this.closeShareModal();
+  }
 }
