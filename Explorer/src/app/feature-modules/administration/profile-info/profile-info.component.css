@@ -217,8 +217,142 @@ hr {
 }
 
 .profile-image {
-  width: 150px;
-  height: 150px;
+  min-width: 350px;
+  width: 350px;
+  height: 200px;
+  min-height: 200px;
+  border-radius: 10%;
+  object-fit: cover;
+}
+
+.not-logged-in-message {
+  font-size: 40px; 
+  color: #333; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; 
+  text-align: center; 
+  background-color: #f5f5f5; 
+  margin: 0; 
+}
+
+td {
+  text-align: left;
+  padding: 10px;
+  vertical-align: middle;
+}
+
+.action-cell {
+  text-align: center;
+  width: 120px; /* Fiksna širina za kolonu s dugmetom */
+}
+
+/* Bele linije umesto sivih */
+.followers-card table {
+  width: 100%; /* Tabela zauzima celu širinu kontejnera */
+  border-collapse: collapse;
+}
+
+.followers-card th, 
+.followers-card td {
+  text-align: center;
+  padding: 10px;
+  vertical-align: middle;
+  border: 1px solid #fff; /* Bele linije */
+}
+
+.followers-card th {
+  background-color: #f5f5f5;
+  font-weight: bold;
+  border-bottom: 1px solid #fff; /* Bele linije za zaglavlje */
+}
+
+.image-cell {
+  width: 80px; /* Fiksna širina za kolonu slike */
+}
+
+.username-cell {
+  width: auto; /* Glavna kolona s fleksibilnom širinom */
+}
+
+.action-cell {
+  width: 120px; /* Fiksna širina za kolonu s dugmetom */
+}
+
+/* Stil za slike */
+.follower-image {
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   object-fit: cover;
+}
+
+/* Dugmad za follow/unfollow */
+.follow-button {
+  background-color: #4ad0a7;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.follow-button:hover {
+  background-color: #3cb090;
+}
+
+.unfollow-button {
+  background-color: #e74c3c;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.unfollow-button:hover {
+  background-color: #c0392b;
+}
+
+/* Uklanjanje plave boje i podvlačenja za imena u tabeli */
+.followers-card td span {
+  color: #333; /* Tamno siva boja za tekst */
+  text-decoration: none; /* Uklanjanje podvlačenja */
+  cursor: pointer; /* Prikaz kursora kao pokazivača */
+}
+
+.followers-card td span:hover {
+  color: #4ad0a7; /* Svetlija boja prilikom prelaska mišem (opciono) */
+}
+
+/* Stil za slike u tabeli */
+.follower-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer; /* Prikaz kursora kao pokazivača */
+}
+
+.level-card {
+  position: relative; /* Omogućava pozicioniranje apsolutnog elementa unutar ovog */
+}
+
+.level-header {
+  display: flex;
+  justify-content: space-between; /* Razmak između naslova i XP-a */
+  align-items: center; /* Vertikalno centriranje */
+}
+
+.level-header h3 {
+  margin: 0; /* Uklanjanje dodatnih margina */
+}
+
+.current-xp {
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
 }
