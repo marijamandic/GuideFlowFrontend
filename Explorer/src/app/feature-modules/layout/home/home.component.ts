@@ -168,10 +168,12 @@ export class HomeComponent implements OnInit {
 						meanRating, // Add meanRating
 						numberOfRatings, // Add numberOfRatings
 					};
-	
-					this.tours.push(tourPreview);
+					if(tourPreview.numberOfRatings >= 3)
+					{
+						this.tours.push(tourPreview);
+					}
 				}
-	
+				
 				// Sort the tours by meanRating in descending order
 				this.tours.sort((a, b) => b.meanRating - a.meanRating);
 	
@@ -184,16 +186,6 @@ export class HomeComponent implements OnInit {
 		});
 	}
 	
-	
-	
-
-	
-	
-	
-	
-	
-	
-
 	loadTours(): void {
 		this.layoutService.getAllTourPreviews().subscribe({
 			next: (result: TourPreview[]) => {
