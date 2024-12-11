@@ -10,6 +10,7 @@ import { Notification } from './model/Notification.model';
 import { Tour } from '../tour-authoring/model/tour.model';
 import { Club } from '../administration/model/club.model';
 import { TourPreview } from './model/TourPreview';
+import { MessageNotification } from './model/MessageNotification.model';
 
 @Injectable({
 	providedIn: 'root'
@@ -50,6 +51,22 @@ export class LayoutService {
 		});
 		return this.http.patch<void>(`${environment.apiHost}notifications/tourist/problem/${id}`, updatedNotification, { headers });
 	}
+
+	getNotificationMessagesByUserId(userId: number): Observable<MessageNotification[]> {
+		const headers = new HttpHeaders({
+			Authorization: `Bearer ${localStorage.getItem('access-token')}`,
+			'Content-Type': 'application/json',
+		});
+		return this.http.get<MessageNotification[]>(`${environment.apiHost}notifications/tourist/problem/message/${userId}`, { headers });
+	}
+
+	updateMessageNotification(id: number, isOpened: boolean): Observable<void> {
+		const headers = new HttpHeaders({
+			Authorization: `Bearer ${localStorage.getItem('access-token')}`,
+			'Content-Type': 'application/json',
+		});
+		return this.http.put<void>(`${environment.apiHost}notifications/tourist/problem/message/${id}`, isOpened, { headers });
+	}	
 	
 	createNotification(notification: Notification): Observable<void> {
 		const headers = new HttpHeaders({

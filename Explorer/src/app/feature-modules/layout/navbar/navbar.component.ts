@@ -26,7 +26,11 @@ export class NavbarComponent implements OnInit {
 		this.authService.user$.subscribe(user => {
 			this.user = user;
 		});
-		this.publiPointService.getUnreadNotificationsByAuthor(this.user?.id || 0).subscribe(
+		this.getUnread();
+	}
+
+  getUnread(): void {
+    this.publiPointService.getUnreadNotificationsByAuthor(this.user?.id || 0).subscribe(
 			(notifications: PublicPointNotification[]) => {
 				this.notificationCount = notifications.length;
 			},
@@ -43,8 +47,17 @@ export class NavbarComponent implements OnInit {
       (error) => {
           console.error('Error loading money exchange notifications:', error);
       }
+    );
+    this.notificationService.getNotificationMessagesByUserId(this.user?.id || 0).subscribe(
+      (messageNotifications) => {
+        const unopenedCount = messageNotifications.filter(notification => !notification.isOpened).length;
+        console.log(`Number of unopened notifications: ${unopenedCount}`);
+        this.notificationCount += unopenedCount;      },
+      (error) => {
+          console.error('Error loading money exchange notifications:', error);
+      }
     );  
-	}
+  }
 
   toggleDropdown(): void {
     this.isDropdownOpen = !this.isDropdownOpen;

@@ -4,8 +4,8 @@
         <span class="mark-read-text" (click)="markAllAsRead()">Mark all as read</span>
     </div>
 
-    <div class="header" *ngIf="unreadNotification.length === 0 && readNotificatio.length === 0">
-        <p>No notifications available.</p>
+    <div class="header" *ngIf="combinedNotifications.length === 0">
+        <p style="margin-left: 30%;">No notifications available.</p>
     </div>
 
     <div class="notification-table scrollable">
@@ -97,30 +97,28 @@
                     <div class="notification-date">
                         {{ notification.creationTime | date:'MMMM d, y, h:mm a' }}
                     </div>
-                    
+                </div>               
+            </div>
+            <!-- Type == 3   Message Notification -->
+            <div *ngIf="isMessageNotification(notification)" class="notification-title" (click)="messageButton(notification.data)">
+                <span>
+                    <strong [ngClass]="{
+                        'notification-point': !notification.isOpened,
+                        'notification-point-read': notification.isOpened
+                    }">{{ notification.data.sender }} sent you a message
+                    </strong>
+                </span>
+                <div class="notification-comment">
+                    {{ truncateComment(notification.data.message || '', 100) }}
                 </div>
-    
-                <!-- Type == 3   Message Notification -->
-                <div *ngIf="notification.data.type == 3" class="notification-title" (click)="messageButton(notification.data)">
-                    <span>
-                        <strong [ngClass]="{
-                            'notification-point': !notification.isOpened,
-                            'notification-point-read': notification.isOpened
-                        }">{{ notification.data.sender }} sent you a message
-                        </strong>
-                    </span>
-                    <div class="notification-comment">
-                        {{ truncateComment(notification.data.message || '', 100) }}
-                    </div>
-                    <div>
-                        <a href="https://example.com" target="_blank" rel="noopener noreferrer" class="notification-link">
-                            Click here for more details
-                        </a>
-                    </div>
-                    <div class="notification-date">
-                        {{ notification.creationTime | date:'MMMM d, y, h:mm a' }}
-                    </div>                    
+                <div>
+                    <a href="https://example.com" target="_blank" rel="noopener noreferrer" class="notification-link">
+                        Click here for more details
+                    </a>
                 </div>
+                <div class="notification-date">
+                    {{ notification.creationTime | date:'MMMM d, y, h:mm a' }}
+                </div>                    
             </div>
         </ng-container>
     </div>
@@ -182,7 +180,6 @@
             <div class="card-details">
                 <h2>{{ selectedPoint?.name }}</h2>
                 <p style="margin-top: -10px;">{{ selectedPoint?.description }}</p>
-    
                 <p>
                     <span *ngIf="selectedNotification?.comment" class="label">Comment:</span>
                     {{ selectedNotification?.comment }}

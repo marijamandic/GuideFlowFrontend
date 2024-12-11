@@ -9,6 +9,7 @@ import { Notification } from '../../layout/model/Notification.model';
 import { retry } from 'rxjs';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
 import { ProblemNotification } from '../../layout/model/problem-notification.model';
+import { MessageNotification } from '../../layout/model/MessageNotification.model';
 
 @Component({
     selector: 'app-public-point-notifications',
@@ -16,15 +17,9 @@ import { ProblemNotification } from '../../layout/model/problem-notification.mod
     styleUrls: ['./public-point-notifications.component.css'],
 })
 export class PublicPointNotificationsComponent implements OnInit {
-    notifications: PublicPointNotification[] = [];
-    unreadNotifications: PublicPointNotification[] = [];
-    readNotifications: PublicPointNotification[] = [];
-    notificationsMoneyExchange: Notification[] = [];    
     totalCount: number = 0;
     selectedNotification: PublicPointNotification | null = null;
-    readNotificatio: { type: number; data: PublicPointNotification | Notification, creationTime: Date, isOpened: boolean }[] = []; // Dodato
-    unreadNotification: { type: number; data: PublicPointNotification | Notification, creationTime: Date, isOpened: boolean }[] = []; // Dodato
-    combinedNotifications: { type: number; data: PublicPointNotification | Notification, creationTime: Date, isOpened: boolean }[] = [];
+    combinedNotifications: { type: number; data: PublicPointNotification | Notification | ProblemNotification | MessageNotification, creationTime: Date, isOpened: boolean }[] = [];
     selectedPoint: PublicPoint | null = null;
     public publicPoints: PublicPoint[] = [];
     showModal: boolean = false;
@@ -42,30 +37,8 @@ export class PublicPointNotificationsComponent implements OnInit {
             console.error('Error fetching public points:', error);
         });
         this.loadAllNotifications();
-        this.loadNotifications();
-        this.loadNotificationsMoneyExchange();
     }
 
-    loadNotifications(page: number = 1, pageSize: number = 10): void {
-        this.publicPointService.getNotificationsByAuthor(this.user?.id || 0).subscribe(
-            (data) => {
-                this.notifications = data;
-                this.totalCount = this.notifications.length;
-
-                this.unreadNotifications = this.notifications
-                    .filter(n => !n.isRead)
-                    .sort((a, b) => new Date(b.creationTime).getTime() - new Date(a.creationTime).getTime());
-
-                this.readNotifications = this.notifications
-                    .filter(n => n.isRead)
-                    .sort((a, b) => new Date(b.creationTime).getTime() - new Date(a.creationTime).getTime());
-                    console.log(this.readNotifications)
-            },
-            (error) => {
-                console.error('Error loading notifications', error);
-            }
-        );
-    }
 
     loadPublicPoint(publicPointId: number): string {
         const publicPoint = this.publicPoints.find(point => point.id === publicPointId);
@@ -116,8 +89,14 @@ export class PublicPointNotificationsComponent implements OnInit {
         this.markAsRead(notification);
     }
 
-    messageButton(notification: Notification): void {
-        this.markAsRead(notification);
+    messageButton(notification: MessageNotification): void {
+        this.notificationService.updateMessageNotification(notification.id, true).subscribe({
+            next: () => {
+                console.log('Notification marked as read'),
+                this.loadAllNotifications();
+            },
+            error: (err) => console.error('Error updating notification:', err),
+        });        
     }
     
 
@@ -130,7 +109,7 @@ export class PublicPointNotificationsComponent implements OnInit {
     readNotification(notification: PublicPointNotification): void {
         this.publicPointService.updateNotification(notification.id, notification).subscribe(
             (point) => {
-                this.loadNotifications();
+                this.loadAllNotifications();
             },
             (error) => {
                 console.error('Error updating notification', error);
@@ -157,22 +136,6 @@ export class PublicPointNotificationsComponent implements OnInit {
         }
         return comment || 'No comment provided';
     }
-
-    loadNotificationsMoneyExchange(): void {
-        if (!this.user?.id) {
-            return;
-        }
-
-        this.notificationService.getNotificationsByUserId(this.user.id).subscribe({
-            next: (notifications) => {
-                this.notificationsMoneyExchange = notifications;
-                console.log('Money Exchange Notifications:', this.notificationsMoneyExchange);
-            },
-            error: (err) => {
-                console.error('Error fetching money exchange notifications:', err);
-            }
-        });
-    }
     
     loadAllNotifications(): void {
         const userId = this.user?.id || 0;
@@ -186,7 +149,6 @@ export class PublicPointNotificationsComponent implements OnInit {
                     isOpened: notification.isRead
                 }));
                 this.combinedNotifications = [...this.combinedNotifications, ...publicPointMapped];
-                this.splitNotifications();
             },
             (error) => {
                 console.error('Error loading public point notifications:', error);
@@ -196,13 +158,12 @@ export class PublicPointNotificationsComponent implements OnInit {
         this.notificationService.getNotificationsByUserId(userId).subscribe(
             (moneyExchangeNotifications) => {
                 const moneyExchangeMapped = moneyExchangeNotifications.map(notification => ({
-                    type: 1, // Notification
+                    type: 1, // Notification (Money and Club)
                     data: notification,
                     creationTime: notification.createdAt,
                     isOpened: notification.isOpened
                 }));
                 this.combinedNotifications = [...this.combinedNotifications, ...moneyExchangeMapped];
-                this.splitNotifications();
                 this.sortNotifications();
             },
             (error) => {
@@ -213,7 +174,7 @@ export class PublicPointNotificationsComponent implements OnInit {
         this.notificationService.getProblemNotificationsByUserId(this.user?.role || "tourist").subscribe(
             (problemNotifications: PagedResults<ProblemNotification>) => {
                 const problemNotificationMapped = problemNotifications.results.map(notification => ({
-                    type: 2,
+                    type: 2, // Problem
                     data: notification,
                     creationTime: notification.createdAt,
                     isOpened: notification.isOpened
@@ -221,12 +182,27 @@ export class PublicPointNotificationsComponent implements OnInit {
                 this.combinedNotifications = [...this.combinedNotifications, ...problemNotificationMapped];
                 console.log("PROBLEM", problemNotificationMapped);
                 this.sortNotifications();
-                this.splitNotifications();
             },
             (error) => {
                 console.error('Error loading problem notifications:', error);
             }
-        );                        
+        );  
+
+        this.notificationService.getNotificationMessagesByUserId(userId).subscribe(
+            (moneyExchangeNotifications) => {
+                const moneyExchangeMapped = moneyExchangeNotifications.map(notification => ({
+                    type: 3, // Message
+                    data: notification,
+                    creationTime: notification.createdAt,
+                    isOpened: notification.isOpened
+                }));
+                this.combinedNotifications = [...this.combinedNotifications, ...moneyExchangeMapped];
+                this.sortNotifications();
+            },
+            (error) => {
+                console.error('Error loading money exchange notifications:', error);
+            }
+        );         
         this.sortNotifications();
     }
     sortNotifications(): void {
@@ -235,30 +211,24 @@ export class PublicPointNotificationsComponent implements OnInit {
         );
     }
     
-    // Helper za podelu na pročitane i nepročitane
-    splitNotifications(): void {
-        this.unreadNotification = this.combinedNotifications
-            .filter(n => !n.isOpened)
-            .sort((a, b) => new Date(b.creationTime).getTime() - new Date(a.creationTime).getTime());
-
-        this.readNotificatio = this.combinedNotifications
-            .filter(n => n.isOpened)
-            .sort((a, b) => new Date(b.creationTime).getTime() - new Date(a.creationTime).getTime());
-    }
     isPublicPointNotification(notification: { type: number; data: any }): notification is { type: 0; data: PublicPointNotification } {
         return notification.type === 0;
     }
     isNotification(notification: {type: number; data: any }): notification is { type: 1; data: Notification} {
         return notification.type === 1;
     }
+    isProblemNotification(notification: {type: number; data: any }): notification is { type: 2; data: ProblemNotification} {
+        return notification.type === 2;
+    }
+    isMessageNotification(notification: {type: number; data: any }): notification is { type: 3; data: MessageNotification} {
+        return notification.type === 3;
+    }
 
     markAllAsRead(): void {
-        // Ažurirajte `isOpened` za sve notifikacije
         this.combinedNotifications.forEach(notification => {
             notification.isOpened = true;
         });
     
-        // Opcionalno: ako želite da ažurirate server
         this.combinedNotifications.forEach(notification => {
             if (this.isPublicPointNotification(notification)) {
                 const publicPointNotification = notification.data as PublicPointNotification;
@@ -279,8 +249,6 @@ export class PublicPointNotificationsComponent implements OnInit {
             }
         });
     
-        // Ako koristite lokalno ažuriranje za listu
-        this.splitNotifications();
         console.log("All notifications marked as read.");
     }
     
