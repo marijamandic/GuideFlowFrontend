@@ -16,27 +16,29 @@
         </div>
         <div class="nav-links">
             <a routerLink="/home">Home</a>
-            <a routerLink="/tour">Tours</a>
+            <a routerLink="/all-tours">Tours</a>
             <a routerLink="/club">Clubs</a>
             <a routerLink="/blog">Blog</a>
         </div>
         <div class="profile-menu">
-            <mat-icon  *ngIf="user && user.username != ''" class="shopping-cart-icon" [routerLink]="['/shoppingCart']">shopping_cart</mat-icon>
+            <mat-icon  *ngIf="user && user.role === 'tourist'" class="shopping-cart-icon" (click)="showCart = !showCart">shopping_cart</mat-icon>
             <span *ngIf="user && user.username !== '' && notificationCount > 0" class="notification-badge" (click)="toggleNotifications()">{{ notificationCount }}</span>   
             <mat-icon *ngIf="user && user.username !== ''" class="notification-icon" (click)="toggleNotifications()">notifications</mat-icon>
             <mat-icon class="profile-icon" (click)="toggleDropdown()">account_circle</mat-icon>
-            <div>
-                <mat-icon>notifcations</mat-icon>
-            </div>
+            
             <div class="dropdown-content" *ngIf="isDropdownOpen">
                 <a *ngIf="user && user.username === ''" [routerLink]="['/login']"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a>
                 <a *ngIf="user && user.username !== ''" (click)="onLogout()"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a>
                 <a [routerLink]="['/settings']" (click) = "toggleDropdown()"><i class="fa fa-cog" aria-hidden="true"></i> Settings</a>
-                <a [routerLink]="['/profileInfo']" (click) = "toggleDropdown()"><i class="fa fa-user" aria-hidden="true"></i> Profile</a>
-                <a *ngIf="user && user.role === 'tourist'" [routerLink]="['/purchased']" (click)="toggleDropdown()"><i class="fa fa-flag" aria-hidden="true"></i> My Tours</a>
-                <a *ngIf="user && user.role === 'administrator'"color="primary" mat-raised-button [routerLink]="['equipment']">Manage equipment</a>
-                <a *ngIf="user && user.role === 'author'"color="primary" mat-raised-button [routerLink]="['coupons']"><i class="fa fa-gift" aria-hidden="true"></i>Coupons</a>
+                <a *ngIf="user && user.role === 'administrator'"color="primary" mat-raised-button [routerLink]="['admin-dashboard']"><i class="fa-solid fa-gauge-simple"></i>Dashboard</a>
+                <a *ngIf="user && user.role === 'author'"color="primary" mat-raised-button [routerLink]="['author-dashboard']"><i class="fa-solid fa-gauge-simple"></i>Dashboard</a>
+                <a class="username" [routerLink]="['/profile',user?.id]" (click) = "toggleDropdown()"><i class="fa fa-user" aria-hidden="true"></i>{{ username || 'Guest' }}</a>
+                
             </div>
         </div>
     </div>
 </mat-toolbar>
+
+<div class="shopping-cart-container" *ngIf="showCart">
+	<xp-shopping-cart-preview (shoppingCartOpened)="handleShoppingCartOpened()"></xp-shopping-cart-preview>
+</div>

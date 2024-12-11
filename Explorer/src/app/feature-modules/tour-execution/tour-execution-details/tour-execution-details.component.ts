@@ -94,6 +94,34 @@ export class TourExecutionDetailsComponent implements OnInit{
         }) 
       })
   }
+  getUserWithTourist(): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      this.authService.user$.subscribe({
+        next: (user) => {
+          if (user) {
+            this.user = user;
+  
+            this.tourService.getTouristById(user.id).subscribe({
+              next: (result: Tourist) => {
+                this.tourist = result;
+                resolve(); // Signaliziramo da je operacija završena
+              },
+              error: (err) => {
+                console.error('Greška prilikom dobijanja turiste:', err);
+                reject(err); // Signaliziramo grešku
+              }
+            });
+          } else {
+            resolve(); // Ako nema korisnika, završavamo bez greške
+          }
+        },
+        error: (err) => {
+          console.error('Greška prilikom preuzimanja korisnika:', err);
+          reject(err);
+        }
+      });
+    });
+  }
 
   ngOnDestroy(): void {
     if (this.intervalId) {
@@ -119,7 +147,7 @@ export class TourExecutionDetailsComponent implements OnInit{
   }
 
   isSecretUnlocked(completionTime: any): boolean {
-    console.log("USLO!: ", completionTime);
+    //console.log("USLO!: ", completionTime);
     const fortyYearsInMilliseconds = 40 * 365.25 * 24 * 60 * 60 * 1000; 
     const now = Date.now(); 
   
@@ -132,9 +160,9 @@ export class TourExecutionDetailsComponent implements OnInit{
       completionTimestamp = new Date(completionTime).getTime();
     }
   
-    console.log("PROSLO1:", completionTimestamp);
+  //  console.log("PROSLO1:", completionTimestamp);
     const isUnlocked = (now - completionTimestamp) < fortyYearsInMilliseconds;
-    console.log("I:", isUnlocked);
+   // console.log("I:", isUnlocked);
   
     return isUnlocked;
   }
@@ -158,8 +186,9 @@ export class TourExecutionDetailsComponent implements OnInit{
       }
     });
   }
-  updateTourExecution(){
+  async updateTourExecution(){
     this.dto.TourExecutionId= Number(this.tourExecutionId)
+    await this.getUserWithTourist();
     this.dto.Latitude = this.tourist?.location.latitude ?? 0;
     this.dto.Longitude = this.tourist?.location.longitude ?? 0;
     this.tourExecutionService.updateTourExecution(this.dto).subscribe({
@@ -377,7 +406,7 @@ getReviewMessage(): string {
     
     var isNearLatitude : boolean = Math.abs(latitude-this.tourist?.location.latitude) <= tolerance;
     var isNearLongitude : boolean = Math.abs(longitude-this.tourist?.location.longitude) <= tolerance;
-    console.log(latitude)
+   // console.log(latitude)
     if(!encounterId)
       return false;
     const isStarted: boolean = this.encounterIds.includes(encounterId);
@@ -387,11 +416,12 @@ getReviewMessage(): string {
     return this.encounterIds.includes(encouterId)
   }
   Execute(encounterId:number){
+    console.log('*****USAO SAM U EXECUTE');
     this.encounterService.findExecution(this.user.id,encounterId).subscribe(
       (ex: Execution | null) => {
         if (ex) {
           console.log('Execution found:', ex);
-          this.router.navigate(['/encounter-execution', ex.id,this.tourExecutionId]);
+          this.router.navigate(['/encounters', ex.id,this.tourExecutionId]);
         } else {
           console.log('Execution not found.');
           this.CreateExecution(encounterId);
@@ -403,6 +433,8 @@ getReviewMessage(): string {
     );
   }
   CreateExecution(encounterId:number) {
+    console.log('*****USAO SAM U CREATE');
+
       this.encounterService.getEncounter(encounterId).subscribe({
         next: (encounter) => {
           const execution: Execution = {
@@ -419,7 +451,7 @@ getReviewMessage(): string {
               const encounterExecutionId = response.id;
         
               if (encounterExecutionId) {
-                this.router.navigate(['/encounter-execution',encounterExecutionId,this.tourExecutionId]);
+                this.router.navigate(['/encounters',encounterExecutionId,this.tourExecutionId]);
               } else {
                 console.error('EncounterExecution ID not found in response.');
               }

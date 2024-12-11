@@ -1,0 +1,87 @@
+.dialog-title {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #333;
+}
+
+.dialog-form {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.form-group {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #555;
+}
+
+.form-control {
+  padding: 10px;
+  height: 40px; /* Ensures consistent height for input and select */
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  box-sizing: border-box; /* Includes padding and border in height calculation */
+}
+
+.form-control:focus {
+  border-color: #6200ea;
+  outline: none;
+  box-shadow: 0 0 5px rgba(98, 0, 234, 0.5);
+}
+
+/* Ensure the select element maintains the same styling as inputs */
+select.form-control {
+  height: auto; /* Set the same height as input fields */
+  width: 500px;
+  padding: 10px; /* Add padding to match input fields */
+  border: 1px solid #ddd; /* Consistent border */
+  border-radius: 4px; /* Same border radius */
+  font-size: 1rem; /* Ensure font size is consistent */
+  box-sizing: border-box; /* Includes padding and border in height calculation */
+  appearance: none; /* Hides the default browser dropdown styling */
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-primary {
+  background-color: #6200ea;
+  color: white;
+}
+
+.btn-secondary {
+  background-color: #f44336;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #3700b3;
+}
+
+.btn-secondary:hover {
+  background-color: #d32f2f;
+}

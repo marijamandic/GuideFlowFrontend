@@ -1,10 +1,104 @@
 <div class="main">
 	<div class="container">
-		<h1>Shopping cart</h1>
-		<div *ngIf="cart && cart.items.length > 0; else cartEmpty" class="items-checkout">
+		<div class="checkout-bar">
+			<div class="price">
+				<h2>Subtotal:&nbsp;</h2>
+				<p>AC {{ totalAdventureCoins }}</p>
+			</div>
+			<button type="button" class="header-buttons" (click)="goToCheckout()">Checkout</button>
+		</div>
+		<div class="coupon-bar">
+			<h2>Enter coupon code</h2>
+			<div class="coupon-bar-input">
+				<input type="text" placeholder="Enter coupon code" />
+				<button type="button" class="header-buttons" (click)="applyCoupon()">Apply</button>
+			</div>
+		</div>
+		<ng-container *ngIf="cart$ && cart$.items.length > 0; else cartEmpty">
+			<ng-container *ngFor="let item of cart$.items">
+				<div *ngIf="item.type === 0 && item.product && isTour(item.product); else bundle" class="tour">
+					<img src="https://developers.google.com/static/maps/images/landing/hero_geocoding_api.png" alt="..." />
+					<div class="tour-details">
+						<div class="tour-header">
+							<div class="tour-info">
+								<h2>{{ item.productName }}</h2>
+								<p>{{ item.product.description }}</p>
+							</div>
+							<i class="fa-solid fa-ellipsis-vertical"></i>
+						</div>
+						<div class="tour-body">
+							<div class="tour-body-content">
+								<div class="tour-body-content-row">
+									<i class="fa-solid fa-fire"></i>
+									<div>{{ convertLevelEnumToString(item.product.level, 'level') }}</div>
+								</div>
+								<div class="tour-body-content-row">
+									<i class="fa-solid fa-square"></i>
+									<div *ngFor="let tag of item.product.tags; let i = index">
+										<ng-container *ngIf="i === item.product.tags.length - 1; else notLast"> {{ tag }} </ng-container>
+										<ng-template #notLast>{{ tag }},&nbsp;</ng-template>
+									</div>
+								</div>
+								<div class="tour-body-content-row">
+									<i class="fa-solid fa-money-bill"></i>
+									<div>AC {{ item.adventureCoin }}</div>
+								</div>
+							</div>
+							<i class="fa-solid fa-trash" (click)="handleRemoveClick(item.id)"></i>
+						</div>
+					</div>
+				</div>
+				<ng-template #bundle>
+					<div class="bundle">
+						<div class="bundle-name">
+							<h2>{{ item.productName }}</h2>
+							<i class="fa-solid fa-ellipsis-vertical"></i>
+						</div>
+						<div class="bundle-price">
+							<div class="bundle-footer-info-row">
+								<i class="fa-solid fa-money-bill"></i>
+								<div>AC {{ item.adventureCoin }}</div>
+							</div>
+							<div class="bundle-trash">
+								<i class="fa-solid" [ngClass]="showTours ? 'fa-chevron-up' : 'fa-chevron-down'" (click)="showTours = !showTours"></i>
+								<i class="fa-solid fa-trash bin" (click)="handleRemoveClick(item.id)"></i>
+							</div>
+						</div>
+						<ng-container *ngIf="showTours && item.product && isBundle(item.product)">
+							<ng-container *ngFor="let tour of item.product.tours">
+								<div class="bnd-tour">
+									<img src="https://developers.google.com/static/maps/images/landing/hero_geocoding_api.png" alt="..." />
+									<div class="bnd-tour-info">
+										<div class="bnd-tour-header-info">
+											<h2>{{ tour.name }}</h2>
+											<div>{{ tour.description }}</div>
+										</div>
+										<div class="bnd-tour-body-info">
+											<div class="bnd-tour-body-info-row">
+												<i class="fa-solid fa-fire"></i>
+												<div>{{ convertLevelEnumToString(tour.level, 'level') }}</div>
+											</div>
+											<div class="bnd-tour-body-info-row">
+												<i class="fa-solid fa-square"></i>
+												<div *ngFor="let tag of tour.tags; let i = index">
+													<ng-container *ngIf="i === tour.tags.length - 1; else notLast"> {{ tag }} </ng-container>
+													<ng-template #notLast>{{ tag }},&nbsp;</ng-template>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</ng-container>
+						</ng-container>
+					</div>
+				</ng-template>
+			</ng-container>
+		</ng-container>
+		<!-- <h1>Shopping cart</h1>
+		<div *ngIf="cart$ && cart$.items.length > 0; else cartEmpty" class="items-checkout">
 			<div class="items">
 				<hr />
-				<div *ngFor="let item of cart.items" class="cart-item">
+				<div *ngFor="let item of cart$.items" class="cart-item">
 					<div>
 						<b> {{ item.productName }} </b>
 					</div>
@@ -31,7 +125,7 @@
 				<button type="button" class="checkout-button" (click)="goToCheckout()">Checkout</button>
 			</div>
 			
-		</div>
+		</div> -->
 		<ng-template #cartEmpty>
 			<h3>Shopping cart empty</h3>
 		</ng-template>

@@ -7,29 +7,39 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { TourPreviewComponent } from './tour-preview/tour-preview.component';
 import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
+import { TourBundleComponent } from './tour-bundle/tour-bundle.component';
+import { MatTabsModule } from '@angular/material/tabs';
+import { TourBundleDialogComponent } from './tour-bundle-dialog/tour-bundle-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
 import { CouponComponent } from './coupon/coupon.component';
 import { TourBundlePreviewComponent } from './tour-bundle-preview/tour-bundle-preview.component';
+import { ShoppingCartPreviewComponent } from './shopping-cart-preview/shopping-cart-preview.component';
+import { SharedModule } from 'src/app/shared/shared.module';
+import { TourMoreDetailsComponent } from './tour-more-details/tour-more-details.component';
 
 @NgModule({
-  declarations: [
-    TourPreviewComponent,
-    ShoppingCartComponent,
-    CouponComponent,
-    TourBundlePreviewComponent
-  ],
-  imports: [
-    MatRadioModule,
-    MatFormFieldModule,
-    MatInputModule,
-    CommonModule,
-    MaterialModule,
-    ReactiveFormsModule,
-    FormsModule 
-  ],
-  exports: [
-    TourPreviewComponent,
-    ShoppingCartComponent,
-    CouponComponent
-  ]
+	declarations: [
+		TourPreviewComponent,
+		ShoppingCartComponent,
+		TourBundleComponent,
+		TourBundleDialogComponent,
+		CouponComponent,
+		TourBundlePreviewComponent,
+		ShoppingCartPreviewComponent,
+    TourMoreDetailsComponent
+	],
+	imports: [
+		MatRadioModule,
+		MatFormFieldModule,
+		MatInputModule,
+		CommonModule,
+		MaterialModule,
+		ReactiveFormsModule,
+		MatTabsModule,
+		FormsModule,
+    SharedModule,
+		MatDialogModule
+	],
+	exports: [TourPreviewComponent, ShoppingCartComponent, CouponComponent, ShoppingCartPreviewComponent,TourMoreDetailsComponent]
 })
-export class MarketplaceModule { }
+export class MarketplaceModule {}

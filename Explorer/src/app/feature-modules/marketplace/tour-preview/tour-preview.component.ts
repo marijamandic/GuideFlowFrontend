@@ -10,6 +10,7 @@ import { ItemInput } from '../model/shopping-carts/item-input';
 import { Item } from '../model/shopping-carts/item';
 import { ProductType } from '../model/product-type';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ShoppingCartService } from '../shopping-cart.service';
 
 @Component({
 	selector: 'xp-tour-preview',
@@ -28,7 +29,8 @@ export class TourPreviewComponent implements OnInit {
 		private tourService: TourService,
 		private marketService: MarketplaceService,
 		private authService: AuthService,
-		private cdr: ChangeDetectorRef
+		private cdr: ChangeDetectorRef,
+		private shoppingCartService: ShoppingCartService
 	) {
 		this.currentTour = {
 			id: 0,
@@ -107,15 +109,10 @@ export class TourPreviewComponent implements OnInit {
 			type: ProductType.Tour,
 			productId: this.currentTour.id!,
 			productName: this.currentTour.name,
-			adventureCoin: 20
+			adventureCoin: this.currentTour.price.cost
 		};
-		this.marketService.addToCart(item).subscribe({
-			next: (result: Item[]): void => {
-				alert('Added To Cart');
-			},
-			error: (err: HttpErrorResponse): void => {
-				console.log('Error: ', err);
-			}
+		this.shoppingCartService.addToCart(item).subscribe({
+			error: (error: HttpErrorResponse) => console.log(error.message)
 		});
 	}
 

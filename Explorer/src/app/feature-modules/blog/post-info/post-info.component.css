@@ -17,7 +17,7 @@
     padding-bottom: 50px;
     background-color: white;
     border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
     overflow: hidden; 
     padding: 30px;
     max-width: 1400px;
@@ -91,7 +91,7 @@
     padding: 15px;
     margin: 15px auto;
     border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
     display: flex;
     flex-direction: column;
     position: relative;
@@ -112,7 +112,9 @@
 .comment-author {
     font-weight: bold;
 }
-
+.clickable {
+  cursor: pointer; /* Promenjuje kursor na pointer */
+}
 .comment-date {
     color: #777;
 }
@@ -158,7 +160,7 @@
     width: 100%;
     max-width: 1000px;
     margin: 15px auto;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
     text-align: center;
 }
 
@@ -184,7 +186,7 @@
     background-color: #e60000; 
 }
 
-.vote-container, .interaction-container {
+.vote-container, .interaction-container,.share-container {
     display: inline-flex;
     align-items: center;
     border: none;
@@ -194,7 +196,7 @@
     margin-right: 15px;
   }
   
-  .vote-button, .interaction-button {
+  .vote-button, .interaction-button,.share-button {
     font-size: 1.2em;
     color: white; 
     background: none;
@@ -204,11 +206,11 @@
     padding: 5px;
   }
   
-  .vote-button:hover, .interaction-button:hover {
+  .vote-button:hover, .interaction-button:hover,.share-button:hover {
     box-shadow: white 0px 7px 29px 0px;
   }
   
-  .vote-button:focus, .interaction-button:focus {
+  .vote-button:focus, .interaction-button:focus,.share-button:focus {
     outline: none;
   }
   
@@ -250,7 +252,7 @@
     padding: 15px;
     background-color: #ffffff;
     border-radius: 15px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
   }
 
   .card:hover{
@@ -320,7 +322,7 @@
     border: 1px solid #ddd;
     padding: 10px;
     border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
     top: 45px;
     right: 10px;
     display: flex;

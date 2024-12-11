@@ -192,4 +192,18 @@ export class AdministrationService {
 			{ headers }
 		);
 	} 
+	getFollowedProfiles(userId: number): Observable<number[]> {
+		return this.http.get<number[]>(`${environment.apiHost}administration/profileInfo/followed/${userId}`);
+	  }
+
+	  followUser(followedId: number, followerId: number, followerUsername: string, imageUrl: string): Observable<void> {
+		const body = {
+		  followerId: followerId,
+		  followerUsername: followerUsername,
+		  imageUrl: imageUrl,
+		};
+		return this.http.put<void>(`${environment.apiHost}administration/profileInfo/follower/${followedId}`, body);
+	  }
+	  
+	  
 }

@@ -1,4 +1,5 @@
 import { Category, Priority } from '../model/details.model';
+import { Level } from 'src/app/feature-modules/tour-authoring/model/tour.model';
 
 export const convertEnumToString = (value: number, type: string): string => {
 	let stringValue: string;
@@ -9,6 +10,9 @@ export const convertEnumToString = (value: number, type: string): string => {
 			break;
 		case 'priority':
 			stringValue = Priority[value];
+			break;
+		case 'level':
+			stringValue = Level[value];
 			break;
 		default:
 			stringValue = 'unknown';

@@ -31,7 +31,7 @@
       </div>
 
       <!-- Dodatna polja za specifične tipove -->
-      <div *ngIf="selectedType === 'Social'">
+      <div *ngIf="selectedType === 'Social' || encounter.encounterType === 0">
         <!-- Social Encounter -->
         <div>
           <label for="touristNumber">Tourist number:</label>
@@ -51,7 +51,7 @@
         </div>
       </div>
 
-      <div *ngIf="selectedType === 'Location'">
+      <div *ngIf="selectedType === 'Location' || encounter.encounterType === 1">
         <!-- Hidden Location Encounter -->
         <div>
           <label for="fileInput">Image URL</label>
@@ -84,7 +84,7 @@
         </div> -->
       </div>
 
-      <div *ngIf="selectedType === 'Misc'">
+      <div *ngIf="selectedType === 'Misc' || encounter.encounterType === 2">
         <!-- Misc Encounter -->
         <div class="form-group">
           <label for="actionDescription">Action description:</label>

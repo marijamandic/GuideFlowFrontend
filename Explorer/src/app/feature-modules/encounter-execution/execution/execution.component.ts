@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Execution } from '../model/execution.model';
 import { EncounterExecutionService } from '../encounter-execution.service';
 import { User } from 'src/app/infrastructure/auth/model/user.model';
@@ -9,6 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Encounter, EncounterType } from '../model/encounter.model';
 import { environment } from 'src/env/environment';
 import { timer } from 'rxjs';
+import { AlertService } from '../../layout/alert.service';
 
 @Component({
   selector: 'xp-execution',
@@ -17,8 +18,8 @@ import { timer } from 'rxjs';
 })
 export class ExecutionComponent implements OnInit{
   errorMessage: string | null = null;
-  encounterExecutionId: string | null = null;
-  tourExecutionId: string | null = null;
+  //encounterExecutionId: string | null = null;
+ 
   user: User | undefined;
   tourist: Tourist | undefined;
   encounterExecution: Execution;
@@ -26,8 +27,10 @@ export class ExecutionComponent implements OnInit{
   userMarker: { latitude: number, longitude: number } | null = null;
   public EncounterType = EncounterType;
   private intervalId: any;
-
+  flag:boolean = false;
   encounterCoordinates: { latitude: number; longitude: number }[] = [];
+  @Input() encounterExecutionId: number;
+  @Input()  tourExecutionId?: number| null = null;
   @Output() encounterCoordinatesLoaded = new EventEmitter<{ latitude: number; longitude: number; }[]>();
 
   constructor(
@@ -35,7 +38,8 @@ export class ExecutionComponent implements OnInit{
     private tourService: TourService,
     private authService: AuthService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private alertService: AlertService
   ) {}
 
   ngOnInit(): void {
@@ -43,8 +47,9 @@ export class ExecutionComponent implements OnInit{
       clearInterval(this.intervalId);
     }
   
-    this.encounterExecutionId = this.route.snapshot.paramMap.get('id');
-    this.tourExecutionId = this.route.snapshot.paramMap.get('tourExecutionId');
+    //this.encounterExecutionId = this.route.snapshot.paramMap.get('id');
+    //this.encounterExecutionId = this.executionId;
+    //this.tourExecutionId = this.route.snapshot.paramMap.get('tourExecutionId');
   
     this.authService.user$.subscribe((user) => {
       this.user = user;
@@ -57,20 +62,7 @@ export class ExecutionComponent implements OnInit{
                 latitude: result.location.latitude,
                 longitude: result.location.longitude
               };
-              // console.log('10s:', this.encounterExecution);
-              // if(this.encounterExecution?.encounterType === EncounterType.Social && !this.encounterExecution?.isComplete){
-              //   console.log("pogresna petlja");
-              //   this.intervalId = setInterval(() => {
-              //     this.completeSocialExecution();
-              //   }, 10000);
-              // }
-              
-              // if(!this.encounterExecution?.isComplete && this.encounterExecution.encounterType === EncounterType.Location){
-              //   console.log("Usao je u petljuuuu");
-              //   this.intervalId = setInterval(() => {
-              //     this.completeExecution();
-              //   }, 30000);
-              // }
+             
             });
             
               
@@ -141,35 +133,39 @@ export class ExecutionComponent implements OnInit{
   setUpIntervalLogic(): void {
     if (this.encounterExecution?.encounterType === EncounterType.Social && !this.encounterExecution?.isComplete) {
       console.log("Pokreće interval za Social encounter");
+
       this.intervalId = setInterval(() => {
-        this.completeSocialExecution();
+        if(!this.flag){
+          this.updateUser();
+          this.flag = true;
+        }
       }, 10000);
     }
   
     if (!this.encounterExecution?.isComplete && this.encounterExecution?.encounterType === EncounterType.Location) {
       console.log("Pokreće interval za Location encounter");
       this.intervalId = setInterval(() => {
-        this.completeExecution();
-      }, 30000);
+        this.updateUser();
+      }, 10000);
     }
   }
-  
+  async updateUser(){
+    await this.getUserWithTourist();  
+    this.encounterExecutionService.getExecution(this.encounterExecutionId!).subscribe({
+      next: (ex: Execution) => {
+        this.encounterExecution = ex;
+      },
+      error: (error) => {
+        this.errorMessage = 'Došlo je do greške prilikom učitavanja podataka.';
+        console.error(error);
+      }
+    });  
+  }
 
-/*  onCoordinatesSelected(coordinates: { latitude: number; longitude: number }): void {
-    if(this.tourist){
-      this.tourist.location.latitude = coordinates.latitude;
-      this.tourist.location.longitude = coordinates.longitude;
-      this.tourService.updateTourist(this.tourist).subscribe(updatedTourist => {
-        console.log('Updated User:', updatedTourist);
-        this.tourist = updatedTourist;
-      }, error => {
-        console.error('Error updating user:', error);
-      });
-      console.log('Encounter Location updated:', this.tourist.location);
-    }
-  }*/
+
 
     completeSocialExecution(): void {
+      console.log(this.encounterExecution);
       if (this.encounterExecution && this.encounterExecution.encounterType === EncounterType.Social) {
         this.encounterExecutionService.completeSocialExecution(this.encounterExecution)
           .subscribe({
@@ -178,6 +174,21 @@ export class ExecutionComponent implements OnInit{
               this.encounterExecutionService.getExecution(this.encounterExecutionId!).subscribe({
                 next: (ex: Execution) => {
                   this.encounterExecution = ex;
+                  this.alertService.showAlert("You joined encounter successfully", "success", 5);
+                  if(ex.isComplete){
+                    this.alertService.showAlert("Encounter successfully completed", "success", 5);
+                    if(this.tourExecutionId){
+                      setTimeout(() => {
+                      this.router.navigate(['tour-execution/',this.tourExecutionId]);
+                        }, 3000);
+                    }else{
+                     // this.router.navigate(['encounters']);
+                     setTimeout(() => {
+                      window.location.reload();
+                      }, 3000);
+                      
+                    }
+                  }
                 },
                 error: (error) => {
                   this.errorMessage = 'Došlo je do greške prilikom učitavanja podataka.';
@@ -187,6 +198,7 @@ export class ExecutionComponent implements OnInit{
             },
             error: (err) => {
               console.error('Došlo je do greške:', err);
+              this.alertService.showAlert("You can not complete encounter yet", "warning", 5)
             }
           });
         console.log('izvrsavam komplete na 10 sec');
@@ -199,17 +211,25 @@ completeExecution(): void {
         next: (updatedExecution: Execution) => {
           console.log('Execution successfully completed:', updatedExecution);
           this.encounterExecution = updatedExecution;
-          alert("Encounter successfully completed");
+          //alert("Encounter successfully completed");
+          this.alertService.showAlert("Encounter successfully completed", "success", 5);
           if(this.tourExecutionId){
+            setTimeout(() => {
             this.router.navigate(['tour-execution/',this.tourExecutionId]);
+              }, 3000);
           }else{
-            this.router.navigate(['encounters']);
+           // this.router.navigate(['encounters']);
+           setTimeout(() => {
+            window.location.reload();
+            }, 3000);
+            
           }
         },
         error: (error) => {
           if (error.status === 500) {
             console.log('Ne mozes jos zavrsiti.');
-            alert("You can not complete encounter yet");
+            //alert("You can not complete encounter yet");
+            this.alertService.showAlert("You can not complete encounter yet", "warning", 5);
 
           } else {
             console.error('Došlo je do greške:', error);
@@ -223,7 +243,7 @@ completeExecution(): void {
 }
   
   getImagePath(imageUrl: string) {
-    return environment.webRootHost +"/images/encounters/"+ imageUrl;
+    return environment.webRootHost +"images/encounters/"+ imageUrl;
   }
   
 
@@ -286,5 +306,48 @@ completeExecution(): void {
   }
   navigateToTourExecution(){
     this.router.navigate(['tour-execution/',this.tourExecutionId])
+  }
+
+  getUserWithTourist(): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      this.authService.user$.subscribe({
+        next: (user) => {
+          if (user) {
+            this.user = user;
+  
+            this.tourService.getTouristById(user.id).subscribe({
+              next: (result: Tourist) => {
+                this.tourist = result;
+                if(this.tourist){
+                  this.encounterExecution.userLatitude = this.tourist.location.latitude;
+                  this.encounterExecution.userLongitude = this.tourist.location.longitude;
+                }
+                if(this.encounterExecution.encounterType == EncounterType.Social){
+                  this.encounterExecutionService.completeExecution(this.encounterExecution).subscribe({
+                    next: result => {
+                      this.encounterExecution = result
+                        this.completeSocialExecution();
+                    }
+                  });
+                }else{
+                  this.completeExecution();
+                }
+                resolve(); // Signaliziramo da je operacija završena
+              },
+              error: (err) => {
+                console.error('Greška prilikom dobijanja turiste:', err);
+                reject(err); // Signaliziramo grešku
+              }
+            });
+          } else {
+            resolve(); // Ako nema korisnika, završavamo bez greške
+          }
+        },
+        error: (err) => {
+          console.error('Greška prilikom preuzimanja korisnika:', err);
+          reject(err);
+        }
+      });
+    });
   }
 }

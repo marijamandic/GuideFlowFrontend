@@ -28,9 +28,18 @@
                   <button class="interaction-button fa fa-comment"></button>
                   <span class="interaction-count">{{ commentCount }}</span>
                 </div>
+                <div *ngIf="user?.role=='tourist'" class="share-container">
+                  <button class="share-button fa fa-share" (click)="toogleShareModal()"></button>
+                </div>
               </div>
         </div>
     </div>
+    <xp-share-modal
+      *ngIf="isShareModalOpen"
+      [postId]="IdOfPost"
+      (close)="closeShareModal()"
+      (submit)="handleShareSubmit($event)"
+    ></xp-share-modal>
     
     <div class="comments-section">
         <!-- Comment Form Section -->
@@ -59,7 +68,7 @@
       
         <div *ngFor="let comment of comments" class="comment-card">
           <div class="comment-header">
-              <span class="comment-author">{{ comment.username || 'Anonymous' }}</span> •
+              <span (click)="navigateToProfile(comment.userId)" class="comment-author clickable">{{ comment.username || 'Anonymous' }}</span> •
               <span class="comment-date">{{ comment.createdAt | date:'medium' }}</span>
       
               <!-- Kebab icon for dropdown menu -->

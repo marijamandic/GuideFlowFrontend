@@ -9,7 +9,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CreateBlogComponent } from './create-blog/create-blog.component';
 import { MarkdownModule } from 'ngx-markdown';
 import { PostInfoComponent } from './post-info/post-info.component';
-
+import { SharedModule } from 'src/app/shared/shared.module';
 
 
 @NgModule({
@@ -26,7 +26,9 @@ import { PostInfoComponent } from './post-info/post-info.component';
     MaterialModule,
     ReactiveFormsModule,
     FormsModule,
-    MarkdownModule.forRoot()
+    MarkdownModule.forRoot(),
+    SharedModule
+
   ],
   exports:[
     CommentComponent,
