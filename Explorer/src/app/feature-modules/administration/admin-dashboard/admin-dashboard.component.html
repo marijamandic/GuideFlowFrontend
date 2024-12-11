@@ -67,10 +67,11 @@
         <th>Reported At</th>
         <th>Deadline</th>
         <th>Status</th>
+        <th>Action</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let problem of problems" (click)="toggleProblemModal(problem)">
+      <tr *ngFor="let problem of problems" >
         <td>{{ problem.id }}</td>
         <td>{{ getTouristName(problem.userId) }}</td>
         <td>{{ getTourName(problem.tourId) }}</td>
@@ -86,7 +87,11 @@
                   }">
             {{ getProblemStatus(problem) }}
           </button>
-        </td>              
+        </td>       
+        <td >
+          <button class="action-btn table-btn" *ngIf="isDeadlineExpired(problem.resolution.deadline)" (click)="archiveTour(problem.tourId)"><i class="fa-solid fa-box-archive"></i></button>
+          <button class="action-btn table-btn" (click)="toggleProblemModal(problem)"><i class="fa-solid fa-circle-info"></i></button>
+        </td>       
       </tr>        
     </tbody>
   </table>
@@ -114,25 +119,46 @@
   </div>
 </div>
 
-<!-- Modal -->
-<div class="modal" *ngIf="selectedProblem">
-  <div class="modal-content">
+<!-- Problem Modal -->
+<div class="problem-modal" *ngIf="selectedProblem">
+  <div class="problem-modal-content">
     <div class="modal-header">
-      <h2>Manage Problem</h2>
+      <h2>Problem Info</h2>
+      <!-- Messages Section -->
+      <div class="modal-messages">
+        <p *ngFor="let message of selectedProblem.messages" class="modal-message">
+          {{ message.content }}
+        </p>
+      </div>
       <button class="close-btn" (click)="closeProblemModal()">×</button>
     </div>
-    <div class="modal-body">
-      <p><strong>Problem ID:</strong> {{ selectedProblem.id }}</p>
-      <p><strong>Reported At:</strong> {{ selectedProblem.resolution.reportedAt | date:'medium' }}</p>
-      <p><strong>Deadline:</strong> {{ selectedProblem.resolution.deadline | date:'medium' }}</p>
-      <p><strong>Tour Name:</strong> {{ getTourName(selectedProblem.tourId) }}</p>
 
+    <!-- Table for problem details -->
+    <table class="problem-details-table">
+      <tr>
+        <th>Tour Name:</th>
+        <th>Reported At:</th>
+        <th>Deadline:</th>
+      </tr>
+      <tr>
+        <td>{{ getTourName(selectedProblem.tourId) }}</td>
+        <td>{{ selectedProblem.resolution.reportedAt | date:'medium' }}</td>
+        <td>{{ selectedProblem.resolution.deadline | date:'medium' }}</td>
+      </tr>
+    </table>
+
+    <!-- Field for changing the deadline -->
+    <div class="deadline-field">
       <label for="deadline">Set New Deadline:</label>
-      <input id="deadline" type="date" (change)="updateSelectedDate($event)" />
-      <button (click)="saveDeadline()">Save Deadline</button>
-    </div>
-    <div class="modal-footer">
-      <button (click)="shutDownTour()">Shut Down Tour</button>
+      <div class="input-button-container">
+        <input
+          id="deadline"
+          type="date"
+          (change)="updateSelectedDate($event)"
+        />
+        <button class="cta-button " (click)="saveDeadline()">Save Deadline</button>
+      </div>
     </div>
   </div>
 </div>
+

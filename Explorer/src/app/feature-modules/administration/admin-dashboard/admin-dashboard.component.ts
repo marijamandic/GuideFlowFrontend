@@ -230,23 +230,29 @@ users: Account[] = []
     }
   }
   
+  archiveTour(tourId: number): void {
+    this.tourService.getTourById(tourId).subscribe({
+      next: (tour) => {
+        tour.status = TourStatus.Archived; 
+        this.selectedProblem!.resolution.isResolved = true;// Mark the problem as resolved
+        this.tourService.updateTour(tour).subscribe({
+          next: () => {
+            console.log('Tour successfully archived.');
+            this.closeProblemModal(); // Close the modal after archiving
+          },
+          error: (err) => console.error('Error archiving tour:', err),
+        });
+      },
+      error: (err) => console.error('Error fetching tour by ID:', err),
+    });
+  }
+ 
+  isDeadlineExpired(deadline: Date): boolean {
+    const today = new Date();
+    return new Date(deadline) < today; // Returns true if the deadline has passed
+  }
   
 
-  shutDownTour(): void {
-    if (this.selectedProblem) {
-      this.tourService.getTourById(this.selectedProblem.tourId).subscribe({
-        next: (tour) => {
-          tour.status = TourStatus.Archived;  // Let's just archive the tour as punishment.
-          this.tourService.updateTour(tour).subscribe({
-            next: () => {
-              this.closeModal();
-              console.log('Tour successfully deleted.');
-            },
-            error: (err) => console.error(err),
-          });
-        },
-        error: (err) => console.error(err),
-      });
-    }
-  }
 }
+
+
