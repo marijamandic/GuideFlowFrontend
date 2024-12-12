@@ -18,7 +18,7 @@
       <p (click)="navigateToProfile(tour.authorId)" class="tour-author clickable">By: {{ tour.authorName }}</p>
       <p class="description">{{ tour.description }}</p>
       <div class="tour-card-details">
-        <span><i class="fa-solid fa-dollar-sign"></i> {{ getFormattedPrice(tour.price) }}</span>
+        <span><i class="fa-solid fa-dollar-sign"></i> {{ tour.price }}</span>
         <span><i class="fa-solid fa-fire"></i> {{ getLevel(tour.level) }}</span>
         <span><i class="fas fa-walking"></i> {{ tour.lengthInKm }} km</span>
       </div>

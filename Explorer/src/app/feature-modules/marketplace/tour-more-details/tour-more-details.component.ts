@@ -113,21 +113,6 @@ export class TourMoreDetailsComponent implements OnInit{
     }
   }
   
-  getFormattedPrice(price: number): string {
-    /*if (!price) return '';
-    switch (price.currency) {
-      case Currency.RSD:
-        return `${price} RSD`;
-      case Currency.EUR:
-        return `${price.cost} €`;
-      case Currency.USD:
-        return `${price.cost} $`;
-      default:
-        return `${price.cost}`;
-    }*/
-   return `${price}`;
-  }
-  
   getStars(): string[] {
     if (!this.tour || !this.tour.averageGrade) return [];
   
