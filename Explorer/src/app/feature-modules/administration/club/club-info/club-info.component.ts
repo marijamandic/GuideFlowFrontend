@@ -237,7 +237,6 @@ export class ClubInfoComponent implements OnInit {
   }
 
   onDeletePost(post: any): void {
-    // Confirm before deleting
       this.administrationService.deleteClubPost(post.id).subscribe({
         next: () => {
           console.log("Post deleted successfully");
