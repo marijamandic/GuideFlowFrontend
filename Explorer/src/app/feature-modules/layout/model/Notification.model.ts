@@ -1,6 +1,8 @@
 export enum NotificationType {
     ProblemNotification = 0,
     MoneyExchange = 1,
+    ClubNotification = 2,
+    MessageNotification = 3
 }
 
 export interface Notification {
