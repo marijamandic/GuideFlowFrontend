@@ -119,4 +119,8 @@ export class TourExecutionService {
 		return this.http.put<Tour>(environment.apiHost + 'authoring/tour/changeStatus/'+ tourId,JSON.stringify(status),
 		  { headers: { 'Content-Type': 'application/json' } })
 	}
+
+	getSuggestedTours(longitude: number, latitude: number): Observable<Tour[]>{
+		return this.http.get<Tour[]>(environment.apiHost + 'execution/tourExecution/suggested/' + longitude + '/' + latitude);
+	}
 }
