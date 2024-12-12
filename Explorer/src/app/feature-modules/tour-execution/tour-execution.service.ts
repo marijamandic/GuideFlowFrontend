@@ -110,6 +110,16 @@ export class TourExecutionService {
 		return this.http.get<Sales[]>('https://localhost:44333/api/sales');
 	}
 
+	searchTours(latitude: number, longitude: number, distance: number, page: number = 0, pageSize: number = 0): Observable<Tour[]> {
+		const url = `${environment.apiHost}authoring/tour/search/${latitude}/${longitude}/${distance}?page=${page}&pageSize=${pageSize}`;
+		return this.http.get<Tour[]>(url);
+	  }
+
+	changeStatus(tourId:number,status:string):Observable<Tour>{
+		return this.http.put<Tour>(environment.apiHost + 'authoring/tour/changeStatus/'+ tourId,JSON.stringify(status),
+		  { headers: { 'Content-Type': 'application/json' } })
+	}
+
 	getSuggestedTours(longitude: number, latitude: number): Observable<Tour[]>{
 		return this.http.get<Tour[]>(environment.apiHost + 'execution/tourExecution/suggested/' + longitude + '/' + latitude);
 	}

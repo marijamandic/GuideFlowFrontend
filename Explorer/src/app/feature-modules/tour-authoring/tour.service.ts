@@ -29,6 +29,7 @@ export class TourService {
   }
 
   addTour(tour: Tour): Observable<Tour> {
+    console.log('usao u add tour');
     return this.http.post<Tour>(environment.apiHost + 'authoring/tour', tour);
   }
 

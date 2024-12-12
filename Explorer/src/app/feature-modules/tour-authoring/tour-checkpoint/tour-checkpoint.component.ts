@@ -84,7 +84,7 @@ export class CheckpointListComponent implements OnInit {
     }
   }
 
-    onDistanceCalculated(event: { transportType: string; time: number; distance: number }):void{
+  onDistanceCalculated(event: { transportType: string; time: number; distance: number }):void{
       this.addNewTransportData(event);
       if(event.transportType==='walking'){
         this.tourService.updateTourLength(this.tourId,event.distance).subscribe({

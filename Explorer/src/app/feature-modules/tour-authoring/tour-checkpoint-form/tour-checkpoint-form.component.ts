@@ -7,6 +7,7 @@ import { PublicPointService } from '../tour-public-point.service';
 import { TourService } from '../tour.service';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { User } from 'src/app/infrastructure/auth/model/user.model';
+import { environment } from 'src/env/environment';
 
 @Component({
   selector: 'xp-tour-checkpoint-form',
@@ -19,9 +20,7 @@ export class CheckpointFormComponent implements OnChanges {
   @Input() tourId!:number;
   @Input() shouldEdit: boolean = false;
   @Output() updatedCheckpoint = new EventEmitter<void>();
-  //@Output() coordinatesSelected = new EventEmitter<{ latitude: number; longitude: number }>();
-  //checkpointCoordinates: { latitude: number, longitude: number }[] = [];
-  //@Output() checkpointsLoaded = new EventEmitter<{ latitude: number; longitude: number; }[]>();
+  checkpointCoordinates: { latitude: number; longitude: number; name: string; description: string; imageUrl?: string; };
   isChecked: boolean = false; 
   isViewMode:boolean = true;
   imageBase64:string;
@@ -34,10 +33,24 @@ export class CheckpointFormComponent implements OnChanges {
     this.checkpointForm.reset();
     if (this.shouldEdit) {
       this.checkpointForm.patchValue(this.checkpoint);
+      this.checkpointCoordinates = {
+        latitude: this.checkpoint.latitude,
+        longitude: this.checkpoint.longitude,
+        name: this.checkpoint.name,
+        description: this.checkpoint.description,
+        imageUrl: this.getImagePath(this.checkpoint.imageUrl)
+      };
     }
     this.authService.user$.subscribe((user)=>{
       this.user = user;
     })
+  }
+
+  getImagePath(imageUrl: string | undefined){
+    if(imageUrl!==undefined){
+      return environment.webRootHost+imageUrl;
+    }
+    return "";
   }
 
   checkpointForm = new FormGroup({
@@ -143,6 +156,7 @@ export class CheckpointFormComponent implements OnChanges {
   }
 
   onCoordinatesSelected(coordinates: { latitude: number; longitude: number }): void {
+    console.log(coordinates.latitude,coordinates.longitude);
     this.checkpointForm.patchValue({
       latitude: coordinates.latitude,
       longitude: coordinates.longitude
