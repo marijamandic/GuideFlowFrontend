@@ -95,9 +95,9 @@
                 </div>               
             </div>
             <!-- Type == 3   Message Notification -->
-             <div class="notification-row unread">
+             <div class="notification-row unread" *ngIf="isMessageNotification(notification)">
 
-            <div *ngIf="isMessageNotification(notification)" class="notification-title" (click)="messageButton(notification.data)">
+            <div class="notification-title" (click)="messageButton(notification.data)">
                 <span>
                     <strong [ngClass]="{
                         'notification-point': !notification.isOpened,
@@ -118,8 +118,9 @@
                 </div>                    
             </div>
         </div>
-        <div class="notification-row unread">
-            <div *ngIf="isClubRequest(notification) && isPending(notification)" class="notification-title">
+        <!-- Type == 4 Club Request -->
+        <div class="notification-row unread" *ngIf="isClubRequest(notification) && isPending(notification)">
+            <div class="notification-title">
                 <span>
                     <strong [ngClass]="{
                         'notification-point': !notification.isOpened,
@@ -132,6 +133,29 @@
                     <button class="cta-button button-decline" (click)="declineRequest(notification.data)">DECLINE</button>
                     <span class="vertical-line"></span>
                     <button class="cta-button button-accept" (click)="acceptRequest(notification.data)">ACCEPT</button>
+                </div>
+                <div class="notification-date">
+                    {{ notification.creationTime | date:'MMMM d, y, h:mm a' }}
+                </div>
+            </div>        
+        </div>
+        <!-- Type == 5 Club Invitation -->
+        <div class="notification-row unread" *ngIf="isClubInvitation(notification)">
+            <div class="notification-title">
+                <span>
+                    <strong [ngClass]="{
+                        'notification-point': !notification.isOpened,
+                        'notification-point-read': notification.isOpened
+                    }">
+                        {{ notification.data.touristName }} 
+                        <span style="font-weight: normal;">is inviting you to join the club</span> 
+                        {{ notification.data.clubName }}
+                    </strong>                    
+                </span>              
+                <div class="notification-button">
+                    <button class="cta-button button-decline" (click)="declineInvitation(notification.data)">DECLINE</button>
+                    <span class="vertical-line"></span>
+                    <button class="cta-button button-accept" (click)="acceptInvitation(notification.data)">ACCEPT</button>
                 </div>
                 <div class="notification-date">
                     {{ notification.creationTime | date:'MMMM d, y, h:mm a' }}

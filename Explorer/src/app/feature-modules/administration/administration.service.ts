@@ -99,6 +99,10 @@ export class AdministrationService {
 		return this.http.get<ClubInvitation[]>(`${environment.apiHost}invitation/clubInvitation/club/${clubId}`);
 	}
 
+	getClubInvitationsByOwner(ownerId: number): Observable<ClubInvitation[]> {
+		return this.http.get<ClubInvitation[]>(`${environment.apiHost}invitation/clubInvitation/owner/${ownerId}`);
+	}
+
 	// ##### Club request ##### 
 	addRequest(clubRequest: ClubRequest): Observable<ClubRequest> {
 		return this.http.post<ClubRequest>(environment.apiHost + 'request/clubRequest', clubRequest);

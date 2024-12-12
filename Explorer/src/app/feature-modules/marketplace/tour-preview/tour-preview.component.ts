@@ -37,10 +37,7 @@ export class TourPreviewComponent implements OnInit {
 			authorId: 0,
 			name: '',
 			description: '',
-			price: {
-				cost: 0,
-				currency: Currency.RSD
-			},
+			price: 0,
 			level: Level.Easy,
 			status: TourStatus.Published,
 			lengthInKm: 0,
@@ -109,7 +106,7 @@ export class TourPreviewComponent implements OnInit {
 			type: ProductType.Tour,
 			productId: this.currentTour.id!,
 			productName: this.currentTour.name,
-			adventureCoin: this.currentTour.price.cost
+			adventureCoin: this.currentTour.price
 		};
 		this.shoppingCartService.addToCart(item).subscribe({
 			error: (error: HttpErrorResponse) => console.log(error.message)

@@ -1,0 +1,57 @@
+.map-frame {
+    position: relative;
+    width: 100%;
+    height: 91vh;
+}
+
+#add-checkpoint-map {
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 20px; /* Zaobljene ivice */
+    box-shadow: 0 10px 8px rgba(0, 0, 0, 0.2); /* Opcionalno: senka za bolji vizuelni efekat */
+    overflow: hidden; /* Sprečava prelazak sadržaja van zaobljenih ivica */
+}
+
+.search-container {
+    position: absolute;
+    top: 10px;
+    left: 10px; /* Postavi search u gornji levi ugao */
+    z-index: 1000; /* Osiguraj da je iznad mape */
+    display: flex;
+    align-items: center; /* Vertikalno centriraj sadržaj */
+    gap: 8px; /* Razmak između input-a i ikone */
+    background-color: rgba(255, 255, 255, 0.9); /* Poluprovidna pozadina */
+    padding: 8px 12px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.input-wrapper {
+    display: flex;
+    align-items: center; /* Vertikalno centriraj input i ikonu */
+    gap: 8px; /* Razmak između input-a i ikone */
+    width: 100%; /* Širina wrappera */
+}
+
+input[type="text"] {
+    flex-grow: 1; /* Input zauzima preostali prostor */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    outline: none;
+}
+
+.search-icon {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.search-icon:hover {
+    transform: scale(1.2);
+    opacity: 0.8;
+}
+
