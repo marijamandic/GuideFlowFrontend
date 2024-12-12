@@ -99,6 +99,10 @@ export class AdministrationService {
 		return this.http.get<ClubInvitation[]>(`${environment.apiHost}invitation/clubInvitation/club/${clubId}`);
 	}
 
+	getClubInvitationsByOwner(ownerId: number): Observable<ClubInvitation[]> {
+		return this.http.get<ClubInvitation[]>(`${environment.apiHost}invitation/clubInvitation/owner/${ownerId}`);
+	}
+
 	// ##### Club request ##### 
 	addRequest(clubRequest: ClubRequest): Observable<ClubRequest> {
 		return this.http.post<ClubRequest>(environment.apiHost + 'request/clubRequest', clubRequest);
@@ -107,6 +111,12 @@ export class AdministrationService {
 	getClubRequestByUser(userId: number): Observable<ClubRequest[]> {
 		return this.http.get<ClubRequest[]>(
 		  `${environment.apiHost}request/clubRequest/for-tourist/${userId}`
+		);
+	}
+
+	getClubRequestByOwner(userId: number): Observable<ClubRequest[]> {
+		return this.http.get<ClubRequest[]>(
+		  `${environment.apiHost}request/clubRequest/for-owner/${userId}`
 		);
 	}
 			  
@@ -174,6 +184,11 @@ export class AdministrationService {
 		return this.http.get<{ username: string }>(`${environment.apiHost}user/username/${userId}`)
 		  .pipe(map(response => response.username));
 	}
+
+	getUserById(userId: number): Observable<User> {
+		const url = `${environment.apiHost}user/getUser/${userId}`;
+		return this.http.get<User>(url);
+	  }
 
 	updateMoney(touristId: number, amount: number): Observable<User> {
 		return this.http.put<User>(
