@@ -35,6 +35,7 @@ export class ExecutionComponent implements OnInit{
   @Input() encounterExecutionId: number;
   @Input()  tourExecutionId?: number| null = null;
   @Output() encounterCoordinatesLoaded = new EventEmitter<{ latitude: number; longitude: number; }[]>();
+  
 
   constructor(
     private encounterExecutionService: EncounterExecutionService,
@@ -183,9 +184,11 @@ export class ExecutionComponent implements OnInit{
                   if(ex.isComplete){
                     this.alertService.showAlert("Encounter successfully completed", "success", 5);
                     if(this.tourExecutionId){
-                      setTimeout(() => {
-                      this.router.navigate(['tour-execution/',this.tourExecutionId]);
-                        }, 3000);
+                      // setTimeout(() => {
+                      // this.router.navigate(['tour-execution/',this.tourExecutionId]);
+                      //   }, 3000);
+                      this.openSuggestedToursModal();
+
                     }else{
                      // this.router.navigate(['encounters']);
                      this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
@@ -219,9 +222,10 @@ completeExecution(): void {
           //alert("Encounter successfully completed");
           this.alertService.showAlert("Encounter successfully completed", "success", 5);
           if(this.tourExecutionId){
-            setTimeout(() => {
-            this.router.navigate(['tour-execution/',this.tourExecutionId]);
-              }, 3000);
+            // setTimeout(() => {
+            // this.router.navigate(['tour-execution/',this.tourExecutionId]);
+            //   }, 3000);
+            this.openSuggestedToursModal();
           }else{
             this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
               this.router.navigate(['encounters']); // Navigacija na trenutnu rutu
@@ -373,6 +377,9 @@ completeExecution(): void {
               latitude: this.encounter.encounterLocation.latitude
             }
           });
+          dialogRef.componentInstance.closeDialog = () => {
+            dialogRef.close(); // Close the dialog when called from the modal
+          };
           dialogRef.afterClosed().subscribe(result => {
             console.log('Modal zatvoren', result);
           });

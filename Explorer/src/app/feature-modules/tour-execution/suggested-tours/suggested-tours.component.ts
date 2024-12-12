@@ -4,7 +4,7 @@ import { TourExecutionService } from '../tour-execution.service';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from 'src/app/infrastructure/auth/model/user.model';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { environment } from 'src/env/environment';
 
 @Component({
@@ -15,9 +15,10 @@ import { environment } from 'src/env/environment';
 export class SuggestedToursComponent implements OnInit {
   tours: Tour[] = [];
   user: User | undefined;
+  @Input() closeDialog: () => void;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: {longitude: number, latitude: number},
+    @Inject(MAT_DIALOG_DATA) public data: {longitude: number, latitude: number, dialogRef: MatDialogRef<any>},
     private tourExecutionService: TourExecutionService, 
     private authService: AuthService, 
     private router: Router,
@@ -54,7 +55,11 @@ export class SuggestedToursComponent implements OnInit {
   }
 
   goToTour(tourId : number) : void{
-    this.router.navigate(['tourDetails/', tourId]);
+    this.router.navigate(['tour/', tourId]).then(() => {
+      if (this.closeDialog) {
+        this.closeDialog(); // Call the close method passed from the parent
+      }
+    });
   }
 }
 
