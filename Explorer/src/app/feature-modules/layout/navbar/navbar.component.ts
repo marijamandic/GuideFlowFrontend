@@ -18,6 +18,7 @@ export class NavbarComponent implements OnInit {
 	user: User | undefined;
 	isDropdownOpen: boolean = false;
 	notificationCount: number = 0;
+	shoppingCartCount: number = 0;
 	showNotifications: boolean = false;
 	showCart = false;
 	isMenuOpen: boolean = false;
