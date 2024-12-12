@@ -10,7 +10,7 @@ export interface Tour {
     authorName?: string;
     name: string;
     description: string;
-    price: Price;
+    price:  number;
     level: Level;
     status: TourStatus;
     StatusChangeDate?:Date;

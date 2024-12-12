@@ -47,6 +47,7 @@ import { EncounterExecutionMapComponent } from 'src/app/feature-modules/encounte
 import { AdminDashboardComponenet } from 'src/app/feature-modules/administration/admin-dashboard/admin-dashboard.component';
 import { TourMoreDetailsComponent } from 'src/app/feature-modules/marketplace/tour-more-details/tour-more-details.component';
 import { TourViewComponent } from 'src/app/feature-modules/tour-execution/tour-view/tour-view.component';
+import { TourAuthorDetailsComponent } from 'src/app/feature-modules/tour-authoring/tour-author-details/tour-author-details.component';
 
 const routes: Routes = [
 
@@ -73,6 +74,7 @@ const routes: Routes = [
   // --- /all-tours pregled svih tura (za s ve role), dodavanje tura, search tura
   { path: 'all-tours', component: TourViewComponent },  
   { path: 'toursForAuthor', component: TourComponent }, // ovo treba spojiti u ovo iznad
+  { path: 'tourAuthorDetails/:id',component:TourAuthorDetailsComponent},
   { path: 'purchased', component: PurchasedToursComponent }, // ovo treba napraviti da izgleda kao tours samo sto se druge ucitavaju
   { path: 'tourBundlePreview/:id', component: TourBundlePreviewComponent}, // takođe treba spojiti u ono gore
   { path: 'tourBundleManagement', component: TourBundleComponent}, // isto u ovo gore

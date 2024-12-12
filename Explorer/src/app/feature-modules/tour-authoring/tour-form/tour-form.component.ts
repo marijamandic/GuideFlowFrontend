@@ -25,10 +25,12 @@ export enum Level {
   styleUrls: ['./tour-form.component.css']
 })
 export class TourFormComponent implements OnChanges {
-  
-  @Output() tourUpdated = new EventEmitter<null>();
-  @Input() tour: Tour ;
+  @Input() tour: Tour;
   @Input() shouldEdit: boolean = false;
+  @Output() closeModal = new EventEmitter<void>(); // Emiter za zatvaranje modala
+  @Output() tourUpdated = new EventEmitter<void>(); // Emiter za obaveštavanje glavne komponente o promeni
+
+
   
   userId:number=-1;
   tags: string[] = [''];
@@ -49,13 +51,18 @@ export class TourFormComponent implements OnChanges {
     });
   }
 
+  trackByIndex(index: number, item: string): number {
+    return index; 
+  }
+  
+
   initializeTour(): Tour {
     return {
       id: 0,
       authorId:-1,
       name: '',
       description: '',
-      price: { cost: 0, currency:0 },
+      price: 0,
       level: 0,
       status: 0,
       lengthInKm: 0,
@@ -67,6 +74,10 @@ export class TourFormComponent implements OnChanges {
     };
   }
 
+  close(): void {
+    this.closeModal.emit(); // Emituj događaj za zatvaranje
+  }
+
   addTag(): void {
     this.tags.push(''); // Dodaj novo prazno polje za tag
   }
@@ -74,21 +85,17 @@ export class TourFormComponent implements OnChanges {
   addTour(): void {
     console.log('add metoda')
 
-    const curr = this.ConvertCurrency();
+   
     const level = this.ConvertLevel();
-    const status = this.ConvertStatus();
 
     const newTour: Tour = {
       name: this.tour.name || "",
       description: this.tour.description || "",
       id: 0,
       authorId:this.userId,
-      price: {
-        cost: this.tour.price.cost || 0,
-        currency : curr
-      },
+      price: this.tour.price || 0,
       level: level || 0,
-      status: status || 0,
+      status: 0,
       lengthInKm : 0,
       averageGrade: 0.0,
       taggs: this.tags.filter(tag => tag.trim() !== ''), // Filtriraj prazne tagove
@@ -98,30 +105,30 @@ export class TourFormComponent implements OnChanges {
     };
     this.service.addTour(newTour).subscribe({
       next: (result:Tour) => {
-        this.router.navigate(['/checkpoints', result.id]);
+        console.log('dodata nova tura', newTour);
+        this.router.navigate(['/tourAuthorDetails', result.id]);
+      },
+      error: (err: any) => {
+        console.log( 'nova tura', newTour)
+        console.error('Error dodavanje tura:', err);
       }
     });
-
   }
 
     updateTour(): void {
-      const curr = this.ConvertCurrency();
       const level = this.ConvertLevel();
-      const status = this.ConvertStatus();
+      console.log(status);
       console.log('update metoda')
       const tour: Tour = {
         name: this.tour.name || "",
         description: this.tour.description || "",
         id: 0,
         authorId:this.userId,
-        price: {
-          cost: this.tour.price.cost || 0,
-          currency : curr
-        },
+        price: this.tour.price || 0,
         level: level || 0,
-        status: status || 0,
-        lengthInKm : this.tour.lengthInKm || 0,
-        averageGrade: this.tour.averageGrade || 0,
+        status: this.tour.status,
+        lengthInKm : this.tour.lengthInKm,
+        averageGrade: this.tour.averageGrade,
         taggs: this.tags.filter(tag => tag.trim() !== ''), // Filtriraj prazne tagove
         checkpoints: this.tour.checkpoints || [],
         transportDurations: this.tour.transportDurations || [],
@@ -134,20 +141,6 @@ export class TourFormComponent implements OnChanges {
         });
       }
 
-      ConvertCurrency(): number {
-        console.log('Currency je ',this.tour.price.currency)
-         switch (this.tour.price.currency.toString()) {
-           case  "RSD" :
-             return 0;
-           case "EUR":
-             return 1;
-           case "USD":
-             return 2;
-           default:
-             return 0;
-         }
-       }
-     
        
        ConvertLevel(): number {
      
@@ -160,21 +153,6 @@ export class TourFormComponent implements OnChanges {
              return 2;
            default:
              return 0;
-         }
-       }
-     
-       
-       ConvertStatus(): number {
-     
-         switch (this.tour.status.toString()) {
-           case  "Draft" :
-             return 0;
-           case "Published":
-             return 1;
-           case "Archived":
-             return 2;
-           default:
-             return 0; 
          }
        }
 }
