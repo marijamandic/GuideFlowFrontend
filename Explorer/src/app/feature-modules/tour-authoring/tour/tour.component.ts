@@ -51,7 +51,7 @@ export class TourComponent implements OnInit {
       authorId:-1,
       name: '',
       description: '',
-      price: { cost: 0, currency: Currency.EUR },
+      price: 0,
       level: Level.Easy,
       status: TourStatus.Draft,
       lengthInKm: 0,

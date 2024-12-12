@@ -9,14 +9,9 @@
       <textarea id="description" [(ngModel)]="tour.description" name="description" placeholder="Description"></textarea>
   
       <p><strong>Price:</strong>
-      <input id="cost" [(ngModel)]="tour.price.cost" name="cost" placeholder="Price" />
+      <input id="cost" [(ngModel)]="tour.price" name="cost" placeholder="Price" />
   
-      <p><strong>Currency:</strong>
-      <select id="currency" [(ngModel)]="tour.price.currency" name="currency">
-        <option value="EUR">EUR</option>
-        <option value="USD">USD</option>
-        <option value="RSD">RSD</option>
-      </select>
+     
   
       <p><strong>Level:</strong>
       <select id="level" [(ngModel)]="tour.level" name="level">
@@ -52,7 +47,7 @@
     <ng-template #viewMode>
       <p><strong>Tour Name:</strong> {{ tour.name }}</p>
       <p><strong>Description:</strong> {{ tour.description }}</p>
-      <p><strong>Price:</strong> {{ tour.price.cost }} {{ getFormattedCurrency(tour.price.currency) }}</p>
+      <p><strong>Price:</strong> {{ tour.price }}</p>
       <p><strong>Level:</strong> {{ getFormattedLevel(tour.level) }}</p>
   
       <p><strong>Tags:</strong></p>

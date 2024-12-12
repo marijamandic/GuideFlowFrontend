@@ -1,38 +1,51 @@
-<div class="form-container">
-  <form  #tourForm="ngForm" class="tour-form">
-    <h2>Add Tour</h2>
-    
-    <label for="name">Tour Name</label>
-    <input id="name" [(ngModel)]="tour.name" name="name" required placeholder="Tour Name">
-    
-    <label for="description">Description</label>
-    <textarea id="description" [(ngModel)]="tour.description" name="description" required placeholder="Description"></textarea>
-    
-    <label for="cost">Price</label>
-    <input id="cost" [(ngModel)]="tour.price.cost" name="cost" required placeholder="Price">
-    
-    <label for="currency">Currency</label>
-    <select id="currency" [(ngModel)]="tour.price.currency" name="currency" required>
-      <option value="EUR">EUR</option>
-      <option value="USD">USD</option>
-      <option value="RSD">RSD</option>
-    </select>
-    
-    <label for="level">Level</label>
-    <select id="level" [(ngModel)]="tour.level" name="level" required>
-      <option value="Easy">Easy</option>
-      <option value="Advanced">Advanced</option>
-      <option value="Expert">Expert</option>
-    </select>
-    
-    <div class="tags-container" *ngFor="let tag of tags; let i = index">
-      <label for="tag{{i}}">Tag {{i + 1}}</label>
-      <input id="tag{{i}}" [(ngModel)]="tags[i]" name="tag{{i}}" placeholder="Tag">
+<div class="modal-backdrop">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 *ngIf="!shouldEdit">Add Tour</h2>
+      <h2 *ngIf="shouldEdit">Edit Tour</h2>
+      <button class="close-button" (click)="close()">×</button>
     </div>
 
-    <button type="button" class="add-tag-button" (click)="addTag()">Add Tag</button>
-    <button class="cta-button" *ngIf="!shouldEdit"  type="submit" (click)="addTour()">Done</button>
-    <button class="cta-button" *ngIf="shouldEdit"  type="submit" (click)="updateTour()">Done</button>   
-  </form>
-</div>
+    <div>
+      <form #tourForm="ngForm" class="tour-form">
+        <label for="name">Tour Name</label>
+        <input id="name" [(ngModel)]="tour.name" name="name" required placeholder="Tour Name">
 
+        <label for="description">Description</label>
+        <textarea id="description" [(ngModel)]="tour.description" name="description" required placeholder="Description"></textarea>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="cost">Price</label>
+            <input id="cost" [(ngModel)]="tour.price" name="cost" required placeholder="Price">
+          </div>
+        
+          
+        
+          <div class="form-group">
+            <label for="level">Level</label>
+            <select id="level" [(ngModel)]="tour.level" name="level" required>
+              <option value="Easy">Easy</option>
+              <option value="Advanced">Advanced</option>
+              <option value="Expert">Expert</option>
+            </select>
+          </div>
+        </div>
+        
+
+        <div class="tags-container" *ngFor="let tag of tags; let i = index; trackBy: trackByIndex">
+          <label for="tag{{i}}">Tag {{i + 1}}</label>
+          <input id="tag{{i}}" [(ngModel)]="tags[i]" name="tag{{i}}" placeholder="Tag">
+        </div>
+        
+
+        <button type="button" class="add-tag-button" (click)="addTag()">Add Tag</button>
+        <div class="form-actions">
+          <button class="cta-button" type="button" (click)="close()">Cancel</button>
+          <button class="cta-button" *ngIf="!shouldEdit" type="submit" (click)="addTour()">Done</button>
+          <button class="cta-button" *ngIf="shouldEdit" type="submit" (click)="updateTour()">Done</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

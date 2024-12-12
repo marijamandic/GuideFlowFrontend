@@ -16,16 +16,6 @@
         </div>
 
         <mat-form-field>
-            <mat-label>Latitude</mat-label>
-            <input matInput formControlName="latitude" type="number" required readonly/>
-        </mat-form-field>
-
-        <mat-form-field>
-            <mat-label>Longitude</mat-label>
-            <input matInput formControlName="longitude" type="number" required readonly/>
-        </mat-form-field>
-
-        <mat-form-field>
             <mat-label>Secret</mat-label>
             <input matInput formControlName="secret" type="text" required />
         </mat-form-field>
@@ -36,7 +26,7 @@
         </div>
 
         <div class="map-container">
-            <xp-map [isAddCheckpoints]="true" (coordinatesSelected)="onCoordinatesSelected($event)" (publicPointSelected)="handlePublicPointSelection($event)" [showSearchBar]="isViewMode"></xp-map>
+            <xp-tour-add-checkpoint-map [isEditing]="shouldEdit" [checkpoint]="checkpointCoordinates" (coordinatesSelected)="onCoordinatesSelected($event)" (publicPointSelected)="handlePublicPointSelection($event)"></xp-tour-add-checkpoint-map>
         </div>
     </div>
     <button color="primary" type="submit" (click)="addCheckpoint()" mat-raised-button>Done</button>

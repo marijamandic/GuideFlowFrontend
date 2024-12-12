@@ -1,0 +1,14 @@
+<div class="map-frame">
+  <div class="search-container">
+      <div class="input-wrapper">
+        <input type="text" [(ngModel)]="searchAddress" placeholder="Search..." />
+        <img 
+          (click)="search()" 
+          src="assets/images/search.png" 
+          alt="Search" 
+          class="search-icon" 
+        />
+      </div>
+  </div>
+  <div id="add-checkpoint-map"></div>
+</div>
