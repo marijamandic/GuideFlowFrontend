@@ -39,6 +39,8 @@ export class ProfileInfoComponent implements OnInit, OnDestroy {
   isUserLoggedIn: boolean = true;
   isAuthor: boolean = false;
   routeSubscription: Subscription;
+  viewedUser: User | null = null;
+  viewedUserAuthor: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -66,6 +68,7 @@ export class ProfileInfoComponent implements OnInit, OnDestroy {
 
   private initializeComponent(): void {
     this.userId = Number(this.route.snapshot.paramMap.get('id'));
+    
     if (!this.userId) {
       this.isUserLoggedIn = false;
       return;
@@ -108,8 +111,28 @@ export class ProfileInfoComponent implements OnInit, OnDestroy {
       this.getProfileInfoById(userId);
       this.getTouristInfoById(userId);
       this.loadFollowedProfiles();
+      this.loadViewedUser(userId);
     }
   }
+
+  loadViewedUser(userId: number): void {
+    this.service.getUserById(userId).subscribe({
+      next: (user) => {
+        this.viewedUser = user; // Postavite user u viewedUser
+        const roleAsString = user.role.toString(); // Konvertujte role u string
+  
+        // Provera da li je role '1'
+        this.viewedUserAuthor = roleAsString === '1';
+        console.log('Viewed user:', this.viewedUser);
+        console.log('Is viewed user an author:', this.viewedUserAuthor);
+      },
+      error: (err) => {
+        console.error('Error fetching user:', err);
+      }
+    });
+  }
+  
+  
 
   getTouristInfoById(userId: number): void {
     if (userId) {

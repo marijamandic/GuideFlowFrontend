@@ -51,7 +51,7 @@
             {{ isEditMode ? 'Save' : 'Edit' }}
           </button>
         </ng-container>
-        <ng-container *ngIf="loggedInUser?.id !== userId && loggedInUser?.role !== 'author'">
+        <ng-container *ngIf="!viewedUserAuthor && loggedInUser?.id !== userId && loggedInUser?.role !== 'author'">
           <button
             class="cta-button"
             [ngClass]="followedProfiles.includes(userId) ? 'unfollow-button' : 'follow-button'"
@@ -64,7 +64,7 @@
     </div>
 
     <!-- Desni deo: Kartice za level i followere -->
-    <ng-container *ngIf="!isAuthor">
+    <ng-container *ngIf="!viewedUserAuthor">
       <div class="right-container">
         <!-- Kartica za level -->
         <div class="level-card">
