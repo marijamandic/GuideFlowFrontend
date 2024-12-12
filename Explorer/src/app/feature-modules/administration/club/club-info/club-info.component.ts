@@ -176,7 +176,10 @@ export class ClubInfoComponent implements OnInit {
 
   onInvite(): void {
     if (this.selectedUser) {
-      const invitation: ClubInvitation = { clubId: this.club.id!, touristId: this.selectedUser.id, status: ClubInvitationStatus.PENDING };
+      const invitation: ClubInvitation = { clubId: this.club.id!, touristId: this.selectedUser.id, status: ClubInvitationStatus.PENDING,
+        createdAt: new Date(), isOpened: false, ownerId: this.club.ownerId, clubName: this.club.name, touristName: this.userName
+       };
+       console.log("INVITACIJA: ", invitation);
       this.administrationService.addClubInvitation(invitation).subscribe({
         next: () => {
           this.filteredUsers = this.filteredUsers.filter(user => user.id !== this.selectedUser!.id);

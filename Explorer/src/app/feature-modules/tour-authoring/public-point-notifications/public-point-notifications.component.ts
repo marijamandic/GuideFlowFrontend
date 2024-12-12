@@ -13,6 +13,7 @@ import { MessageNotification } from '../../layout/model/MessageNotification.mode
 import { Router } from '@angular/router';
 import { ClubRequest, ClubRequestStatus } from '../../administration/model/club-request.model';
 import { AdministrationService } from '../../administration/administration.service';
+import { ClubInvitation, ClubInvitationStatus } from '../../administration/model/club-invitation.model';
 
 @Component({
     selector: 'app-public-point-notifications',
@@ -22,7 +23,7 @@ import { AdministrationService } from '../../administration/administration.servi
 export class PublicPointNotificationsComponent implements OnInit {
     totalCount: number = 0;
     selectedNotification: PublicPointNotification | null = null;
-    combinedNotifications: { type: number; data: PublicPointNotification | Notification | ProblemNotification | MessageNotification | ClubRequest, creationTime: Date, isOpened: boolean }[] = [];
+    combinedNotifications: { type: number; data: PublicPointNotification | Notification | ProblemNotification | MessageNotification | ClubRequest | ClubInvitation, creationTime: Date, isOpened: boolean }[] = [];
     selectedPoint: PublicPoint | null = null;
     public publicPoints: PublicPoint[] = [];
     showModal: boolean = false;
@@ -226,7 +227,25 @@ export class PublicPointNotificationsComponent implements OnInit {
             (error) => {
                 console.error('Error loading public point notifications:', error);
             }
-        );        
+        );   
+        
+        this.clubRequestService.getClubInvitationsByOwner(userId).subscribe(
+            (clubInvitations) => {
+                const clubInvitationMapped = clubInvitations
+                    .filter(notification => notification.status === ClubInvitationStatus.PENDING)
+                    .map(notification => ({
+                        type: 5,
+                        data: notification,
+                        creationTime: notification.createdAt,
+                        isOpened: notification.isOpened
+                    }));
+                    console.log("EvoE: ", clubInvitationMapped)
+                this.combinedNotifications = [...this.combinedNotifications, ...clubInvitationMapped];
+            },
+            (error) => {
+                console.error('Error loading public point notifications:', error);
+            }
+        );     
 
         this.sortNotifications();
     }
@@ -234,6 +253,7 @@ export class PublicPointNotificationsComponent implements OnInit {
         this.combinedNotifications = this.combinedNotifications.sort(
             (a, b) => new Date(b.creationTime).getTime() - new Date(a.creationTime).getTime()
         );
+        console.log("Sorted: ", this.combinedNotifications);
     }
     
     isPublicPointNotification(notification: { type: number; data: any }): notification is { type: 0; data: PublicPointNotification } {
@@ -251,8 +271,14 @@ export class PublicPointNotificationsComponent implements OnInit {
     isClubRequest(notification: {type: number; data: any}): notification is { type: 4; data: ClubRequest} {
         return notification.type === 4;
     }
+    isClubInvitation(notification: {type: number; data: any}): notification is { type: 5; data: ClubInvitation} {
+        return notification.type === 5;
+    }
     isPending(notification: {type: number; data: any}): boolean {
         return notification.data.status == ClubRequestStatus.PENDING;
+    }
+    isPendingInvitation(notification: {type: number; data: any}): boolean {
+        return notification.data.status == ClubInvitationStatus.PENDING;
     }
 
     markAllAsRead(): void {
@@ -347,6 +373,69 @@ export class PublicPointNotificationsComponent implements OnInit {
           createdAt: new Date(), // Trenutno vreme
           isOpened: false, // Podrazumevano nije pročitano
           type: 2, // Tip je 2 (ClubNotification)
+        };
+        
+        this.notificationService.createTouristNotifaction(newNotification).subscribe({
+            next: () => {
+                console.log('Notification successfully created');
+                this.loadAllNotifications();
+            },
+            error: (err) => {
+                console.error('Error creating notification:', err);
+                this.loadAllNotifications();
+            },
+        });
+      } 
+
+      acceptInvitation(request: ClubInvitation): void {
+        this.clubRequestService.acceptClubInvitation(request.id || 0).subscribe({
+          next: () => {
+            console.log(`Request ${request.id} accepted.`);
+          },
+          error: (err) => {
+            console.error(`Error accepting request ${request.id}:`, err);
+          },
+        });
+        const newNotification: Notification = {
+          id: 0,
+          userId: request.ownerId,
+          sender: this.user?.username || '', 
+          message: `Accepted your invitation to join in your club ${request.clubName}.`,
+          createdAt: new Date(), 
+          isOpened: false, 
+          type: 2,
+        };
+        
+        this.notificationService.createTouristNotifaction(newNotification).subscribe({
+            next: () => {
+                console.log('Notification successfully created');
+                this.loadAllNotifications();
+            },
+            error: (err) => {
+                console.error('Error creating notification:', err);
+                this.loadAllNotifications();
+            },
+        });
+      }
+      
+      declineInvitation(request: ClubInvitation & { username?: string; firstName?: string; lastName?: string }): void {
+        this.clubRequestService.declineClubInvitation(request.id || 0).subscribe({
+          next: () => {
+            console.log(`Request ${request.id} declined.`);
+          },
+          error: (err) => {
+            console.error(`Error declining request ${request.id}:`, err);
+          },
+        });
+    
+        const newNotification: Notification = {
+          id: 0,
+          userId: request.ownerId,
+          sender: this.user?.username || '', 
+          message: `Rejected your invitation to join in your club ${request.clubName}.`,
+          createdAt: new Date(), 
+          isOpened: false, 
+          type: 2, 
         };
         
         this.notificationService.createTouristNotifaction(newNotification).subscribe({
