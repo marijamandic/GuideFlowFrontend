@@ -78,7 +78,7 @@ export class AddEncounterComponent implements OnInit {
         this.tourService.updateCheckpoint(this.tourId,this.checkpoint).subscribe({
           next: () => {
             console.log("uspesno izmenjen checkpoint");
-            this.router.navigate(["tourDetails",this.tourId])
+            this.router.navigate(["tour",this.tourId])
           },
           error: (err) => console.error(err),
         })

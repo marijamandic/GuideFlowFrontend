@@ -1,0 +1,21 @@
+
+<div class="modal-backdrop">
+    <div class="modal-content">
+        <h2>Suggested Tours</h2>
+        <div class="tour-cards-container no-scroll">
+            <a *ngFor="let tour of tours" class="tour-card">
+            <div class="tour-image">
+                <img [src]="getImagePath(tour.checkpoints[0].imageUrl)" />
+            </div>
+            <div class="tour-info">
+                <h3>{{ tour.name }}</h3>
+                <p>{{ tour.description }}</p>
+            </div>
+            <div>
+                <button class="button" (click)="goToTour(tour.id)">Go to tour</button>
+            </div>
+            </a>
+        </div>
+    </div>
+    
+</div>
