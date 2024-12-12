@@ -61,7 +61,7 @@
       <!-- Display Resource Information as a Link (if available) -->
       <div class="post-resource" *ngIf="post?.resourceId">
         <a
-          [href]="'http://localhost:4200/' + (post.resourceType === 0 ? 'blog' : 'tour') + '/' + post.resourceId"
+          [href]="'http://localhost:4200/' + (post.resourceType === 0 ? 'blog' : 'tour-more-details') + '/' + post.resourceId"
           target="_blank"
           class="resource-link"
         >

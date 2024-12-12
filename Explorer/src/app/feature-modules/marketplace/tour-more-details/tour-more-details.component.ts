@@ -15,6 +15,8 @@ import { ItemInput } from '../model/shopping-carts/item-input';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MessageNotification } from '../../blog/model/message-notification.model';
 import { MessageNotificationService } from '../../blog/message-notification.service';
+import { ResourceType } from '../../administration/model/club-post.model';
+import { AdministrationService } from '../../administration/administration.service';
 
 @Component({
   selector: 'xp-tour-more-details',
@@ -34,8 +36,9 @@ export class TourMoreDetailsComponent implements OnInit{
   MapViewMode:boolean = false;
   isPurchased:boolean = false;
   isShareModalOpen: boolean = false;
+  clubPost: { clubId: number; memberId: number; content: string; resourceId: any; resourceType: ResourceType; };
   
-  constructor(private authService: AuthService,private route: ActivatedRoute,private tourService:TourService,private marketService: MarketplaceService,private shoppingCartService:ShoppingCartService,private router: Router,private messageService: MessageNotificationService){}
+  constructor(private authService: AuthService,private route: ActivatedRoute,private tourService:TourService,private marketService: MarketplaceService,private shoppingCartService:ShoppingCartService,private router: Router,private messageService: MessageNotificationService, private adminService: AdministrationService){}
 
   ngOnInit(): void {
     this.authService.user$.subscribe(user => {
@@ -181,6 +184,8 @@ export class TourMoreDetailsComponent implements OnInit{
   }
   handleShareSubmit(description: string) {
     const descriptionMatch = description.match(/Description: (.*?), FollowerId: (\d+)/);
+    const clubMatch = description.match(/Description: (.*?), ClubId: (\d+)/);
+
     
     if (descriptionMatch) {
       const parsedDescription = descriptionMatch[1];  // Deo nakon "Description: "
@@ -199,6 +204,25 @@ export class TourMoreDetailsComponent implements OnInit{
             error: (err) => console.error("Failed")
           })
       }
+    } else if(clubMatch){
+
+      const parsedDescription = clubMatch[1];  
+            const parseclubId = parseInt(clubMatch[2], 10);
+            if(this.user && this.tourId){
+              this.clubPost = {
+                clubId: parseclubId,
+                memberId: this.user?.id,
+                content: parsedDescription,
+                resourceId: this.tourId,
+                resourceType: ResourceType.TOUR
+              }
+              this.adminService.addClubPost(this.clubPost).subscribe({
+                next: () => console.log(this.clubPost),
+                  error: (err) => console.error("Failed club post")
+              })
+            }
+
+
     } else {
       console.log('Nesto nije dobro sa parsiranjem');
     }
