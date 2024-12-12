@@ -185,6 +185,11 @@ export class AdministrationService {
 		  .pipe(map(response => response.username));
 	}
 
+	getUserById(userId: number): Observable<User> {
+		const url = `${environment.apiHost}user/getUser/${userId}`;
+		return this.http.get<User>(url);
+	  }
+
 	updateMoney(touristId: number, amount: number): Observable<User> {
 		return this.http.put<User>(
 		  `${environment.apiHost}user/updateMoney/${touristId}`,
