@@ -162,23 +162,41 @@ export class PublicPointNotificationsComponent implements OnInit {
                 console.error('Error loading public point notifications:', error);
             }
         );
+
+        if (this.user?.role == 'tourist') {
+            this.notificationService.getNotificationsByUserId(userId).subscribe(
+                (moneyExchangeNotifications) => {
+                    const moneyExchangeMapped = moneyExchangeNotifications.map(notification => ({
+                        type: 1, // Notification (Money and Club)
+                        data: notification,
+                        creationTime: notification.createdAt,
+                        isOpened: notification.isOpened
+                    }));
+                    this.combinedNotifications = [...this.combinedNotifications, ...moneyExchangeMapped];
+                    this.sortNotifications();
+                },
+                (error) => {
+                    console.error('Error loading money exchange notifications:', error);
+                }
+            );
+		} else {
+            this.notificationService.getNotificationsByAuthorId(userId).subscribe(
+                (moneyExchangeNotifications) => {
+                    const moneyExchangeMapped = moneyExchangeNotifications.map(notification => ({
+                        type: 1, // Notification (Money and Club)
+                        data: notification,
+                        creationTime: notification.createdAt,
+                        isOpened: notification.isOpened
+                    }));
+                    this.combinedNotifications = [...this.combinedNotifications, ...moneyExchangeMapped];
+                    this.sortNotifications();
+                },
+                (error) => {
+                    console.error('Error loading money exchange notifications:', error);
+                }
+            );
+		}
     
-        this.notificationService.getNotificationsByUserId(userId).subscribe(
-            (moneyExchangeNotifications) => {
-                const moneyExchangeMapped = moneyExchangeNotifications.map(notification => ({
-                    type: 1, // Notification (Money and Club)
-                    data: notification,
-                    creationTime: notification.createdAt,
-                    isOpened: notification.isOpened
-                }));
-                this.combinedNotifications = [...this.combinedNotifications, ...moneyExchangeMapped];
-                this.sortNotifications();
-            },
-            (error) => {
-                console.error('Error loading money exchange notifications:', error);
-            }
-        );
-        
         this.notificationService.getProblemNotificationsByUserId(this.user?.role || "tourist").subscribe(
             (problemNotifications: PagedResults<ProblemNotification>) => {
                 const problemNotificationMapped = problemNotifications.results.map(notification => ({
@@ -253,7 +271,21 @@ export class PublicPointNotificationsComponent implements OnInit {
         this.combinedNotifications = this.combinedNotifications.sort(
             (a, b) => new Date(b.creationTime).getTime() - new Date(a.creationTime).getTime()
         );
+
+        this.totalCount = 0;
+
+        this.combinedNotifications.forEach(notification => {
+            if (!notification.isOpened) {
+                this.totalCount++;
+            }
+        });
+
+        // Emitujte novi totalCount
+        this.publicPointService.updateTotalCount(this.totalCount);
+
+        console.log("Total opened notifications count: ", this.totalCount);
         console.log("Sorted: ", this.combinedNotifications);
+        console.log("Total opened notifications count: ", this.totalCount);
     }
     
     isPublicPointNotification(notification: { type: number; data: any }): notification is { type: 0; data: PublicPointNotification } {

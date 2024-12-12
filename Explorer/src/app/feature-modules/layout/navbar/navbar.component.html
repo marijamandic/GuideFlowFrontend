@@ -22,7 +22,7 @@
         </div>
         <div class="profile-menu">
             <mat-icon  *ngIf="user && user.role === 'tourist'" class="shopping-cart-icon" (click)="showCart = !showCart">shopping_cart</mat-icon>
-            <span *ngIf="user && user.username !== '' && notificationCount > 0" class="notification-badge" (click)="toggleNotifications()">{{ notificationCount }}</span>   
+            <span *ngIf="user && user.username !== '' && totalCount > 0" [class]="getBadgeClass()" (click)="toggleNotifications()">{{ totalCount }}</span>   
             <mat-icon *ngIf="user && user.username !== ''" class="notification-icon" (click)="toggleNotifications()">notifications</mat-icon>
             <mat-icon class="profile-icon" (click)="toggleDropdown()">account_circle</mat-icon>
             

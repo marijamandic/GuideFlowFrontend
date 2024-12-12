@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { PublicPoint } from './model/publicPoint.model';
 import { PublicPointNotification } from './model/publicPointNotification.model';
 
@@ -67,4 +67,13 @@ export class PublicPointService {
   getNotificationsByAuthor(authorId: number): Observable<PublicPointNotification[]> {
     return this.http.get<PublicPointNotification[]>(`${this.notificationUrl}/author/${authorId}`);
   }
+
+  private totalCountSource = new BehaviorSubject<number>(0);
+  totalCount$ = this.totalCountSource.asObservable();
+
+  // Metoda za ažuriranje totalCount
+  updateTotalCount(count: number): void {
+    this.totalCountSource.next(count);
+  }
+  
 }

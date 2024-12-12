@@ -84,21 +84,52 @@
 	margin: 0; /* Remove unnecessary margins */
 }
 
-.notification-badge {
+.notification-badgea {
     position: absolute;
-    top: -8px; /* You can keep or adjust this value to control the vertical position */
-    right: 95px; /* You can adjust this for horizontal positioning */
-    left: 45px;
+    top: -8px; 
     background-color: #84dcc6; 
     color: white;
     border-radius: 50%; /* Keeps the circular shape */
     padding: 2px 4px; /* Reduces the size by lowering padding */
     font-size: 10px; /* Smaller font size for a smaller badge */
-    height: 16px; /* Control the height of the circle */
-    min-width: 16px; /* Ensure it remains circular */
-    line-height: 16px; /* Vertically center the text within the circle */
+    height: 10px; /* Control the height of the circle */
+    min-width: 10px; /* Ensure it remains circular */
+    line-height: 10px; /* Vertically center the text within the circle */
     text-align: center;
     z-index: 10;
+	margin-right: 55%;
+    border: 2px solid white; /* Dodaje beli border */
+}
+.notification-badgeu {
+    position: absolute;
+    top: -8px; 
+    background-color: #84dcc6; 
+    color: white;
+    border-radius: 50%; /* Keeps the circular shape */
+    padding: 2px 4px; /* Reduces the size by lowering padding */
+    font-size: 10px; /* Smaller font size for a smaller badge */
+    height: 10px; /* Control the height of the circle */
+    min-width: 10px; /* Ensure it remains circular */
+    line-height: 10px; /* Vertically center the text within the circle */
+    text-align: center;
+    z-index: 10;
+	margin-right: 55%;
+    border: 2px solid white; /* Dodaje beli border */
+}
+.notification-badget {
+    position: absolute;
+    top: -8px; 
+    background-color: #84dcc6; 
+    color: white;
+    border-radius: 50%; /* Keeps the circular shape */
+    padding: 2px 4px; /* Reduces the size by lowering padding */
+    font-size: 10px; /* Smaller font size for a smaller badge */
+    height: 10px; /* Control the height of the circle */
+    min-width: 10px; /* Ensure it remains circular */
+    line-height: 10px; /* Vertically center the text within the circle */
+    text-align: center;
+    z-index: 10;
+	margin-right: 36%;
     border: 2px solid white; /* Dodaje beli border */
 }
 
@@ -174,7 +205,7 @@ mat-icon:hover {
 .notification-dropdown {
     position: fixed;
     top: 65px;
-    right: 70px;
+    right: 2%;
     width: 400px;
     max-height: 600px;
     overflow-y: auto;

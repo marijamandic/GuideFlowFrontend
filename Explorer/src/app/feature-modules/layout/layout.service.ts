@@ -44,6 +44,14 @@ export class LayoutService {
 		return this.http.get<Notification[]>(`${environment.apiHost}notifications/tourist/problem/by-user/${userId}`, { headers });
 	}
 
+	getNotificationsByAuthorId(userId: number): Observable<Notification[]> {
+		const headers = new HttpHeaders({
+			Authorization: `Bearer ${localStorage.getItem('access-token')}`,
+			'Content-Type': 'application/json'
+		});
+		return this.http.get<Notification[]>(`${environment.apiHost}notifications/author/problem/by-user/${userId}`, { headers });
+	}
+
 	updateNotification(id: number, updatedNotification: Notification): Observable<void> {
 		const headers = new HttpHeaders({
 			Authorization: `Bearer ${localStorage.getItem('access-token')}`,
