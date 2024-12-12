@@ -20,15 +20,30 @@
         </div>
         <p class="description">{{ tour.description }}</p>
         <div class="tour-card-details">
-          <span><i class="fa-solid fa-dollar-sign"></i> {{ getFormattedPrice(tour.price) }}</span>
+          <span><i class="fa-solid fa-dollar-sign"></i> {{ tour.price }}</span>
           <span><i class="fa-solid fa-fire"></i> {{ getLevel(tour.level) }}</span>
           <span><i class="fas fa-walking"></i> {{ tour.lengthInKm }} km</span>
+        </div>
+        <div class="edit-tour-card">
+          <button class="cta-button edit-tour" (click)="openTourModal()" *ngIf="status !== 'Published'">
+            <i class="fa-solid fa-pen"></i> Edit
+          </button>
         </div>
       </div>
      </div>
      <div class="tour-map">
       <xp-map [showSearchBar]="MapViewMode" [checkpoints]="checkpointCoordinates" (distanceCalculated)="onDistanceCalculated($event)"></xp-map>
      </div>
+     <div *ngIf="isTourModalOpen" class="modal-overlay" (click)="closeTourModal()">
+      <div class="modal-dialog" (click)="$event.stopPropagation()">
+        <xp-tour-form
+          [tour]="tour"
+          [shouldEdit]="true"
+          (tourUpdated)="onTourUpdated()"
+          (closeModal)="closeTourModal()">
+        </xp-tour-form>
+      </div>
+    </div>
     </div>  
     <div class="checkpoints-grid">
       <div class="checkpoint-card" *ngFor="let checkpoint of checkpoints">
@@ -97,8 +112,11 @@
         <p class="no-reviews-message">There are no reviews for this tour.</p>
     </ng-template>
   </div>
-  <div class="one-button" *ngIf="status !== 'Published'">
-    <button class="cta-button submit" (click)="finishCheckpointsAdding()">
+  <div class="one-button">
+    <button class="cta-button close" (click)="goToAllTours()">
+      <i class="fa-solid"></i> Close
+    </button>
+    <button class="cta-button submit" (click)="finishCheckpointsAdding()" *ngIf="status !== 'Published'"> 
       <i class="fa-solid fa-pen"></i> Submit
     </button>
   </div>

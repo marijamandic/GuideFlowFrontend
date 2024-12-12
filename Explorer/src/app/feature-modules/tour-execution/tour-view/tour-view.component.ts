@@ -13,6 +13,7 @@ import { Currency, Price } from '../../tour-authoring/model/price.model';
 import { Checkpoint } from '../../tour-authoring/model/tourCheckpoint.model';
 import { environment } from 'src/env/environment';
 import { AlertService } from '../../layout/alert.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'xp-tour-view',
@@ -64,7 +65,8 @@ export class TourViewComponent implements OnInit {
       authService: AuthService,
       private cdr: ChangeDetectorRef,
       private adminService: AdministrationService,
-      private alertService: AlertService) 
+      private alertService: AlertService,
+      private router:Router) 
       {
     authService.user$.subscribe((user: User) => {
       this.userId = user.id;
@@ -110,6 +112,15 @@ export class TourViewComponent implements OnInit {
   onEditTour(tour: Tour): void {
     console.log('Edit clicked for tour:', tour.name);
   }  
+
+  goToDetails(tour:Tour){
+    if(this.user.role === 'tourist'){
+      this.router.navigate(['/tour-more-details', tour.id]);
+    }
+    if(this.user.role === "author"){
+      this.router.navigate(['/tourAuthorDetails', tour.id]);
+    }
+  }
   
   initializeTour(): Tour {
     return {
@@ -143,8 +154,6 @@ export class TourViewComponent implements OnInit {
     // Logika za dodavanje ture ili slanje podataka na backend
     this.closeModal();
   }
-
-
 
   getAllTours():void{
     this.service.getAllTours().subscribe({

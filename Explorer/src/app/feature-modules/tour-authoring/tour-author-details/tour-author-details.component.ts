@@ -32,6 +32,7 @@ export class TourAuthorDetailsComponent {
   allTransportData: { transportType: string; time: number; distance: number }[] = [];
   transportDurations: TransportDuration[] = [];
   isModalOpen: boolean = false;
+  isTourModalOpen:boolean = false;
 
   constructor(private authService: AuthService, private router:Router, private route: ActivatedRoute, private tourService:TourService){}
 
@@ -108,20 +109,6 @@ export class TourAuthorDetailsComponent {
     }
   }
   
-  getFormattedPrice(price: Price): string {
-    if (!price) return '';
-    switch (price.currency) {
-      case Currency.RSD:
-        return `${price.cost} RSD`;
-      case Currency.EUR:
-        return `${price.cost} €`;
-      case Currency.USD:
-        return `${price.cost} $`;
-      default:
-        return `${price.cost}`;
-    }
-  }
-  
   getStars(): string[] {
     if (!this.tour || !this.tour.averageGrade) return [];
   
@@ -165,11 +152,22 @@ export class TourAuthorDetailsComponent {
   }
 
   openModal(): void {
+    if(this.shouldEdit){
+      this.shouldEdit = false;
+    }
     this.isModalOpen = true;
   }
   
   closeModal(): void {
     this.isModalOpen = false;
+  }
+
+  openTourModal():void{
+    this.isTourModalOpen = true;
+  }
+
+  closeTourModal():void{
+    this.isTourModalOpen = false;
   }
 
   editCheckpoint(checkpoint: Checkpoint): void {
@@ -197,6 +195,14 @@ export class TourAuthorDetailsComponent {
   onCheckpointUpdated(): void {
     this.loadTour(); // Osvježavanje liste checkpointa
     this.closeModal(); // Zatvaranje modala
+    if(this.shouldEdit){
+      this.shouldEdit=false;
+    }
+  }
+
+  onTourUpdated(): void {
+    this.loadTour(); // Osvježavanje liste checkpointa
+    this.closeTourModal(); // Zatvaranje modala
   }
   
   onDistanceCalculated(event: { transportType: string; time: number; distance: number }):void{
@@ -238,11 +244,8 @@ export class TourAuthorDetailsComponent {
         this.tourService.addTransportDurations(this.tourId,this.transportDurations).subscribe({
           next: (data) => {
             console.log('Transport Durations added:'+ data.transportDurations);
-            if(!this.forUpdating){
-              this.router.navigate(['/tour']);
-            }
-            this.router.navigate(['/tourDetails',this.tourId])
-            alert("Tour with checkpoints added succesfully!");
+            this.router.navigate(['/all-tours']);
+            alert("Tour with checkpoints saved succesfully!");
           },
           error: (err) => {
             console.error('Greška prilikom add-a transport durations-a:', err);
@@ -273,5 +276,9 @@ export class TourAuthorDetailsComponent {
         transportType: transportTypeEnum
       };
     });
+  }
+
+  goToAllTours(){
+    this.router.navigate(['/all-tours']);
   }
 }

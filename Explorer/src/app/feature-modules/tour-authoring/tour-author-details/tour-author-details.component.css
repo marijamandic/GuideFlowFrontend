@@ -330,6 +330,7 @@
   justify-content: flex-end; /* Dugmići su raspoređeni levo-desno */
   align-items: center;
   margin-top: 10px; /* Razmak između sadržaja i dugmića */
+  gap: 10px;
 }
 
 .submit {
@@ -343,4 +344,48 @@
   gap: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
+}
+
+.close {
+  background-color: #999; /* Crvena boja za delete */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 12px;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+/* Buttons container */
+.edit-tour-card {
+  display: flex;
+  justify-content: flex-end; /* Dugme ide u desni ugao */
+  align-items: flex-end; /* Poravnanje sa donjim delom */
+  margin-top: auto; /* Osigurava da dugme ostane na dnu */
+}
+
+/* Add to Cart Button */
+.edit-tour {
+  position: absolute; /* Absolutno pozicioniranje */
+  bottom: 15px; /* Razmak od dna */
+  right: 20px; /* Razmak od desne strane */
+  cursor: pointer;
+  padding: 8px 12px;
+  background-color: var(--primary-color);
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: background-color 0.3s;
+}
+
+.edit-tour:hover {
+  background-color: #0056b3;
 }

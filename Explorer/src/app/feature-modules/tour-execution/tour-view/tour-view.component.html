@@ -120,7 +120,7 @@
         <div class="tour-card-image" *ngIf="currentView !== 'draft'">
           <img *ngIf="tour.checkpoints  " [src]="getImagePath(tour.checkpoints[currentImageIndex].imageUrl)" alt="Checkpoint image" />
         </div>
-        <div class="tour-card-content">
+        <div class="tour-card-content" (click)="goToDetails(tour)">
           <div class="tour-card-header">
             <h2>{{ tour.name }}</h2>
             <!--button class="kebab-menu"><i class="fa-solid fa-ellipsis-vertical"></i></button-->
