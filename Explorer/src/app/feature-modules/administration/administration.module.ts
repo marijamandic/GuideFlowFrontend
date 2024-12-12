@@ -18,6 +18,7 @@ import { AdminDashboardComponenet } from './admin-dashboard/admin-dashboard.comp
 import { ClubPostComponent } from './club/club-post/club-post.component';
 import { ClubInfoComponent } from './club/club-info/club-info.component';
 import { ClubDashboardComponent } from './club/club-dashboard/club-dashboard.component';
+import { AuthorDashboardComponent } from './author-dashboard/author-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { ClubDashboardComponent } from './club/club-dashboard/club-dashboard.com
     ClubPostComponent,
     ClubInfoComponent,
     ClubDashboardComponent,
+    AuthorDashboardComponent,
   ],
   imports: [
     CommonModule,
