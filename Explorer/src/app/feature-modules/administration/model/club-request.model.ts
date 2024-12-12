@@ -10,5 +10,10 @@ export interface ClubRequest{
     clubId: number,
     touristId: number,
     status: ClubRequestStatus,
+    createdAt: Date,
+    isOpened: boolean,
+    ownerId: number,
+    clubName: string,
+    touristName: string
    
 }

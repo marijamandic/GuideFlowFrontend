@@ -21,6 +21,8 @@ import { ProblemComponent } from './problem/problem.component';
 import { ProblemViewComponent } from './problem-view/problem-view.component';
 import { TourDetailsComponent } from './tour-details/tour-details.component';
 import { AddEncounterComponent } from './add-encounter/add-encounter.component';
+import { TourAuthorDetailsComponent } from './tour-author-details/tour-author-details.component';
+import { TourAddCheckpointMapComponent } from './tour-add-checkpoint-map/tour-add-checkpoint-map.component';
 
 
 
@@ -38,7 +40,9 @@ import { AddEncounterComponent } from './add-encounter/add-encounter.component';
     ProblemComponent,
     ProblemViewComponent,
     TourDetailsComponent,
-    AddEncounterComponent
+    AddEncounterComponent,
+    TourAuthorDetailsComponent,
+    TourAddCheckpointMapComponent
   ],
   imports: [
     CommonModule,
@@ -61,7 +65,8 @@ import { AddEncounterComponent } from './add-encounter/add-encounter.component';
     PublicPointRequestsComponent,
     TourEquipmentComponent,
     PositionsimComponent,
-    ProblemComponent
+    ProblemComponent,
+    TourAuthorDetailsComponent
   ]
 })
 export class TourAuthoringModule {}
