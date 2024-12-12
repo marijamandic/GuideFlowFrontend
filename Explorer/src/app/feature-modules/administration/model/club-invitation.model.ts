@@ -11,4 +11,9 @@ export interface ClubInvitation {
   clubId: number;
   touristId: number;
   status: ClubInvitationStatus;
+  createdAt: Date;
+  isOpened: boolean;
+  ownerId: number;
+  clubName: string;
+  touristName: string;
 }

@@ -18,7 +18,7 @@
       <p (click)="navigateToProfile(tour.authorId)" class="tour-author clickable">By: {{ tour.authorName }}</p>
       <p class="description">{{ tour.description }}</p>
       <div class="tour-card-details">
-        <span><i class="fa-solid fa-dollar-sign"></i> {{ getFormattedPrice(tour.price) }}</span>
+        <span><i class="fa-solid fa-dollar-sign"></i> {{ tour.price }}</span>
         <span><i class="fa-solid fa-fire"></i> {{ getLevel(tour.level) }}</span>
         <span><i class="fas fa-walking"></i> {{ tour.lengthInKm }} km</span>
       </div>
@@ -74,8 +74,10 @@
         <p class="review-comment">{{ review.comment || 'No comment provided.' }}</p>
         <p class="review-date"><strong>Posted on:</strong> {{ review.creationDate | date:'medium' }}</p>
       </div>
+    </div>
   </div>
     <ng-template #noReviews>
       <p class="no-reviews-message">There are no reviews for this tour.</p>
     </ng-template>
 </div>
+

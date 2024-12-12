@@ -14,7 +14,7 @@ import { ClubFormComponent } from './club/club-form/club-form.component';
 import { ClubComponent } from './club/club-overview/club.component';  
 import { AllAppRatingsComponent } from './all-app-ratings/all-app-ratings.component';
 import { LayoutModule } from '../layout/layout.module';
-import { AccountComponent } from './account/account.component';
+import { AdminDashboardComponenet } from './admin-dashboard/admin-dashboard.component';
 import { ClubPostComponent } from './club/club-post/club-post.component';
 import { ClubInfoComponent } from './club/club-info/club-info.component';
 import { ClubDashboardComponent } from './club/club-dashboard/club-dashboard.component';
@@ -32,7 +32,7 @@ import { AuthorDashboardComponent } from './author-dashboard/author-dashboard.co
     AllAppRatingsComponent,
     ProblemComponent,
     AdminProblemComponent,
-    AccountComponent,
+    AdminDashboardComponenet,
     ClubPostComponent,
     ClubInfoComponent,
     ClubDashboardComponent,
@@ -55,7 +55,7 @@ import { AuthorDashboardComponent } from './author-dashboard/author-dashboard.co
     ProblemComponent,
     AllAppRatingsComponent,
     AdminProblemComponent,
-    AccountComponent,
+    AdminDashboardComponenet,
     ClubPostComponent
   ]
 })

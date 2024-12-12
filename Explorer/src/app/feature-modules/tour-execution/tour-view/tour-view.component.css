@@ -17,7 +17,8 @@
 
 /* Filters Section */
 .filter-container {
-  flex: 0 0 30%; 
+  flex: 0 0 30%;
+  max-height: 700px;
   max-width: 30%;
   padding: 20px;
   background-color: #fff;
@@ -25,8 +26,15 @@
   box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
 }
 
-.slider-container, .tags-container, .button-container {
+.slider-container {
   margin-bottom: 20px;
+
+}
+.button-container{
+  justify-content: space-between;
+}
+.tags-container{
+  margin-right: 15px;
 }
 
 .slider-container label,
@@ -56,6 +64,16 @@ textarea {
 }
 
 /* Full-width Search Bar */
+
+/* Glavni kontejner koji drži search bar i toggle dugme */
+.search-toggle-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  width: 100%;
+}
+
+
 .search-bar {
   display: flex;
   align-items: center;
@@ -226,10 +244,12 @@ input[type="range"]::-ms-thumb {
 }
 
 .sort-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
+  flex: 0 0 30%; 
+  max-width: 30%;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
 }
 
 .sort-label {
@@ -253,4 +273,203 @@ input[type="range"]::-ms-thumb {
 .sort-buttons {
   display: flex;
   gap: 0.5rem;
+}
+
+.toggle-switch {
+  display: inline-flex;
+  align-items: center;
+  background-color: #ffffff; /* Bela boja pozadine */
+  border-radius: 25px;
+  position: relative;
+  width: 200px; /* Širina dugmeta */
+  overflow: hidden; /* Sakriva višak ako ima preklapanja */
+  border: 2px solid #e0e0e0; /* Lagani okvir */
+}
+
+.toggle-option {
+  flex: 1;
+  text-align: center;
+  color: #333;
+  cursor: pointer;
+  padding: 10px 0;
+  border-radius: 25px;
+  transition: all 0.3s ease;
+  margin: 0 -10px; /* Negativna margina za preklapanje */
+  z-index: 1;
+  background-color: #ffffff; /* Belo za neaktivno dugme */
+}
+
+.toggle-option:hover {
+  background-color: #f7f7f7; /* Svetlo siva kada se prelazi mišem */
+}
+
+input[type="radio"] {
+  display: none;
+}
+
+input[type="radio"]:checked + label {
+  background-color: #a5e7dc; /* Svetlo zelena boja za aktivnu opciju */
+  color: white;
+  z-index: 2; /* Aktivno dugme je iznad ostalih */
+  margin: 0; /* Resetujemo marginu za aktivno dugme */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Mali efekat senke */
+}
+
+.status-filter {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Razmak između "Status" i dugmadi */
+  font-family: Arial, sans-serif;
+  color: #333;
+}
+
+.status-buttons {
+  display: flex;
+  gap: 10px; /* Razmak između dugmadi */
+}
+
+.status-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  background-color: #f2f2f2; /* Siva za neaktivno dugme */
+  color: #666;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+input[type="radio"] {
+  display: none; /* Sakrij radio dugmad */
+}
+
+input[type="radio"]:checked + .status-button {
+  background-color: #a5e7dc; /* Svetlo zelena za aktivno dugme */
+  color: white;
+}
+
+.status-button:hover {
+  background-color: #ddd; /* Svetlo siva na hover */
+}
+
+.add-tour-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f2f2f2; /* Svetlo siva pozadina */
+  border-radius: 15px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 10px;
+  width: 100%;
+  height: 50px; /* Isto kao i ostale kartice */
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.add-tour-card:hover {
+  background-color: #e0e0e0; /* Promena boje na hover */
+}
+
+.plus-icon i {
+  font-size: 60px;
+  color: #666;
+}
+
+.plus-icon:hover i {
+  color: #333; /* Tamnija boja na hover */
+}
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: #fff;
+  border-radius: 15px;
+  padding: 20px;
+  width: 500px;
+  max-width: 90%;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+h2 {
+  margin-top: 0;
+  font-size: 24px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.form-row {
+  display: flex;
+  gap: 10px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.btn-cancel {
+  background-color: #ccc;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 15px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-cancel:hover {
+  background-color: #aaa;
+}
+
+.btn-add {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 15px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-add:hover {
+  background-color: #45a049;
+}
+.sort-label {
+  font-size: 16px;
+}
+
+
+.sort-dropdown {
+  padding: 5px 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
 }

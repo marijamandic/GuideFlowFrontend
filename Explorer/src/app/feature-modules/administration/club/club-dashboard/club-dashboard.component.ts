@@ -7,6 +7,8 @@ import { ActivatedRoute } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { environment } from 'src/env/environment';
+import { LayoutService } from 'src/app/feature-modules/layout/layout.service';
+import { Notification, NotificationType } from 'src/app/feature-modules/layout/model/Notification.model';
 
 @Component({
   selector: 'xp-club-dashboard',
@@ -19,6 +21,7 @@ export class ClubDashboardComponent implements OnInit {
   invitations: (ClubInvitation & { username?: string; firstName?: string; lastName?: string })[] = [];
   clubId: number;
   ownerId: number = 0;
+  ownerName: string = "";
 
   clubForm = new FormGroup({
     name: new FormControl('', [Validators.required]),
@@ -34,7 +37,8 @@ export class ClubDashboardComponent implements OnInit {
   constructor(
     private service: AdministrationService,
     private route: ActivatedRoute,
-    private authService: AuthService
+    private authService: AuthService,
+    private notificationService: LayoutService
   ) {}
 
   ngOnInit(): void {
@@ -43,6 +47,7 @@ export class ClubDashboardComponent implements OnInit {
 
       this.authService.user$.subscribe(user => {
         this.ownerId = user.id;
+        this.ownerName = user.username;
       });
       
       if (!this.clubId || isNaN(this.clubId)) {
@@ -125,29 +130,66 @@ export class ClubDashboardComponent implements OnInit {
     return ClubInvitationStatus[status];
   }
 
-  acceptRequest(requestId: number): void {
-    this.service.acceptClubRequest(requestId).subscribe({
+  acceptRequest(request: ClubRequest & { username?: string; firstName?: string; lastName?: string }): void {
+    this.service.acceptClubRequest(request.id || 0).subscribe({
       next: () => {
-        console.log(`Request ${requestId} accepted.`);
+        console.log(`Request ${request.id} accepted.`);
         this.getMembershipRequests(); 
       },
       error: (err) => {
-        console.error(`Error accepting request ${requestId}:`, err);
+        console.error(`Error accepting request ${request.id}:`, err);
         this.getMembershipRequests(); 
       },
     });
+    const newNotification: Notification = {
+      id: 0,
+      userId: request.touristId, // Postavite ID korisnika
+      sender: this.ownerName, // Pošiljalac, može biti statički ili dinamički
+      message: `The request for ${this.clubForm.value.name} has been accepted.`, // Poruka sa imenom kluba
+      createdAt: new Date(), // Trenutno vreme
+      isOpened: false, // Podrazumevano nije pročitano
+      type: 2, // Tip je 2 (ClubNotification)
+    };
+    
+    this.notificationService.createTouristNotifaction(newNotification).subscribe({
+        next: () => {
+            console.log('Notification successfully created');
+        },
+        error: (err) => {
+            console.error('Error creating notification:', err);
+        },
+    });
   }
   
-  declineRequest(requestId: number): void {
-    this.service.declineClubRequest(requestId).subscribe({
+  declineRequest(request: ClubRequest & { username?: string; firstName?: string; lastName?: string }): void {
+    this.service.declineClubRequest(request.id || 0).subscribe({
       next: () => {
-        console.log(`Request ${requestId} declined.`);
+        console.log(`Request ${request.id} declined.`);
         this.getMembershipRequests(); 
       },
       error: (err) => {
-        console.error(`Error declining request ${requestId}:`, err);
+        console.error(`Error declining request ${request.id}:`, err);
         this.getMembershipRequests(); 
       },
+    });
+
+    const newNotification: Notification = {
+      id: 0,
+      userId: request.touristId, // Postavite ID korisnika
+      sender: this.ownerName, // Pošiljalac, može biti statički ili dinamički
+      message: `The request for ${this.clubForm.value.name} has been rejected.`, // Poruka sa imenom kluba
+      createdAt: new Date(), // Trenutno vreme
+      isOpened: false, // Podrazumevano nije pročitano
+      type: 2, // Tip je 2 (ClubNotification)
+    };
+    
+    this.notificationService.createTouristNotifaction(newNotification).subscribe({
+        next: () => {
+            console.log('Notification successfully created');
+        },
+        error: (err) => {
+            console.error('Error creating notification:', err);
+        },
     });
   } 
 

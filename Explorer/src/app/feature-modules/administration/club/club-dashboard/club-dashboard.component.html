@@ -71,8 +71,8 @@
             <td>{{ getRequestStatus(request.status) }}</td>
             <td>
               <ng-container *ngIf="request.status === 0; else noAction">
-                <button class="action-button accept" (click)="request.id ? acceptRequest(request.id) : null" *ngIf="request.status === 0">Accept</button>
-                <button class="action-button decline" (click)="request.id ? declineRequest(request.id) : null" *ngIf="request.status === 0">Decline</button>
+                <button class="action-button accept" (click)="request.id ? acceptRequest(request) : null" *ngIf="request.status === 0">Accept</button>
+                <button class="action-button decline" (click)="request.id ? declineRequest(request) : null" *ngIf="request.status === 0">Decline</button>
               </ng-container>
               <ng-template #noAction>
                 <span>N/A</span>
