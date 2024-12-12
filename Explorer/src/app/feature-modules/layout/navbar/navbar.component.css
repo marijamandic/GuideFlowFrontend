@@ -86,17 +86,17 @@
 
 .notification-badge {
     position: absolute;
-    top: -8px; /* You can keep or adjust this value to control the vertical position */
-    right: 95px; /* You can adjust this for horizontal positioning */
-    left: 45px;
+    top: -8px; 
+    right: 505px; 
+    left: 95px;
     background-color: #84dcc6; 
     color: white;
     border-radius: 50%; /* Keeps the circular shape */
     padding: 2px 4px; /* Reduces the size by lowering padding */
     font-size: 10px; /* Smaller font size for a smaller badge */
-    height: 16px; /* Control the height of the circle */
-    min-width: 16px; /* Ensure it remains circular */
-    line-height: 16px; /* Vertically center the text within the circle */
+    height: 10px; /* Control the height of the circle */
+    min-width: 10px; /* Ensure it remains circular */
+    line-height: 10px; /* Vertically center the text within the circle */
     text-align: center;
     z-index: 10;
     border: 2px solid white; /* Dodaje beli border */

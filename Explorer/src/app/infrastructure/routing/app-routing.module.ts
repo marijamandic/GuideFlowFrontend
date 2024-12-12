@@ -63,7 +63,6 @@ const routes: Routes = [
   { path: 'pending', component: PublicPointRequestsComponent }, // ovo treba spojiti sa admin-dashboard, za prihvatane tour objecta
   { path: 'admin-dashboard', component: AdminDashboardComponenet},
 
-
   // ### Misc
   { path: 'home', component: HomeComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
