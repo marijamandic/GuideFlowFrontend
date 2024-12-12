@@ -78,8 +78,8 @@ export class TourBundlePreviewComponent implements OnInit {
 		}
 	}
 
-	getFormattedPrice(price: Price): string {
-		switch (price.currency) {
+	getFormattedPrice(price: number): string {
+		/*switch (price.currency) {
 			case Currency.RSD:
 				return `${price.cost} RSD`;
 			case Currency.EUR:
@@ -88,7 +88,9 @@ export class TourBundlePreviewComponent implements OnInit {
 				return `${price.cost} $`;
 			default:
 				return `${price.cost}`;
-		}
+		}*/
+		return `${price}`;
+
 	}
 
 	addToCart(): void {

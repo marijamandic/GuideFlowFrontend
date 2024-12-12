@@ -8,4 +8,8 @@ export interface Tourist {
         latitude: number;
         longitude: number;
     }; 
+    xp?:number;
+    level?: number;
+    wallet?:number;
+
 }

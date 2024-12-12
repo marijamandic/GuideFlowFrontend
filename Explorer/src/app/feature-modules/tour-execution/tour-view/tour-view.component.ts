@@ -9,7 +9,10 @@ import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { User } from 'src/app/infrastructure/auth/model/user.model';
 import { AdministrationService } from '../../administration/administration.service';
 import { Sales } from '../model/sales.model';
-import { Price } from '../../tour-authoring/model/price.model';
+import { Currency, Price } from '../../tour-authoring/model/price.model';
+import { Checkpoint } from '../../tour-authoring/model/tourCheckpoint.model';
+import { environment } from 'src/env/environment';
+import { AlertService } from '../../layout/alert.service';
 
 @Component({
   selector: 'xp-tour-view',
@@ -19,12 +22,18 @@ import { Price } from '../../tour-authoring/model/price.model';
 export class TourViewComponent implements OnInit {
 
   allTours: Tour[] = [];
+  tours: Tour[] = [];
   allUsers: User[] = [];  
   allSales: Sales[] = [];
+  tourCheckpoints: Checkpoint[]=[];
+  newTour: Tour = this.initializeTour();
+
 
  tourSpecification: TourSpecification[] = [];
-  public TransportMode = TransportMode;
+ public TransportMode = TransportMode;
  public userId: number;
+ user : User;
+
   ts = {
    id: 0,
    userId: 0,
@@ -40,10 +49,26 @@ export class TourViewComponent implements OnInit {
   levels = Level;
   tagsInputValue: string = '';
   currentTourSpecId: number | undefined;
+  initialMarkers: L.LatLng[] = [];
+  latitude: number | null = null;
+  longitude: number | null = null;
+  searchDistance: number | null = null;
+  openMap: boolean = false;
+  currentView: string = 'published';
+  isModalOpen = false; // Praćenje stanja modala
+  currentImageIndex: number = 1;// Čuva trenutni indeks slike za svaku turu
 
-  constructor(private service: TourExecutionService, authService: AuthService, private cdr: ChangeDetectorRef, private adminService: AdministrationService) {
+
+  constructor(
+      private service: TourExecutionService,
+      authService: AuthService,
+      private cdr: ChangeDetectorRef,
+      private adminService: AdministrationService,
+      private alertService: AlertService) 
+      {
     authService.user$.subscribe((user: User) => {
       this.userId = user.id;
+      this.user = user;
     })
    }
 
@@ -55,17 +80,7 @@ export class TourViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.getTourSpecificationPromise();  
-    this.service.getAllTours().subscribe({
-      next: (result: PagedResults<Tour>) => {
-        this.allTours = result.results.filter(tour => tour.status === TourStatus.Published);
-        console.log(this.allTours); 
-        console.log(this.allTours[1].reviews); 
-      },
-      error: (err: any) => {
-        console.log(err);
-      }
-    });
-
+    this.getAllTours();
     this.service.getAllSales().subscribe({
       next: (sales: Sales[]) => {
         this.allSales = sales;
@@ -83,6 +98,9 @@ export class TourViewComponent implements OnInit {
         console.log(err);
       }
     });
+
+  
+    
   }
 
   onViewDetails(tour: Tour): void {
@@ -92,6 +110,137 @@ export class TourViewComponent implements OnInit {
   onEditTour(tour: Tour): void {
     console.log('Edit clicked for tour:', tour.name);
   }  
+  
+  initializeTour(): Tour {
+    return {
+      id: 0,
+      authorId:-1,
+      name: '',
+      description: '',
+      price: 0,
+      level: Level.Easy,
+      status: TourStatus.Draft,
+      lengthInKm: 0,
+      averageGrade: 0.0,
+      taggs: [],
+      checkpoints: [],
+      transportDurations: [],
+      reviews: []
+    };
+  }
+  openModal(): void {
+    this.isModalOpen = true;
+  }
+
+  closeModal(): void {
+    this.isModalOpen = false;
+    window.location.reload();
+
+  }
+
+  onSubmit(): void {
+    console.log('Nova tura:', this.newTour);
+    // Logika za dodavanje ture ili slanje podataka na backend
+    this.closeModal();
+  }
+
+
+
+  getAllTours():void{
+    this.service.getAllTours().subscribe({
+      next: (result: PagedResults<Tour>) => {
+        if(this.user.role == 'author'){
+          this.tours = result.results;
+          this.onCurrentViewChanged();
+        }
+        if(this.user.role =='tourist'){
+          this.allTours = result.results.filter(tour => tour.status === TourStatus.Published);
+        }
+
+        console.log(this.allTours); 
+        console.log(this.allTours[1].reviews); 
+      },
+      error: (err: any) => {
+        console.log(err);
+      }
+    });
+  }
+
+  getCheckpointsByTourId(id:number):void{
+    const selectedTour = this.allTours.find(t => t.id === id);
+
+    // Ako tura postoji, preuzmi njene checkpoint-ove
+    if (selectedTour) {
+      this.tourCheckpoints = selectedTour.checkpoints || [];
+      console.log('dobavio sam checkpointe za turu', id);
+      console.log(this.tourCheckpoints);
+    } else {
+      console.error('Tour not found with id:', id);
+      this.tourCheckpoints = [];
+    }  
+    
+  }
+
+  changeOpenMap():void{
+    if(this.openMap){
+      this.openMap = false;
+    }else{
+      this.openMap = true;
+    }
+  }
+
+  onStatusChange(status: string): void {
+    this.currentView = status; // Ažuriraj trenutni pogled
+    this.onCurrentViewChanged(); // Pozovi metodu za filtriranje
+}
+
+
+  onCurrentViewChanged(): void {
+    if (this.currentView === 'draft') {
+      this.allTours = this.tours.filter(tour => tour.status === TourStatus.Draft);
+  } else if (this.currentView === 'published') {
+    this.allTours = this.tours.filter(tour => tour.status === TourStatus.Published);
+  } else if (this.currentView === 'archived') {
+    this.allTours = this.tours.filter(tour => tour.status === TourStatus.Archived);
+  } else {
+      this.allTours = [...this.tours]; // Ako nema filtra, prikaži sve ture
+  }
+  console.log('sve ture nakon currentViewChanged', this.allTours)
+  }
+
+  archiveTour(event: MouseEvent,tour:Tour):void{
+    event.stopPropagation();
+    if(tour.id !== null && tour.id !== undefined){
+      this.service.changeStatus(tour.id,"Archive").subscribe({
+        next: () => {
+          this.getAllTours();
+        },
+        error: (err: any)=>{
+          console.log(err)
+        }
+      })
+    }
+  }
+
+  onPublish(event: MouseEvent,tour:Tour): void {
+    event.stopPropagation();
+    if(tour.id !== null && tour.id !== undefined){
+      console.log(tour.id);
+      this.service.changeStatus(tour.id,"Publish").subscribe({
+        next: () => {
+          console.log("promenjeno");
+          this.getAllTours();
+        },
+        error: (err: any)=>{
+          if(err.status===400){
+            //alert("You can't publish this tour!");
+            this.alertService.showAlert('You cannot publish this tour yet',"error", 5);
+          }
+          console.log(err)
+        }
+      })
+    }
+  }
 
   getUsernameByTouristId(touristId: number): string {
     const user = this.allUsers.find(u => u.id === touristId);
@@ -110,8 +259,7 @@ export class TourViewComponent implements OnInit {
     const totalRating = validRatings.reduce((sum, rating) => sum + rating, 0);
     return totalRating / validRatings.length;
   }
-  
-
+//**FILTER* */
   getFilteredTours(tourSpecification : TourSpecification): Tour[] {
     return this.allTours.filter(tour => {
       const matchesTags = tourSpecification.taggs.some(tag => tour.taggs.includes(tag));
@@ -132,6 +280,7 @@ export class TourViewComponent implements OnInit {
     });
   }
 
+  //**TOUR SPECIFICATION* */
   async deleteTourSpecification(): Promise<void> {
     if (!this.currentTourSpecId) {
       console.error("Invalid tourSpecification id, cannot delete.");
@@ -256,6 +405,25 @@ export class TourViewComponent implements OnInit {
       console.error('Error applying changes:', error);
     }
   }
+  //**SORTING***
+
+  onSortChange(event: Event): void {
+    const value = (event.target as HTMLSelectElement).value;
+  
+    switch (value) {
+      case 'price-asc':
+        this.sortAscending(); // Sortiraj po ceni rastuće
+        break;
+      case 'price-desc':
+        this.sortDescending(); // Sortiraj po ceni opadajuće
+        break;
+      case 'sales':
+        this.sortBySales(); // Sortiraj po prodaji
+        break;
+      default:
+        console.warn('Unknown sort option:', value);
+    }
+  }
   
   sortAscending(): void {
     this.allTours.sort((a, b) => {
@@ -313,8 +481,68 @@ export class TourViewComponent implements OnInit {
     this.allTours = sortedTours;
   }
   
-  private getCostFromPrice(price: Price): number {
-    return price?.cost ?? 0;
+  private getCostFromPrice(price: number): number {
+    return price ?? 0;
   }
   
+
+  //**SEARCH BY MAP* */
+  onCoordinatesSelected(coordinates: { latitude: number; longitude: number }): void {
+    console.log('Coordinates selected:', coordinates);
+    this.latitude = coordinates.latitude;
+    this.longitude = coordinates.longitude;
+    this.searchTours();
+  }
+  onMarkerAdded(latlng: L.LatLng): void {
+    console.log('New marker added at:', latlng);
+  }
+  onMapReset(): void {
+    console.log('Map reset');
+  }
+
+  searchTours(): void {
+    if (this.latitude !== null && this.longitude !== null && this.searchDistance !== null) {
+      console.log('usao sam u search');
+      this.service.searchTours(this.latitude, this.longitude, this.searchDistance).subscribe({
+        next: (tours: Tour[]) => {
+          this.allTours = tours;
+          console.log('allTours iz search :', this.allTours);
+        },
+        error: (err: any) => {
+          console.error('Error fetching search results:', err);
+        }
+      });
+    } else {
+      console.log('Please select a point on the map and enter a search distance.');
+    }
+  }
+  
+  /*startImageCarousel(): void {
+    setInterval(() => {
+      this.allTours.forEach(tour => {
+        if (tour.checkpoints && tour.checkpoints.length > 0) {
+          // Smenjuj slike samo za trenutnu turu
+          this.currentImageIndex[tour.id] =
+            (this.currentImageIndex[tour.id] + 1) % tour.checkpoints.length;
+        }
+      });
+    }, 3000); // Interval od 3 sekunde
+  }*/
+  
+  getImagePath(imageUrl: string | undefined) {
+    return environment.webRootHost + imageUrl;
+  }
+
+
+  CurrencyMap = {
+    0: 'RSD',
+    1: 'EUR',
+    2: 'USD'
+  };
+
+  LevelMap = {
+      0: 'Easy',
+      1: 'Advanced',
+      2: 'Expert'
+  };
 }

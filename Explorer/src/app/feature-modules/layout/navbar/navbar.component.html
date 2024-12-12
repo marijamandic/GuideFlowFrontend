@@ -10,39 +10,34 @@
 <app-public-point-notifications *ngIf="showNotifications" class="notification-dropdown"></app-public-point-notifications>
 
 <mat-toolbar class="navbar">
-	<div class="navbar-content">
-		<div class="logo">
-			<img src="assets/images/GuideFlow.png" alt="Logo" class="logo-img" />
-		</div>
-		<div class="nav-links">
-			<a routerLink="/home">Home</a>
-			<a routerLink="/all-tours">Tours</a>
-			<a routerLink="/club">Clubs</a>
-			<a routerLink="/blog">Blog</a>
-		</div>
-		<div class="profile-menu">
-			<mat-icon *ngIf="user && user.username !== ''" class="notification-icon" (click)="toggleNotifications()">notifications</mat-icon>
-			<span *ngIf="user && user.username !== '' && notificationCount > 0" class="notification-badge">{{ notificationCount }}</span>
-			<mat-icon class="profile-icon" (click)="toggleDropdown()">account_circle</mat-icon>
-			<mat-icon *ngIf="user && user.role === 'tourist'" class="shopping-cart-icon" (click)="showCart = !showCart">shopping_cart</mat-icon>
-
-			<mat-icon>notifcations</mat-icon>
-			<div class="dropdown-content" *ngIf="isDropdownOpen">
-				<a *ngIf="user && user.username === ''" [routerLink]="['/login']"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a>
-				<a *ngIf="user && user.username !== ''" (click)="onLogout()"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a>
-				<a [routerLink]="['/settings']" (click)="toggleDropdown()"><i class="fa fa-cog" aria-hidden="true"></i> Settings</a>
-				<a *ngIf="user && user.role === 'administrator'" color="primary" mat-raised-button [routerLink]="['admin-dashboard']"
-					><i class="fa-solid fa-gauge-simple"></i>Dashboard</a
-				>
-				<a *ngIf="user && user.role === 'author'" color="primary" mat-raised-button [routerLink]="['author-dashboard']"
-					><i class="fa-solid fa-gauge-simple"></i>Dashboard</a
-				>
-				<a class="username" [routerLink]="['/profile']" (click)="toggleDropdown()"
-					><i class="fa fa-user" aria-hidden="true"></i>{{ username || 'Guest' }}</a
-				>
-			</div>
-		</div>
-	</div>
+    <div class="navbar-content">
+        <div class="logo">
+            <img src="assets/images/GuideFlow.png" alt="Logo" class="logo-img" />
+        </div>
+        <div class="nav-links">
+            <a routerLink="/home">Home</a>
+            <a routerLink="/all-tours">Tours</a>
+            <a routerLink="/club">Clubs</a>
+            <a routerLink="/blog">Blog</a>
+        </div>
+        <div class="profile-menu">
+            <mat-icon *ngIf="user && user.username !== ''" class="notification-icon" (click)="toggleNotifications()">notifications</mat-icon>
+            <span *ngIf="user && user.username !== '' && notificationCount > 0" class="notification-badge">{{ notificationCount }}</span>
+            <mat-icon class="profile-icon" (click)="toggleDropdown()">account_circle</mat-icon>
+            <mat-icon  *ngIf="user && user.role === 'tourist'" class="shopping-cart-icon" (click)="showCart = !showCart">shopping_cart</mat-icon>
+            
+            <mat-icon>notifcations</mat-icon>
+            <div class="dropdown-content" *ngIf="isDropdownOpen">
+                <a *ngIf="user && user.username === ''" [routerLink]="['/login']"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a>
+                <a *ngIf="user && user.username !== ''" (click)="onLogout()"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a>
+                <a [routerLink]="['/settings']" (click) = "toggleDropdown()"><i class="fa fa-cog" aria-hidden="true"></i> Settings</a>
+                <a *ngIf="user && user.role === 'administrator'"color="primary" mat-raised-button [routerLink]="['admin-dashboard']"><i class="fa-solid fa-gauge-simple"></i>Dashboard</a>
+                <a *ngIf="user && user.role === 'author'"color="primary" mat-raised-button [routerLink]="['author-dashboard']"><i class="fa-solid fa-gauge-simple"></i>Dashboard</a>
+                <a class="username" [routerLink]="['/profile',user?.id]" (click) = "toggleDropdown()"><i class="fa fa-user" aria-hidden="true"></i>{{ username || 'Guest' }}</a>
+                
+            </div>
+        </div>
+    </div>
 </mat-toolbar>
 
 <div class="shopping-cart-container" *ngIf="showCart">

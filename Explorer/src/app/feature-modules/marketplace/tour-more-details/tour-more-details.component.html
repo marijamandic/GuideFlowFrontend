@@ -15,17 +15,18 @@
              class="fa-solid"></i>
         </div>
       </div>
-      <p class="tour-author">By: {{ tour.authorName }}</p>
+      <p (click)="navigateToProfile(tour.authorId)" class="tour-author clickable">By: {{ tour.authorName }}</p>
       <p class="description">{{ tour.description }}</p>
       <div class="tour-card-details">
         <span><i class="fa-solid fa-dollar-sign"></i> {{ getFormattedPrice(tour.price) }}</span>
         <span><i class="fa-solid fa-fire"></i> {{ getLevel(tour.level) }}</span>
         <span><i class="fas fa-walking"></i> {{ tour.lengthInKm }} km</span>
       </div>
-      <div class="buttons" *ngIf="!isPurchased" >
-        <button class="cta-button add-to-cart" (click)="addToCart()">
+      <div class="buttons">
+        <button *ngIf="!isPurchased" class="cta-button add-to-cart" (click)="addToCart()">
           <i class="fa-solid fa-cart-plus"></i> Add to Cart
         </button>
+        <button class="share-button fa fa-share" *ngIf="user?.role=='tourist'" (click)="toogleShareModal()"></button>
       </div>
     </div>
    </div>
@@ -33,7 +34,13 @@
     <xp-map [showSearchBar]="MapViewMode" [checkpoints]="checkpointCoordinates"></xp-map>
    </div>
   </div>
-
+  <xp-share-modal
+      *ngIf="isShareModalOpen && tourId"
+      [postId]="tourId"
+      [isTour]="true"
+      (close)="closeShareModal()"
+      (submit)="handleShareSubmit($event)"
+    ></xp-share-modal>
   <div class="checkpoints-grid">
     <div class="checkpoint-card" *ngFor="let checkpoint of checkpoints">
       <div class="checkpoint-card-image">
@@ -55,7 +62,7 @@
     <div *ngIf="reviews.length > 0; else noReviews">
       <div *ngFor="let review of reviews" class="review-card">
         <div class="review-header">
-          <p class="review-username">{{ review.username }}</p>
+          <p (click)="navigateToProfile(review.touristId)" class="review-username">{{ review.username }}</p>
           <div class="rating">
             <i *ngFor="let star of getStarsFromRating(review.rating)" 
                [class.fa-star]="star === 'full'" 

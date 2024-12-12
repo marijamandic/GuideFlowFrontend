@@ -17,7 +17,7 @@ export class TourDetailsComponent {
     authorId:-1,
     name: '',
     description: '',
-    price: { cost: 0, currency: Currency.EUR },
+    price: 0,
     level: Level.Easy,
     status: TourStatus.Draft,
     lengthInKm: 0,
@@ -36,7 +36,7 @@ export class TourDetailsComponent {
   constructor(private route : ActivatedRoute, private router: Router, private tourService:TourService){}
 
   ngOnInit():void{
-    this.tourId = Number(this.route.snapshot.paramMap.get('tourId'));
+    this.tourId = Number(this.route.snapshot.paramMap.get('id'));
    
     this.getTour();
   }
@@ -75,7 +75,7 @@ onEditClicked(tour: Tour): void {
 }
 
 updateTour(): void {
-  const curr = this.ConvertCurrency();
+  //const curr = this.ConvertCurrency();
   const level = this.ConvertLevel();
   const status = this.ConvertStatus();
   console.log('update metoda')
@@ -84,10 +84,7 @@ updateTour(): void {
     description: this.tour.description || "",
     id: 0,
     authorId:this.tour.authorId,
-    price: {
-      cost: this.tour.price.cost || 0,
-      currency : curr
-    },
+    price:this.tour.price || 0,
     level: level || 0,
     status: status || 0,
     lengthInKm : this.tour.lengthInKm || 0,
@@ -108,7 +105,7 @@ updateTour(): void {
     });
   }
 
-  ConvertCurrency(): number {
+  /*ConvertCurrency(): number {
     console.log('Currency je ',this.tour.price.currency)
      switch (this.tour.price.currency.toString()) {
        case  "RSD" :
@@ -120,7 +117,7 @@ updateTour(): void {
        default:
          return 0;
      }
-   }
+   }*/
  
    
    ConvertLevel(): number {

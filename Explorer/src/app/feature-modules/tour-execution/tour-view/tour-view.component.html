@@ -1,15 +1,69 @@
 <div class="main-container">
   <!-- Full-width Search Bar -->
-  <div class="search-bar">
-    <input type="text" placeholder="Search tours..." />
-    <i class="fa-solid fa-caret-down"></i>
+   
+  <div class="search-toggle-container">
+    <div class="search-bar">
+      <input type="text" placeholder="Search tours..." />
+      <i *ngIf="user && user.role === 'tourist' && !openMap" class="fa-solid fa-caret-down" (click)="changeOpenMap()"></i>
+      <i *ngIf="user && user.role === 'tourist' && openMap" class="fa-solid fa-caret-up" (click)="changeOpenMap()"></i>
+
+    </div>
+  
+    <div class="toggle-switch">
+      <input type="radio" id="regular" name="toggle" checked />
+      <label for="regular" class="toggle-option">Regular</label>
+      
+      <input type="radio" id="bundles" name="toggle" />
+      <label for="bundles" class="toggle-option">Bundles</label>
+    </div>
   </div>
+  
+  <!--Search map-->
+  <div *ngIf="user && user.role === 'tourist' && openMap">
+      <xp-map [allowMultipleMarkers]="false"
+      [initialMarkers]="initialMarkers"
+      (markerAdded)="onMarkerAdded($event)"
+      (mapReset)="onMapReset()"
+      (coordinatesSelected)="onCoordinatesSelected($event)">
+      </xp-map>
+    <div class="search-container">
+      <input type="text" [(ngModel)]="searchDistance" placeholder="Unesite distancu od tačke" />
+      <button class="button" (click)="searchTours()" color="primary">Pretraži ture</button>
+    </div>
+  </div>
+  
+  
 
   <!-- Main Content -->
   <div class="content-container">
     <!-- Filters Section -->
     <div class="filter-container">
+
+        <!--sort-->
+        <h3>Sort By:</h3>
+        <select id="sort-menu" (change)="onSortChange($event)" class="sort-dropdown">
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+          <option value="sales">Sales</option>
+        </select>
+      
+      
       <h3>Filter by:</h3>
+
+      <div class="status-filter" *ngIf="user && user.role ==='author'">
+        <span>Status</span>
+        <div class="status-buttons">
+          <input type="radio" id="published" name="status" (change)="onStatusChange('published')" checked />
+          <label for="published" class="status-button">Published</label>
+      
+          <input type="radio" id="draft" name="status" (change)="onStatusChange('draft')" />
+          <label for="draft" class="status-button">Draft</label>
+      
+          <input type="radio" id="archive" name="status" (click) = "onStatusChange('archived')" />
+          <label for="archive" class="status-button">Archived</label>
+        </div>
+      </div>
+      
       <div class="slider-container">
         <label for="level">Level</label>
         <input type="range" id="level" name="level" min="0" max="2" [(ngModel)]="ts.level" />
@@ -42,9 +96,29 @@
 
     <!-- Tour Cards Section -->
     <div class="tour-container">
+
+      <!--plus kartica-->
+      <div *ngIf ="user && user.role ==='author'" class="tour-card add-tour-card" (click)="openModal()">
+        <div class="plus-icon">
+          <i class="fa-solid fa-plus"></i>
+        </div>
+      </div>
+      
+      <xp-tour-form
+        *ngIf="isModalOpen"
+        [tour]="newTour"
+        [shouldEdit]="false"
+        (closeModal)="closeModal()"
+        (tourUpdated)="getAllTours()">
+      </xp-tour-form>
+      
+
       <div class="tour-card" *ngFor="let tour of allTours">
-        <div class="tour-card-image">
-          <img src="assets/images/tour9.jpg" alt="{{ tour.name }}" />
+        <div class="tour-card-image" *ngIf = "currentView === 'draft'">
+          <img src="assets/images/tour9_draft.jpg" alt="{{ tour.name }}" />
+        </div>
+        <div class="tour-card-image" *ngIf="currentView !== 'draft'">
+          <img *ngIf="tour.checkpoints  " [src]="getImagePath(tour.checkpoints[currentImageIndex].imageUrl)" alt="Checkpoint image" />
         </div>
         <div class="tour-card-content">
           <div class="tour-card-header">
@@ -53,19 +127,25 @@
           </div>
           <p>{{ tour.description }}</p>
           <div class="tour-card-details">
-            <span><i class="fa-solid fa-dollar-sign"></i> 280 USD</span>
-            <span><i class="fa-solid fa-fire"></i> Easy</span>
+            <span><i class="fa-solid fa-dollar-sign"></i>{{ tour.price }} adventure coins</span>
+            <span><i class="fa-solid fa-fire"></i> {{ LevelMap[tour.level] }}</span>
             <span><i class="fas fa-walking"></i> {{ tour.lengthInKm }} km</span>
+            <span><i class="fas fa-tag"></i>{{tour.taggs}}</span>
           </div>
         </div>
         <div class="buttons">
           <button class="kebab-menu"><i class="fa-solid fa-ellipsis-vertical"></i></button>
-          <button class="cta-button add-to-cart"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>
+          <button *ngIf ="user && user.role ==='tourist'"class="cta-button add-to-cart"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>
+          <button *ngIf ="user && user.role ==='author' && currentView ==='draft'" class="cta-button add-to-cart" (click)="onPublish($event,tour)" >Publish</button>
+          <button *ngIf ="user && user.role ==='author' && currentView ==='published'" class="cta-button add-to-cart" (click)="archiveTour($event, tour)"> Archive</button>
+          <button *ngIf ="user && user.role ==='author' && currentView ==='archived'" class="cta-button add-to-cart" (click)="onPublish($event,tour)">Activate</button>
+       
         </div>
       </div>
     </div>
   </div>
 
+  <!--sorting
   <div class="sort-container">
     <div class="sort-label">
       <h3>Sort By:</h3>
@@ -79,8 +159,9 @@
       <button class="button" (click)="sortAscending()">Asc</button>
       <button class="button" (click)="sortDescending()">Desc</button>
     </div>
-  </div>
+  </div>-->
   
   
   
 </div>
+
