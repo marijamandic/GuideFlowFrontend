@@ -239,6 +239,36 @@ export class ClubInfoComponent implements OnInit {
     this.selectedUser = this.selectedUser?.id === user.id ? null : user;
   }
 
+  onDeletePost(post: any): void {
+      this.administrationService.deleteClubPost(post.id).subscribe({
+        next: () => {
+          console.log("Post deleted successfully");
+          this.loadClubPosts();
+        },
+        error: (err) => {
+          console.error("Failed to delete post:", err);
+        },
+      });
+    
+  }
+  
+  onUpdatePost(post: any): void {
+    const newDescription = prompt("Update the description:", post.content);
+  
+    if (newDescription !== null && newDescription.trim() !== "") {
+      const updatedPost = { ...post, content: newDescription };
+  
+      this.administrationService.updateClubPost(post.id, updatedPost).subscribe({
+        next: () => {
+          console.log("Post updated successfully");
+          this.loadClubPosts();
+        },
+        error: (err) => {
+          console.error("Failed to update post:", err);
+        },
+      });
+    }
+  }
   
 }
 
@@ -255,5 +285,6 @@ function mapStatusToEnum(status: string): ClubRequestStatus {
     default:
       throw new Error(`Unknown status: ${status}`);
   }
+
 }
 
