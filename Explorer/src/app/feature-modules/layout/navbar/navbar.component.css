@@ -85,21 +85,21 @@
 }
 
 .notification-badge {
-    position: absolute;
-    top: -8px; 
-    right: 505px; 
-    left: 95px;
-    background-color: #84dcc6; 
-    color: white;
-    border-radius: 50%; /* Keeps the circular shape */
-    padding: 2px 4px; /* Reduces the size by lowering padding */
-    font-size: 10px; /* Smaller font size for a smaller badge */
-    height: 10px; /* Control the height of the circle */
-    min-width: 10px; /* Ensure it remains circular */
-    line-height: 10px; /* Vertically center the text within the circle */
-    text-align: center;
-    z-index: 10;
-    border: 2px solid white; /* Dodaje beli border */
+	position: absolute;
+	top: -8px;
+	right: 505px;
+	left: 95px;
+	background-color: #84dcc6;
+	color: white;
+	border-radius: 50%; /* Keeps the circular shape */
+	padding: 2px 4px; /* Reduces the size by lowering padding */
+	font-size: 10px; /* Smaller font size for a smaller badge */
+	height: 10px; /* Control the height of the circle */
+	min-width: 10px; /* Ensure it remains circular */
+	line-height: 10px; /* Vertically center the text within the circle */
+	text-align: center;
+	z-index: 10;
+	border: 2px solid white; /* Dodaje beli border */
 }
 
 .dropdown-content {
@@ -172,18 +172,18 @@ mat-icon:hover {
 	}
 }
 .notification-dropdown {
-    position: fixed;
-    top: 65px;
-    right: 70px;
-    width: 400px;
-    max-height: 600px;
-    overflow-y: auto;
-    background-color: red;
-    border-radius: 12px;
-    padding: 0px;
-    z-index: 1000;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+	position: fixed;
+	top: 65px;
+	right: 70px;
+	width: 400px;
+	max-height: 600px;
+	overflow-y: auto;
+	background-color: red;
+	border-radius: 12px;
+	padding: 0px;
+	z-index: 1000;
+	-ms-overflow-style: none;
+	scrollbar-width: none;
 }
 
 .notification-dropdown::-webkit-scrollbar {
@@ -201,7 +201,6 @@ mat-icon:hover {
 	box-shadow: -15px 0px 20px rgba(0, 0, 0, 0.35);
 }
 
-.username{
+.username {
 	font-weight: bold;
 }
-

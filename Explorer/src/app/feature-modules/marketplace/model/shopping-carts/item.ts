@@ -8,6 +8,7 @@ export interface Item {
 	type: ProductType;
 	productId: number;
 	productName: string;
+	imageUrl: string;
 	product?: TourDetails | TourBundle;
 	adventureCoin: number;
 }
