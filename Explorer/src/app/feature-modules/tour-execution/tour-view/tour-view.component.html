@@ -40,30 +40,34 @@
     <div class="filter-container">
 
         <!--sort-->
-        <h3>Sort By:</h3>
+        
+        
+        <h3 class="filter-header">Filter by:</h3>
+        
+        <div class="status-filter" *ngIf="user && user.role ==='author'">
+          <span>Status</span>
+          <div class="status-buttons">
+            <input type="radio" id="published" name="status" (change)="onStatusChange('published')" checked />
+            <label for="published" class="status-button">Published</label>
+            
+            <input type="radio" id="draft" name="status" (change)="onStatusChange('draft')" />
+            <label for="draft" class="status-button">Draft</label>
+            
+            <input type="radio" id="archive" name="status" (click) = "onStatusChange('archived')" />
+            <label for="archive" class="status-button">Archived</label>
+          </div>
+        </div>
+        <div class="sort-header">
+          <label>Sort by:</label>
+        </div>
+        <div class="dropdown-div">
         <select id="sort-menu" (change)="onSortChange($event)" class="sort-dropdown">
           <option value="price-asc">Price: Low to High</option>
           <option value="price-desc">Price: High to Low</option>
           <option value="sales">Sales</option>
         </select>
-      
-      
-      <h3>Filter by:</h3>
-
-      <div class="status-filter" *ngIf="user && user.role ==='author'">
-        <span>Status</span>
-        <div class="status-buttons">
-          <input type="radio" id="published" name="status" (change)="onStatusChange('published')" checked />
-          <label for="published" class="status-button">Published</label>
-      
-          <input type="radio" id="draft" name="status" (change)="onStatusChange('draft')" />
-          <label for="draft" class="status-button">Draft</label>
-      
-          <input type="radio" id="archive" name="status" (click) = "onStatusChange('archived')" />
-          <label for="archive" class="status-button">Archived</label>
         </div>
-      </div>
-      
+        
       <div class="slider-container">
         <label for="level">Level</label>
         <input type="range" id="level" name="level" min="0" max="2" [(ngModel)]="ts.level" />
