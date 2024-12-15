@@ -256,9 +256,20 @@ completeExecution(): void {
   }
 }
   
-  getImagePath(imageUrl: string) {
-    return environment.webRootHost +"images/encounters/"+ imageUrl;
+
+  getImagePath(imageUrl: string | undefined){
+      if(imageUrl!==undefined){
+        return environment.webRootHost+imageUrl;
+      }
+      return "";
   }
+  // getImagePath(imageUrl: string) {
+  //   return environment.webRootHost +"images/encounters/"+ imageUrl;
+  // }
+
+  // getImagePath(imageUrl: string) {
+  //   return environment.webRootHost + imageUrl;
+  // }
   
 
   ConvertType(): number {

@@ -194,8 +194,8 @@ export class EncounterFormComponent implements OnInit {
       reader.readAsDataURL(this.selectedFile);
       reader.onload = () => {
         this.encounter.imageBase64 = reader.result as string;
-        this.encounter.imageUrl = this.selectedFile?.name;
-        console.log('Image uploaded with URL:', this.encounter.imageUrl);
+       // this.encounter.imageUrl = this.selectedFile?.name;
+       // console.log('Image uploaded with URL:', this.encounter.imageUrl);
       };
     }
   }
