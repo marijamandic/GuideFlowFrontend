@@ -61,3 +61,10 @@
     </button>
   </div>
 </div>
+
+<div class="modal-overlay" *ngIf="showCreateModal">
+  <div class="modal-content">
+    <button class="close-button" (click)="closeCreateModal()">×</button>
+    <xp-create-blog (postCreated)="closeCreateModal()"></xp-create-blog>
+  </div>
+</div>
