@@ -7,7 +7,6 @@ import { AuthGuard } from '../auth/auth.guard';
 import { RegistrationComponent } from '../auth/registration/registration.component';
 import { ProfileInfoComponent } from 'src/app/feature-modules/administration/profile-info/profile-info.component';
 import { EquipmentManagementComponent } from 'src/app/feature-modules/tour-execution/equipment-management/equipment-management.component';
-// import { ProblemComponent } from 'src/app/feature-modules/administration/problem/problem.component';
 import { ReportProblemComponent } from 'src/app/feature-modules/tour-execution/report-problem/report-problem.component';
 import { TourObjectComponent } from 'src/app/feature-modules/tour-authoring/tour-object/tour-object.component';
 import { CheckpointListComponent } from 'src/app/feature-modules/tour-authoring/tour-checkpoint/tour-checkpoint.component';
@@ -20,7 +19,6 @@ import { CreateBlogComponent } from 'src/app/feature-modules/blog/create-blog/cr
 import { PostInfoComponent } from 'src/app/feature-modules/blog/post-info/post-info.component';
 import { RatingTheAppComponent } from 'src/app/feature-modules/layout/rating-the-app/rating-the-app.component';
 import { AllAppRatingsComponent } from 'src/app/feature-modules/administration/all-app-ratings/all-app-ratings.component';
-import { AccountComponent } from 'src/app/feature-modules/administration/account/account.component';
 import { ClubFormComponent } from 'src/app/feature-modules/administration/club/club-form/club-form.component';
 import { ClubInfoComponent } from 'src/app/feature-modules/administration/club/club-info/club-info.component';
 import { ProblemComponent } from 'src/app/feature-modules/tour-authoring/problem/problem.component';
@@ -46,22 +44,24 @@ import { EncounterFormComponent } from 'src/app/feature-modules/encounter-execut
 import { AddEncounterComponent } from 'src/app/feature-modules/tour-authoring/add-encounter/add-encounter.component';
 import { ExecutionComponent } from 'src/app/feature-modules/encounter-execution/execution/execution.component';
 import { EncounterExecutionMapComponent } from 'src/app/feature-modules/encounter-execution/encounter-execution-map/encounter-execution-map.component';
+import { AdminDashboardComponenet } from 'src/app/feature-modules/administration/admin-dashboard/admin-dashboard.component';
 import { TourMoreDetailsComponent } from 'src/app/feature-modules/marketplace/tour-more-details/tour-more-details.component';
 import { TourViewComponent } from 'src/app/feature-modules/tour-execution/tour-view/tour-view.component';
+import { AuthorDashboardComponent } from 'src/app/feature-modules/administration/author-dashboard/author-dashboard.component';
+import { TourAuthorDetailsComponent } from 'src/app/feature-modules/tour-authoring/tour-author-details/tour-author-details.component';
+import { SuggestedToursComponent } from 'src/app/feature-modules/tour-execution/suggested-tours/suggested-tours.component';
 
 const routes: Routes = [
 
   // ### Account stuff
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegistrationComponent },
+  { path: 'profile', component: ProfileInfoComponent }, // svaka čast onome ko je ovo radio je nije nigde bilo bindovano
   { path: 'profile/:id', component: ProfileInfoComponent }, // svaka čast onome ko je ovo radio je nije nigde bilo bindovano
-  { path: 'account', component: AccountComponent},
 
-
-  // Admin
-  { path: 'admin-dashboard', component: AccountComponent, canActivate: [AuthGuard] }, // Ovo je buduci admin dashboard
+  // Admin // Ovo je buduci admin dashboard
   { path: 'pending', component: PublicPointRequestsComponent }, // ovo treba spojiti sa admin-dashboard, za prihvatane tour objecta
-
+  { path: 'admin-dashboard', component: AdminDashboardComponenet},
 
   // ### Misc
   { path: 'home', component: HomeComponent },
@@ -75,6 +75,7 @@ const routes: Routes = [
   // --- /all-tours pregled svih tura (za s ve role), dodavanje tura, search tura
   { path: 'all-tours', component: TourViewComponent },  
   { path: 'toursForAuthor', component: TourComponent }, // ovo treba spojiti u ovo iznad
+  { path: 'tourAuthorDetails/:id',component:TourAuthorDetailsComponent},
   { path: 'purchased', component: PurchasedToursComponent }, // ovo treba napraviti da izgleda kao tours samo sto se druge ucitavaju
   { path: 'tourBundlePreview/:id', component: TourBundlePreviewComponent}, // takođe treba spojiti u ono gore
   { path: 'tourBundleManagement', component: TourBundleComponent}, // isto u ovo gore
@@ -99,10 +100,13 @@ const routes: Routes = [
   { path: 'equipment-management', component: EquipmentManagementComponent },
 
   // --- report
+  { path: 'report-problem', component: ReportProblemComponent},
 	{ path: 'author-problems', component: ProblemComponent },
 	{ path: 'tourist-problems', component: ProblemStatusComponent },
 	{ path: 'admin-problems', component: AdminProblemComponent },
+  { path: 'author-dashboard', component: AuthorDashboardComponent},
 
+  { path: 'report-problem', component: ReportProblemComponent},
 
   // ### Club
   { path: 'club', component: ClubComponent, canActivate: [AuthGuard] },
@@ -128,6 +132,7 @@ const routes: Routes = [
   { path: 'encounter-execution/:id', component: ExecutionComponent},
   { path: 'encounter-execution/:id/:tourExecutionId', component: ExecutionComponent},
   { path: 'encounterMap', component: EncounterExecutionMapComponent},
+  { path: 'suggested-tours/:longitude/:latitude', component: SuggestedToursComponent},
 
   // ## Payment
   { path: 'shoppingCart', component: ShoppingCartComponent},

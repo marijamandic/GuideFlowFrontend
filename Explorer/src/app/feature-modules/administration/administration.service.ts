@@ -99,6 +99,10 @@ export class AdministrationService {
 		return this.http.get<ClubInvitation[]>(`${environment.apiHost}invitation/clubInvitation/club/${clubId}`);
 	}
 
+	getClubInvitationsByOwner(ownerId: number): Observable<ClubInvitation[]> {
+		return this.http.get<ClubInvitation[]>(`${environment.apiHost}invitation/clubInvitation/owner/${ownerId}`);
+	}
+
 	// ##### Club request ##### 
 	addRequest(clubRequest: ClubRequest): Observable<ClubRequest> {
 		return this.http.post<ClubRequest>(environment.apiHost + 'request/clubRequest', clubRequest);
@@ -107,6 +111,12 @@ export class AdministrationService {
 	getClubRequestByUser(userId: number): Observable<ClubRequest[]> {
 		return this.http.get<ClubRequest[]>(
 		  `${environment.apiHost}request/clubRequest/for-tourist/${userId}`
+		);
+	}
+
+	getClubRequestByOwner(userId: number): Observable<ClubRequest[]> {
+		return this.http.get<ClubRequest[]>(
+		  `${environment.apiHost}request/clubRequest/for-owner/${userId}`
 		);
 	}
 			  
@@ -135,6 +145,9 @@ export class AdministrationService {
 		return this.http.delete<void>(`${environment.apiHost}members/clubMember/${clubId}/${userId}`);
 	}
 
+	getAllMembersByUserId(userId: number): Observable<ClubMemberList[]> {
+		return this.http.get<ClubMemberList[]>(`${environment.apiHost}members/clubMember/${userId}/allMembers`);
+	}
 	//  ##### Profile  ##### 
 	getAccounts(): Observable<Array<Account>> {
 		return this.http.get<Array<Account>>(environment.apiHost + 'administration/account');
@@ -164,7 +177,13 @@ export class AdministrationService {
 	getClubPosts(): Observable<ClubPost[]> {
 		return this.http.get<ClubPost[]>(environment.apiHost + 'administration/clubpost');
 	}
-
+	updateClubPost(postId: number, updatedPost: Partial<ClubPost>): Observable<void> {
+		return this.http.put<void>(`${environment.apiHost}administration/clubpost/${postId}`, updatedPost);
+	  }
+	
+	deleteClubPost(postId: number): Observable<void> {
+		return this.http.delete<void>(`${environment.apiHost}administration/clubpost/${postId}`);
+	}
 	getAllUsers(): Observable<User[]> {
 		return this.http.get<User[]>(`${environment.apiHost}user/all`);
 	}  
@@ -174,6 +193,11 @@ export class AdministrationService {
 		return this.http.get<{ username: string }>(`${environment.apiHost}user/username/${userId}`)
 		  .pipe(map(response => response.username));
 	}
+
+	getUserById(userId: number): Observable<User> {
+		const url = `${environment.apiHost}user/getUser/${userId}`;
+		return this.http.get<User>(url);
+	  }
 
 	updateMoney(touristId: number, amount: number): Observable<User> {
 		return this.http.put<User>(

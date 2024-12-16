@@ -14,7 +14,6 @@
                 <p><strong>Price:</strong> {{ tour.price }}</p>
                 <p><strong>Level:</strong> {{ LevelMap[tour.level] }}</p>
                 <div class="actions" *ngIf="user && user.id===tour.authorId">
-               
                     <button (click)="onPublish($event ,tour)" class="add-button">Publish</button>
                 </div>
             </div>

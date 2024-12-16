@@ -1,15 +1,16 @@
 <div class="notifications-container">
     <div class="header">
         <h4>Notifications</h4>
-        <span class="mark-read-text" (click)="markAllAsRead()">Mark as read</span>
+        <span class="mark-read-text" (click)="markAllAsRead()">Mark all as read</span>
     </div>
 
-    <div class="header" *ngIf="unreadNotification.length === 0 && readNotificatio.length === 0">
-        <p>No notifications available.</p>
+    <div class="header" *ngIf="combinedNotifications.length === 0">
+        <p style="margin-left: 30%;">No notifications available.</p>
     </div>
 
-    <div class="notification-table">
-        <ng-container *ngFor="let notification of unreadNotification">
+    <div class="notification-table scrollable">
+        <ng-container *ngFor="let notification of combinedNotifications">
+            <!-- Prikaz za Public Point Notification -->
             <div *ngIf="isPublicPointNotification(notification)" 
                  class="notification-row unread"
                  [ngClass]="{
@@ -19,8 +20,10 @@
                  (click)="openNotificationDialog(notification.data)">
                 <div class="notification-title">
                     <span>
-                        <strong class="notification-point">
-                            Public Point ID: {{ notification.data.publicPointId }}
+                        <strong [ngClass]="{
+                            'notification-point': !notification.isOpened,
+                            'notification-point-read': notification.isOpened
+                        }">{{ loadPublicPoint(notification.data.publicPointId) }} has been {{ notification.data.isAccepted ? 'accepted' : 'rejected' }}
                         </strong>
                     </span>
                     <div class="notification-comment">
@@ -29,34 +32,142 @@
                     <div class="notification-date">
                         {{ notification.creationTime | date:'MMMM d, y, h:mm a' }}
                     </div>
+                    <!--
                     <div class="notification-status"
                          [ngClass]="notification.data.isAccepted ? 'status-accepted' : 'status-rejected'">
                         {{ notification.data.isAccepted ? 'ACCEPTED' : 'REJECTED' }}
                     </div>
+                    -->
                 </div>
             </div>
+    
             <!-- Prikaz za običan Notification -->
-            <div *ngIf="isNotification(notification)" 
-                class="notification-row unread">
+            <div *ngIf="isNotification(notification)" class="notification-row unread">
+                <!-- Type == 0   Problem Notification -->
+                <div *ngIf="notification.data.type == 0" class="notification-title" (click)="problemButton(notification.data)">
+                    <span>
+                        <strong [ngClass]="{
+                            'notification-point': !notification.isOpened,
+                            'notification-point-read': notification.isOpened
+                        }">{{ notification.data.sender }}
+                        </strong>
+                    </span>
+                    <div class="notification-comment">
+                        {{ truncateComment(notification.data.message || '', 100) }}
+                    </div>
+                    <div class="notification-date">
+                        {{ notification.creationTime | date:'MMMM d, y, h:mm a' }}
+                    </div>
+                </div>
+    
+                <!-- Type == 1   Money Exchange -->
+                <div *ngIf="notification.data.type == 1" class="notification-title" (click)="moneyButton(notification.data)">
+                    <span>
+                        <strong [ngClass]="{
+                            'notification-point': !notification.isOpened,
+                            'notification-point-read': notification.isOpened
+                        }">{{ notification.data.sender }}
+                        </strong>
+                    </span>
+                    <div class="notification-comment">
+                        {{ truncateComment(notification.data.message || '', 100) }}
+                    </div>
+                    <div class="notification-date">
+                        {{ notification.creationTime | date:'MMMM d, y, h:mm a' }}
+                    </div>
+                </div>
+    
+                <!-- Type == 2   ClubNotification -->
+                <div *ngIf="notification.data.type == 2" class="notification-title" (click)="clubButton(notification.data)">
+                    <span>
+                        <strong [ngClass]="{
+                            'notification-point': !notification.isOpened,
+                            'notification-point-read': notification.isOpened
+                        }">{{ notification.data.sender }}
+                        </strong>
+                    </span>
+                    <div class="notification-comment">
+                        {{ truncateComment(notification.data.message || '', 100) }}
+                    </div>
+                    <div class="notification-date">
+                        {{ notification.creationTime | date:'MMMM d, y, h:mm a' }}
+                    </div>
+                </div>               
+            </div>
+            <!-- Type == 3   Message Notification -->
+             <div class="notification-row unread" *ngIf="isMessageNotification(notification)">
+
+            <div class="notification-title" (click)="messageButton(notification.data)">
+                <span>
+                    <strong [ngClass]="{
+                        'notification-point': !notification.isOpened,
+                        'notification-point-read': notification.isOpened
+                    }">{{ notification.data.sender }} sent you a message
+                    </strong>
+                </span>
+                <div class="notification-comment">
+                    {{ truncateComment(notification.data.message || '', 100) }}
+                </div>
+                <div>
+                    <a target="_blank" rel="noopener noreferrer" class="notification-link" (click)="navigate(notification.data)">
+                        Click here for more details
+                    </a>
+                </div>
+                <div class="notification-date">
+                    {{ notification.creationTime | date:'MMMM d, y, h:mm a' }}
+                </div>                    
+            </div>
+        </div>
+        <!-- Type == 4 Club Request -->
+        <div class="notification-row unread" *ngIf="isClubRequest(notification) && isPending(notification)">
             <div class="notification-title">
-            <span>
-                <strong class="notification-point">
-                    Sender: {{ notification.data.sender }}
-                </strong>
-            </span>
-            <div class="notification-comment">
-                {{ truncateComment(notification.data.message || '', 100) }}
-            </div>
-            <div class="notification-date">
-                {{ notification.creationTime | date:'MMMM d, y, h:mm a' }}
-            </div>
-            </div>
-            </div>
+                <span>
+                    <strong [ngClass]="{
+                        'notification-point': !notification.isOpened,
+                        'notification-point-read': notification.isOpened
+                    }">
+                        {{ notification.data.touristName }} <span style="font-weight: normal;">wants to join your club</span> {{ notification.data.clubName }}
+                    </strong>                    
+                </span>              
+                <div class="notification-button">
+                    <button class="cta-button button-decline" (click)="declineRequest(notification.data)">DECLINE</button>
+                    <span class="vertical-line"></span>
+                    <button class="cta-button button-accept" (click)="acceptRequest(notification.data)">ACCEPT</button>
+                </div>
+                <div class="notification-date">
+                    {{ notification.creationTime | date:'MMMM d, y, h:mm a' }}
+                </div>
+            </div>        
+        </div>
+        <!-- Type == 5 Club Invitation -->
+        <div class="notification-row unread" *ngIf="isClubInvitation(notification)">
+            <div class="notification-title">
+                <span>
+                    <strong [ngClass]="{
+                        'notification-point': !notification.isOpened,
+                        'notification-point-read': notification.isOpened
+                    }">
+                        {{ notification.data.touristName }} 
+                        <span style="font-weight: normal;">is inviting you to join the club</span> 
+                        {{ notification.data.clubName }}
+                    </strong>                    
+                </span>              
+                <div class="notification-button">
+                    <button class="cta-button button-decline" (click)="declineInvitation(notification.data)">DECLINE</button>
+                    <span class="vertical-line"></span>
+                    <button class="cta-button button-accept" (click)="acceptInvitation(notification.data)">ACCEPT</button>
+                </div>
+                <div class="notification-date">
+                    {{ notification.creationTime | date:'MMMM d, y, h:mm a' }}
+                </div>
+            </div>        
+        </div>
         </ng-container>
     </div>
     
+    <!--
     <div class="notification-table">
-        <ng-container *ngFor="let notification of readNotificatio">
+        <ng-container *ngFor="let notification of combinedNotifications">
         <div *ngIf="isPublicPointNotification(notification)" 
                  class="notification-row read"
                  [ngClass]="{
@@ -75,7 +186,8 @@
                 </div>
             </div>
         </div>
-        <!-- Prikaz za običan Notification -->
+        -->
+        <!-- Prikaz za običan Notification 
         <div *ngIf="isNotification(notification)" 
         class="notification-row read">
         <div class="notification-title">
@@ -94,28 +206,31 @@
         </div>
         </ng-container>
     </div>
-
+    -->
     <div *ngIf="showModal" class="modal-backdrop">
         <div class="modal-content card">
+            <!-- Status Header -->
+            <div [ngClass]="selectedNotification?.isAccepted ? 'status-accepted' : 'status-rejected'" class="status-header">
+                {{ selectedNotification?.isAccepted ? 'Accepted' : 'Rejected' }}
+            </div>
+    
+            <!-- Slika i ostali sadržaj -->
             <div *ngIf="selectedPoint?.imageUrl">
-                <img [src]="selectedPoint?.imageUrl" alt="Public Point Image" class="modal-image card-image"/>
+                <img [src]="selectedPoint?.imageUrl" alt="Public Point Image" class="modal-image card-image" />
             </div>
     
             <div class="card-details">
                 <h2>{{ selectedPoint?.name }}</h2>
-                <p>{{ selectedPoint?.description }}</p>
-                <p><span class="label">Status:</span>
-                    <ng-container *ngIf="selectedPoint?.approvalStatus === 2">Rejected</ng-container>
-                    <ng-container *ngIf="selectedPoint?.approvalStatus === 1">Accepted</ng-container>
-                    <ng-container *ngIf="selectedPoint?.approvalStatus === 0">Pending</ng-container>
-                    <ng-container *ngIf="selectedPoint?.approvalStatus === undefined">No status</ng-container>
+                <p style="margin-top: -10px;">{{ selectedPoint?.description }}</p>
+                <p>
+                    <span *ngIf="selectedNotification?.comment" class="label">Comment:</span>
+                    {{ selectedNotification?.comment }}
                 </p>
-    
-                <p><span class="label">Comment:</span> {{ selectedNotification?.comment }}</p>
-                <p><span class="label">Decision:</span> {{ selectedNotification?.isAccepted ? 'Accepted' : 'Rejected' }}</p>
     
                 <button class="close-button" (click)="closeModal()">X</button>
             </div>
         </div>
     </div>
+    
+    
 </div>

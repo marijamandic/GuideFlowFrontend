@@ -16,6 +16,7 @@ import { PurchasedToursComponent } from './purchased-tours/purchased-tours.compo
 import { SharedModule } from 'src/app/shared/shared.module';
 import { TourExecutionMap } from './tour-execution-map/tour-execution-map.component';
 import { TourAuthoringModule } from '../tour-authoring/tour-authoring.module';
+import { SuggestedToursComponent } from './suggested-tours/suggested-tours.component';
 @NgModule({
   providers:[DatePipe],
   declarations: [
@@ -28,7 +29,8 @@ import { TourAuthoringModule } from '../tour-authoring/tour-authoring.module';
  PurchasedToursComponent,
  ProblemStatusComponent,
  TourViewComponent,
- TourExecutionMap
+ TourExecutionMap,
+ SuggestedToursComponent
   ],
   imports: [
     CommonModule,
