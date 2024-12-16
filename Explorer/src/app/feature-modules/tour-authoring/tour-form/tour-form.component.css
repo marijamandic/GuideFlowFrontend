@@ -74,9 +74,6 @@
 .add-tag-button {
     margin-top: 15px;
     background-color: #2b4f46;
-    /* position: absolute;
-    bottom: 20px;
-    right: 0%; */
     border: none;
     padding: 10px 20px;
     height: 40px;
@@ -120,7 +117,7 @@
 }
 
 .tags-container-div{
-    display: flex; /* Enable Flexbox */
+    display: flex; 
     flex-wrap: wrap;
     gap: 20px;
     position: relative;
@@ -130,18 +127,14 @@
 }
 
 .tags-container {
-    /* margin-top: 15px; */
-    /* display: flex; */
-    justify-content: center; /* Center content horizontally */
+    justify-content: center;
     align-items: center;
 }
 
 .tags-container input {
-    /* margin-top: 10px; */
     border: 1px solid #cccccc;
     border-radius: 4px;
     padding: 10px;
-    /*width: calc(20% - 22px); /* Oduzimamo padding */
     height: 18px;
     border-radius: 20px;
     width: 216px;
@@ -163,10 +156,9 @@
 }
 
 .tour-form label {
-    display: block; /* Podesi da se labela prikazuje kao blok */
-    /*margin-top: 15px; /* Razmak iznad labela */
-    font-weight: bold; /* Podebljaj tekst */
-    color: #333; /* Boja teksta */
+    display: block;
+    font-weight: bold;
+    color: #333;
 }
 
 .modal-backdrop {
@@ -216,7 +208,6 @@
   
   .form-actions {
     display: flex;
-    /* justify-content: flex-end; */
     gap: 10px;
   }
 
