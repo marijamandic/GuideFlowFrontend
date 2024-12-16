@@ -160,7 +160,7 @@ export class TourViewComponent implements OnInit {
 		this.service.getAllTours().subscribe({
 			next: (result: PagedResults<Tour>) => {
 				if (this.user.role == 'author') {
-					this.tours = result.results;
+					this.tours = result.results.filter(tour => tour.authorId === this.user.id);
 					this.onCurrentViewChanged();
 				}
 				if (this.user.role == 'tourist') {
