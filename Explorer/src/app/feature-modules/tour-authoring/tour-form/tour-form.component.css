@@ -4,6 +4,7 @@
     align-items: center;
     padding: 20px;
     background-color: #f2f2f2;
+    
 }
 
 .tour-form {
@@ -15,6 +16,12 @@
     border-radius: 15px;
     width: 100%;
     max-width: 830px; /* Moguće je proširiti širinu */
+    height: 570px;
+    overflow-y: auto;
+}
+
+.tour-form::-webkit-scrollbar {
+  display: none;
 }
 
 .tour-form h2 {
@@ -67,9 +74,9 @@
 .add-tag-button {
     margin-top: 15px;
     background-color: #2b4f46;
-    position: absolute;
+    /* position: absolute;
     bottom: 20px;
-    right: 0%;
+    right: 0%; */
     border: none;
     padding: 10px 20px;
     height: 40px;
@@ -90,7 +97,7 @@
 
 .cta-button {
     position: relative;
-    right: 0%;
+    left: 730px;
     max-width: 100px;
     height: 50px;
     border-radius: 25px;
@@ -112,16 +119,32 @@
     cursor: not-allowed;
 }
 
+.tags-container-div{
+    display: flex; /* Enable Flexbox */
+    flex-wrap: wrap;
+    gap: 20px;
+    position: relative;
+    left: 0%;
+    height: 100px;
+    overflow-y: auto;
+}
+
 .tags-container {
-    margin-top: 15px;
+    /* margin-top: 15px; */
+    /* display: flex; */
+    justify-content: center; /* Center content horizontally */
+    align-items: center;
 }
 
 .tags-container input {
-    margin-top: 10px;
+    /* margin-top: 10px; */
     border: 1px solid #cccccc;
     border-radius: 4px;
     padding: 10px;
-    width: calc(20% - 22px); /* Oduzimamo padding */
+    /*width: calc(20% - 22px); /* Oduzimamo padding */
+    height: 18px;
+    border-radius: 20px;
+    width: 216px;
 }
 
 @media (max-width: 600px) {
@@ -130,9 +153,18 @@
         padding: 15px;
     }
 }
+
+.tour-form-label{
+  padding-top: 15px;
+}
+
+.description-label{
+  padding-top: 15px;
+}
+
 .tour-form label {
     display: block; /* Podesi da se labela prikazuje kao blok */
-    margin-top: 15px; /* Razmak iznad labela */
+    /*margin-top: 15px; /* Razmak iznad labela */
     font-weight: bold; /* Podebljaj tekst */
     color: #333; /* Boja teksta */
 }
@@ -166,7 +198,7 @@
     padding-top: 20px;
     padding-right: 30px;
     padding-left: 30px;
-    padding-bottom: 0px;
+    padding-bottom: 10px;
     align-items: center;
   }
   
@@ -209,7 +241,7 @@
   .form-group select {
     padding: 8px;
     height: 40px;
-    width: 210px;
+    width: 238px;
     border: 1px solid #ccc;
     border-radius: 20px;
     font-size: 14px;
