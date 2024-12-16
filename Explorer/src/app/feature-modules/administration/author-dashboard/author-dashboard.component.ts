@@ -32,6 +32,7 @@ export class AuthorDashboardComponent implements OnInit {
   newMessageContent: string = '';
   ngOnInit(): void {
     //this.getAccounts();
+
     this.loadProblems();
     this.authService.user$.subscribe((user)=>{
       this.user = user;

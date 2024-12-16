@@ -75,5 +75,10 @@ export class TourAuthoringService {
 		return this.http.post<PagedResults<Message>>(`${environment.apiHost}${role}/problems/messages`, message, { headers });
 	}
 
+	getProblemById(problemId: number, message: string): Observable<Problem> {
+		//Message ili Administrator,Tourist,Author
+		return this.http.get<Problem>(`${environment.apiHost}${message.toLowerCase()}/problems/${problemId}/problem`);
+	}
+	
 	//#endregion
 }

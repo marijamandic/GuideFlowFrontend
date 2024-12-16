@@ -1,0 +1,62 @@
+<div class="problem-list-card">
+    <div class="problem-card-header">
+      <h2>Problem info</h2>
+    </div>
+    <table class="problem-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Tourist</th>
+          <th>Tour</th>
+          <th>Category</th>
+          <th>Reported At</th>
+          <th>Deadline</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{ problem?.id }}</td>
+          <td>{{ getTouristName() }}</td>
+          <td>{{ tour?.name }}</td>
+          <td>{{ getCategoryName() }}</td>
+          <td>{{ problem?.resolution?.reportedAt | date:'medium' }}</td>
+          <td>{{ problem?.resolution?.deadline | date:'medium' }}</td>
+          <td>
+            <button class="status-badge" 
+                    [ngClass]="{
+                      'status-unresolved': getProblemStatus() === 'Unresolved',
+                      'status-overdue': getProblemStatus() === 'Overdue',
+                      'status-resolved': getProblemStatus() === 'Resolved'
+                    }">
+              {{ getProblemStatus() }}
+            </button>
+          </td>       
+          <td>
+            <button class="action-btn table-btn" ><i class="fa-solid fa-circle-info"></i></button>
+          </td>       
+        </tr>        
+      </tbody>
+    </table>
+    <!-- Messages Section -->
+    <div class="messages-wrapper">
+      <h2>Messages</h2>
+      <div class="modal-messages">
+        <div 
+          *ngFor="let message of selectedProblemMessages" class="modal-message"
+          [ngClass]="{'modal-message': true, 'me': user.id === message.userId, 'other': user.id !== message.userId}">
+          <b *ngIf="user.id === message.userId">Me:</b>
+          <b *ngIf="user.id !== message.userId">Tourist:</b> {{ message.content }}
+        </div>
+      </div>
+      <div class="add-comment">
+        <input
+          type="text"
+          [(ngModel)]="newMessageContent"
+          placeholder="Write a message..."
+        />
+        <button class="cta-button" (click)="handleSendMessageClick()">Send</button>
+      </div>
+    </div>
+  </div>
