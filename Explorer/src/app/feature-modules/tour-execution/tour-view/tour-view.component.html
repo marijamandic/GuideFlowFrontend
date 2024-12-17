@@ -33,69 +33,67 @@
 		</div>
 	</div>
 
-  <!-- Main Content -->
-  <div class="content-container">
-    <!-- Filters Section -->
-    <div class="filter-container">
+	<!-- Main Content -->
+	<div class="content-container">
+		<!-- Filters Section -->
+		<div class="filter-container">
+			<!--sort-->
 
-        <!--sort-->
-        
-        
-        <h3 class="filter-header">Filter by:</h3>
-        
-        <div class="status-filter" *ngIf="user && user.role ==='author'">
-          <span>Status</span>
-          <div class="status-buttons">
-            <input type="radio" id="published" name="status" (change)="onStatusChange('published')" checked />
-            <label for="published" class="status-button">Published</label>
-            
-            <input type="radio" id="draft" name="status" (change)="onStatusChange('draft')" />
-            <label for="draft" class="status-button">Draft</label>
-            
-            <input type="radio" id="archive" name="status" (click) = "onStatusChange('archived')" />
-            <label for="archive" class="status-button">Archived</label>
-          </div>
-        </div>
-        <div class="sort-header">
-          <label>Sort by:</label>
-        </div>
-        <div class="dropdown-div">
-        <select id="sort-menu" (change)="onSortChange($event)" class="sort-dropdown">
-          <option value="price-asc">Price: Low to High</option>
-          <option value="price-desc">Price: High to Low</option>
-          <option value="sales">Sales</option>
-        </select>
-        </div>
-        
-      <div class="slider-container">
-        <label for="level">Level</label>
-        <input type="range" id="level" name="level" min="0" max="2" [(ngModel)]="ts.level" />
-      </div>
-      <div class="slider-container" *ngIf="ts.transportRatings.length > 2">
-        <label for="car">Car</label>
-        <input type="range" id="car" name="car" min="0" max="3" [(ngModel)]="ts.transportRatings[2].rating" />
-      </div>
-      <div class="slider-container">
-        <label for="boat">Boat</label>
-        <input type="range" id="boat" name="boat" min="0" max="3" [(ngModel)]="ts.transportRatings[3].rating" />
-      </div>
-      <div class="slider-container">
-        <label for="walk">Walk</label>
-        <input type="range" id="walk" name="walk" min="0" max="3" [(ngModel)]="ts.transportRatings[0].rating" />
-      </div>
-      <div class="slider-container">
-        <label for="bike">Bike</label>
-        <input type="range" id="bike" name="bike" min="0" max="3" [(ngModel)]="ts.transportRatings[1].rating" />
-      </div>
-      <div class="tags-container">
-        <label for="tagsInput">Tags</label>
-        <textarea [(ngModel)]="tagsInputValue" id="tagsInput" placeholder="Enter tags separated by commas"></textarea>
-      </div>
-      <div class="button-container">
-        <button id="reset" (click)="deleteTourSpecification()" class="cta-button">Reset</button>
-        <button id="apply" (click)="applyChanges()" class="cta-button">Apply</button>
-      </div>
-    </div>
+			<h3 class="filter-header">Filter by:</h3>
+
+			<div class="status-filter" *ngIf="user && user.role === 'author'">
+				<span>Status</span>
+				<div class="status-buttons">
+					<input type="radio" id="published" name="status" (change)="onStatusChange('published')" checked />
+					<label for="published" class="status-button">Published</label>
+
+					<input type="radio" id="draft" name="status" (change)="onStatusChange('draft')" />
+					<label for="draft" class="status-button">Draft</label>
+
+					<input type="radio" id="archive" name="status" (click)="onStatusChange('archived')" />
+					<label for="archive" class="status-button">Archived</label>
+				</div>
+			</div>
+			<div class="sort-header">
+				<label>Sort by:</label>
+			</div>
+			<div class="dropdown-div">
+				<select id="sort-menu" (change)="onSortChange($event)" class="sort-dropdown">
+					<option value="price-asc">Price: Low to High</option>
+					<option value="price-desc">Price: High to Low</option>
+					<option value="sales">Sales</option>
+				</select>
+			</div>
+
+			<div class="slider-container">
+				<label for="level">Level</label>
+				<input type="range" id="level" name="level" min="0" max="2" [(ngModel)]="ts.level" />
+			</div>
+			<div class="slider-container" *ngIf="ts.transportRatings.length > 2">
+				<label for="car">Car</label>
+				<input type="range" id="car" name="car" min="0" max="3" [(ngModel)]="ts.transportRatings[2].rating" />
+			</div>
+			<div class="slider-container">
+				<label for="boat">Boat</label>
+				<input type="range" id="boat" name="boat" min="0" max="3" [(ngModel)]="ts.transportRatings[3].rating" />
+			</div>
+			<div class="slider-container">
+				<label for="walk">Walk</label>
+				<input type="range" id="walk" name="walk" min="0" max="3" [(ngModel)]="ts.transportRatings[0].rating" />
+			</div>
+			<div class="slider-container">
+				<label for="bike">Bike</label>
+				<input type="range" id="bike" name="bike" min="0" max="3" [(ngModel)]="ts.transportRatings[1].rating" />
+			</div>
+			<div class="tags-container">
+				<label for="tagsInput">Tags</label>
+				<textarea [(ngModel)]="tagsInputValue" id="tagsInput" placeholder="Enter tags separated by commas"></textarea>
+			</div>
+			<div class="button-container">
+				<button id="reset" (click)="deleteTourSpecification()" class="cta-button">Reset</button>
+				<button id="apply" (click)="applyChanges()" class="cta-button">Apply</button>
+			</div>
+		</div>
 
 		<!-- Tour Cards Section -->
 		<div class="tour-container">
