@@ -6,6 +6,7 @@ import { User } from 'src/app/infrastructure/auth/model/user.model';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { NgForm } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { AlertService } from '../../layout/alert.service';
 
 export enum EncounterStatus {
   Active = 'Active',
@@ -37,7 +38,8 @@ export class EncounterFormComponent implements OnInit {
   encounterId: number;
 //  @Input() closeDialog: () => void;
 //  @Output() closeModal = new EventEmitter<void>(); // Emiter za zatvaranje modala
-
+  @Output() closeModal: EventEmitter<void> = new EventEmitter();
+  isEncounterId: boolean = false;
 
   encounter: Encounter = {
     $type: '',
@@ -59,14 +61,14 @@ export class EncounterFormComponent implements OnInit {
     private encounterService: EncounterExecutionService,
     private authService: AuthService, 
     private router: Router, 
+    private alertService: AlertService
   ) {}
 
   ngOnInit(): void {
-   // console.log('encounterId', this.data.encounterId);
     this.authService.user$.subscribe(user =>{
       this.user = user;
     })
-   // this.encounterId = this.data.encounterId;
+    this.encounterId = this.data.encounterId;
     // if (this.encounterId) {
     //   this.encounterService.getEncounter(this.encounterId).subscribe(
     //     (encounter: Encounter) => {
@@ -78,28 +80,28 @@ export class EncounterFormComponent implements OnInit {
   }
 
   loadEncounter(): void {
-      if (this.encounterId) {
-        this.encounterService.getEncounter(this.encounterId).subscribe({
-          next: (data) => {
-            const currentEncounter = data;
-            if (currentEncounter) {
-              this.encounter = currentEncounter;
-              this.encounterCoordinates = [{
-                latitude: this.encounter.encounterLocation.latitude,
-                longitude: this.encounter.encounterLocation.longitude
-              }];
-              this.encounterCoordinatesLoaded.emit(this.encounterCoordinates);
-            } else {
-              console.warn('Encounter not found or is empty.');
-            }
-          },
-          error: (err) => {
-            console.error('Greška prilikom učitavanja encounter-a:', err);
+    if (this.encounterId) {
+      this.encounterService.getEncounter(this.encounterId).subscribe({
+        next: (data) => {
+          const currentEncounter = data;
+          if (currentEncounter) {
+            this.encounter = currentEncounter;
+            this.encounterCoordinates = [{
+              latitude: this.encounter.encounterLocation.latitude,
+              longitude: this.encounter.encounterLocation.longitude
+            }];
+            this.encounterCoordinatesLoaded.emit(this.encounterCoordinates);
+          } else {
+            console.warn('Encounter not found or is empty.');
           }
-        });
-      } else {
-        console.warn('No encounter ID found in route parameters.');
-      }
+        },
+        error: (err) => {
+          console.error('Greška prilikom učitavanja encounter-a:', err);
+        }
+      });
+    } else {
+      console.warn('No encounter ID found in route parameters.');
+    }
   }
 
   setMapMode(mode: 'encounterLocation' | 'imageLocation'): void {
@@ -137,17 +139,17 @@ export class EncounterFormComponent implements OnInit {
 
     if (this.encounter.encounterType == this.mapToType("Location") && !this.selectedFile) {
       // Ako fajl nije selektovan, ručno oznaci input kao nevalidan
-      alert('File is required');
+      this.alertService.showAlert('File is required', "error", 5);
       return;
     }
 
     if (!this.encounter.encounterLocation.latitude || !this.encounter.encounterLocation.longitude) {
-      alert('Encounter coordinates are required');
+      this.alertService.showAlert('Encounter coordinates are required', "error", 5);
       return;  // Prekida slanje forme ako koordinate nisu unete
     }
 
     if (this.encounter.encounterType == this.mapToType("Location") && (!this.encounter.imageLatitude || !this.encounter.imageLongitude)) {
-      alert('Image coordinates are required');
+      this.alertService.showAlert('Image coordinates are required', "error", 5);
       return;  // Prekida slanje forme ako image koordinate nisu unete
     }
 
@@ -175,8 +177,10 @@ export class EncounterFormComponent implements OnInit {
 
     if (this.encounter.id) {
         this.updateEncounter(finalPayload);
+        this.onCloseModal();
     } else {
         this.addEncounter();
+        this.onCloseModal();
     }
   }
 
@@ -280,7 +284,8 @@ onCoordinatesSelected(coordinates: { latitude: number; longitude: number }): voi
     }
   }
 
-  close(): void {
+  onCloseModal() {
+   // event.stopPropagation(); // Sprečava propagaciju događaja i sprečava pokretanje validacije
     //this.closeModal.emit(); // Emituj događaj za zatvaranje
     this.dialogRef.close();
   }

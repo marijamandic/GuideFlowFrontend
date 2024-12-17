@@ -1,15 +1,16 @@
 <div class="modal-backdrop">
   <div class="divContainer">
+    <div class="modal-header">
+      <h2>{{ encounterId ? 'Edit Encounter' : 'Add Encounter' }}</h2>
+      <button class="close-button" (click)="onCloseModal()">×</button>
+    </div>
     <form #encounterForm="ngForm" (ngSubmit)="onSubmit(encounterForm)" novalidate>
-      <div class="modal-header">
-        <h2>{{ encounter.id ? 'Edit Encounter' : 'Add Encounter' }}</h2>
-        <button class="close-button" (click)="close()">×</button>
-      </div>
+      
 
 
       <!-- Dropdown za tip Encounter-a -->
-      <div *ngIf="!encounter.id">
-        <label for="encounterType">Izaberite tip izazova:</label>
+      <div *ngIf="!encounterId">
+        <label for="encounterType">Choose encounter type:</label>
         <select id="encounterType" [(ngModel)]="selectedType" name="encounterType" (change)="onEncounterTypeChange()" [disabled]="!!encounter.id">
           <option *ngFor="let type of encounterTypes" [value]="type">
             {{ type }}
@@ -128,18 +129,16 @@
             </div>
           </div>
       
-          <!-- Status field -->
-          <!-- <div class="form-row">
-            <div class="form-column" *ngIf="user.role != 'tourist'">
-              <label for="status">Status</label>
-              <select id="status" [(ngModel)]="encounter.encounterStatus" name="status" class="form-control">
-                <option value="Active">Active</option>
-                <option value="Draft">Draft</option>
-                <option value="Archived">Archived</option>
-              </select>
-            </div>
-          </div> -->
-      
+          <div *ngIf="encounter.encounterType === 1" class="map-mode-buttons">
+            <!-- <p>Current Map: {{ mapMode === 'encounterLocation' ? 'Encounter' : 'Image' }}</p> -->
+            <button type="button" class="map-mode-buttons" (click)="setMapMode('encounterLocation')" [class.active]="mapMode === 'encounterLocation'">
+              Set Encounter Location
+            </button>
+            <button type="button" class="map-mode-buttons" (click)="setMapMode('imageLocation')" [class.active]="mapMode === 'imageLocation'">
+              Set Image Location
+            </button>
+          </div>
+
           <!-- Map -->
           <div class="map-container">
             <xp-map (coordinatesSelected)="onCoordinatesSelected($event)" [encounters]="encounterCoordinates" [showSearchBar]="false" [formWithoutSearchBar]="true"></xp-map>

@@ -180,7 +180,7 @@
   background-color: #f9f9f9; /* Svetlo siva pozadina */
   border: none; /* Bez okvira */
   border-radius: 20px; /* Zaobljeni uglovi */
-  width: 60px; /* Širina dugmeta */
+  width: 90%; /* Širina dugmeta */
   height: 60px; /* Visina dugmeta */
   display: flex;
   justify-content: center;

@@ -6,6 +6,7 @@ import { TourCheckpointService } from '../tour-checkpoint.service';
 import { Checkpoint } from '../model/tourCheckpoint.model';
 import { TourService } from '../tour.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { AlertService } from '../../layout/alert.service';
 
 export enum EncounterStatus {
   Active = 'Active',
@@ -34,6 +35,7 @@ export class AddEncounterComponent implements OnInit {
   selectedType: string | null = null;
   isEssential: boolean;
   checkpoint : Checkpoint;
+  selectedFile: File | null = null;
   encounter: Encounter = {
     $type: '',
     name: '',
@@ -56,6 +58,7 @@ export class AddEncounterComponent implements OnInit {
     private encounterService : EncounterExecutionService,
     private router : Router , 
     private route: ActivatedRoute,
+    private alertService: AlertService,
     private dialogRef: MatDialogRef<AddEncounterComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { checkpointId: number, tourId: number } // Direktan pristup prosleđenim podacima
     ) {}
@@ -83,6 +86,21 @@ export class AddEncounterComponent implements OnInit {
     });
   }
   submitEncounter() {
+    if (this.encounter.encounterType == this.mapToType("Location") && !this.selectedFile) {
+      // Ako fajl nije selektovan, ručno oznaci input kao nevalidan
+      this.alertService.showAlert('File is required', "error", 5);
+      return;
+    }
+
+    if (!this.encounter.encounterLocation.latitude || !this.encounter.encounterLocation.longitude) {
+      this.alertService.showAlert('Encounter coordinates are required', "error", 5);
+      return;  // Prekida slanje forme ako koordinate nisu unete
+    }
+
+    if (this.encounter.encounterType == this.mapToType("Location") && (!this.encounter.imageLatitude || !this.encounter.imageLongitude)) {
+      this.alertService.showAlert('Image coordinates are required', "error", 5);
+      return;  // Prekida slanje forme ako image koordinate nisu unete
+    }
     console.log('Kreirani izazov:', this.encounter);
     this.encounter.encounterStatus = this.ConvertStatus(this.encounter.encounterStatus.toString());
     this.encounterService.authorAddEncounter(this.encounter).subscribe({
@@ -112,10 +130,10 @@ export class AddEncounterComponent implements OnInit {
       console.log('Image Location updated:', { latitude: this.encounter.imageLatitude, longitude: this.encounter.imageLongitude });
   }
   onFileSelected(event: any) {
-    const file: File = event.target.files[0];
-    if (file) {
+    this.selectedFile = event.target.files[0];
+    if (this.selectedFile) {
       const reader = new FileReader();
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(this.selectedFile);
       reader.onload = () => {
         this.encounter.imageBase64 = reader.result as string;
       };
@@ -178,4 +196,7 @@ export class AddEncounterComponent implements OnInit {
         return 0; 
     }
   }
+  onCloseModal() {
+     this.dialogRef.close();
+   }
 }

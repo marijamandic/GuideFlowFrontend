@@ -1,13 +1,17 @@
 <div class="modal-backdrop">
   <div class="divContainer">
-    <label for="encounterType">Izaberite tip izazova:</label>
+    <div class="modal-header">
+      <h2>{{ 'Add Encounter' }}</h2>
+      <button class="close-button" (click)="onCloseModal()">×</button>
+    </div>
+    <label for="encounterType">Choose encounter type:</label>
     <select id="encounterType" [(ngModel)]="selectedType" (change)="onTypeChange()">
       <option *ngFor="let type of encounterTypes" [value]="type">
       {{ type }}
       </option>
     </select>
     <div style="display: flex;">
-      <label for="isEssential">Da li je izazov obavezan za kompletiranje tačke?</label>
+      <label for="isEssential">Is the encounter required to complete the checkpoint?</label>
       <input 
           type="checkbox" 
           id="isEssential" 
@@ -18,8 +22,12 @@
     <form *ngIf="selectedType">
       <div class="form-row">
         <div class="form-column">
-          <label for="name">Naziv izazova:</label>
-          <input id="name" type="text" [(ngModel)]="encounter.name" name="name" required />
+          <label for="name">Encounter name:</label>
+          <input id="name" type="text" [(ngModel)]="encounter.name" name="name" required #name="ngModel"
+                [ngClass]="{'is-invalid': name.invalid && name.touched}" />
+          <div *ngIf="name.invalid && name.touched" class="error-message">
+            This field is required.
+          </div>
         </div>
 
         <div class="form-column">
@@ -34,8 +42,12 @@
       
       <div class="form-row">
         <div class="form-column" style="grid-column: span 3;">
-          <label for="description">Opis:</label>
-          <textarea id="description" [(ngModel)]="encounter.description" name="description"></textarea>
+          <label for="description">Description:</label>
+          <textarea id="description" [(ngModel)]="encounter.description" name="description" required #name="ngModel"
+              [ngClass]="{'is-invalid': name.invalid && name.touched}"></textarea>
+          <div *ngIf="name.invalid && name.touched" class="error-message">
+            This field is required.
+          </div>
         </div>
       </div>
           
@@ -43,16 +55,28 @@
           <!-- Specifična polja za svaki tip -->
       <div *ngIf="selectedType === 'Social'" class="form-row">
         <div class="form-column">
-          <label for="touristNumber">Broj turista:</label>
-          <input id="touristNumber" type="number" [(ngModel)]="encounter.touristNumber" name="touristNumber" />
+          <label for="touristNumber">Tourist number:</label>
+          <input id="touristNumber" type="number" [(ngModel)]="encounter.touristNumber" name="touristNumber" required #name="ngModel"
+              [ngClass]="{'is-invalid': name.invalid && name.touched}" />
+          <div *ngIf="name.invalid && name.touched" class="error-message">
+            This field is required.
+          </div>
         </div>
         <div class="form-column">
-          <label for="encounterRange">Raspon izazova:</label>
-          <input id="encounterRange" type="number" [(ngModel)]="encounter.encounterRange" name="encounterRange" />
+          <label for="encounterRange">Encounter range:</label>
+          <input id="encounterRange" type="number" [(ngModel)]="encounter.encounterRange" name="encounterRange" required #name="ngModel"
+              [ngClass]="{'is-invalid': name.invalid && name.touched}" />
+          <div *ngIf="name.invalid && name.touched" class="error-message">
+            This field is required.
+          </div>
         </div>
         <div class="form-column">
-          <label for="experiencePoints">Poeni iskustva:</label>
-          <input id="experiencePoints" type="number" [(ngModel)]="encounter.experiencePoints" name="experiencePoints" />
+          <label for="experiencePoints">Experience points:</label>
+          <input id="experiencePoints" type="number" [(ngModel)]="encounter.experiencePoints" name="experiencePoints" required #name="ngModel"
+              [ngClass]="{'is-invalid': name.invalid && name.touched}" />
+          <div *ngIf="name.invalid && name.touched" class="error-message">
+            This field is required.
+          </div>
         </div>
       </div>
       
@@ -60,32 +84,52 @@
         <div class="form-row">
           <div class="form-column">
               <label for="fileInput">Image URL</label>
-              <input id="fileInput" type="file" (change)="onFileSelected($event)">
+              <input id="fileInput" type="file" (change)="onFileSelected($event)"required #fileInput 
+                  [ngClass]="{'is-invalid': !selectedFile && fileInput?.value}" />
+              <div *ngIf="!selectedFile && fileInput?.value" class="error-message">
+                File is required.
+              </div>
           </div>
           <div class="form-column">
-            <label for="activationRange">Aktivacioni raspon:</label>
-            <input id="activationRange" type="number" [(ngModel)]="encounter.activationRange" name="activationRange" />
+            <label for="activationRange">Activation range:</label>
+            <input id="activationRange" type="number" [(ngModel)]="encounter.activationRange" name="activationRange" required #name="ngModel"
+                [ngClass]="{'is-invalid': name.invalid && name.touched}" />
+            <div *ngIf="name.invalid && name.touched" class="error-message">
+              This field is required.
+            </div>
           </div>
           <div class="form-column">
-            <label for="experiencePoints">Poeni iskustva:</label>
-            <input id="experiencePoints" type="number" [(ngModel)]="encounter.experiencePoints" name="experiencePoints" />
+            <label for="experiencePoints">Experience points:</label>
+            <input id="experiencePoints" type="number" [(ngModel)]="encounter.experiencePoints" name="experiencePoints"  required #name="ngModel"
+                [ngClass]="{'is-invalid': name.invalid && name.touched}" />
+            <div *ngIf="name.invalid && name.touched" class="error-message">
+              This field is required.
+            </div>
           </div>
         </div>
       
         <div class="map-container">
-          <label>Dodaj lokaciju slike</label>
+          <label>Set Image Location:</label>
           <xp-map (coordinatesSelected)="onCoordinatesSelected($event)" [encounters]="encounterCoordinates" [showSearchBar]="false" [formWithoutSearchBar]="true"></xp-map>
         </div>
       </div>
       
       <div *ngIf="selectedType === 'Misc'" class="form-row">
         <div class="form-column">
-          <label for="actionDescription">Opis akcije:</label>
-          <textarea id="actionDescription" [(ngModel)]="encounter.actionDescription" name="actionDescription"></textarea>
+          <label for="actionDescription">Action description:</label>
+          <textarea id="actionDescription" [(ngModel)]="encounter.actionDescription" name="actionDescription" required #name="ngModel"
+              [ngClass]="{'is-invalid': name.invalid && name.touched}"></textarea>
+          <div *ngIf="name.invalid && name.touched" class="error-message">
+            This field is required.
+          </div>
         </div>
         <div class="form-column">
-          <label for="experiencePoints">Poeni iskustva:</label>
-          <input id="experiencePoints" type="number" [(ngModel)]="encounter.experiencePoints" name="experiencePoints" />
+          <label for="experiencePoints">Experience points:</label>
+          <input id="experiencePoints" type="number" [(ngModel)]="encounter.experiencePoints" name="experiencePoints" required #name="ngModel"
+              [ngClass]="{'is-invalid': name.invalid && name.touched}" />
+          <div *ngIf="name.invalid && name.touched" class="error-message">
+            This field is required.
+          </div>  
         </div>
       </div>
       
@@ -97,7 +141,7 @@
       
           
       
-      <button type="button" class="cta-button" (click)="submitEncounter()">Kreiraj izazov</button>
+      <button type="button" class="cta-button" (click)="submitEncounter()">Add Encounter</button>
     </form>
   </div>
 </div>

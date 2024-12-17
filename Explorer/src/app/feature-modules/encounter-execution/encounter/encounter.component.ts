@@ -36,6 +36,7 @@ export class EncounterComponent implements OnInit {
   isActive: boolean = false;
   completedEncounters: Encounter[] = [];
   selectedTab: number = 1;
+  isModalOpened: boolean = false;
   
   @Output() encounterCoordinatesLoaded = new EventEmitter<{ latitude: number; longitude: number; }[]>();
 
@@ -49,6 +50,7 @@ export class EncounterComponent implements OnInit {
   ){}
 
   ngOnInit(): void {
+    this.isModalOpened = false;
     console.log("ovo su parametri koje sam dobio", this.route.snapshot.paramMap.get('encounterExecutionId'), this.route.snapshot.paramMap.get('tourExecutionId') );
     console.log("active execution:", this.activeExecutionId);
     if(this.route.snapshot.paramMap.get('encounterExecutionId')!= null && this.route.snapshot.paramMap.get('tourExecutionId') != null ){
@@ -185,10 +187,12 @@ export class EncounterComponent implements OnInit {
   navigateToForm(id?: number): void {
     console.log('usao je u navigate to form');
     if (id) {
+      this.isModalOpened = true;
       this.openFormModal(id);
      // this.router.navigate(['/encounter-update', id]);
     } else {
       //otvara se modal
+      this.isModalOpened = true;
       this.openFormModal();
       //this.router.navigate(['/encounter-add']);
     }
@@ -204,6 +208,8 @@ export class EncounterComponent implements OnInit {
     // };
     dialogRef.afterClosed().subscribe(result => {
       console.log('Modal zatvoren', result);
+      this.isModalOpened = false;
+      window.location.reload();
     });
   }
   

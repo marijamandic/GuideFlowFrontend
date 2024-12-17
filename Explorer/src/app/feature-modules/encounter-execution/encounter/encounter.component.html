@@ -28,7 +28,7 @@
         placeholder="Pretraga izazova:" 
         (keyup)="onSearch($event)" />
   </div>
-  <xp-encounter-execution-map [encounters]="encounterCoordinates" (locationChanged)="onLocationChanged($event)"></xp-encounter-execution-map>
+  <xp-encounter-execution-map *ngIf="!isModalOpened" [encounters]="encounterCoordinates" (locationChanged)="onLocationChanged($event)"></xp-encounter-execution-map>
 </div>
 
 <div class="left-container">

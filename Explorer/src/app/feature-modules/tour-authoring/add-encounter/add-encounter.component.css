@@ -149,3 +149,32 @@
     border-radius: 15px;
     font-size: 14px;
   }
+
+  .close-button {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    /* position: absolute;
+    right: 10px; */
+  }
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .modal-header h2 {
+    margin: 0;
+  }
+  #description {
+    width: 80%; /* Ovo važi samo za description */
+}
+
+.error-message {
+  color: red;
+  font-size: 0.8em;
+  margin-top: 4px;
+}
+  
