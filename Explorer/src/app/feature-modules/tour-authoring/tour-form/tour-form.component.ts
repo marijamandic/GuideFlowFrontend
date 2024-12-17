@@ -79,7 +79,8 @@ export class TourFormComponent implements OnChanges {
   }
 
   addTag(): void {
-    this.tags.push(''); // Dodaj novo prazno polje za tag
+    //this.tags.push(''); // Dodaj novo prazno polje za tag
+    this.tags = ['', ...this.tags];
   }
 
   addTour(): void {

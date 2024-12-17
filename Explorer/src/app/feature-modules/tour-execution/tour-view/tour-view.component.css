@@ -18,7 +18,7 @@
 /* Filters Section */
 .filter-container {
   flex: 0 0 30%;
-  max-height: 700px;
+  max-height: 730px;
   max-width: 30%;
   padding: 20px;
   background-color: #fff;
@@ -35,6 +35,7 @@
 }
 .tags-container{
   margin-right: 15px;
+  padding-bottom: 20px;
 }
 
 .slider-container label,
@@ -42,7 +43,9 @@
   display: block;
   margin-bottom: 8px;
   font-size: 14px;
-  color: #666;
+  font-family: Arial, sans-serif;
+  font-weight: 600;
+  color: #777;
 }
 
 input[type="range"],
@@ -71,6 +74,7 @@ textarea {
   justify-content: space-between;
   gap: 20px;
   width: 100%;
+  /* height: 54px; */
 }
 
 
@@ -284,12 +288,20 @@ input[type="range"]::-ms-thumb {
   width: 200px; /* Širina dugmeta */
   overflow: hidden; /* Sakriva višak ako ima preklapanja */
   border: 2px solid #e0e0e0; /* Lagani okvir */
+  
 }
 
 .toggle-option {
   flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  color: #333;
+  /* height: 100%; */
+  height: 30px;
+  font-family: Arial, sans-serif;
+  font-weight: 600;
+  color: #777;
   cursor: pointer;
   padding: 10px 0;
   border-radius: 25px;
@@ -320,16 +332,21 @@ input[type="radio"]:checked + label {
   flex-direction: column;
   gap: 10px; /* Razmak između "Status" i dugmadi */
   font-family: Arial, sans-serif;
-  color: #333;
+  font-weight: 600;
+  color: #777;
+  padding-bottom: 10px;
+  padding-top: 10px;
 }
 
 .status-buttons {
   display: flex;
+  justify-content: space-between;
   gap: 10px; /* Razmak između dugmadi */
 }
 
 .status-button {
   padding: 10px 20px;
+  width: 100px;
   border: none;
   border-radius: 20px;
   background-color: #f2f2f2; /* Siva za neaktivno dugme */
@@ -467,9 +484,31 @@ h2 {
 
 
 .sort-dropdown {
-  padding: 5px 10px;
+  padding: 5px 15px;
   font-size: 14px;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  height: 40px;
+  border-radius: 20px;
   cursor: pointer;
+  font-family: Arial, sans-serif;
+  font-weight: 600;
+  color: #777;
+}
+
+.dropdown-div{
+  padding-bottom: 10px;
+}
+
+.filter-header{
+  font-size: 30px;
+  font-weight: 500;
+  color: solid #666;
+}
+
+.sort-header{
+  font-size: 14px;
+  padding-bottom: 10px;
+  font-family: Arial, sans-serif;
+  font-weight: 600;
+  color: #777;
 }
