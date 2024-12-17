@@ -38,8 +38,8 @@
         </div>
       </div>
       <div style="display: flex;">
-        <button class="button abandon-button" (click)="abandonSession()">Abandon Session</button>
-        <button class="button complete-button" (click)="completeSession()">Complete Session</button>
+        <button class="button abandon-button" (click)="abandonSession()">Abandon</button>
+        <button class="button complete-button" (click)="completeSession()">Complete</button>
       </div>
     </div>
 
@@ -47,6 +47,13 @@
       <div class="checkpoint-card">
         <div class="checkpoint-header">
           <h3>{{ currentCheckpoint.checkpoint.name }}</h3>
+          <div class="checkpoint-dots">
+            <div 
+              *ngFor="let checkpoint of tourExecution?.checkpointsStatus || []; let i = index" 
+              [class.active]="i === getCurrentCheckpointIndex()" 
+              (click)="setCurrentCheckpoint(i)">
+            </div>
+          </div>
         </div>
         <div class="checkpoint-image-wrapper">
           <img [src]="getImagePath(currentCheckpoint.checkpoint.imageUrl)" alt="Checkpoint Image" class="checkpoint-image" />
@@ -66,6 +73,7 @@
             {{currentCheckpoint.checkpoint.secret}}
           </div>          
         </div>
+    
         
     
         <!-- Dugmići za Back, Next i Recenziju -->
@@ -77,14 +85,7 @@
             <button *ngIf="currentCheckpoint.checkpoint.encounterId" class="checkpoint-button" (click)="Execute(currentCheckpoint.checkpoint.encounterId)" [disabled]="!isTouristNear(currentCheckpoint.checkpoint.latitude,currentCheckpoint.checkpoint.longitude,currentCheckpoint.checkpoint.encounterId)">{{isFinished(currentCheckpoint.checkpoint.encounterId) ? 'Encounter completed': 'Open encounter'}}</button>
           </div>
         </div>      
-        <div class="checkpoint-dots">
-          <!-- Proveravamo da li 'tourExecution' postoji i da 'checkpointsStatus' nije null ili undefined -->
-          <div 
-            *ngFor="let checkpoint of tourExecution?.checkpointsStatus || []; let i = index" 
-            [class.active]="i === getCurrentCheckpointIndex()" 
-            (click)="setCurrentCheckpoint(i)">
-          </div>
-        </div>
+        
         <!-- Poruka ako postoji -->
         <p *ngIf="getReviewMessage()" class="expired-message">
           {{ getReviewMessage() }}
