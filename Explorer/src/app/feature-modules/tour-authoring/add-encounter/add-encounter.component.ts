@@ -1,10 +1,11 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { EncounterExecutionService } from '../../encounter-execution/encounter-execution.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Encounter } from '../../encounter-execution/model/encounter.model';
 import { TourCheckpointService } from '../tour-checkpoint.service';
 import { Checkpoint } from '../model/tourCheckpoint.model';
 import { TourService } from '../tour.service';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 export enum EncounterStatus {
   Active = 'Active',
@@ -24,7 +25,9 @@ export enum EncounterType {
   styleUrls: ['./add-encounter.component.css']
 })
 export class AddEncounterComponent implements OnInit {
-  checkpointId : number;
+ // @Input() checkpointId: number;
+  
+  //checkpointId : number;
   tourId : number;
   encounterTypes = Object.keys(EncounterType).filter((key) => isNaN(Number(key)));
   encounterStatuses = Object.keys(EncounterStatus).filter((key) => isNaN(Number(key)));
@@ -41,18 +44,30 @@ export class AddEncounterComponent implements OnInit {
     encounterType: 0,
     isCreatedByAuthor: true,
   };
+    @Input() closeDialog: () => void;
+
 
   encounterCoordinates: { latitude: number; longitude: number }[] = [];
   @Output() encounterCoordinatesLoaded = new EventEmitter<{ latitude: number; longitude: number; }[]>();
 
-  constructor(private tourService: TourService,private checkpointService : TourCheckpointService,private encounterService : EncounterExecutionService,private router : Router , private route: ActivatedRoute){}
+  constructor(
+    private tourService: TourService,
+    private checkpointService : TourCheckpointService,
+    private encounterService : EncounterExecutionService,
+    private router : Router , 
+    private route: ActivatedRoute,
+    private dialogRef: MatDialogRef<AddEncounterComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: { checkpointId: number, tourId: number } // Direktan pristup prosleđenim podacima
+    ) {}
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
-      this.checkpointId = params['id'];
-      this.tourId = params['tourId'];
-    });
-    this.checkpointService.getCheckpointById(this.checkpointId).subscribe({
+    // this.route.params.subscribe(params => {
+    //   this.checkpointId = params['id'];
+    //   this.tourId = params['tourId'];
+    // });
+    this.tourId = this.data.tourId;
+    console.log('checkpoint id:', this.data.checkpointId);
+    this.checkpointService.getCheckpointById(this.data.checkpointId).subscribe({
       next: (checkpoint: Checkpoint) => {
         this.checkpoint = checkpoint;
 
@@ -73,12 +88,17 @@ export class AddEncounterComponent implements OnInit {
     this.encounterService.authorAddEncounter(this.encounter).subscribe({
       next: (result) => {
         this.encounter = result;
+        console.log('result: ', result);
+        console.log('encounter', this.encounter);
         this.checkpoint.encounterId = this.encounter.id;
+        console.log('checkpoint encounter: ', this.checkpoint.encounterId);
         this.checkpoint.isEncounterEssential = this.isEssential;
         this.tourService.updateCheckpoint(this.tourId,this.checkpoint).subscribe({
           next: () => {
             console.log("uspesno izmenjen checkpoint");
-            this.router.navigate(["tour",this.tourId])
+            this.dialogRef.close('success');
+
+            //this.router.navigate(["tour",this.tourId])
           },
           error: (err) => console.error(err),
         })
@@ -110,7 +130,7 @@ export class AddEncounterComponent implements OnInit {
       encounterRange: undefined,
       imageUrl: undefined,
       activationRange: undefined,
-      checkpointId: this.checkpointId,
+      checkpointId: this.data.checkpointId,
       actionDescription: undefined,
       imageLatitude: undefined,
       imageLongitude: undefined,

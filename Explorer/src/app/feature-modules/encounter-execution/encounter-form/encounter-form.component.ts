@@ -1,10 +1,11 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, Inject } from '@angular/core';
 import { Encounter } from '../model/encounter.model';
 import { EncounterExecutionService } from '../encounter-execution.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from 'src/app/infrastructure/auth/model/user.model';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { NgForm } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 export enum EncounterStatus {
   Active = 'Active',
@@ -26,13 +27,17 @@ export enum EncounterType {
 })
 export class EncounterFormComponent implements OnInit {
   @Output() updatedEncounter = new EventEmitter<void>();
-  @Input() encounterId?: number;
+ // @Input() encounterId?: number;
   mapMode: 'encounterLocation' | 'imageLocation' = 'encounterLocation';
   typeSelected: boolean = false;
   user: User;
   encounterTypes = Object.keys(EncounterType).filter((key) => isNaN(Number(key)));
   selectedType: string | null = null;
   selectedFile: File | null = null;
+  encounterId: number;
+//  @Input() closeDialog: () => void;
+//  @Output() closeModal = new EventEmitter<void>(); // Emiter za zatvaranje modala
+
 
   encounter: Encounter = {
     $type: '',
@@ -48,30 +53,33 @@ export class EncounterFormComponent implements OnInit {
   encounterCoordinates: { latitude: number; longitude: number }[] = [];
   @Output() encounterCoordinatesLoaded = new EventEmitter<{ latitude: number; longitude: number; }[]>();
 
-  constructor(private encounterService: EncounterExecutionService,private authService: AuthService, private router: Router, private route: ActivatedRoute) {}
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: {encounterId: number},
+    private dialogRef: MatDialogRef<EncounterFormComponent>,
+    private encounterService: EncounterExecutionService,
+    private authService: AuthService, 
+    private router: Router, 
+  ) {}
 
   ngOnInit(): void {
+   // console.log('encounterId', this.data.encounterId);
     this.authService.user$.subscribe(user =>{
       this.user = user;
     })
-    this.route.params.subscribe(params => {
-      const encounterId = params['id'];
-      if (encounterId) {
-        this.encounterService.getEncounter(encounterId).subscribe(
-          (encounter: Encounter) => {
-            this.encounter = encounter;
-          }
-        );
-      }
-    });
+   // this.encounterId = this.data.encounterId;
+    // if (this.encounterId) {
+    //   this.encounterService.getEncounter(this.encounterId).subscribe(
+    //     (encounter: Encounter) => {
+    //       this.encounter = encounter;
+    //     }
+    //   );
+    // }
     this.loadEncounter();
   }
 
   loadEncounter(): void {
-    this.route.params.subscribe(params => {
-      const encounterId = params['id'];
-      if (encounterId) {
-        this.encounterService.getEncounter(encounterId).subscribe({
+      if (this.encounterId) {
+        this.encounterService.getEncounter(this.encounterId).subscribe({
           next: (data) => {
             const currentEncounter = data;
             if (currentEncounter) {
@@ -92,7 +100,6 @@ export class EncounterFormComponent implements OnInit {
       } else {
         console.warn('No encounter ID found in route parameters.');
       }
-    });
   }
 
   setMapMode(mode: 'encounterLocation' | 'imageLocation'): void {
@@ -271,5 +278,10 @@ onCoordinatesSelected(coordinates: { latitude: number; longitude: number }): voi
       default:
         return 0; 
     }
+  }
+
+  close(): void {
+    //this.closeModal.emit(); // Emituj događaj za zatvaranje
+    this.dialogRef.close();
   }
 }

@@ -254,3 +254,7 @@
   border-color: #40E0D0; /* Promena boje okvira na fokus */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Pojačana senka na fokus */
 }
+
+.tabs{
+  display: flex;
+}
