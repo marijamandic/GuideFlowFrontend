@@ -1,0 +1,23 @@
+<div class="container">
+    <h2>Map Coordinates</h2>
+  
+    <div class="coordinates">
+      <label for="latitude">Latitude:</label>
+      <input type="text" id="latitude" [(ngModel)]="latitude" readonly>
+  
+      <label for="longitude">Longitude:</label>
+      <input type="text" id="longitude" [(ngModel)]="longitude" readonly>
+    </div>
+  
+    <div class="map-container" style="margin-top: 20px;">
+      <xp-map (coordinatesSelected)="onCoordinatesSelected($event)"></xp-map>
+    </div>
+  
+    <div style="margin-top: 20px;">
+      <button (click)="saveCoordinates()" style="background-color: green; color: white;">Save</button>
+      <button *ngIf="!encounterExecutionId && !tourExecutionId" (click)="navigateToEncounters()">Go to encounters</button>
+      <button *ngIf="toNumber(tourExecutionId)!=0" (click)="navigateToTourExecution()">Go to tour execution</button>
+      <button *ngIf="encounterExecutionId" (click)="navigateToEncounterExecution()">Go to encounter execution</button>
+    </div>
+  </div>
+  

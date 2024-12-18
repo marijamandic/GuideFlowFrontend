@@ -1,0 +1,33 @@
+
+
+<!-- Dropdown za izbor ID-a ture -->
+<label for="tourIdSelect">Equipment for tour: {{tourId}}</label>
+
+<!--prikaz trenutne opreme za turu -->
+<div class="tour-equipment-container">
+  <h2>Equipment for Tour: {{ tourId }}</h2>
+  <div class="equipment-list">
+    <div class="equipment-card" *ngFor="let eq of tourEquipment">
+      <h3>{{ eq.name }}</h3>
+      <p>{{ eq.description }}</p>
+      <button (click)="deleteTourEquipment(eq.id!)">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!--prikaz sve postojece opreme-->
+
+<div class="add-equipment-container">
+  <h3>Select Equipment for Tour</h3>
+  <div class="equipment-list">
+    <div class="equipment-card" *ngFor="let eq of equipment">
+      <div *ngIf="!isEquipmentInTour(eq.id)">
+        <input type="checkbox" (change)="toggleEquipmentSelection(eq.id, tourId, $event)" />
+        <h3>{{ eq.name }}</h3>
+        <p>{{ eq.description }}</p>
+      </div>
+    </div>
+  </div>
+  <button class="cta-button" (click)="addSelectedEquipment()">Add Selected Equipment</button>
+</div>
+

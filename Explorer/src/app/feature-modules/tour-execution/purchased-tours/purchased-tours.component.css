@@ -1,0 +1,142 @@
+   .purchased-tours {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .tour-cards-wrapper {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .tour-info {
+    padding: 15px;
+  }
+  
+  .tour-rating {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .rating-badge, .rating-text {
+    font-size: 14px;
+    color: var(--accent-color);
+  }
+  
+  
+/* Tour Cards Section */
+/* .tour-container {
+  flex: 1; 
+  display: block;
+  flex-direction: column;
+  gap: 20px;
+  width: 80%;
+  justify-content: center;
+} */
+
+.tour-container {
+  display: flex; /* Omogućava flex raspored */
+  flex-direction: column; /* Postavlja elemente u kolonu */
+  gap: 20px; /* Razmak između elemenata */
+  width: 70%; /* Ograničava širinu kontejnera */
+  justify-content: center; /* Centriranje elemenata vertikalno */
+  align-items: center; /* Centriranje elemenata horizontalno */
+  margin: 0 auto; /* Centriranje unutar roditeljskog elementa */
+}
+
+
+/* Cards */
+.tour-card {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  /*align-items: top;*/
+  padding: 15px;
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 10px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.tour-card-header {
+  display: flex; 
+  justify-content: space-between; 
+  align-items: top;
+}
+
+/* Card image section */
+.tour-card img {
+  width: 300px;
+  height: 100%;
+  border-radius: 15px;
+  object-fit: cover;
+  align-self: center;
+  margin-bottom: -20px;
+}
+
+/* Card content section */
+.tour-card-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-left: 20px;
+}
+
+/* Card actions (e.g., Buy button and kebab menu) */
+.tour-card-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-end;
+}
+
+.tour-card-details {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 14px;
+  color: #666;
+}
+
+.tour-card-details span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.tour-card-empty:hover {
+  background-color: #636262; 
+}
+
+.add-to-cart {
+  align-items: end;
+  cursor: pointer;
+}
+
+.buttons {
+  display: flex;
+  justify-content: flex-end; /* Poravnava dugme uz desnu ivicu */
+  padding: 8px; /* Dodaje mali razmak oko dugmeta */
+}
+
+.cta-button {
+	background-color: var(--primary-color);
+	font-size: 16px;
+	font-weight: bold;
+	color: white;
+	padding: 12px 30px;
+	border-radius: 25px;
+	border: none;
+	cursor: pointer;
+	transition: background-color 0.3s, transform 0.3s ease;
+}
+
+.cta-button:hover {
+	background-color: var(--hover-color);
+	transform: scale(1.1);
+	transition: 0.5s ease;
+}

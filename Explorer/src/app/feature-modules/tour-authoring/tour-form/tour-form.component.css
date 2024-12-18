@@ -1,0 +1,256 @@
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-color: #f2f2f2;
+    
+}
+
+.tour-form {
+    background-color: #ffffff;
+    padding-top: 0px;
+    padding-right: 30px;
+    padding-left: 30px;
+    padding-bottom: 30px;
+    border-radius: 15px;
+    width: 100%;
+    max-width: 830px; /* Moguće je proširiti širinu */
+    height: 570px;
+    overflow-y: auto;
+}
+
+.tour-form::-webkit-scrollbar {
+  display: none;
+}
+
+.tour-form h2 {
+    text-align: center;
+    color: #333;
+}
+
+.tour-form input {
+  width: 100%;
+  max-width: 808px;
+  padding: 10px;
+  margin-top: 10px; /* Razmak između elemenata */
+  border: 1px solid #cccccc;
+  border-radius: 20px;
+  font-size: 16px;
+}
+
+.tour-form textarea {
+  width: 100%;
+  max-width: 808px;
+  height: 120px;
+  padding: 10px;
+  margin-top: 10px; /* Razmak između elemenata */
+  border: 1px solid #cccccc;
+  border-radius: 20px;
+  font-size: 16px;
+}
+
+.tour-form textarea::placeholder {
+  font-family: 'Arial', sans-serif;
+  color: gray;
+}
+
+.tour-form select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px; /* Razmak između elemenata */
+    border: 1px solid #cccccc;
+    border-radius: 20px;
+    font-size: 16px;
+}
+
+.tour-form input:focus,
+.tour-form textarea:focus,
+.tour-form select:focus {
+    border-color: #84dcc6;  
+    outline: none;
+}
+
+.add-tag-button {
+    margin-top: 15px;
+    background-color: #2b4f46;
+    border: none;
+    padding: 10px 20px;
+    height: 40px;
+    width: 89.78px;
+    border-radius: 20px;
+    color: white;
+    cursor: pointer;
+}
+
+.tour-name-input{
+  width: 100%;
+  max-width: 830px;
+}
+
+.add-tag-button:hover {
+    background-color: #5ba99a;
+}
+
+.cta-button {
+    position: relative;
+    left: 730px;
+    max-width: 100px;
+    height: 50px;
+    border-radius: 25px;
+    background-color: #84dcc6;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    margin-top: 20px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.cta-button:hover:not(:disabled) {
+    background-color: #5ba99a;
+}
+
+.cta-button:disabled {
+    background-color: #2b4f46;
+    cursor: not-allowed;
+}
+
+.tags-container-div{
+    display: flex; 
+    flex-wrap: wrap;
+    gap: 20px;
+    position: relative;
+    left: 0%;
+    height: 100px;
+    overflow-y: auto;
+}
+
+.tags-container {
+    justify-content: center;
+    align-items: center;
+}
+
+.tags-container input {
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    padding: 10px;
+    height: 18px;
+    border-radius: 20px;
+    width: 216px;
+}
+
+@media (max-width: 600px) {
+    .tour-form {
+        width: 100%;
+        padding: 15px;
+    }
+}
+
+.tour-form-label{
+  padding-top: 15px;
+}
+
+.description-label{
+  padding-top: 15px;
+}
+
+.tour-form label {
+    display: block;
+    font-weight: bold;
+    color: #333;
+}
+
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .modal-content {
+    background-color: #fff;
+    border-radius: 15px;
+    padding: 20px;
+    width: 900px;
+    max-width: 90%;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
+  }
+  
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 50px;
+    padding-top: 20px;
+    padding-right: 30px;
+    padding-left: 30px;
+    padding-bottom: 10px;
+    align-items: center;
+  }
+  
+  .modal-header h2 {
+    margin: 0;
+    font-size: 30px;
+  }
+  
+  .close-button {
+    background: none;
+    border: none;
+    font-size: 40px;
+    cursor: pointer;
+  }
+  
+  .form-actions {
+    display: flex;
+    gap: 10px;
+  }
+
+  .form-div{
+    display: flex;
+    position: relative;
+  }
+
+  .form-row {
+    display: flex;
+    gap: 20px; /* Razmak između polja */
+    padding-bottom: 20px;
+    justify-content: space-between; /* Rasporedi elemente */
+  }
+  
+  .form-group {
+    flex: 1; /* Sva polja zauzimaju jednaku širinu */
+    display: flex;
+    flex-direction: column; /* Labela iznad polja */
+  }
+  
+  .form-group select {
+    padding: 8px;
+    height: 40px;
+    width: 238px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    font-size: 14px;
+  }
+
+  .form-group input {
+    padding: 8px;
+    max-height: 40px;
+    height: 100%;
+    width: 220px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    font-size: 14px;
+  }
+
+  .form-group input::placeholder {
+    font-family: 'Arial', sans-serif;
+    color: gray;
+  }
+  
+  

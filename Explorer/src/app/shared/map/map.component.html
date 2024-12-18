@@ -1,0 +1,13 @@
+<div class="map-frame">
+  <div id="map"></div>
+</div>
+
+<div class="search-container" *ngIf="showSearchBar">
+  <input 
+    type="text" 
+    [(ngModel)]="searchAddress" 
+    placeholder="Unesite adresu" 
+  />
+  <button (click)="search()" color="primary">Search</button>
+  <button (click)="resetMap()" color="warn">Reset</button>
+</div>

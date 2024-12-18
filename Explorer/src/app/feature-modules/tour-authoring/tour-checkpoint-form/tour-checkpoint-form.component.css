@@ -1,0 +1,45 @@
+.container {
+    max-width: 500px; /* Smanjena širina prema potrebama */
+    height: auto; /* Visina će se prilagoditi sadržaju */
+    margin: 0 auto; /* Centriranje sadržaja */
+    padding: 20px; /* Unutrašnje margine */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Vizuelno isticanje */
+    border-radius: 8px; /* Zaobljeni uglovi */
+    background-color: #f9f9f9; /* Svetla pozadina */
+}
+
+.map-container {
+    height: 300px; /* Visina mape */
+    max-height: 300px;
+    overflow: hidden; /* Sprečavanje prelaska sadržaja */
+    border: 1px solid #ccc; /* Okvir za mapu */
+    border-radius: 12px; /* Zaobljeni uglovi mape */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Blaga senka za efekat dubine */
+    margin-bottom: 20px; /* Razmak između mape i ostatka forme */
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Razmak između elemenata forme */
+}
+
+mat-form-field {
+    width: 100%;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 8px; /* Zaobljeni uglovi za dugme */
+}
+
+mat-label {
+    color: #555; 
+}
+
+.error-message {
+    color: red; 
+    font-size: 14px; 
+}

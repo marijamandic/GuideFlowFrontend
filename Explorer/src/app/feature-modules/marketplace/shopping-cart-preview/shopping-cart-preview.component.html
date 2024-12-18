@@ -1,0 +1,17 @@
+<h2>Subtotal</h2>
+<div *ngIf="cart$.items.length > 0; else cartEmpty" class="main">
+	<p class="ac">AC {{ totalAdventureCoins }}</p>
+	<button type="button" (click)="handleGoToCart()">GO TO CART</button>
+	<div *ngFor="let item of cart$.items" class="items">
+		<hr />
+		<img [src]="getImageUrl(item.imageUrl)" alt="..." />
+		<h3>{{ item.productName }}</h3>
+		<div class="items-footer">
+			<p>AC {{ item.adventureCoin }}</p>
+			<button type="button" (click)="handleRemoveFromCart(item.id)"><i class="fa fa-trash" aria-hidden="true"></i></button>
+		</div>
+	</div>
+</div>
+<ng-template #cartEmpty>
+	<p style="text-align: center">Your shopping cart is empty!</p>
+</ng-template>

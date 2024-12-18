@@ -1,0 +1,61 @@
+.map-frame {
+  position: relative;
+  width: 600px;
+  height: 300px;
+  border: 2px solid black;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 10px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 10px; /* Dodaj zaobljene ivice */
+}
+
+#map {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px; /* Zaobljene ivice za mapu */
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 600px;
+  margin: 10px auto;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1); /* Blaga senka */
+  background-color: #fff; /* Belo pozadinsko polje */
+}
+
+input[type="text"] {
+  padding: 10px;
+  font-size: 1em;
+  border: 1px solid #ccc;
+  border-radius: 8px; /* Zaobljene ivice */
+  flex: 1; /* Zauzima preostalu širinu */
+}
+
+button {
+  padding: 10px 15px;
+  background-color: #28a745; /* Zeleno dugme */
+  color: white;
+  border: none;
+  border-radius: 8px; /* Zaobljene ivice */
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+button:hover {
+  background-color: #218838; /* Tamnije zeleno na hover */
+}
+
+button[color="warn"] {
+  background-color: #dc3545; /* Crveno dugme za reset */
+}
+
+button[color="warn"]:hover {
+  background-color: #c82333; /* Tamnije crveno na hover */
+}

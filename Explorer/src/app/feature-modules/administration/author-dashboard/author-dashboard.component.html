@@ -1,0 +1,97 @@
+<!-- Problems Section -->
+<div class="problem-list-card">
+    <div class="problem-card-header">
+      <h2>Problems</h2>
+    </div>
+    <div class="problem-card-controls">
+      <input type="text" placeholder="Search" class="search-input">
+      <select class="sort-dropdown">
+        <option value="latest">Sort by: Latest</option>
+        <option value="oldest">Sort by: Oldest</option>
+      </select>
+    </div>  
+    <table class="problem-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Tourist</th>
+          <th>Tour</th>
+          <th>Category</th>
+          <th>Reported At</th>
+          <th>Deadline</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let problem of problems" >
+          <td>{{ problem.id }}</td>
+          <td>{{ getTouristName(problem.userId) }}</td>
+          <td>{{ getTourName(problem.tourId) }}</td>
+          <td>{{ getCategoryName(problem.details.category) }}</td>
+          <td>{{ problem.resolution.reportedAt | date:'medium' }}</td>
+          <td>{{ problem.resolution.deadline | date:'medium' }}</td>
+          <td>
+            <button class="status-badge" 
+                    [ngClass]="{
+                      'status-unresolved': getProblemStatus(problem) === 'Unresolved',
+                      'status-overdue': getProblemStatus(problem) === 'Overdue',
+                      'status-resolved': getProblemStatus(problem) === 'Resolved'
+                    }">
+              {{ getProblemStatus(problem) }}
+            </button>
+          </td>       
+          <td >
+            <button class="action-btn table-btn" *ngIf="isDeadlineExpired(problem.resolution.deadline)"><i class="fa-solid fa-box-archive"></i></button>
+            <button class="action-btn table-btn" (click)="toggleProblemModal(problem)"><i class="fa-solid fa-circle-info"></i></button>
+          </td>       
+        </tr>        
+      </tbody>
+    </table>
+  </div>
+  <!-- Problem Modal -->
+<div class="problem-modal" *ngIf="selectedProblem">
+    <div class="problem-modal-content">
+      <div class="modal-header">
+        <h2>Problem Info</h2>
+        <button class="close-btn" (click)="closeProblemModal()">×</button>
+      </div>
+  
+      <!-- Problem Details -->
+      <table class="problem-details-table">
+        <tr>
+          <th>Tour Name:</th>
+          <td>{{ getTourName(selectedProblem.tourId) }}</td>
+        </tr>
+        <tr>
+          <th>Reported At:</th>
+          <td>{{ selectedProblem.resolution.reportedAt | date:'medium' }}</td>
+        </tr>
+        <tr>
+          <th>Deadline:</th>
+          <td>{{ selectedProblem.resolution.deadline | date:'medium' }}</td>
+        </tr>
+      </table>
+  
+      <!-- Messages Section -->
+      <div class="messages-wrapper">
+        <h2>Messages</h2>
+        <div class="modal-messages">
+          <div 
+            *ngFor="let message of selectedProblemMessages" class="modal-message"
+            [ngClass]="{'modal-message': true, 'me': user.id === message.userId, 'other': user.id !== message.userId}">
+            <b *ngIf="user.id === message.userId">Me:</b>
+            <b *ngIf="user.id !== message.userId">Tourist:</b> {{ message.content }}
+          </div>
+        </div>
+        <div class="add-comment">
+          <input
+            type="text"
+            [(ngModel)]="newMessageContent"
+            placeholder="Write a message..."
+          />
+          <button class="cta-button" (click)="handleSendMessageClick()">Send</button>
+        </div>
+      </div>
+    </div>
+  </div>

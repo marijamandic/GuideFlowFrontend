@@ -1,0 +1,395 @@
+html, body {
+  margin: 0;
+}
+
+.main-container {
+  display: flex;
+  align-items: flex-start;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.main-column {
+  flex: 1;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+}
+
+.right-sidebar {
+  max-width: 1210px; 
+  width: 100%;
+  padding: 15px;
+  background-color: white;
+  color: white;
+  border-radius: 15px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  margin-bottom: 10px; 
+}
+
+.right-sidebar select{
+  padding: 5px;
+  border-radius: 15px;
+  color: gray;
+}
+
+.filter-label {
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 10px;
+}
+
+#engagementStatusFilter {
+  width: 100%;
+  padding: 7px;
+  border: 1px solid gray; 
+  border-radius: 15px;
+  background-color: #ffffff;
+  color: gray; 
+  font-weight: bold;
+  cursor: pointer;
+  appearance: none;
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+#engagementStatusFilter:focus {
+  outline: none;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
+  background-color: #f2f2f2; 
+}
+
+#engagementStatusFilter option {
+  background-color: #ffffff; 
+  color: gray; 
+  border-radius: 15px;
+}
+
+#engagementStatusFilter option:hover {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.custom-dropdown {
+  position: relative;
+  width: 98%;
+  border: 1px solid gray;
+  border-radius: 15px;
+  padding: 7px;
+  background-color: #ffffff;
+  color: gray;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.custom-dropdown .selected-option {
+  color: gray;
+}
+
+.dropdown-options {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background-color: #ffffff;
+  border: 1px solid gray;
+  border-radius: 15px;
+  margin-top: 5px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
+  z-index: 10;
+}
+
+.dropdown-option {
+  padding: 7px;
+  color: gray;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.dropdown-option:hover {
+  background-color: var(--primary-color);
+  border-radius: 15px;
+  color: white;
+}
+
+.dropdown-option.selected {
+  font-weight: bold;
+}
+
+.filter-spacing {
+  height: 20px; /* Space between the filter and posts */
+}
+
+.post-flex {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px; 
+  align-items: center;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.post-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  max-width: 1200px; 
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
+  padding: 20px;
+  gap: 20px;
+  align-items: flex-start;
+  position: relative;
+}
+
+.post-container:hover {
+  transform: scale(1.02);
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
+  transition: 0.5s;
+}
+
+
+.post-image {
+  width: 300px;
+  height: 200px;
+  border-radius: 8px;
+  object-fit: fill;
+  margin-left: auto;
+}
+
+.post-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.post-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.post-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--accent-color);
+  margin: 0;
+}
+
+.rating-badge {
+  background-color: var(--primary-color);
+  color: white;
+  font-size: 14px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.description {
+  color: var(--text-color);
+  font-size: 14px;
+  margin: 10px 0;
+  white-space: pre-line;
+}
+
+.details {
+  font-size: 12px;
+  color: #666666;
+  margin-bottom: 10px;
+}
+
+.status {
+  font-size: 12px;
+  color: #28a745;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.cta-button {
+  align-self: center;
+  margin-top: auto;
+  background-color: var(--primary-color);
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  padding: 12px 30px;
+  border-radius: 25px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s ease;
+}
+
+.cta-button:hover {
+  background-color: var(--hover-color);
+  transform: scale(1.1);
+  transition: 0.5s ease;
+}
+
+/* Vote and Interaction Buttons */
+.vote-container, .interaction-container {
+  display: inline-flex;
+  align-items: center;
+  border: none;
+  border-radius: 30px; 
+  padding: 5px 10px;
+  background-color: var(--primary-color); 
+  margin-right: 15px;
+}
+
+.vote-button, .interaction-button {
+  font-size: 1.2em;
+  color: white; 
+  background: none;
+  border: none;
+  border-radius: 30px; 
+  cursor: pointer;
+  padding: 5px;
+}
+
+.vote-button:hover, .interaction-button:hover {
+  box-shadow: white 0px 7px 29px 0px;
+}
+
+.vote-button:focus, .interaction-button:focus {
+  outline: none;
+}
+
+.vote-button.fa-arrow-up:hover {
+  color: #ff4500;
+}
+
+.vote-button.fa-arrow-down:hover {
+  color: #7193ff;
+}
+
+.vote-count, .interaction-count {
+  margin: 0 10px;
+  font-size: 1.1em;
+  color: white;
+  font-weight: bold;
+}
+
+.bottom-interaction-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-top: 20px;
+}
+
+.limited-description {
+  max-height: 70px; 
+  overflow: hidden;
+  position: relative;
+}
+
+.limited-description::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, white 100%);
+}
+
+/* Draft Image with Grayscale Filter */
+.draft-image {
+  filter: grayscale(100%);
+  position: relative;
+}
+
+ 
+.draft-label {
+  position: absolute;
+  top: 100px;
+  left: 740px;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: bold;
+  z-index: 1;
+}
+
+.upvoted {
+  color: #ff4500;
+}
+
+.downvoted {
+  color: #7193ff;
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+      box-shadow: 0 0 10px rgba(132, 220, 198, 0.3), 0 0 20px rgba(132, 220, 198, 0.2);
+      transform: scale(1);
+  }
+  50% {
+      box-shadow: 0 0 30px rgba(132, 220, 198, 0.6), 0 0 60px rgba(132, 220, 198, 0.5);
+      transform: scale(1.1);
+  }
+}
+
+.floating-add-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #84dcc6;
+  color: white;
+  padding: 15px 30px;
+  border-radius: 25px;
+  font-weight: bold;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+  z-index: 1000;
+  animation: pulseGlow 3s ease-in-out infinite; /* Apply pulsing animation */
+}
+
+.floating-add-button:hover {
+  background-color: #66c5af;
+  transform: scale(1.1);
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 500px;
+  position: relative;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}

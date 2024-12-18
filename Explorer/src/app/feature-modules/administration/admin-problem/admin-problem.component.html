@@ -1,0 +1,34 @@
+<h1 class="subtitle">OVO SU SVI PRIJAVLJENI PROBLEMI</h1>
+<div class="problems-container">
+    <div *ngFor="let p of problems" class="problem-card" [ngClass]="{
+        'resolved': p.resolution.isResolved === true,
+        'expired': p.resolution.isResolved === false && isPassed5Days(p.resolution.reportedAt)}">
+        <p><strong>Problem ID:</strong> {{p.id}}</p>
+        <p><strong>Category:</strong> {{getCategoryName(p.details.category)}}</p>
+        <p><strong>Priority:</strong> {{getPriorityName(p.details.priority)}}</p>
+        <p><strong>Description:</strong> {{p.details.description}}</p>
+        <p><strong>Reported At:</strong> {{formatDate(p.resolution.reportedAt)}}</p>
+        <p><strong>Is problem solved:</strong> {{p.resolution.isResolved ? 'Yes' : 'No'}}</p>
+        <p><strong>Problem deadline:</strong> {{formatDate(p.resolution.deadline)}}</p>
+        
+        <button *ngIf="p.resolution.isResolved === false && !isDeadlineExpired(p.resolution.deadline)" (click)="toggleDatePicker(p.id ?? 0)" class="set-deadline-btn">
+            Set Deadline
+        </button>
+        <br>
+        <br>
+        <button *ngIf="isDeadlineExpired(p.resolution.deadline) && p.id !== undefined && isTourAvailable(p.id)"
+         (click)="updateTourStatus(p.tourId)">
+            Turn off the tour
+        </button>
+
+        <div *ngIf="selectedProblemId === p.id" class="date-picker">
+            <input 
+                type="date" 
+                [min]="getMinDate(p.resolution.deadline)" 
+                (change)="updateSelectedDate($event)"
+            />
+            <button (click)="saveDeadline(p.id)">Save</button>
+            <button (click)="cancelDeadline()">Cancel</button>
+        </div>
+    </div>
+</div>

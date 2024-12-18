@@ -1,0 +1,76 @@
+.review-card {
+    width: 350px;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+    text-align: center; /* Center align text and stars */
+}
+
+.review-card h2 {
+    margin-top: 0;
+    color: #333;
+}
+.review-card h5 {
+    margin-top: -10px;
+    margin-bottom: 20px;
+}
+
+.review-card label {
+    display: block;
+    margin: 10px 0 5px;
+    font-weight: bold;
+    color: #555;
+}
+
+.review-card input[type="number"],
+.review-card textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.review-card input[type="number"] {
+    max-width: 70px;
+}
+
+.review-card textarea {
+    resize: vertical;
+    height: 80px;
+}
+
+.review-card button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.review-card button:hover {
+    background-color: #0056b3;
+}
+
+.stars {
+    display: flex;
+    justify-content: center; /* Center stars horizontally */
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+.star {
+    font-size: 40px; /* Size of stars */
+    color: #ccc; /* Color of empty stars */
+    transition: color 0.2s;
+}
+
+.star.filled {
+    color: #ffcc00; /* Color of filled stars */
+}

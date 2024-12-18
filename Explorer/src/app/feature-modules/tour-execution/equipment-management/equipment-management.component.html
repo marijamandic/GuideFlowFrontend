@@ -1,0 +1,36 @@
+<div class="modal" id="deleteModal">
+    <div class="modal-content">
+        <span class="close" (click)="closeDeleteModal()">&times;</span>
+        <p id="deleteMessage">Equipment deleted successfully!</p>
+    </div>
+</div>
+<div class="container">
+    <table class="table-container">
+        <thead>
+            <tr>
+                <!-- <th>Id</th> -->
+                <th>TouristId</th>
+                <th>EquipmentId</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let em of equipment_management">
+                <!-- <td>{{em.id}}</td> -->
+                <td>{{em.touristId}}</td>
+                <td>{{em.equipmentId}}</td>
+                <td>{{em.status}}</td>
+                <td>
+                    <button (click)="deleteEquipment(em)"  color="accent" mat-icon-button>
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="form-container">
+        
+        <xp-equipment-form (equipmentUpdated)="getEquipmentManagement()"></xp-equipment-form>
+    </div>
+</div>

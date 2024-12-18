@@ -1,0 +1,9 @@
+<div class="comment-form-container" [formGroup]="commentForm">
+  <textarea formControlName="content" class="comment-textarea" placeholder="Write your comment"></textarea>
+  <div class="form-actions">
+      <button class="cta-button" *ngIf="shouldEdit" (click)="cancelEdit()">Cancel</button>
+      <button class="cta-button" (click)="shouldEdit ? editComment() : addComment()">
+          {{ shouldEdit ? 'Update' : 'Comment' }}
+      </button>
+  </div>
+</div>

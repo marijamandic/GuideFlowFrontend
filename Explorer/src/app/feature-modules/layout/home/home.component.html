@@ -1,1 +1,58 @@
-<p><b>Home component</b></p>
+<div class="carousel">
+    <div class="carousel-container">
+        <img *ngFor="let image of images; let i = index" [src]="images[currentImageIndex]" alt="Tour Image" class="carousel-image" [class.active]="i === currentImageIndex" />
+    </div>
+</div>
+
+<div class="main-column">
+    <!-- MESSAGE -->
+    <div class="overlay">
+        <h1 class="motivational-message">Discover new paths,</h1>
+        <h1 class="motivational-message">one adventure at a time</h1>
+        <button class="cta-button glow-button" routerLink="/tourView">Book a tour</button>
+    </div>
+
+    <!-- POPULAR TOURS -->
+    <section class="popular-tours">
+        <h2>Our picks</h2>
+        <div class="tour-cards-container no-scroll">
+            <a *ngFor="let tour of tours" class="tour-card" [routerLink]="['/tourPreview', tour.id]">
+                <div class="tour-image" [style.backgroundImage]="'url(' + tour.imageUrl + ')'"></div>
+                <div class="tour-info">
+                    <h3>{{ tour.name }}</h3>
+                    <p>{{ tour.description }}</p>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- GUIDE CTA -->
+    <section class="guide-signup">
+        <div class="guide-signup-overlay">
+            <h2>Are you a guide?</h2>
+            <p>Create your own tour today!</p>
+            <button class="cta-button">Sign up</button>
+        </div>
+    </section>
+
+    <!-- POPULAR CLUBS -->
+    <section class="popular-clubs">
+        <h2>Most popular clubs</h2>
+        <div class="club-cards-container no-scroll">
+            <div *ngFor="let club of clubs" class="club-card" (click)="navigateToClub(club.id ?? 0)">
+                <div
+                    class="club-image"
+                    [style.backgroundImage]="'url(' + (club.imageUrl || 'assets/images/default-club.jpg') + ')'"
+                ></div>
+                <div class="club-info">
+                    <h3>{{ club.name }}</h3>
+                    <p>{{ club.description }}</p>
+                    <div class="club-rating">
+                        <span class="rating-badge">{{ club.memberCount > 0 ? club.memberCount + ' members' : '321 members' }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+

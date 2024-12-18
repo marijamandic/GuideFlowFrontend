@@ -1,0 +1,180 @@
+.divContainer {
+    margin-left: auto;
+    margin-right: auto;
+    font-family: 'Arial', sans-serif;
+    max-width: 700px;
+    min-width: 400px;
+    max-height: 90%; /* Ograničava visinu na 90% prozora */
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow-y: auto; /* Omogućava skrolovanje sadržaja */
+  }
+  div {
+    margin-bottom: 0px;
+  }
+  
+  label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 8px;
+    color: #333;
+  }
+  
+  input[type="text"],
+  input[type="number"],
+  textarea,
+  input[type="file"] {
+    width: 80%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  select {
+    width: 83%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  textarea {
+    resize: vertical;
+  }
+  
+  input[type="checkbox"] {
+    margin-left: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .cta-button:disabled {
+    background-color: #9b9b9b;
+    cursor: not-allowed;
+  }
+  
+  .cta-button:hover:not(:disabled) {
+    background-color: #66c5af;
+  }
+  .cta-button{
+    margin-top: 50px;
+  }
+  
+  div.map-container label {
+    margin-bottom: 10px;
+    display: inline-block;
+  }
+  
+  div.map-container xp-map {
+    width: 100%;
+    height: 300px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  div *:focus {
+    outline: none;
+    border: 1px solid #007BFF;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  }
+  
+  .modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Zatamljenje pozadine */
+    display: flex;
+    /* flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    overflow-y: auto;
+    padding: 0; */
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    z-index: 1050;
+  }
+
+  
+  .form-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Tri kolone */
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .form-column {
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+  
+  .form-row .form-column label {
+    margin-bottom: 8px;
+  }
+  
+  .form-row .form-column input,
+  .form-row .form-column textarea,
+  .form-row .form-column select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 8px;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    font-size: 14px;
+  }
+
+
+  #encounterType {
+    width: 80%; /* Isto kao i ostali input elementi */
+    padding: 10px; /* Isto kao i ostali elementi */
+    margin-left: 8px; /* Poravnaj ga sa ostalim elementima */
+    margin-bottom: 15px; /* Dodaj razmak ispod */
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    font-size: 14px;
+  }
+
+  .close-button {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    /* position: absolute;
+    right: 10px; */
+  }
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .modal-header h2 {
+    margin: 0;
+  }
+  #description {
+    width: 80%; /* Ovo važi samo za description */
+}
+
+.error-message {
+  color: red;
+  font-size: 0.8em;
+  margin-top: 4px;
+}
+  

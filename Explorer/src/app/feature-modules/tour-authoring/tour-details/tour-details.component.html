@@ -1,0 +1,89 @@
+<div class="tour-details-container" *ngIf="tour">
+    <h2>Tour Details</h2>
+  
+    <div *ngIf="isForEdit; else viewMode" class="tour-form">
+        <p><strong>Tour Name:</strong> 
+      <input id="tourName" [(ngModel)]="tour.name" name="tourName" placeholder="Tour Name" />
+  
+      <p><strong>Description:</strong>
+      <textarea id="description" [(ngModel)]="tour.description" name="description" placeholder="Description"></textarea>
+  
+      <p><strong>Price:</strong>
+      <input id="cost" [(ngModel)]="tour.price" name="cost" placeholder="Price" />
+  
+     
+  
+      <p><strong>Level:</strong>
+      <select id="level" [(ngModel)]="tour.level" name="level">
+        <option value="1">Easy</option>
+        <option value="2">Advanced</option>
+        <option value="3">Expert</option>
+      </select>
+  
+      <p><strong>Taggs:</strong>
+      <div class="tags-container">
+        <div *ngFor="let tag of tags; let i = index">
+          <input id="tag{{i}}" [(ngModel)]="tags[i]" placeholder="Tag {{i + 1}}" class="tag"/>
+        </div>
+      </div>
+      <button class="add-tag-button" (click)="addTag()">Add Tag</button>
+
+      <div class="tour-form-container">
+        <xp-tour-equipment></xp-tour-equipment>
+      </div>
+
+      <div class="tour-form-container" >
+        <xp-checkpoint-list [forUpdating]="isForEdit"></xp-checkpoint-list>
+      </div>
+
+
+      <div class="actions">
+        <button (click)="updateTour()" mat-icon-button>
+          <mat-icon>done</mat-icon>
+        </button>
+      </div>
+    </div>
+  
+    <ng-template #viewMode>
+      <p><strong>Tour Name:</strong> {{ tour.name }}</p>
+      <p><strong>Description:</strong> {{ tour.description }}</p>
+      <p><strong>Price:</strong> {{ tour.price }}</p>
+      <p><strong>Level:</strong> {{ getFormattedLevel(tour.level) }}</p>
+  
+      <p><strong>Tags:</strong></p>
+      <div class="tags-container">
+        <span *ngFor="let tag of tags" class="tag">{{ tag }}</span>
+      </div>
+      <div *ngIf="!tags || tags.length === 0">
+        <p><i>No tags available for this tour.</i></p>
+      </div>
+
+      <div class="actions" *ngIf = "tour.status !== 1 ">
+        <button (click)="deleteTour(tour.id || 0)" mat-icon-button>
+          <mat-icon>delete</mat-icon>
+        </button>
+        <button (click)="onEditClicked(tour)" mat-icon-button>
+          <mat-icon>edit</mat-icon>
+        </button>
+      </div>
+    
+      <div class="card-container">
+        <div *ngFor="let checkpoint of tour.checkpoints" class="checkpoint-card">
+          <div class="checkpoint-image">
+            <img [src]="getImagePath(checkpoint.imageUrl)" alt="Checkpoint image" />
+          </div>
+          <div class="checkpoint-info">
+            <h3>{{ checkpoint.name }}</h3>
+            <p>{{ checkpoint.description }}</p>
+            <p><strong>Latitude:</strong> {{ checkpoint.latitude }}</p>
+            <p><strong>Longitude:</strong> {{ checkpoint.longitude }}</p>
+            <button *ngIf="!checkpoint.encounterId && checkpoint.id" (click)="navigateToAddEncounter(checkpoint.id)">Add encounter</button>
+          </div>
+        </div>
+      </div>
+
+    </ng-template>
+  
+   
+  </div>
+  

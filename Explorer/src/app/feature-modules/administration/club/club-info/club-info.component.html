@@ -1,0 +1,87 @@
+<div class="main-column">
+  <!-- Club Header Section -->
+  <div class="club-info-header">
+    <p *ngIf="ownerUsername"> {{ ownerUsername }}</p>
+    <div *ngIf="club?.name" class="club-name">
+      {{ club.name }} 
+    </div>    
+    
+    <!-- Club Image (if available) -->
+    <img *ngIf="club?.imageUrl" [src]="getImagePath(club.imageUrl)" alt="Club image" class="club-image" />
+
+    <!-- Club Description (if available) -->
+    <div *ngIf="club?.description" class="club-description">
+      <p>{{ club.description }}</p>
+    </div>
+    <div class="edit-club-container">
+      <button class="cta-button" *ngIf="club?.ownerId === ownerId" (click)="openInviteModal()">Invite</button>
+      <!-- <button class="cta-button" *ngIf="club?.ownerId === ownerId" (click)="onEditClub()">Edit</button> Ovo možda da premestimo u dashboard? -->
+      <button class="cta-button" *ngIf="club?.ownerId === ownerId" (click)="onDashboard()">Dashboard</button>
+      <button class="cta-button" [class.pending]="isPending"  *ngIf="role === 'tourist' && club?.ownerId !== ownerId" [disabled]="isMember || isPending" (click)="onRequestClub()" > {{ isMember ? 'Already a Member' : (isPending ? 'Pending Approval' : 'Join') }} </button>
+
+    </div>
+  </div>
+
+  <!-- Modal for Inviting Users -->
+  <div *ngIf="showModal" class="modal-overlay">
+    <div class="modal-content">
+      <!-- <h3>Invite Users to Club</h3> -->
+      <input
+        type="text"
+        placeholder="Search for users..."
+        [(ngModel)]="searchTerm"
+        (input)="searchUsers()"
+        class="search-bar"
+      />
+  
+      <ul>
+        <li
+          *ngFor="let user of filteredUsers"
+          (click)="selectUser(user)"
+          [class.selected]="selectedUser?.id === user.id"
+        >
+          <span>{{ user.username }}</span>
+        </li>
+      </ul>
+  
+      <div class="modal-actions">
+        <button class="cta-button" (click)="onInvite()">Invite</button>
+        <button class="cta-button cancel" (click)="closeModal()">Close</button>
+      </div>
+    </div>
+  </div>
+  
+
+  <!-- Club Posts Section -->
+  <div class="club-posts-section">
+    <div *ngFor="let post of clubPosts" class="club-post">
+      <!-- Post Content (if available) -->
+      <p class="post-content" *ngIf="post?.content">{{ post.content }}</p>
+      
+      <!-- Display Resource Information as a Link (if available) -->
+      <div class="post-resource" *ngIf="post?.resourceId">
+        <a
+          [href]="'http://localhost:4200/' + (post.resourceType === 0 ? 'blog' : 'tour-more-details') + '/' + post.resourceId"
+          target="_blank"
+          class="resource-link"
+        >
+          Click to see the shared content
+        </a>
+      </div>
+      <div class="post-actions">
+        <!-- Update Button -->
+        <button class="action-button update" (click)="onUpdatePost(post)">Update</button>
+  
+        <!-- Delete Button (only for club owner) -->
+        <button
+          class="action-button delete"
+          *ngIf="club?.ownerId === ownerId"
+          (click)="onDeletePost(post)"
+        >
+          Delete
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>

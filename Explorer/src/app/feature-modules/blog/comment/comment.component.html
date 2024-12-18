@@ -1,0 +1,26 @@
+<div class="comment-section">
+  <div *ngIf="comments.length === 0" class="no-comments">
+    <p>No comments yet. Be the first to add one!</p>
+  </div>
+
+  <div *ngFor="let comm of comments" class="comment-card">
+    <!-- Top Row: Author on the left, Date on the right -->
+    <div class="comment-header">
+      <span class="comment-author">{{ commentCreators[comm.userId] }}</span>
+      <span class="comment-date">{{ comm.createdAt | date:'short' }}</span>
+    </div>
+    
+    <!-- Comment Content -->
+    <div class="comment-body">
+      <p>{{ comm.content }}</p>
+    </div>
+
+    <!-- Actions Row: Edit/Delete buttons aligned to the right -->
+    <div class="comment-actions">
+      <button *ngIf="user && user.id === comm.userId" class="edit-btn" (click)="onEditClicked(comm)">Edit</button>
+      <!-- <button *ngIf="comm.id && user && user.id === comm.userId" class="delete-btn" (click)="deleteComments(comm.id)">Delete</button>-->
+    </div>
+  </div>
+  
+  <button *ngIf="user && user.role === 'tourist'" class="add-comment-btn" (click)="onAddClicked()">Add Comment</button>
+</div>

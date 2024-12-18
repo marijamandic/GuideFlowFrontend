@@ -1,0 +1,34 @@
+<form [formGroup]="checkpointForm">
+    <div>
+        <mat-form-field>
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="name" type="text" required />
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Description</mat-label>
+            <textarea matInput formControlName="description" type="text" required></textarea>
+        </mat-form-field>
+
+        <div>
+            <label for="fileInput">Image URL</label>
+            <input id="fileInput" type="file" (change)="onFileSelected($event)">
+        </div>
+
+        <mat-form-field>
+            <mat-label>Secret</mat-label>
+            <input matInput formControlName="secret" type="text" required />
+        </mat-form-field>
+
+        <div *ngIf="!shouldEdit">
+            <label>Is this tour object public?</label>
+            <input type="checkbox" (change)="onIsCheckedChange($event)" />
+        </div>
+
+        <div class="map-container">
+            <xp-tour-add-checkpoint-map [isEditing]="shouldEdit" [checkpoint]="checkpointCoordinates" (coordinatesSelected)="onCoordinatesSelected($event)" (publicPointSelected)="handlePublicPointSelection($event)"></xp-tour-add-checkpoint-map>
+        </div>
+    </div>
+    <button color="primary" type="submit" (click)="addCheckpoint()" mat-raised-button>Done</button>
+</form>
+

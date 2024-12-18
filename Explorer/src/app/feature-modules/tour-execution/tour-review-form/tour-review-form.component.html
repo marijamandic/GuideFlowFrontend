@@ -1,0 +1,12 @@
+<div class="review-card">
+    <h2>Ostavite recenziju</h2>
+    <form [formGroup]="tourReviewForm" (ngSubmit)="handleClick()">
+        <label for="rating">Ocena (1-5):</label>
+        <input type="number" id="rating" formControlName="rating" min="1" max="5" required>
+
+        <label for="comment">Komentar:</label>
+        <textarea id="comment" formControlName="comment" placeholder="Napišite komentar..." required></textarea>
+
+        <button type="submit" [disabled]="tourReviewForm.invalid">Pošalji recenziju</button>
+    </form>
+</div>
