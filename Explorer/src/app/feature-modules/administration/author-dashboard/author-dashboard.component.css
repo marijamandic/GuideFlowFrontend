@@ -23,13 +23,13 @@ h1{
     padding: 0;
   }
 
-  dashboard-container {
+  .dashboard-container {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 20px;
+    grid-template-columns: repeat(12, 1fr); /* 12-column grid for flexibility */
+    gap: 20px; /* Spacing between the cards */
     margin: 0 auto;
     padding: 20px;
-    max-width: 1400px;
+    max-width: 1400px; /* Ensures alignment with the site's width */
   }
 
   .dashboard-card {
@@ -37,12 +37,34 @@ h1{
     border-radius: 15px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    margin: 20px auto;
-    width: 100%;
-    max-width: 1400px;
     color: #333;
   }
-  
+
+   /* Full-Width Card */
+  .dashboard-card.full-width {
+    grid-column: span 12; /* Spans all columns */
+  }
+
+  /* Half-Width Card */
+  .dashboard-card.half-width {
+    grid-column: span 6; /* Spans half the width */
+  }
+
+  /* Third-Width Card (For Highlights) */
+  .dashboard-card.third-width {
+    grid-column: span 4; /* Spans a third of the width */
+  }
+
+.chart-placeholder {
+  height: 200px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #888;
+}  
+
   .user-card-header {
     display: flex;
     justify-content: space-between;
