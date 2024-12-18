@@ -1,0 +1,45 @@
+<div class="main-column">
+    <form [formGroup]="postForm" (ngSubmit)="onSubmit()" class="blog-form">
+      <table>
+        <tr>
+          <td><h2>Edit Blog Post</h2></td>
+        </tr>
+        <tr>
+          <td><label for="title">Title</label></td>
+        </tr>
+        <tr>
+          <td><input id="title" formControlName="title" class="form-control" type="text" /></td>
+        </tr>
+        <tr>
+          <td><label for="description">Description</label></td>
+        </tr>
+        <tr>
+          <td><textarea id="description" formControlName="description" class="form-control"></textarea></td>
+        </tr>
+        <tr>
+          <td><label for="fileUpload">Image Upload</label></td>
+        </tr>
+        <tr>
+          <td><input type="file" id="fileUpload" (change)="onFileSelected($event)" class="form-control"></td>
+        </tr>
+        <tr>
+            <td style="text-align: center;">
+                <img 
+                [src]="imageBase64 || getImagePath(postData?.imageUrl || '')" 
+                *ngIf="imageBase64 || postData?.imageUrl" 
+                alt="Blog Image" 
+              />
+            </td>
+          </tr>
+          
+          
+        <tr>
+          <td colspan="2" style="text-align: center;">
+            <button type="button" class="cta-button form-button" (click)="onDraft()" [disabled]="postForm.invalid">Save as Draft</button>
+            <button type="submit" class="cta-button form-button" [disabled]="postForm.invalid">Publish</button>
+          </td>
+        </tr>
+      </table>
+    </form>
+  </div>
+  
