@@ -13,3 +13,11 @@
 </div>
 
 <button class="cta-button floating-add-club-button" (click)="onAddClicked()"><i class="fa fa-plus" aria-hidden="true"></i></button>
+
+<div class="modal-overlay" *ngIf="showClubFormModal">
+    <div class="modal-content">
+      <button class="close-button" (click)="closeModal()">×</button>
+      <xp-club-form [shouldEdit]="false" (clubCreated)="closeModal()"></xp-club-form>
+    </div>
+  </div>
+  
