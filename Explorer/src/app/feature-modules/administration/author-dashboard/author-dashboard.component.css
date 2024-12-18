@@ -36,7 +36,7 @@ h1{
     background-color: #fff;
     border-radius: 15px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 20px;
+    padding: 30px;
     color: #333;
   }
 
@@ -64,6 +64,76 @@ h1{
   align-items: center;
   color: #888;
 }  
+
+
+/* ■■■■■■■■■■■■■■■ REVIEWS ■■■■■■■■■■■■■■■*/
+.reviews-card {
+  padding: 40px;
+}
+
+.average-grade {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.grade {
+  padding-top: 0;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.total-ratings {
+  color: #888;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.ratings-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.rating-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.grade-label {
+  width: 50px;
+  text-align: right;
+  font-size: 14px;
+  color: #333;
+}
+
+.rating-bar {
+  flex: 1;
+  height: 10px;
+  background-color: #e0e0e0;
+  border-radius: 5px;
+  position: relative;
+  overflow: hidden;
+}
+
+.bar-filled {
+  height: 100%;
+  background-color: #84dcc6;
+}
+
+.rating-percentage {
+  width: 40px;
+  text-align: right;
+  font-size: 14px;
+  color: #333;
+}
+
+
+
+
+/* IDK, but REVIEWS are done here. */
 
   .user-card-header {
     display: flex;

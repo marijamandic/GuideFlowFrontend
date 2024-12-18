@@ -12,6 +12,7 @@ import { TourAuthoringService } from '../../tour-authoring/tour-authoring.servic
 //import { adjustProblemsArrayResponse } from 'src/app/shared/utils/adjustResponse';
 import { Message } from 'src/app/shared/model/message.model'; // Import poruka modela
 import { CreateMessageInput } from '../../tour-authoring/model/create-message-input.model';
+import { AdministrationService } from '../administration.service';
 
 @Component({
   selector: 'xp-author-dashboard',
@@ -20,9 +21,16 @@ import { CreateMessageInput } from '../../tour-authoring/model/create-message-in
 })
 export class AuthorDashboardComponent implements OnInit {
 
-  constructor(private authService: AuthService,private service: TourAuthoringService,private tourService: TourService){}
+  constructor(
+    private authService: AuthService,
+    private service: TourAuthoringService,
+    private tourService: TourService,
+    private administrationService: AdministrationService
+  ){}
+
+  Math = Math;
   user: User;
- // users: Account[] = []
+  // users: Account[] = []
   problems: Problem[] = [];
   tours: Tour[] = [];
   problemTourMap: Map<number, boolean> = new Map<number, boolean>();
@@ -30,24 +38,54 @@ export class AuthorDashboardComponent implements OnInit {
   selectedDate: string = '';
   selectedProblemMessages: Message[] = [];
   newMessageContent: string = '';
+  averageGrade: number = 0;
+  reviewsPartition: { [key: number]: number } = {};
+
   ngOnInit(): void {
-    //this.getAccounts();
     this.loadProblems();
     this.authService.user$.subscribe((user)=>{
       this.user = user;
     })
+    this.loadAverageGrade(this.user.id); 
+    this.loadReviewsPartition(this.user.id);
   }
- /* getAccounts() : void {
-    this.service.getAccounts().subscribe({
-     next: (result: Array<Account>) => {
-     this.users = result
-     console.log(result);
-     },
-     error: (err: any) => {
-       console.log(err)
-     }
-   })
- }*/
+
+  // ■■■■■ Reviews sections ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+  loadAverageGrade(authorId: number): void {
+    this.administrationService.getAverageGradeForAuthor(authorId).subscribe({
+      next: (result) => {
+        this.averageGrade = result;
+        // console.log(result);
+      },
+      error: (err) => {
+        console.error('Error fetching average grade:', err);
+      },
+    });
+  }
+  
+  loadReviewsPartition(authorId: number): void {
+    this.administrationService.getReviewsPartitionedByGrade(authorId).subscribe({
+      next: (result) => {
+        this.reviewsPartition = result;
+        // console.log(result);
+      },
+      error: (err) => {
+        console.error('Error fetching reviews partition:', err);
+      },
+    });
+  }
+
+  getTotalRatings(): number {
+    return Object.values(this.reviewsPartition).reduce((sum, count) => sum + count, 0);
+  }
+  
+  getRatingPercentage(grade: number): number {
+    const total = this.getTotalRatings();
+    if (total === 0) return 0;
+    return Math.round((this.reviewsPartition[grade] || 0) / total * 100);
+  }
+
+  // ■■■■■ Problems table ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
   loadProblems(): void {
     this.service.getProblemsByAuthorId().subscribe({
       next: (result: PagedResults<Problem>) => {
@@ -60,6 +98,7 @@ export class AuthorDashboardComponent implements OnInit {
       },
     });
   }
+
   fetchAllTours(): void {
     this.tourService.getTour().subscribe({
       next: (result: PagedResults<Tour>) => {
@@ -71,6 +110,7 @@ export class AuthorDashboardComponent implements OnInit {
       },
     });
   }
+
   validateProblems(): void {
     this.problems.forEach((problem) => {
       if (problem.id !== undefined) {
@@ -79,14 +119,17 @@ export class AuthorDashboardComponent implements OnInit {
       }
     });
   }
+
   getTouristName(userId: number): string {
     //const user = this.users.find((u) => u.userId === userId); // Match with `id` from `Account`
     return this.user.username;
   }
+
   getTourName(tourId: number): string {
     const tour = this.tours.find((t) => t.id === tourId);
     return tour ? tour.name : 'Unknown Tour';
   }
+
   getCategoryName(category: Category): string {
     return Category[category] || 'Unknown';
   }
@@ -103,11 +146,12 @@ export class AuthorDashboardComponent implements OnInit {
       return 'Unresolved';
     }
   }
+
   isDeadlineExpired(deadline: Date): boolean {
     const today = new Date();
-    return new Date(deadline) < today; // Returns true if the deadline has passed
+    return new Date(deadline) < today; 
   }
-  // MODAL
+
   toggleProblemModal(problem: Problem): void {
     this.selectedProblem = problem;
     this.selectedProblemMessages = problem.messages || [];
@@ -116,10 +160,12 @@ export class AuthorDashboardComponent implements OnInit {
   closeProblemModal(): void {
     this.selectedProblem = null;
   }
+
   updateSelectedDate(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
     this.selectedDate = inputElement.value;
   }
+
   handleSendMessageClick(): void {
     if (!this.selectedProblem) return;
   
@@ -138,9 +184,5 @@ export class AuthorDashboardComponent implements OnInit {
         console.error('Error sending message:', err);
       }
     });
-  }
-
-  saveDeadline(): void {
-    
   }
 }

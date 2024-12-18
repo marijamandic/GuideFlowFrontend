@@ -19,24 +19,40 @@
   </div>
 
   <!-- Sales and Reviews Side-by-Side -->
-  <div class="dashboard-card half-width">
+  <div class="dashboard-card half-width" >
     <h2>Sales</h2>
     <p>Number of sales for selected period</p>
     <div class="chart-placeholder">[Chart Placeholder]</div>
   </div>
 
-  <div class="dashboard-card half-width">
+  <!-- Reviews -->
+  <div class="dashboard-card half-width reviews-card">
     <h2>Reviews</h2>
-    <p>Average user grade</p>
-    <h3>4.5 out of 5</h3>
-    <ul>
-      <li>5 star: 80%</li>
-      <li>4 star: 65%</li>
-      <li>3 star: 30%</li>
-      <li>2 star: 10%</li>
-      <li>1 star: 5%</li>
-    </ul>
+    <div class="average-grade">
+      <span class="stars">
+        <i *ngFor="let star of [1, 2, 3, 4, 5]" class="fa fa-star"
+           [style.color]="star <= Math.round(averageGrade) ? 'var(--primary-color)' : '#e0e0e0'">
+        </i>
+      </span>
+      <span class="grade">{{ averageGrade.toFixed(1) }} out of 5</span>
+    </div>    
+    <div class="total-ratings">{{ getTotalRatings() }} total ratings</div>
+    <div class="ratings-breakdown">
+      <div *ngFor="let grade of [5, 4, 3, 2, 1]" class="rating-row">
+        <span class="grade-label">{{ grade }} star</span>
+        <div class="rating-bar">
+          <div
+            class="bar-filled"
+            [style.width.%]="getRatingPercentage(grade)"
+          ></div>
+        </div>
+        <span class="rating-percentage">
+          {{ getRatingPercentage(grade) }}%
+        </span>
+      </div>
+    </div>
   </div>
+  
 
   <!-- Highlights in a Row -->
   <div class="dashboard-card third-width">

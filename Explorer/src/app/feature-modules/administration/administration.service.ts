@@ -229,5 +229,18 @@ export class AdministrationService {
 		return this.http.put<void>(`${environment.apiHost}administration/profileInfo/follower/${followedId}`, body);
 	  }
 	  
-	  
+
+	// ##### Author Dashboard #####
+	getAverageGradeForAuthor(authorId: number): Observable<number> {
+		return this.http.get<number>(
+		`${environment.apiHost}manageauthor/dashboard/${authorId}/average-grade`
+		);
+	}
+	
+	getReviewsPartitionedByGrade(authorId: number): Observable<{ [key: number]: number }> {
+		return this.http.get<{ [key: number]: number }>(
+		`${environment.apiHost}manageauthor/dashboard/${authorId}/reviews-partition`
+		);
+	}
+	
 }
