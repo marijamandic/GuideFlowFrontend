@@ -1,12 +1,12 @@
 .map-frame {
     position: relative;
     width: 100%;
-    height: 82vh;
+    height: 77vh;
     z-index: 8;
 }
 
 #map {
-    width: 98%;
+    width: 100%;
     height: 96%;
     border: none;
     border-radius: 20px;
@@ -15,7 +15,7 @@
 
 .search-container {
     position: relative;
-    bottom: 79vh; /* Pozicija od vrha stranice */
+    bottom: 76vh; /* Pozicija od vrha stranice */
     left: 18%; /* Centriranje horizontalno */
     transform: translateX(-50%);
     z-index: 9;
@@ -47,7 +47,7 @@ input[type="text"]:focus {
 }
 
 .update-button {
-    width: 19.5%; /* Ista širina kao input */
+    width: 21%; /* Ista širina kao input */
     padding: 8px 16px; /* Manji padding */
     background-color: var(--primary-color); /* Tirkizna boja */
     color: white;
@@ -57,7 +57,7 @@ input[type="text"]:focus {
     font-size: 14px;
     text-align: center; /* Centriranje teksta */
     transition: background-color 0.3s ease;
-    margin-right: 4%; /* Pomeranje dugmeta udesno da se poravna sa input poljem */
+    margin-right: 4.5%; /* Pomeranje dugmeta udesno da se poravna sa input poljem */
 }
 
 .update-button:hover {

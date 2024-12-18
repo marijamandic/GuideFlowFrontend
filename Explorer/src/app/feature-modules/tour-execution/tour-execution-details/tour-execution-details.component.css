@@ -1,16 +1,15 @@
 .map-background {
-  width: 65%;
+  width: 66%;
   right: 0;
-  margin-left: 35%;
+  margin-left: 33%;
   background-color: #f2f2f2;
-  padding-top: 0.45%;
+  padding-top: 0.85%;
 }
 .map-background xp-tour-execution-map {
   position: relative;
   top: 0;
   right: 0;
-  width: 90vw;
-  height: 96vh;
+  height: 90vh;
   object-fit: cover;
   margin-right: 15px;
   background-color: #FFF;
@@ -20,13 +19,14 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 33vw;
+  bottom: 100px;
+  width: 30vw;
   max-height: 85vh; /* Ograničava maksimalnu visinu na visinu ekrana */
   overflow-y: auto; /* Omogućava vertikalni skrol, ali neće prikazivati scrollbar */
   padding: 20px;
   background-color: #f2f2f2;
   z-index: 9;
-  margin-top: 2.5%;
+  margin-top: 3.3%;
 }
 
 .left-container::-webkit-scrollbar {
@@ -41,6 +41,7 @@
 
 /* Stilizacija kontejnera sa osnovnim informacijama */
 .info-container {
+  position: fixed;
   background-color: #fff;
   border-radius: 15px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -52,7 +53,7 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   position: relative;
   margin-bottom: 10px;
-  max-height: 29vh;
+  max-height: 30vh;
 }
 
 .info-grid {
@@ -174,22 +175,6 @@
   background-color: #4caf50;
 }
 
-/* Kontejner za desnu kolonu - Checkpoint Details */
-.right-container {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  z-index: 3000;
-  max-width: 250px; /* Smanjeno sa 300px */
-  height: 0px;
-  width: 0px;
-  width: 80%; /* Smanjeno sa 90% */
-  background-color: #9a0e0e82;
-  padding: 15px;
-  border-radius: 10px;
-  margin: 3% 52% 0% 0%;
-}
-
 /* Stilizacija za Checkpoint kartice */
 .checkpoint-card {
   background-color: #ffffff;
@@ -199,8 +184,8 @@
   transition: transform 0.2s;
   border: 1px solid #e0e0e0;
   color: #1d1c1c;
-  max-height: 45.5vh;
-  min-height: 45.5vh;
+  max-height: 57vh;
+  min-height: 48vh;
 }
 
 .checkpoint-time {
@@ -249,8 +234,8 @@
 
 /* Slika Checkpoint-a */
 .checkpoint-image {
-  max-width: 410px;
-  height: 150px;
+  max-width: 510px;
+  height: 200px;
   object-fit: cover;
   border-radius: 10px;
   border: 1px solid #ddd;
@@ -313,7 +298,7 @@
 .progres-p {
   font-size: 12px;
   margin-top: -16px;
-  margin-left: 290px;
+  margin-left: 230px;
   font-family: Arial, Helvetica, sans-serif;
   font-weight: 600;
   margin-bottom: -8px;

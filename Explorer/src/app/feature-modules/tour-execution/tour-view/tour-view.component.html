@@ -18,15 +18,15 @@
 	</div>
 
 	<!--Search map-->
-	<div *ngIf="user && user.role === 'tourist' && openMap">
-		<xp-map
+	<div *ngIf="user && user.role === 'tourist' && openMap" class="map-background">
+		<xp-tour-execution-map
 			[allowMultipleMarkers]="false"
 			[initialMarkers]="initialMarkers"
 			(markerAdded)="onMarkerAdded($event)"
 			(mapReset)="onMapReset()"
 			(coordinatesSelected)="onCoordinatesSelected($event)"
 		>
-		</xp-map>
+		</xp-tour-execution-map>
 		<div class="search-container">
 			<input type="text" [(ngModel)]="searchDistance" placeholder="Unesite distancu od tačke" />
 			<button class="button" (click)="searchTours()" color="primary">Pretraži ture</button>
