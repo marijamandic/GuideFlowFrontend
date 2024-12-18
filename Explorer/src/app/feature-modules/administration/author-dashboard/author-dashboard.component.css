@@ -306,13 +306,18 @@ h1{
   
   .problem-modal-content {
     background: white;
-    width: 600px;
+    width: 650px;
     padding: 50px;
     border-radius: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     text-align: center;
   }
-  
+  .problem-header {
+    display: flex;
+    justify-content: space-between; /* Raspoređuje username i tabelu na krajeve */
+    align-items: flex-start; /* Poravnanje na sredinu po vertikali */
+    margin-bottom: 20px;
+  }
   .modal-header {
     display: flex;
     justify-content: space-between;
@@ -332,7 +337,6 @@ h1{
   }
   
   .problem-details-table {
-    width: 100%;
     margin-bottom: 20px;
     border-collapse: collapse;
   }
@@ -430,6 +434,7 @@ h1{
     line-height: 1.5;
     position: relative;
     white-space: normal;
+    text-align: left; /* Poravnanje sadržaja ulevo */
 }
   
   .modal-message.me {
@@ -475,17 +480,16 @@ h1{
   .add-comment button:hover {
     transform: scale(1.05);
   }
-  .no-permission {
-    text-align: center;
-    margin-top: 50px;
-    font-size: 24px;
-    font-weight: bold;
-    color: #dc3545; /* Crvena boja za naglasak */
-  }
   .posted-at {
     font-size: 12px;
     color: #888;
     margin-top: 5px;
     text-align: right;
   }
+  .username {
+    font-size: 18px;
+    font-weight: bold;
+    color: #555;
+  }
+  
   

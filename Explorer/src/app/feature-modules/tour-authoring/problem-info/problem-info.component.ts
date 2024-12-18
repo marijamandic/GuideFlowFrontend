@@ -23,7 +23,7 @@ export class ProblemInfoComponent implements OnInit {
   @ViewChild('messagesContainer') private messagesContainer: ElementRef;
   users: Account[] = []
   user: User;
-  currentTourist : Tourist;
+  opositeUser : User;
   otherUser : User;
   problemId : number = 0;
   tour: Tour | null = null;
@@ -53,7 +53,6 @@ export class ProblemInfoComponent implements OnInit {
           if (result.id !== undefined) {
             this.loadTour(result.id);
             this.loadMessages();
-            this.loadUser();
           }
           else {
             console.error('Error: result.id is undefined');
@@ -66,52 +65,47 @@ export class ProblemInfoComponent implements OnInit {
     }
   }
   loadUser(): void {
-    if (this.problem?.userId) {
-      this.tourService.getTouristById(this.problem.userId).subscribe({
-        next: (result: Tourist) => {
-          this.currentTourist = result;
+    if (!this.problem || !this.user) {
+      console.error('Error: problem or user is undefined');
+      return;
+    }
+
+    if (this.problem.userId === this.user.id) {
+      // Ako je ulogovan turist (problem.userId === user.id), dobavi autora ture
+      if (this.tour?.authorId) {
+        
+        this.tourService.getUserById(this.tour.authorId).subscribe({
+          next: (result: User) => {
+            this.opositeUser = result;
+          },
+          error: (err) => {
+            console.error('Error fetching author username:', err);
+          }
+        });
+      }
+    } else {
+      // Ako je ulogovan autor ture, dobavi turista koji je prijavio problem
+      this.tourService.getUserById(this.problem.userId).subscribe({
+        next: (result: User) => {
+          this.opositeUser = result;
         },
         error: (err) => {
-          console.error('Error fetching user:', err);
+          console.error('Error fetching tourist username:', err);
         }
       });
-    } else {
-      console.error('Error: problem or userId is undefined');
     }
   }
   loadTour(tourId: number): void {
     this.tourService.getTourById(tourId).subscribe({
       next: (result : Tour) => {
         this.tour = result;
+        this.loadUser();
       },
       error: (err) => {
         console.error('Error fetching tour:', err);
       }
     });
   }
-  /*getTourName(tourId: number): string {
-    const tour = this.tours?.find((t) => t.id === tourId);
-    return tour ? tour.name : 'Unknown Tour';
-  }*/
-  
-    getTouristName(): string {
-     /* const userId = this.problem?.userId || 0;
-      if (userId > 0) {
-        this.authService.getUserById(userId).subscribe({
-          next: (user: User) => {
-            this.currentTourist = user;
-            return this.currentTourist.username;
-          },
-          error: (err) => {
-            console.error('Error fetching user:', err);
-            return 'Undefined'
-          }
-        });
-        return 'Undefined';
-      }*/
-     return 'None';
-    }
-    
   
   getCategoryName(): string {
     if(this.problem !== null){

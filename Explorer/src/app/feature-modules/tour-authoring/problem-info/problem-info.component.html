@@ -3,7 +3,7 @@
   <div class="problem-card-header">
     <div class="header-container">
       <!-- Username u gornjem levom uglu -->
-      <div class="username">@{{ currentTourist?.username }}</div>
+      <div class="username">@{{ opositeUser?.username }}</div>
       <!-- Problem Info Table u gornjem desnom uglu -->
       <div class="problem-info-table">
         <table class="problem-table">
@@ -46,9 +46,6 @@
         *ngFor="let message of selectedProblemMessages" 
         class="modal-message"
         [ngClass]="{'me': user.id === message.userId, 'other': user.id !== message.userId, 'description': message.id === 0}">
-        <b *ngIf="user.id === message.userId">Me:</b>
-        <b *ngIf="user.id !== message.userId && user.role === 'tourist'">Author:</b>
-        <b *ngIf="user.id !== message.userId && user.role === 'author'">Tourist:</b>
         {{ message.content }}
         <div class="posted-at">
           {{ message.postedAt | date:'dd/MM/yyyy   HH:mm' }}
