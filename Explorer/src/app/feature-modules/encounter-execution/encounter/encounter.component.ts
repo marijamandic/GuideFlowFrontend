@@ -9,6 +9,8 @@ import { TourService } from '../../tour-authoring/tour.service';
 import { Execution } from '../model/execution.model';
 import { EncounterTourist } from '../model/encounter-tourist.model';
 import { EncounterError } from '../model/encounter-error';
+import { MatDialog } from '@angular/material/dialog';
+import { EncounterFormComponent } from '../encounter-form/encounter-form.component';
 
 @Component({
   selector: 'xp-encounter',
@@ -32,9 +34,14 @@ export class EncounterComponent implements OnInit {
   selectedFilter?: any;
   completed?: number[];
   isActive: boolean = false;
+  completedEncounters: Encounter[] = [];
+  selectedTab: number = 1;
+  isModalOpened: boolean = false;
+  
   @Output() encounterCoordinatesLoaded = new EventEmitter<{ latitude: number; longitude: number; }[]>();
 
   constructor(
+    private dialog: MatDialog,
     private service: EncounterExecutionService,
     private route: ActivatedRoute,
     private router: Router,
@@ -43,6 +50,7 @@ export class EncounterComponent implements OnInit {
   ){}
 
   ngOnInit(): void {
+    this.isModalOpened = false;
     console.log("ovo su parametri koje sam dobio", this.route.snapshot.paramMap.get('encounterExecutionId'), this.route.snapshot.paramMap.get('tourExecutionId') );
     console.log("active execution:", this.activeExecutionId);
     if(this.route.snapshot.paramMap.get('encounterExecutionId')!= null && this.route.snapshot.paramMap.get('tourExecutionId') != null ){
@@ -177,12 +185,34 @@ export class EncounterComponent implements OnInit {
   }
 
   navigateToForm(id?: number): void {
+    console.log('usao je u navigate to form');
     if (id) {
-      this.router.navigate(['/encounter-update', id]);
+      this.isModalOpened = true;
+      this.openFormModal(id);
+     // this.router.navigate(['/encounter-update', id]);
     } else {
-      this.router.navigate(['/encounter-add']);
+      //otvara se modal
+      this.isModalOpened = true;
+      this.openFormModal();
+      //this.router.navigate(['/encounter-add']);
     }
   }
+
+  openFormModal(id?: number): void {
+    const dialogRef = this.dialog.open(EncounterFormComponent, {
+      data: { encounterId: id }
+    });
+
+    // dialogRef.componentInstance.closeDialog = () => {
+    //   dialogRef.close(); // Close the dialog when called from the modal
+    // };
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Modal zatvoren', result);
+      this.isModalOpened = false;
+      window.location.reload();
+    });
+  }
+  
 
   Execute(encounter:Encounter): void {
     
@@ -195,6 +225,9 @@ export class EncounterComponent implements OnInit {
       userLatitude: this.tourist.location.latitude, 
       participants: 0 
     };
+    console.log('encounter exe tourist location: ', execution.userLongitude, execution.userLatitude);
+    console.log('encounter exe user location: ', this.tourist.location.longitude, this.tourist.location.latitude);
+
     
     this.service.findExecution(execution.userId, execution.encounterId).subscribe(
       (ex: Execution | null) => {
@@ -216,6 +249,7 @@ export class EncounterComponent implements OnInit {
   }
   
   CreateExecution(execution:Execution ):void{
+    console.log('createExecution location: ', execution.userLongitude, execution.userLatitude);
     this.service.addEncounterExecution(execution).subscribe({
       next: (response) => {
         const encounterExecutionId = response.id;
@@ -261,9 +295,14 @@ export class EncounterComponent implements OnInit {
         const activeEncounters = this.user.role === 'tourist' 
           ? data.results.filter(e => e.encounterStatus === 0 && e.id && !this.completed?.includes(e.id)) 
           : data.results.filter(e => e.encounterStatus === 0 || e.encounterStatus === 3);
+        const completedEncounters = this.user.role === 'tourist'
+          ? data.results.filter(e => e.encounterStatus === 0 && e.id && this.completed?.includes(e.id)) 
+          : [];
 
         this.encounters = activeEncounters;
-        console.log("encounteri za prikaz:", this.encounters);
+        this.completedEncounters = completedEncounters;
+        console.log("aktivni encounteri za prikaz:", this.encounters);
+        console.log("reseni encounteri za prikaz:", this.completedEncounters);
         this.filteredEncounters = this.encounters; // Prikaz svih encounter-a inicijalno
         this.encounterCoordinates = this.filteredEncounters.map(e => ({
           latitude: e.encounterLocation.latitude,
@@ -373,6 +412,10 @@ export class EncounterComponent implements OnInit {
         console.error("Error geting completed encounters:", err);
       }
     })
+  }
+
+  selectTab(index: number) {
+    this.selectedTab = index;
   }
 }
 

@@ -25,7 +25,7 @@ mat-toolbar, .main-content {
 }
 
 .main-content {
-    padding-bottom: 150px;
+    padding-bottom: 200px;
     padding-top: 60px;
     flex: 1; 
 }

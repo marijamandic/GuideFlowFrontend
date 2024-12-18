@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { User } from 'src/app/infrastructure/auth/model/user.model';
 import { Problem } from 'src/app/shared/model/problem.model';
@@ -13,6 +13,7 @@ import { TourAuthoringService } from '../../tour-authoring/tour-authoring.servic
 import { Message } from 'src/app/shared/model/message.model'; // Import poruka modela
 import { CreateMessageInput } from '../../tour-authoring/model/create-message-input.model';
 import { AdministrationService } from '../administration.service';
+import { Tourist } from '../../tour-authoring/model/tourist';
 
 @Component({
   selector: 'xp-author-dashboard',
@@ -30,9 +31,11 @@ export class AuthorDashboardComponent implements OnInit {
 
   Math = Math;
   user: User;
+  @ViewChild('messagesContainer') private messagesContainer: ElementRef
   // users: Account[] = []
   problems: Problem[] = [];
   tours: Tour[] = [];
+  currentTourist : Tourist;
   problemTourMap: Map<number, boolean> = new Map<number, boolean>();
   selectedProblem: Problem | null = null;
   selectedDate: string = '';
@@ -91,7 +94,6 @@ export class AuthorDashboardComponent implements OnInit {
       next: (result: PagedResults<Problem>) => {
         this.problems = result.results;
         this.fetchAllTours();
-        console.log(result);
       },
       error: (err: any) => {
         console.error('Error fetching problems:', err);
@@ -154,9 +156,28 @@ export class AuthorDashboardComponent implements OnInit {
 
   toggleProblemModal(problem: Problem): void {
     this.selectedProblem = problem;
-    this.selectedProblemMessages = problem.messages || [];
-  }
 
+    const problemDescriptionMessage: Message = {
+        id: 0,
+        problemId: problem.id!,
+        userId: problem.userId,
+        content: problem.details.description,
+        postedAt: problem.resolution?.reportedAt || new Date()
+    };
+
+    this.selectedProblemMessages = [problemDescriptionMessage, ...(problem.messages || [])];
+    this.loadCurrentTourist(problem.userId);
+  }
+  loadCurrentTourist(touristId : number){
+    this.tourService.getTouristById(touristId).subscribe({
+      next: (result: Tourist) => {
+        this.currentTourist = result;
+      },
+      error: (err) => {
+        console.error('Error fetching tourist username:', err);
+      }
+    });
+  }
   closeProblemModal(): void {
     this.selectedProblem = null;
   }
@@ -167,6 +188,9 @@ export class AuthorDashboardComponent implements OnInit {
   }
 
   handleSendMessageClick(): void {
+    if (!this.newMessageContent.trim()) {
+      return;
+    }
     if (!this.selectedProblem) return;
   
     const message: CreateMessageInput = {
@@ -176,13 +200,46 @@ export class AuthorDashboardComponent implements OnInit {
   
     this.service.createMessage(message, this.user.role).subscribe({
       next: (result: PagedResults<Message>) => {
-        this.selectedProblemMessages = result.results;
-        this.selectedProblem!.messages = result.results;
-        this.newMessageContent = '';
+        //Deskripcija
+        const problemDescriptionMessage: Message = {
+          id: 0,
+          problemId: this.selectedProblem!.id!,
+          userId: this.selectedProblem!.userId,
+          content: this.selectedProblem!.details.description,
+          postedAt: new Date(this.selectedProblem!.resolution.reportedAt)
+      };
+
+      // Kombinovanje opisa i novih poruka
+      this.selectedProblemMessages = [
+          problemDescriptionMessage,
+          ...result.results
+      ];
+
+      // Azuriranje poruka problema
+      this.selectedProblem!.messages = [
+          problemDescriptionMessage,
+          ...result.results
+      ];
+
+      this.newMessageContent = '';
+      this.scrollToBottom();
       },
       error: (err: any) => {
         console.error('Error sending message:', err);
       }
     });
+  }
+  scrollToBottom(): void {
+    try {
+      setTimeout(() => {
+        this.messagesContainer.nativeElement.scrollTop = this.messagesContainer.nativeElement.scrollHeight;
+      }, 0);
+    } catch (err) {
+      console.error('Error scrolling to bottom:', err);
+    }
+  }
+
+  saveDeadline(): void {
+    
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Post } from '../model/post.model';
 import { PostService } from '../post.service';
@@ -15,6 +15,7 @@ export class CreateBlogComponent implements OnInit {
   postForm: FormGroup;
   imageBase64: string;
   user: User | undefined;
+  @Output() postCreated = new EventEmitter<void>();
 
   constructor(
     private postService: PostService,
@@ -57,12 +58,14 @@ export class CreateBlogComponent implements OnInit {
   onSubmit(): void {
     if (this.postForm.valid) {
       this.savePost(1); // 1 for Published status
+      this.postCreated.emit();
     }
   }
 
   onDraft(): void {
     if (this.postForm.valid) {
       this.savePost(0); // 0 for Draft status
+      this.postCreated.emit();
     }
   }
 

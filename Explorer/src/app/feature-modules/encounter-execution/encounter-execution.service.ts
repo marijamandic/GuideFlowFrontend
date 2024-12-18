@@ -46,6 +46,7 @@ export class EncounterExecutionService {
   }
 
   completeExecution(execution: Execution): Observable<Execution>{
+    console.log('u servisu saljem: ', execution);
     return this.http.put<Execution>('https://localhost:44333/api/tourist/encounterExecution/' + execution.id, execution);
   }
 

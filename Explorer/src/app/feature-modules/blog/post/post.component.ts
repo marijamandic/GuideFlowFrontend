@@ -29,6 +29,8 @@ export class PostComponent implements OnInit {
   // statusOptions = [Status.Active, Status.Famous]; // Filter options for dropdown
   selectedEngagementStatus: number | '' = '';
 
+  showCreateModal: boolean = false;
+
   constructor(
     private postService: PostService,
     private commentService: CommentService,
@@ -177,7 +179,12 @@ export class PostComponent implements OnInit {
   }
 
   navigateToCreatePost() {
-    this.router.navigate(['create-blog']);
+    this.showCreateModal = true;
+  }
+
+  closeCreateModal() {
+    this.showCreateModal = false;
+    this.ngOnInit();
   }
   
   private addRating(rating: Rating, postId: number) {

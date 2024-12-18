@@ -214,7 +214,9 @@ export class ExecutionComponent implements OnInit{
     }
     
 completeExecution(): void {
+  console.log('complete encounter: ', this.encounterExecution)
   if (this.encounterExecution) {
+      console.log('saljem encounter: ', this.encounterExecution);
       this.encounterExecutionService.completeExecution(this.encounterExecution).subscribe({
         next: (updatedExecution: Execution) => {
           console.log('Execution successfully completed:', updatedExecution);
@@ -241,7 +243,7 @@ completeExecution(): void {
         },
         error: (error) => {
           if (error.status === 500) {
-            console.log('Ne mozes jos zavrsiti.');
+            console.log('Ne mozes jos zavrsiti: ', this.encounterExecution);
             //alert("You can not complete encounter yet");
             this.alertService.showAlert("You can not complete encounter yet", "warning", 5);
 
@@ -256,10 +258,14 @@ completeExecution(): void {
   }
 }
   
-  getImagePath(imageUrl: string) {
-    return environment.webRootHost +"images/encounters/"+ imageUrl;
+
+  getImagePath(imageUrl: string | undefined){
+      if(imageUrl!==undefined){
+        return environment.webRootHost+imageUrl;
+      }
+      return "";
   }
-  
+
 
   ConvertType(): number {
     if(this.encounter){
