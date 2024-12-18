@@ -422,12 +422,15 @@ h1{
   
   .modal-message {
     max-width: 70%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
     padding: 10px 15px;
     border-radius: 20px;
     font-size: 14px;
     line-height: 1.5;
     position: relative;
-  }
+    white-space: normal;
+}
   
   .modal-message.me {
     align-self: flex-end;
@@ -472,3 +475,17 @@ h1{
   .add-comment button:hover {
     transform: scale(1.05);
   }
+  .no-permission {
+    text-align: center;
+    margin-top: 50px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #dc3545; /* Crvena boja za naglasak */
+  }
+  .posted-at {
+    font-size: 12px;
+    color: #888;
+    margin-top: 5px;
+    text-align: right;
+  }
+  

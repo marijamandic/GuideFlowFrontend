@@ -79,9 +79,13 @@
         <div class="modal-messages">
           <div 
             *ngFor="let message of selectedProblemMessages" class="modal-message"
-            [ngClass]="{'modal-message': true, 'me': user.id === message.userId, 'other': user.id !== message.userId}">
+            [ngClass]="{'modal-message': true, 'me': user.id === message.userId, 'other': user.id !== message.userId,'description': message.id === 0}">
             <b *ngIf="user.id === message.userId">Me:</b>
-            <b *ngIf="user.id !== message.userId">Tourist:</b> {{ message.content }}
+            <b *ngIf="user.id !== message.userId">Tourist:</b>
+             {{ message.content }}
+            <div class="posted-at">
+              {{ message.postedAt | date:'dd/MM/yyyy   HH:mm' }}
+            </div>
           </div>
         </div>
         <div class="add-comment">

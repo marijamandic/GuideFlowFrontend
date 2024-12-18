@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { User } from 'src/app/infrastructure/auth/model/user.model';
 import { TourAuthoringService } from '../tour-authoring.service';
@@ -12,6 +12,7 @@ import { Category } from 'src/app/shared/model/details.model';
 import { Message } from 'src/app/shared/model/message.model';
 import { CreateMessageInput } from '../model/create-message-input.model';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
+import { Tourist } from '../model/tourist';
 
 @Component({
   selector: 'xp-problem-info',
@@ -19,10 +20,11 @@ import { PagedResults } from 'src/app/shared/model/paged-results.model';
   styleUrls: ['./problem-info.component.css']
 })
 export class ProblemInfoComponent implements OnInit {
-
+  @ViewChild('messagesContainer') private messagesContainer: ElementRef;
   users: Account[] = []
   user: User;
-  currentTourist : User | null = null;
+  currentTourist : Tourist;
+  otherUser : User;
   problemId : number = 0;
   tour: Tour | null = null;
   problem: Problem | null = null;
@@ -44,13 +46,14 @@ export class ProblemInfoComponent implements OnInit {
     this.loadProblem();
   }
   loadProblem() : void{
-    if(this.user !== null ){
+    if(this.user !== null && this.user.role !== 'administrator'){
       this.service.getProblemById(this.problemId,this.user?.role).subscribe({
         next: (result: Problem) => {
           this.problem = result;
           if (result.id !== undefined) {
             this.loadTour(result.id);
             this.loadMessages();
+            this.loadUser();
           }
           else {
             console.error('Error: result.id is undefined');
@@ -60,6 +63,20 @@ export class ProblemInfoComponent implements OnInit {
           console.error('Error fetching problems:', err);
         },
       });
+    }
+  }
+  loadUser(): void {
+    if (this.problem?.userId) {
+      this.tourService.getTouristById(this.problem.userId).subscribe({
+        next: (result: Tourist) => {
+          this.currentTourist = result;
+        },
+        error: (err) => {
+          console.error('Error fetching user:', err);
+        }
+      });
+    } else {
+      console.error('Error: problem or userId is undefined');
     }
   }
   loadTour(tourId: number): void {
@@ -119,11 +136,24 @@ export class ProblemInfoComponent implements OnInit {
     return 'None';
   }
   loadMessages(): void {
-    if(this.problem !== null){
-      this.selectedProblemMessages = this.problem.messages || [];
+    if (this.problem !== null) {
+      // Dodaj opis kao prvu poruku
+      const descriptionMessage: Message = {
+        id: 0,
+        problemId: this.problem.id!,
+        userId: this.problem.userId,
+        content: this.problem.details.description,
+        postedAt: this.problem.resolution?.reportedAt || new Date()
+      };
+  
+      // Ubaci opis kao prvu poruku i dodaj ostale poruke
+      this.selectedProblemMessages = [descriptionMessage, ...(this.problem.messages || [])];
     }
   }
   handleSendMessageClick(): void {
+    if (!this.newMessageContent.trim()) {
+      return;
+    }
     this.selectedProblem = this.problem;
       if (!this.selectedProblem) return;
     
@@ -134,13 +164,39 @@ export class ProblemInfoComponent implements OnInit {
 
       this.service.createMessage(message, this.user.role).subscribe({
         next: (result: PagedResults<Message>) => {
-          this.selectedProblemMessages = result.results;
+          const descriptionMessage: Message = {
+            id: 0,
+            problemId: this.problem?.id!,
+            userId: this.problem?.userId ?? 0,
+            content: this.problem?.details.description ?? 'No description',
+            postedAt: this.problem?.resolution?.reportedAt || new Date()
+          };
+    
+          // Ažuriraj poruke sa dodanim opisom
+          this.selectedProblemMessages = [
+            descriptionMessage,
+            ...result.results
+          ];
+    
           this.selectedProblem!.messages = result.results;
           this.newMessageContent = '';
+          this.scrollToBottom();
         },
         error: (err: any) => {
           console.error('Error sending message:', err);
         }
       });
+  }
+  hasPermission(): boolean {
+    return this.user?.role === 'tourist' || this.user?.role === 'author';
+  }
+  scrollToBottom(): void {
+    try {
+      setTimeout(() => {
+        this.messagesContainer.nativeElement.scrollTop = this.messagesContainer.nativeElement.scrollHeight;
+      }, 0);
+    } catch (err) {
+      console.error('Error scrolling to bottom:', err);
+    }
   }
 }

@@ -122,6 +122,9 @@ export class AuthorDashboardComponent implements OnInit {
     this.selectedDate = inputElement.value;
   }
   handleSendMessageClick(): void {
+    if (!this.newMessageContent.trim()) {
+      return;
+    }
     if (!this.selectedProblem) return;
   
     const message: CreateMessageInput = {

@@ -27,12 +27,10 @@ p{
 .problem-list-card {
     background-color: #fff;
     border-radius: 15px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     padding: 20px;
     margin: 20px auto;
     width: 100%;
     max-width: 1400px;
-    color: #333;
 }
   
 .problem-table {
@@ -40,14 +38,27 @@ p{
     width: 100%;
     border-collapse: collapse;
 }
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+  }
+  
+  .username {
+    font-size: 18px;
+    font-weight: bold;
+    color: #555;
+    margin-top: 10px;
+  }
+  
+  .problem-info-table {
+    text-align: right;
+    margin-top: 10px;
+    margin-right: 5%;
+  }
   
 .problem-table th, .problem-table td {
-    text-align: left;
-    padding: 8px 10px;
-}
-  
-.problem-table th,
-.problem-table td {
     text-align: left;
     padding: 8px 10px;
 }
@@ -200,7 +211,7 @@ p{
 }
 .modal-messages {
     padding: 15px;
-    max-height: 300px;
+    max-height: 400px;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
@@ -209,12 +220,15 @@ p{
   
   .modal-message {
     max-width: 70%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
     padding: 10px 15px;
     border-radius: 20px;
     font-size: 14px;
     line-height: 1.5;
     position: relative;
-  }
+    white-space: normal;
+}
   
   .modal-message.me {
     align-self: flex-end;
@@ -229,12 +243,11 @@ p{
     color: #333;
   }
   .add-comment input {
-    width: 100%;
+    width: 90%;
     padding: 15px;
     font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     margin-bottom: 10px;
   }
   
@@ -247,6 +260,7 @@ p{
   .add-comment button {
     padding: 10px 20px;
     font-size: 16px;
+    margin-left: 10px;
     border: none;
     border-radius: 20px;
     background-color: var(--primary-color);
@@ -254,8 +268,43 @@ p{
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.3s ease;
   }
-  
   .add-comment button:hover {
     transform: scale(1.05);
+  }
+  .card-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Razmak između kartica */
+  }
+  
+  .problem-card, .messages-card {
+    background-color: #fff;
+    border-radius: 15px;
+    padding: 20px;
+    margin: 0 auto;
+    width: 100%;
+    margin-top: 20px;
+    max-width: 1400px;
+  }
+  
+  .messages-card {
+    margin-top: 20px;
+  }
+  
+  .posted-at {
+    font-size: 12px;
+    color: #888;
+    margin-top: 5px;
+    text-align: right;
+  }
+  .messages-section {
+    margin-top: 20px;
+  }
+  .no-permission {
+    text-align: center;
+    margin-top: 50px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #dc3545; /* Crvena boja za naglasak */
   }
   
