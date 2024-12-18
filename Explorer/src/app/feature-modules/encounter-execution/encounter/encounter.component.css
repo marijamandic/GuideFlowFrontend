@@ -180,7 +180,7 @@
   background-color: #f9f9f9; /* Svetlo siva pozadina */
   border: none; /* Bez okvira */
   border-radius: 20px; /* Zaobljeni uglovi */
-  width: 90%; /* Širina dugmeta */
+  width: 85%; /* Širina dugmeta */
   height: 60px; /* Visina dugmeta */
   display: flex;
   justify-content: center;
@@ -196,8 +196,8 @@
 }
 
 .add-icon {
-  width: 24px; /* Širina ikone plus */
-  height: 24px; /* Visina ikone plus */
+  width: 40px; /* Širina ikone plus */
+  height: 40px; /* Visina ikone plus */
   opacity: 0.7; /* Blaga providnost */
   transition: opacity 0.2s ease;
 }

@@ -225,6 +225,9 @@ export class EncounterComponent implements OnInit {
       userLatitude: this.tourist.location.latitude, 
       participants: 0 
     };
+    console.log('encounter exe tourist location: ', execution.userLongitude, execution.userLatitude);
+    console.log('encounter exe user location: ', this.tourist.location.longitude, this.tourist.location.latitude);
+
     
     this.service.findExecution(execution.userId, execution.encounterId).subscribe(
       (ex: Execution | null) => {
@@ -246,6 +249,7 @@ export class EncounterComponent implements OnInit {
   }
   
   CreateExecution(execution:Execution ):void{
+    console.log('createExecution location: ', execution.userLongitude, execution.userLatitude);
     this.service.addEncounterExecution(execution).subscribe({
       next: (response) => {
         const encounterExecutionId = response.id;
