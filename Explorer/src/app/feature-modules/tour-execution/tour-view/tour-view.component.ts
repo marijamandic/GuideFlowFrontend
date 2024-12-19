@@ -18,6 +18,7 @@ import { ProductType } from '../../marketplace/model/product-type';
 import { ShoppingCartService } from '../../marketplace/shopping-cart.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { TourBundle } from '../../marketplace/model/tour-bundle.model';
+import { CartPreviewService } from '../../layout/cart-preview.service';
 
 @Component({
 	selector: 'xp-tour-view',
@@ -66,6 +67,8 @@ export class TourViewComponent implements OnInit {
 	BUNDLE_PRODUCT = 'bundle';
 	productType = this.REGULAR_PRODUCT;
 
+	isOpened$: boolean;
+
 	constructor(
 		private service: TourExecutionService,
 		private authService: AuthService,
@@ -73,7 +76,8 @@ export class TourViewComponent implements OnInit {
 		private adminService: AdministrationService,
 		private alertService: AlertService,
 		private router: Router,
-		private shoppingCartService: ShoppingCartService
+		private shoppingCartService: ShoppingCartService,
+		private cartPreviewService: CartPreviewService
 	) {}
 
 	//constructor(private service: TourExecutionService, authService: AuthService, private cdr: ChangeDetectorRef, private adminService: AdministrationService) {
@@ -84,6 +88,7 @@ export class TourViewComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.subscribeUser();
+		this.subscribeCartPreview();
 		this.getTourSpecificationPromise();
 		this.getAllTours();
 		this.service.getAllSales().subscribe({
@@ -105,6 +110,10 @@ export class TourViewComponent implements OnInit {
 		});
 
 		this.getPublishedBundles();
+	}
+
+	private subscribeCartPreview() {
+		this.cartPreviewService.isOpened$.subscribe(isOpened => (this.isOpened$ = isOpened));
 	}
 
 	private subscribeUser() {
@@ -579,6 +588,7 @@ export class TourViewComponent implements OnInit {
 			adventureCoin: tour.price
 		} as ItemInput;
 		this.shoppingCartService.addToCart(item).subscribe({
+			next: () => this.cartPreviewService.open(),
 			error: (error: HttpErrorResponse) => console.log(error)
 		});
 	}

@@ -96,7 +96,7 @@
 
 .tour > img {
 	height: 200px;
-	width: 300px;
+	min-width: 300px;
 	border-radius: 20px;
 }
 
