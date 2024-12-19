@@ -36,11 +36,11 @@ export class ShoppingCartService {
 		);
 	}
 
-	addToCart(item: ItemInput): Observable<PagedResults<Item>> {
-		return this.http.post<PagedResults<Item>>(`${environment.apiHost}shopping-cart/items`, item, { headers: Headers }).pipe(
-			tap(items => {
+	addToCart(item: ItemInput): Observable<Item> {
+		return this.http.post<Item>(`${environment.apiHost}shopping-cart/items`, item, { headers: Headers }).pipe(
+			tap(item => {
 				let oldCart = this.cart$.getValue();
-				oldCart.items = items.results;
+				oldCart.items = [...oldCart.items, item];
 				this.setCart(oldCart);
 			})
 		);

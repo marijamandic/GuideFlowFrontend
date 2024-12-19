@@ -22,7 +22,7 @@
 		</div>
 		<div class="profile-menu">
 			<mat-icon *ngIf="user && user.username !== ''" [routerLink]="['/encounters']" (click)="toggleDropdown()">location_on</mat-icon>
-			<mat-icon *ngIf="user && user.role === 'tourist'" class="shopping-cart-icon" (click)="showCart = !showCart">shopping_cart</mat-icon>
+			<mat-icon *ngIf="user && user.role === 'tourist'" class="shopping-cart-icon" (click)="toggleShowCart()">shopping_cart</mat-icon>
 			<mat-icon *ngIf="user && user.username !== ''" class="notification-icon" (click)="toggleNotifications()">notifications</mat-icon>
 			<span *ngIf="user && user.username !== '' && notificationCount > 0" class="notification-badge" (click)="toggleNotifications()">{{
 				notificationCount
@@ -62,6 +62,6 @@
 	</div>
 </mat-toolbar>
 
-<div class="shopping-cart-container" *ngIf="showCart">
-	<xp-shopping-cart-preview (shoppingCartOpened)="handleShoppingCartOpened()"></xp-shopping-cart-preview>
+<div class="shopping-cart-container" *ngIf="showCart$">
+	<xp-shopping-cart-preview></xp-shopping-cart-preview>
 </div>

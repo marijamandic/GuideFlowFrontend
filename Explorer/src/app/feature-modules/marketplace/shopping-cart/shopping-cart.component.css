@@ -96,7 +96,7 @@
 
 .tour > img {
 	height: 200px;
-	width: 300px;
+	min-width: 300px;
 	border-radius: 20px;
 }
 
@@ -231,7 +231,7 @@ i {
 .bnd-tour img {
 	border-radius: 20px;
 	height: 150px;
-	width: 200px;
+	min-width: 200px;
 }
 
 .bnd-tour-info {
