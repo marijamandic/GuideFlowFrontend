@@ -29,10 +29,6 @@
   margin-top: 3.3%;
 }
 
-.left-container::-webkit-scrollbar {
-  display: none;
-}
-
 .left-container {
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -53,7 +49,6 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   position: relative;
   margin-bottom: 10px;
-  max-height: 30vh;
 }
 
 .info-grid {
@@ -168,11 +163,39 @@
 }
 
 .abandon-button {
-  background-color: #ff5c5c;
+	background-color: #FF7F7F;
+	font-size: 14px;
+	font-weight: bold;
+	color: white;
+	padding: 8px 20px;
+	border-radius: 15px;
+	border: none;
+	cursor: pointer;
+	transition: background-color 0.3s, transform 0.3s ease;
+}
+
+.abandon-button:hover {
+	background-color: #FF4C4C;
+	transform: scale(1.1);
+	transition: 0.5s ease;
 }
 
 .complete-button {
-  background-color: #4caf50;
+	background-color: #33E975;
+	font-size: 14px;
+	font-weight: bold;
+	color: white;
+	padding: 8px 20px;
+	border-radius: 15px;
+	border: none;
+	cursor: pointer;
+	transition: background-color 0.3s, transform 0.3s ease;
+}
+
+.complete-button:hover {
+	background-color: #0BDA51;
+	transform: scale(1.1);
+	transition: 0.5s ease;
 }
 
 /* Stilizacija za Checkpoint kartice */
@@ -184,7 +207,6 @@
   transition: transform 0.2s;
   border: 1px solid #e0e0e0;
   color: #1d1c1c;
-  max-height: 57vh;
   min-height: 48vh;
 }
 
@@ -229,12 +251,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 10px;
+  padding: 15px;
 }
 
 /* Slika Checkpoint-a */
 .checkpoint-image {
-  max-width: 510px;
   height: 200px;
   object-fit: cover;
   border-radius: 10px;
@@ -298,7 +319,7 @@
 .progres-p {
   font-size: 12px;
   margin-top: -16px;
-  margin-left: 230px;
+  margin-left: 210px;
   font-family: Arial, Helvetica, sans-serif;
   font-weight: 600;
   margin-bottom: -8px;

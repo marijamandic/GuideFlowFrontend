@@ -2,9 +2,9 @@
   <div id="map"></div>
 </div>
 
-<div class="search-container" *ngIf="showSearchBar">
+<div class="search-container">
   <div class="input-wrapper">
-    <input type="text" [(ngModel)]="searchAddress" placeholder="Search" />
+    <input type="text" [(ngModel)]="searchAddress" placeholder="Search address" />
     <img 
       (click)="search()" 
       src="assets/images/search.png" 
@@ -12,5 +12,5 @@
       class="search-icon" 
     />
   </div>
-  <button (click)="saveCoordinates()" class="update-button">Update My Location</button>
+  <button *ngIf="showUpdateButton" (click)="saveCoordinates()" class="update-button">Update My Location</button>
 </div>
