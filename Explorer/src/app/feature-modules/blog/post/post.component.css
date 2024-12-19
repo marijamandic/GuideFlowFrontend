@@ -343,7 +343,7 @@ html, body {
 
 .floating-add-button {
   position: fixed;
-  bottom: 20px;
+  bottom: 150px;
   right: 20px;
   background-color: #84dcc6;
   color: white;

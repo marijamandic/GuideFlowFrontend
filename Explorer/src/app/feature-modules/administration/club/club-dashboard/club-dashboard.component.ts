@@ -9,6 +9,7 @@ import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { environment } from 'src/env/environment';
 import { LayoutService } from 'src/app/feature-modules/layout/layout.service';
 import { Notification, NotificationType } from 'src/app/feature-modules/layout/model/Notification.model';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'xp-club-dashboard',
@@ -16,7 +17,7 @@ import { Notification, NotificationType } from 'src/app/feature-modules/layout/m
   styleUrls: ['./club-dashboard.component.css']
 })
 export class ClubDashboardComponent implements OnInit {
-  members: (ClubMemberList & { username?: string; firstName?: string; lastName?: string })[] = [];
+  members: (ClubMemberList & { username?: string; firstName?: string; lastName?: string ; joinedDate?: Date})[] = [];
   requests: (ClubRequest & { username?: string; firstName?: string; lastName?: string })[] = [];
   invitations: (ClubInvitation & { username?: string; firstName?: string; lastName?: string })[] = [];
   clubId: number;
@@ -38,7 +39,8 @@ export class ClubDashboardComponent implements OnInit {
     private service: AdministrationService,
     private route: ActivatedRoute,
     private authService: AuthService,
-    private notificationService: LayoutService
+    private notificationService: LayoutService,
+    private datePipe: DatePipe
   ) {}
 
   ngOnInit(): void {
@@ -117,6 +119,10 @@ export class ClubDashboardComponent implements OnInit {
       next: (profile) => {
         target.firstName = profile.firstName;
         target.lastName = profile.lastName;
+        if(target.joinedDate){
+          const date = new Date(target.joinedDate);
+          target.joinedDate = this.datePipe.transform(date, 'dd/MM/yyyy HH:mm');
+        }
       },
       error: (err) => console.error(`Error fetching profile info for userId ${userId}:`, err)
     });
