@@ -109,7 +109,48 @@
 
 			<ng-container *ngIf="productType === REGULAR_PRODUCT">
 				<div class="tour-card" *ngFor="let tour of allTours">
-					<div class="tour-card-image" *ngIf="currentView === 'draft'">
+					<img
+						*ngIf="tour.checkpoints && currentView !== 'draft'"
+						[src]="getImagePath(tour.checkpoints[currentImageIndex].imageUrl)"
+						alt="Checkpoint image"
+					/>
+					<img *ngIf="currentView === 'draft'" src="assets/images/tour9_draft.jpg" alt="{{ tour.name }}" />
+					<div class="tour-details">
+						<div class="tour-header">
+							<div class="tour-info">
+								<h2>{{ tour.name }}</h2>
+								<div>{{ tour.description }}</div>
+							</div>
+							<i class="fa-solid fa-ellipsis-vertical"></i>
+						</div>
+						<div class="tour-footer">
+							<div class="tour-footer-info">
+								<div class="tour-footer-info-row">
+									<i class="fa-solid fa-fire"></i>
+									<span>{{ LevelMap[tour.level] }}</span>
+								</div>
+								<div class="tour-footer-info-row">
+									<i class="fas fa-walking"></i>
+									<span>{{ tour.lengthInKm }} km</span>
+								</div>
+								<div class="tour-footer-info-row">
+									<i class="fa-solid fa-square"></i>
+									<span *ngFor="let tag of tour.taggs; let i = index">
+										<ng-container *ngIf="i === tour.taggs.length - 1; else notLast">{{ tag }} </ng-container>
+										<ng-template #notLast>{{ tag }},&nbsp;</ng-template>
+									</span>
+								</div>
+								<div class="tour-footer-info-row">
+									<i class="fa-solid fa-money-bill"></i>
+									<span>AC {{ tour.price }}</span>
+								</div>
+							</div>
+							<button *ngIf="user && user.role === 'tourist'" class="cta-button add-to-cart" (click)="addToCart(tour)">
+								<i class="fa-solid fa-cart-plus"></i> Add to Cart
+							</button>
+						</div>
+					</div>
+					<!-- <div class="tour-card-image" *ngIf="currentView === 'draft'">
 						<img src="assets/images/tour9_draft.jpg" alt="{{ tour.name }}" />
 					</div>
 					<div class="tour-card-image" *ngIf="currentView !== 'draft'">
@@ -118,7 +159,7 @@
 					<div class="tour-card-content" (click)="goToDetails(tour)">
 						<div class="tour-card-header">
 							<h2>{{ tour.name }}</h2>
-							<!--button class="kebab-menu"><i class="fa-solid fa-ellipsis-vertical"></i></button-->
+							<button class="kebab-menu"><i class="fa-solid fa-ellipsis-vertical"></i></button>
 						</div>
 						<p>{{ tour.description }}</p>
 						<div class="tour-card-details">
@@ -154,7 +195,7 @@
 						>
 							Activate
 						</button>
-					</div>
+					</div> -->
 				</div>
 			</ng-container>
 			<ng-container *ngIf="productType === BUNDLE_PRODUCT">

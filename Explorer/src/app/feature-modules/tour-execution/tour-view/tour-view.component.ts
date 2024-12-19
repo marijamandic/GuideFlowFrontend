@@ -64,7 +64,7 @@ export class TourViewComponent implements OnInit {
 
 	REGULAR_PRODUCT = 'regular';
 	BUNDLE_PRODUCT = 'bundle';
-	productType = this.BUNDLE_PRODUCT;
+	productType = this.REGULAR_PRODUCT;
 
 	constructor(
 		private service: TourExecutionService,
