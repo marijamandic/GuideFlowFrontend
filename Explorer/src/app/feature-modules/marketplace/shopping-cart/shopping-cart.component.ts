@@ -233,6 +233,6 @@ export class ShoppingCartComponent implements OnInit {
 	}
 
 	getImageUrl(imageUrl: string): string {
-		return `${environment.webRootHost}images/checkpoints/${imageUrl}`;
+		return `${environment.webRootHost}${imageUrl}`;
 	}
 }

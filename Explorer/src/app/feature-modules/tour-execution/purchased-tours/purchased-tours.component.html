@@ -34,6 +34,9 @@
     <div class="tour-card-content">
       <div class="tour-card-header">
         <h2>{{ tour.name }}</h2>
+        <div class="tour-weather">
+          <p [ngClass]="getRecommendClass(tour.weatherRecommend)" *ngIf="tour.weatherRecommend">{{mapToRecommend(tour.weatherRecommend)}}</p>
+        </div>
         <!--button class="kebab-menu"><i class="fa-solid fa-ellipsis-vertical"></i></button-->
       </div>
       <p>{{ tour.description }}</p>
@@ -42,6 +45,10 @@
         <span><i class="fa-solid fa-fire"></i> {{ LevelMap[tour.level] }}</span>
         <span><i class="fas fa-walking"></i> {{ tour.lengthInKm }} km</span>
         <span><i class="fas fa-tag"></i>{{ tour.taggs }}</span>
+        <span>
+          <img class="weather-icon" *ngIf="tour.weatherIcon" [src]="mapToWeatherIcon(tour.weatherIcon)" alt="nema weather ikkonic">
+          <p class="span-style" *ngIf="tour.temperature">{{ tour.weatherDescription}}, {{ mapToRoundNumber(tour.temperature)}}°C</p>
+        </span>
       </div>
       <div class="buttons">
         <button (click)="createSession(tour.id)" class="cta-button">{{ isActiveSession(tour.id) ? 'Enter Tour' : 'Start Tour' }}</button>

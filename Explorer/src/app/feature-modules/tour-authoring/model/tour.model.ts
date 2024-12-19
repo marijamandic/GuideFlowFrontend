@@ -20,6 +20,10 @@ export interface Tour {
     checkpoints: Checkpoint[];
     transportDurations: TransportDuration[];
     reviews: TourReview[];
+    weatherIcon?: string;
+    temperature?: number;
+    weatherDescription?: string;
+    weatherRecommend?: number;
 }
 
 export enum TourStatus {

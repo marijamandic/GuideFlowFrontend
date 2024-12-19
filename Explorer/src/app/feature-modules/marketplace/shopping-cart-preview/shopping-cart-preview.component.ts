@@ -49,7 +49,6 @@ export class ShoppingCartPreviewComponent implements OnInit {
 	}
 
 	getImageUrl(imageUrl: string) {
-		console.log(`${environment.webRootHost}images/checkpoints/${imageUrl}`);
-		return `${environment.webRootHost}images/checkpoints/${imageUrl}`;
+		return `${environment.webRootHost}${imageUrl}`;
 	}
 }

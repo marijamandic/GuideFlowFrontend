@@ -140,3 +140,48 @@
 	transform: scale(1.1);
 	transition: 0.5s ease;
 }
+.tour-card .weather-icon{
+  width: 40px;
+  height: 40px;
+  margin: 0;
+}
+.tour-weather{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.span-style{
+  font-size: 14px;
+  font-weight: 400;
+  color: #666;
+  margin: 0;
+}
+.highly-recommended {
+  color: #008000; /* Strong green */
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.recommended {
+  color: var(--primary-color); /* Light green */
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.neutral {
+  color: #ffd700; /* Yellow */
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.not-recommended {
+  color: #ffa500; /* Orange */
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.highly-not-recommended {
+  color: #ff0000; /* Red */
+  font-size: 14px;
+  font-weight: 400;
+}
