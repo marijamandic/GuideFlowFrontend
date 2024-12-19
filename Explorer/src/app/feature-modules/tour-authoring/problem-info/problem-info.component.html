@@ -1,0 +1,74 @@
+<div *ngIf="hasPermission(); else noPermission" class="problem-list-card">
+  <!-- Header sa username i Problem Info -->
+  <div class="problem-card-header">
+    <div class="header-container">
+      <!-- Username u gornjem levom uglu -->
+      <div class="username">@{{ opositeUser?.username }}</div>
+      <!-- Problem Info Table u gornjem desnom uglu -->
+      <div class="problem-info-table">
+        <table class="problem-table">
+          <thead>
+            <tr>
+              <th>Tour</th>
+              <th>Category</th>
+              <th>Reported At</th>
+              <th>Deadline</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{ tour?.name }}</td>
+              <td>{{ getCategoryName() }}</td>
+              <td>{{ problem?.resolution?.reportedAt | date:'medium' }}</td>
+              <td>{{ problem?.resolution?.deadline | date:'medium' }}</td>
+              <td>
+                <button class="status-badge" 
+                        [ngClass]="{
+                          'status-unresolved': getProblemStatus() === 'Unresolved',
+                          'status-overdue': getProblemStatus() === 'Overdue',
+                          'status-resolved': getProblemStatus() === 'Resolved'
+                        }">
+                  {{ getProblemStatus() }}
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Messages Section -->
+  <div class="messages-section">
+    <div #messagesContainer class="modal-messages">
+      <div 
+        *ngFor="let message of selectedProblemMessages" 
+        class="modal-message"
+        [ngClass]="{'me': user.id === message.userId, 'other': user.id !== message.userId, 'description': message.id === 0}">
+        {{ message.content }}
+        <div class="posted-at">
+          {{ message.postedAt | date:'dd/MM/yyyy   HH:mm' }}
+        </div>
+      </div>
+    </div>
+    <!-- Polje za unos poruke -->
+    <div class="add-comment" *ngIf="user.role !== 'Administrator'">
+      <input
+        type="text"
+        [(ngModel)]="newMessageContent"
+        placeholder="Write a message..."
+        (keydown.enter)="handleSendMessageClick()"
+      />
+      <button class="cta-button" (click)="handleSendMessageClick()">Send</button>
+    </div>
+  </div>
+</div>
+
+<!-- Message for users without permission -->
+<ng-template #noPermission>
+  <div class="no-permission">
+    <h2>Nemaš permisiju za ovu stranicu</h2>
+  </div>
+</ng-template>
+

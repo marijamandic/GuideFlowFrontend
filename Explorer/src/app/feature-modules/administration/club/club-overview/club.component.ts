@@ -25,6 +25,8 @@ export class ClubComponent implements OnInit {
   idOfOwner: number = 0;
   loggedTouristId: number = 0;
 
+  showClubFormModal: boolean = false;
+
   constructor(private service: AdministrationService,
     private authSerivce: AuthService,
     private router: Router,) { }
@@ -61,8 +63,14 @@ export class ClubComponent implements OnInit {
   }
 
   onAddClicked(): void {
-    this.router.navigate(['new-club']);
+    this.showClubFormModal = true;
   }
+
+  closeModal(): void{
+    this.showClubFormModal = false;
+    this.getClub();
+  }
+  
 
   navigateToClubInfo(clubId: number | undefined): void {
     if (clubId !== undefined) {

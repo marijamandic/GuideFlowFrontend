@@ -9,7 +9,7 @@ import { PublicPointService } from 'src/app/feature-modules/tour-authoring/tour-
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css'],
 })
-export class MapComponent implements AfterViewInit,OnChanges {
+export class MapComponent implements AfterViewInit {
   private map: any;
   private markers: L.Marker[] = [];
   searchAddress: string = '';
@@ -40,6 +40,7 @@ export class MapComponent implements AfterViewInit,OnChanges {
   }
 
   ngAfterViewInit(): void {
+
     let DefaultIcon = L.icon({
       iconUrl: 'https://unpkg.com/leaflet@1.6.0/dist/images/marker-icon.png',
       iconSize: [25, 41],
@@ -69,6 +70,7 @@ export class MapComponent implements AfterViewInit,OnChanges {
         zoom: 13,
       });
       console.log(this.map)
+      
     }
 
 
@@ -132,18 +134,18 @@ export class MapComponent implements AfterViewInit,OnChanges {
     }
   }
 
-  ngOnChanges(): void {
-    console.log(this.map)
-    if (this.map) {
-      setTimeout(() => this.map.invalidateSize(), 0); // Osvežavanje dimenzija mape
-    }
-    if (this.map) {
-      this.updateCheckpointMarkers();
-      this.addUserMarker();
-    } /*else {
-      this.map.invalidateSize();
-    }*/
-  }
+  // ngOnChanges(): void {
+  //   console.log(this.map)
+  //   if (this.map) {
+  //     setTimeout(() => this.map.invalidateSize(), 0); // Osvežavanje dimenzija mape
+  //   }
+  //   if (this.map) {
+  //     this.updateCheckpointMarkers();
+  //     this.addUserMarker();
+  //   } else {
+  //     this.map.invalidateSize();
+  //   }
+  // }
 
   private updateCheckpointMarkers(): void {
     this.resetMap(); 

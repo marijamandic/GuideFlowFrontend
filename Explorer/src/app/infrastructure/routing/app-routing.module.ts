@@ -50,6 +50,7 @@ import { TourViewComponent } from 'src/app/feature-modules/tour-execution/tour-v
 import { AuthorDashboardComponent } from 'src/app/feature-modules/administration/author-dashboard/author-dashboard.component';
 import { TourAuthorDetailsComponent } from 'src/app/feature-modules/tour-authoring/tour-author-details/tour-author-details.component';
 import { SuggestedToursComponent } from 'src/app/feature-modules/tour-execution/suggested-tours/suggested-tours.component';
+import { ProblemInfoComponent } from 'src/app/feature-modules/tour-authoring/problem-info/problem-info.component';
 
 const routes: Routes = [
 	// ### Account stuff
@@ -106,6 +107,7 @@ const routes: Routes = [
 	{ path: 'author-dashboard', component: AuthorDashboardComponent },
 
 	{ path: 'report-problem', component: ReportProblemComponent },
+	{ path: 'problem-info/:id', component: ProblemInfoComponent },
 
 	// ### Club
 	{ path: 'club', component: ClubComponent, canActivate: [AuthGuard] },
