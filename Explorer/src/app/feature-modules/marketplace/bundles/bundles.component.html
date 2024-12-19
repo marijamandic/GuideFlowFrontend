@@ -1,4 +1,4 @@
-<div *ngFor="let bundle of bundles" class="bundle">
+<div *ngFor="let bundle of bundles" class="bundle" (click)="handleBundleClick(bundle.id)">
 	<img [src]="getImageUrl(bundle.imageUrl)" alt="bundle-image" />
 	<div class="bundle-details">
 		<div class="bundle-header">
@@ -13,7 +13,7 @@
 				<i class="fa-solid fa-money-bill"></i>
 				<div>AC {{ bundle.price }}</div>
 			</div>
-			<button *ngIf="user && user.role === 'tourist'" type="button" class="cta-button">
+			<button *ngIf="user && user.role === 'tourist'" type="button" class="cta-button" (click)="handleAddToCart(bundle)">
 				<i class="fa-solid fa-cart-plus"></i> Add to Cart
 			</button>
 		</div>

@@ -17,6 +17,7 @@ import { ShoppingCartPreviewComponent } from './shopping-cart-preview/shopping-c
 import { SharedModule } from 'src/app/shared/shared.module';
 import { TourMoreDetailsComponent } from './tour-more-details/tour-more-details.component';
 import { BundlesComponent } from './bundles/bundles.component';
+import { BundleComponent } from './bundle/bundle.component';
 
 @NgModule({
 	declarations: [
@@ -28,7 +29,8 @@ import { BundlesComponent } from './bundles/bundles.component';
 		TourBundlePreviewComponent,
 		ShoppingCartPreviewComponent,
 		TourMoreDetailsComponent,
-		BundlesComponent
+		BundlesComponent,
+  BundleComponent
 	],
 	imports: [
 		MatRadioModule,

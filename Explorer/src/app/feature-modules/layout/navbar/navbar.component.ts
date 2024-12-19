@@ -116,8 +116,4 @@ export class NavbarComponent implements OnInit {
 	toggleShowCart() {
 		this.cartPreviewService.toggle();
 	}
-
-	// handleShoppingCartOpened() {
-	// 	this.showCart = false;
-	// }
 }
