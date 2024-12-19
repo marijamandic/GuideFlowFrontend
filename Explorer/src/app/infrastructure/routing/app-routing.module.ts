@@ -47,7 +47,10 @@ import { EncounterExecutionMapComponent } from 'src/app/feature-modules/encounte
 import { AdminDashboardComponenet } from 'src/app/feature-modules/administration/admin-dashboard/admin-dashboard.component';
 import { TourMoreDetailsComponent } from 'src/app/feature-modules/marketplace/tour-more-details/tour-more-details.component';
 import { TourViewComponent } from 'src/app/feature-modules/tour-execution/tour-view/tour-view.component';
+import { AuthorDashboardComponent } from 'src/app/feature-modules/administration/author-dashboard/author-dashboard.component';
 import { TourAuthorDetailsComponent } from 'src/app/feature-modules/tour-authoring/tour-author-details/tour-author-details.component';
+import { SuggestedToursComponent } from 'src/app/feature-modules/tour-execution/suggested-tours/suggested-tours.component';
+import { ProblemInfoComponent } from 'src/app/feature-modules/tour-authoring/problem-info/problem-info.component';
 
 const routes: Routes = [
 
@@ -60,7 +63,6 @@ const routes: Routes = [
   // Admin // Ovo je buduci admin dashboard
   { path: 'pending', component: PublicPointRequestsComponent }, // ovo treba spojiti sa admin-dashboard, za prihvatane tour objecta
   { path: 'admin-dashboard', component: AdminDashboardComponenet},
-
 
   // ### Misc
   { path: 'home', component: HomeComponent },
@@ -99,10 +101,14 @@ const routes: Routes = [
   { path: 'equipment-management', component: EquipmentManagementComponent },
 
   // --- report
+  { path: 'report-problem', component: ReportProblemComponent},
 	{ path: 'author-problems', component: ProblemComponent },
 	{ path: 'tourist-problems', component: ProblemStatusComponent },
 	{ path: 'admin-problems', component: AdminProblemComponent },
+  { path: 'author-dashboard', component: AuthorDashboardComponent},
+
   { path: 'report-problem', component: ReportProblemComponent},
+  { path: 'problem-info/:id',component: ProblemInfoComponent},
 
   // ### Club
   { path: 'club', component: ClubComponent, canActivate: [AuthGuard] },
@@ -128,6 +134,7 @@ const routes: Routes = [
   { path: 'encounter-execution/:id', component: ExecutionComponent},
   { path: 'encounter-execution/:id/:tourExecutionId', component: ExecutionComponent},
   { path: 'encounterMap', component: EncounterExecutionMapComponent},
+  { path: 'suggested-tours/:longitude/:latitude', component: SuggestedToursComponent},
 
   // ## Payment
   { path: 'shoppingCart', component: ShoppingCartComponent},

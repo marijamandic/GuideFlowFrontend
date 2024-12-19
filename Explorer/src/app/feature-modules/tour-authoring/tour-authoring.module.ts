@@ -23,6 +23,7 @@ import { TourDetailsComponent } from './tour-details/tour-details.component';
 import { AddEncounterComponent } from './add-encounter/add-encounter.component';
 import { TourAuthorDetailsComponent } from './tour-author-details/tour-author-details.component';
 import { TourAddCheckpointMapComponent } from './tour-add-checkpoint-map/tour-add-checkpoint-map.component';
+import { ProblemInfoComponent } from './problem-info/problem-info.component';
 
 
 
@@ -42,7 +43,8 @@ import { TourAddCheckpointMapComponent } from './tour-add-checkpoint-map/tour-ad
     TourDetailsComponent,
     AddEncounterComponent,
     TourAuthorDetailsComponent,
-    TourAddCheckpointMapComponent
+    TourAddCheckpointMapComponent,
+    ProblemInfoComponent
   ],
   imports: [
     CommonModule,

@@ -4,6 +4,7 @@ import { ShoppingCartService } from '../shopping-cart.service';
 import { Item } from '../model/shopping-carts/item';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
+import { environment } from 'src/env/environment';
 
 @Component({
 	selector: 'xp-shopping-cart-preview',
@@ -45,5 +46,10 @@ export class ShoppingCartPreviewComponent implements OnInit {
 		this.shoppingCartService.removeFromCart(itemId).subscribe({
 			error: (error: HttpErrorResponse) => console.log(error.message)
 		});
+	}
+
+	getImageUrl(imageUrl: string) {
+		console.log(`${environment.webRootHost}images/checkpoints/${imageUrl}`);
+		return `${environment.webRootHost}images/checkpoints/${imageUrl}`;
 	}
 }

@@ -10,6 +10,9 @@ import { Encounter, EncounterType } from '../model/encounter.model';
 import { environment } from 'src/env/environment';
 import { timer } from 'rxjs';
 import { AlertService } from '../../layout/alert.service';
+import { MatDialog } from '@angular/material/dialog';
+import { SuggestedToursComponent } from '../../tour-execution/suggested-tours/suggested-tours.component';
+import { TourExecutionService } from '../../tour-execution/tour-execution.service';
 
 @Component({
   selector: 'xp-execution',
@@ -32,6 +35,7 @@ export class ExecutionComponent implements OnInit{
   @Input() encounterExecutionId: number;
   @Input()  tourExecutionId?: number| null = null;
   @Output() encounterCoordinatesLoaded = new EventEmitter<{ latitude: number; longitude: number; }[]>();
+  
 
   constructor(
     private encounterExecutionService: EncounterExecutionService,
@@ -39,7 +43,9 @@ export class ExecutionComponent implements OnInit{
     private authService: AuthService,
     private router: Router,
     private route: ActivatedRoute,
-    private alertService: AlertService
+    private alertService: AlertService,
+    public dialog: MatDialog,
+    private tourExecutionService: TourExecutionService
   ) {}
 
   ngOnInit(): void {
@@ -178,15 +184,17 @@ export class ExecutionComponent implements OnInit{
                   if(ex.isComplete){
                     this.alertService.showAlert("Encounter successfully completed", "success", 5);
                     if(this.tourExecutionId){
-                      setTimeout(() => {
-                      this.router.navigate(['tour-execution/',this.tourExecutionId]);
-                        }, 3000);
+                      // setTimeout(() => {
+                      // this.router.navigate(['tour-execution/',this.tourExecutionId]);
+                      //   }, 3000);
+                      this.openSuggestedToursModal();
+
                     }else{
                      // this.router.navigate(['encounters']);
-                     setTimeout(() => {
-                      window.location.reload();
-                      }, 3000);
-                      
+                     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+                      this.router.navigate(['encounters']); // Navigacija na trenutnu rutu
+                      this.openSuggestedToursModal();
+                    });
                     }
                   }
                 },
@@ -206,7 +214,9 @@ export class ExecutionComponent implements OnInit{
     }
     
 completeExecution(): void {
+  console.log('complete encounter: ', this.encounterExecution)
   if (this.encounterExecution) {
+      console.log('saljem encounter: ', this.encounterExecution);
       this.encounterExecutionService.completeExecution(this.encounterExecution).subscribe({
         next: (updatedExecution: Execution) => {
           console.log('Execution successfully completed:', updatedExecution);
@@ -214,20 +224,26 @@ completeExecution(): void {
           //alert("Encounter successfully completed");
           this.alertService.showAlert("Encounter successfully completed", "success", 5);
           if(this.tourExecutionId){
-            setTimeout(() => {
-            this.router.navigate(['tour-execution/',this.tourExecutionId]);
-              }, 3000);
+            // setTimeout(() => {
+            // this.router.navigate(['tour-execution/',this.tourExecutionId]);
+            //   }, 3000);
+            this.openSuggestedToursModal();
           }else{
+            this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+              this.router.navigate(['encounters']); // Navigacija na trenutnu rutu
+              this.openSuggestedToursModal();
+            });
            // this.router.navigate(['encounters']);
-           setTimeout(() => {
-            window.location.reload();
-            }, 3000);
-            
+           //setTimeout(() => {
+            //window.location.reload();
+           // }, 3000);
+            //this.router.navigate(['suggested-tours/' + this.encounter.encounterLocation.longitude + '/' + this.encounter.encounterLocation.latitude]);
+           // this.openSuggestedToursModal();
           }
         },
         error: (error) => {
           if (error.status === 500) {
-            console.log('Ne mozes jos zavrsiti.');
+            console.log('Ne mozes jos zavrsiti: ', this.encounterExecution);
             //alert("You can not complete encounter yet");
             this.alertService.showAlert("You can not complete encounter yet", "warning", 5);
 
@@ -242,10 +258,14 @@ completeExecution(): void {
   }
 }
   
-  getImagePath(imageUrl: string) {
-    return environment.webRootHost +"images/encounters/"+ imageUrl;
+
+  getImagePath(imageUrl: string | undefined){
+      if(imageUrl!==undefined){
+        return environment.webRootHost+imageUrl;
+      }
+      return "";
   }
-  
+
 
   ConvertType(): number {
     if(this.encounter){
@@ -350,4 +370,33 @@ completeExecution(): void {
       });
     });
   }
+
+  openSuggestedToursModal(): void {
+    console.log('Proveravam da li ima predloženih tura');
+    this.tourExecutionService.getSuggestedTours(this.encounter.encounterLocation.longitude, this.encounter.encounterLocation.latitude).subscribe({
+      next: (result: any) => {
+        if (result && result.length > 0) {
+          console.log('Otvaram modal sa predloženim turama');
+          const dialogRef = this.dialog.open(SuggestedToursComponent, {
+            data: {
+              longitude: this.encounter.encounterLocation.longitude,
+              latitude: this.encounter.encounterLocation.latitude
+            }
+          });
+          dialogRef.componentInstance.closeDialog = () => {
+            dialogRef.close(); // Close the dialog when called from the modal
+          };
+          dialogRef.afterClosed().subscribe(result => {
+            console.log('Modal zatvoren', result);
+          });
+        } else {
+          console.log('Nema predloženih tura, modal se neće otvoriti');
+        }
+      },
+      error: (error) => {
+        console.error('Greška prilikom dobijanja predloženih tura:', error);
+      }
+    });
+  }
+  
 }

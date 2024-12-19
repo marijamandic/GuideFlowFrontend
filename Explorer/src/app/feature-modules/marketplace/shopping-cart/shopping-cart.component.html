@@ -17,7 +17,7 @@
 		<ng-container *ngIf="cart$ && cart$.items.length > 0; else cartEmpty">
 			<ng-container *ngFor="let item of cart$.items">
 				<div *ngIf="item.type === 0 && item.product && isTour(item.product); else bundle" class="tour">
-					<img src="https://developers.google.com/static/maps/images/landing/hero_geocoding_api.png" alt="..." />
+					<img [src]="getImageUrl(item.imageUrl)" alt="..." />
 					<div class="tour-details">
 						<div class="tour-header">
 							<div class="tour-info">
@@ -67,7 +67,7 @@
 						<ng-container *ngIf="showTours && item.product && isBundle(item.product)">
 							<ng-container *ngFor="let tour of item.product.tours">
 								<div class="bnd-tour">
-									<img src="https://developers.google.com/static/maps/images/landing/hero_geocoding_api.png" alt="..." />
+									<img [src]="getImageUrl(item.imageUrl)" alt="..." />
 									<div class="bnd-tour-info">
 										<div class="bnd-tour-header-info">
 											<h2>{{ tour.name }}</h2>

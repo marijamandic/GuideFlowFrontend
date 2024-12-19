@@ -14,6 +14,7 @@ import { ShoppingCartService } from '../shopping-cart.service';
 import { convertEnumToString } from 'src/app/shared/utils/enumToStringConverter';
 import { TourDetails } from '../model/shopping-carts/tour-details';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
+import { environment } from 'src/env/environment';
 
 @Component({
 	selector: 'xp-shopping-cart',
@@ -229,5 +230,9 @@ export class ShoppingCartComponent implements OnInit {
 
 	isBundle(product: TourDetails | TourBundle): product is TourBundle {
 		return 'tourIds' in product;
+	}
+
+	getImageUrl(imageUrl: string): string {
+		return `${environment.webRootHost}images/checkpoints/${imageUrl}`;
 	}
 }

@@ -4,7 +4,7 @@
 	<button type="button" (click)="handleGoToCart()">GO TO CART</button>
 	<div *ngFor="let item of cart$.items" class="items">
 		<hr />
-		<img src="https://developers.google.com/static/maps/images/landing/hero_geocoding_api.png" alt="..." />
+		<img [src]="getImageUrl(item.imageUrl)" alt="..." />
 		<h3>{{ item.productName }}</h3>
 		<div class="items-footer">
 			<p>AC {{ item.adventureCoin }}</p>
