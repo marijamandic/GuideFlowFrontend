@@ -150,9 +150,9 @@ export class ShoppingCartComponent implements OnInit {
 			next: () => {
 				console.log(`Item ${item.id} removed from cart.`);
 				this.shoppingCartService.addToCart(itemInput).subscribe({
-					next: (result: PagedResults<Item>) => {
-						console.log('Discount applied and item updated in cart:', result.results);
+					next: () => {
 						this.loadShoppingCart();
+						console.log('Discount applied and item updated in cart:', this.cart$.items);
 						this.calculateAc(this.cart$.items);
 					},
 					error: (err: HttpErrorResponse) => {
@@ -233,6 +233,6 @@ export class ShoppingCartComponent implements OnInit {
 	}
 
 	getImageUrl(imageUrl: string): string {
-		return `${environment.webRootHost}images/checkpoints/${imageUrl}`;
+		return `${environment.webRootHost}${imageUrl}`;
 	}
 }

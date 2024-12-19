@@ -5,6 +5,7 @@ import { PublicPointService } from '../../tour-authoring/tour-public-point.servi
 import { PublicPointNotification } from '../../tour-authoring/model/publicPointNotification.model';
 import { LayoutService } from '../layout.service';
 import { AdministrationService } from '../../administration/administration.service';
+import { CartPreviewService } from '../cart-preview.service';
 
 @Component({
 	selector: 'xp-navbar',
@@ -17,7 +18,7 @@ export class NavbarComponent implements OnInit {
 	notificationCount: number = 0;
 	shoppingCartCount: number = 0;
 	showNotifications: boolean = false;
-	showCart = false;
+	showCart$: boolean;
 	isMenuOpen: boolean = false;
 	username: string;
 
@@ -25,7 +26,8 @@ export class NavbarComponent implements OnInit {
 		private authService: AuthService,
 		private publiPointService: PublicPointService,
 		private notificationService: LayoutService,
-		private adminService: AdministrationService
+		private adminService: AdministrationService,
+		private cartPreviewService: CartPreviewService
 	) {}
 
 	ngOnInit(): void {
@@ -35,6 +37,11 @@ export class NavbarComponent implements OnInit {
 			console.log(user);
 		});
 		this.getUnread();
+		this.subscribeCartPreview();
+	}
+
+	private subscribeCartPreview() {
+		this.cartPreviewService.isOpened$.subscribe(isOpened => (this.showCart$ = isOpened));
 	}
 
 	getUnread(): void {
@@ -106,7 +113,7 @@ export class NavbarComponent implements OnInit {
 		}
 	}
 
-	handleShoppingCartOpened() {
-		this.showCart = false;
+	toggleShowCart() {
+		this.cartPreviewService.toggle();
 	}
 }
