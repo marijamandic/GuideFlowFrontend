@@ -145,10 +145,16 @@
   height: 40px;
   margin: 0;
 }
+.tour-card .weather-sunny{
+  width: 30px;
+  height: 30px;
+  padding: 5px;
+  margin: 0;
+}
 .tour-weather{
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: end;
 }
 .span-style{
   font-size: 14px;
