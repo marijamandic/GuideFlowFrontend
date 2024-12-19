@@ -7,6 +7,7 @@ import { User } from 'src/app/infrastructure/auth/model/user.model';
 import { TourExecution } from '../model/tour-execution.model';
 import { CreateTourExecutionDto } from '../model/create-tour-execution.dto';
 import { environment } from 'src/env/environment';
+import { Tour } from '../../tour-authoring/model/tour.model';
 
 @Component({
   selector: 'xp-purchased-tours',
@@ -14,7 +15,7 @@ import { environment } from 'src/env/environment';
   styleUrls: ['./purchased-tours.component.css']
 })
 export class PurchasedToursComponent implements OnInit{
-  purchasedTours: PurchasedTours[] = [];
+  purchasedTours: Tour[] = [];
   message: string = '';
   selectedPurchasedTour: PurchasedTours;
   tourExecutionId : string | null=null;
@@ -45,13 +46,22 @@ export class PurchasedToursComponent implements OnInit{
           if (result.message) {
             this.message = result.message;
             this.purchasedTours = [];
-          } else {
+          } else{
             this.purchasedTours = result;
             this.message = this.purchasedTours.length === 0 ? "There is no purchased tours yet :(" : '';
           }
         },
         error: (err: any) => {
-          console.log("Error fetching purchased tours: ", err);
+          if (err.status === 404) {
+            // Postavljanje poruke za 404 grešku
+            this.message = "No purchased tours found for this user.";
+            this.purchasedTours = [];
+            this.message = "There is no purchased tours yet :(";
+          } else {
+            // Za ostale greške
+            console.log("Error fetching purchased tours: ", err);
+            this.message = "An unexpected error occurred. Please try again later.";
+          }
         }
       });
     }
@@ -106,4 +116,11 @@ export class PurchasedToursComponent implements OnInit{
   getImagePath(imageUrl: string){
     return environment.webRootHost+imageUrl;
   }
+
+	LevelMap = {
+		0: 'Easy',
+		1: 'Advanced',
+		2: 'Expert'
+	};
+
 }

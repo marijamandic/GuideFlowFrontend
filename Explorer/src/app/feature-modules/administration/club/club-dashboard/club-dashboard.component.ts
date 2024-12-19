@@ -112,14 +112,14 @@ export class ClubDashboardComponent implements OnInit {
       next: (username) => target.username = username,
       error: (err) => console.error(`Error fetching username for userId ${userId}:`, err)
     });
-    /* I will make this works when people fixing the profile are done
+    //I will make this works when people fixing the profile are done
     this.service.getProfileInfoByUserId(userId).subscribe({
       next: (profile) => {
         target.firstName = profile.firstName;
         target.lastName = profile.lastName;
       },
       error: (err) => console.error(`Error fetching profile info for userId ${userId}:`, err)
-    });*/
+    });
   }
 
   getRequestStatus(status: ClubRequestStatus): string {
