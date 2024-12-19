@@ -92,7 +92,7 @@ export class AdministrationService {
 	}
 
 	updateClubInvitation(invitation: ClubInvitation): Observable<ClubInvitation> {
-		return this.http.put<ClubInvitation>(`${environment.apiHost}/api/invitation/clubInvitation/${invitation.id}/update`, invitation);
+		return this.http.put<ClubInvitation>(`${environment.apiHost}invitation/clubInvitation/${invitation.id}/update`, invitation);
 	}
 
 	getClubInvitationsByClubId(clubId: number): Observable<ClubInvitation[]> {
@@ -102,6 +102,12 @@ export class AdministrationService {
 	getClubInvitationsByOwner(ownerId: number): Observable<ClubInvitation[]> {
 		return this.http.get<ClubInvitation[]>(`${environment.apiHost}invitation/clubInvitation/owner/${ownerId}`);
 	}
+
+	deleteClubInvitation(id: number): Observable<void> {
+		return this.http.delete<void>(
+			`${environment.apiHost}invitation/clubInvitation/${id}`
+		);
+	}	
 
 	// ##### Club request ##### 
 	addRequest(clubRequest: ClubRequest): Observable<ClubRequest> {
@@ -135,6 +141,13 @@ export class AdministrationService {
 	getClubRequestsByClubId(clubId: number): Observable<ClubRequest[]> {
 		return this.http.get<ClubRequest[]>(environment.apiHost + `request/clubRequest/club/${clubId}`);
 	  }	  
+
+	deleteClubRequest(id: number): Observable<void> {
+		return this.http.delete<void>(
+			`${environment.apiHost}request/clubRequest/${id}`
+		);
+	}
+
 
 	// ##### Club membership ##### 
 	getAllClubMembers(clubId: number): Observable<ClubMemberList[]> {

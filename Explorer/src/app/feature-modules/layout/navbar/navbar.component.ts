@@ -76,7 +76,7 @@ export class NavbarComponent implements OnInit {
 			moneyExchangeNotifications$ = this.notificationService.getNotificationsByAuthorId(this.user?.id || 0);
 			clubRequests$ = of([]); 
 			clubInvitations$ = of([]); 
-			messageNotifications$ = of([]);
+			messageNotifications$ = this.notificationService.getAuthorNotificationMessagesByUserId(this.user?.id || 0);
 		} else {
 			console.log("Admin role detected");
 			moneyExchangeNotifications$ = of([]);

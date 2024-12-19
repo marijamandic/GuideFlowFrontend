@@ -51,7 +51,72 @@ export class LayoutService {
 		});
 		return this.http.get<Notification[]>(`${environment.apiHost}notifications/author/problem/by-user/${userId}`, { headers });
 	}
+	
+	createAuthorMessageNotification(messageNotification: MessageNotification): Observable<MessageNotification> {
+		const headers = new HttpHeaders({
+			Authorization: `Bearer ${localStorage.getItem('access-token')}`,
+			'Content-Type': 'application/json'
+		});
+		return this.http.post<MessageNotification>(
+			`${environment.apiHost}notifications/author/problem/message`,
+			messageNotification,
+			{ headers }
+		);
+	}
+		
+	getAuthorNotificationMessagesByUserId(userId: number): Observable<MessageNotification[]> {
+		const headers = new HttpHeaders({
+			Authorization: `Bearer ${localStorage.getItem('access-token')}`,
+			'Content-Type': 'application/json'
+		});
+		return this.http.get<MessageNotification[]>(
+			`${environment.apiHost}notifications/author/problem/message/${userId}`,
+			{ headers }
+		);
+	}
 
+	updateAuthorMessageNotification(id: number, isOpened: boolean): Observable<void> {
+		const headers = new HttpHeaders({
+		  Authorization: `Bearer ${localStorage.getItem('access-token')}`,
+		  'Content-Type': 'application/json'
+		});
+		return this.http.put<void>(
+		  `${environment.apiHost}notifications/author/problem/message/${id}`,
+		  isOpened,
+		  { headers }
+		);
+	}
+
+	deleteAuthorNotification(id: number): Observable<void> {
+		const headers = new HttpHeaders({
+		  Authorization: `Bearer ${localStorage.getItem('access-token')}`,
+		  'Content-Type': 'application/json'
+		});
+		return this.http.delete<void>(
+		  `${environment.apiHost}notifications/author/problem/${id}`,
+		  { headers }
+		);
+	}
+
+	deleteAuthorMessageNotification(id: number): Observable<void> {
+		const headers = new HttpHeaders({
+		  Authorization: `Bearer ${localStorage.getItem('access-token')}`,
+		  'Content-Type': 'application/json'
+		});
+		return this.http.delete<void>(
+		  `${environment.apiHost}notifications/author/problem/message/${id}`,
+		  { headers }
+		);
+	}
+
+	updateAuthorNotification(id: number, updatedNotification: Notification): Observable<void> {
+		const headers = new HttpHeaders({
+			Authorization: `Bearer ${localStorage.getItem('access-token')}`,
+			'Content-Type': 'application/json'
+		});
+		return this.http.patch<void>(`${environment.apiHost}notifications/author/problem/${id}`, updatedNotification, { headers });
+	}
+	  	  
 	updateNotification(id: number, updatedNotification: Notification): Observable<void> {
 		const headers = new HttpHeaders({
 			Authorization: `Bearer ${localStorage.getItem('access-token')}`,
@@ -116,6 +181,26 @@ export class LayoutService {
 
 		return this.http.patch<ProblemNotification>(`${environment.apiHost}notifications/author/problem?id=${id}&isOpened=${true}`, { headers });
 	}
+
+	deleteNotification(id: number): Observable<void> {
+		const headers = new HttpHeaders({
+			Authorization: `Bearer ${localStorage.getItem('access-token')}`,
+			'Content-Type': 'application/json',
+		});
+		return this.http.delete<void>(`${environment.apiHost}notifications/tourist/problem/${id}`, { headers });
+	}
+	
+	deleteMessageNotification(id: number): Observable<void> {
+		const headers = new HttpHeaders({
+		  Authorization: `Bearer ${localStorage.getItem('access-token')}`,
+		  'Content-Type': 'application/json',
+		});
+	
+		return this.http.delete<void>(
+		  `${environment.apiHost}notifications/tourist/problem/message/${id}`,
+		  { headers }
+		);
+	  }
 
 
 	// Clubs & Tours for HomePage
