@@ -5,7 +5,6 @@ import { MaterialModule } from 'src/app/infrastructure/material/material.module'
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
-import { TourPreviewComponent } from './tour-preview/tour-preview.component';
 import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
 import { TourBundleComponent } from './tour-bundle/tour-bundle.component';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -19,7 +18,6 @@ import { TourMoreDetailsComponent } from './tour-more-details/tour-more-details.
 
 @NgModule({
 	declarations: [
-		TourPreviewComponent,
 		ShoppingCartComponent,
 		TourBundleComponent,
 		TourBundleDialogComponent,
@@ -40,6 +38,6 @@ import { TourMoreDetailsComponent } from './tour-more-details/tour-more-details.
     SharedModule,
 		MatDialogModule
 	],
-	exports: [TourPreviewComponent, ShoppingCartComponent, CouponComponent, ShoppingCartPreviewComponent,TourMoreDetailsComponent]
+	exports: [ ShoppingCartComponent, CouponComponent, ShoppingCartPreviewComponent,TourMoreDetailsComponent]
 })
 export class MarketplaceModule {}

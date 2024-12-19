@@ -27,7 +27,6 @@ import { ProblemStatusComponent } from 'src/app/feature-modules/tour-execution/p
 import { AdminProblemComponent } from 'src/app/feature-modules/administration/admin-problem/admin-problem.component';
 import { PublicPointRequestsComponent } from 'src/app/feature-modules/tour-authoring/public-point-requests/public-point-requests.component';
 import { TourReviewComponent } from 'src/app/feature-modules/tour-execution/tour-review/tour-review.component';
-import { TourPreviewComponent } from 'src/app/feature-modules/marketplace/tour-preview/tour-preview.component';
 import { ShoppingCartComponent } from 'src/app/feature-modules/marketplace/shopping-cart/shopping-cart.component';
 import { PositionsimComponent } from 'src/app/feature-modules/tour-authoring/positionsim/positionsim.component';
 import { TourExecutionDetailsComponent } from 'src/app/feature-modules/tour-execution/tour-execution-details/tour-execution-details.component';
@@ -50,6 +49,7 @@ import { TourViewComponent } from 'src/app/feature-modules/tour-execution/tour-v
 import { AuthorDashboardComponent } from 'src/app/feature-modules/administration/author-dashboard/author-dashboard.component';
 import { TourAuthorDetailsComponent } from 'src/app/feature-modules/tour-authoring/tour-author-details/tour-author-details.component';
 import { SuggestedToursComponent } from 'src/app/feature-modules/tour-execution/suggested-tours/suggested-tours.component';
+import { ProblemInfoComponent } from 'src/app/feature-modules/tour-authoring/problem-info/problem-info.component';
 
 const routes: Routes = [
 
@@ -90,7 +90,6 @@ const routes: Routes = [
   { path: 'tour-execution/:id', component: TourExecutionDetailsComponent}, // blizanac, blizanac 
 
   // -- ne gde ovo uvezati u frontu
-  { path: 'tour-preview/:id', component: TourPreviewComponent},
   { path: 'tour-objects', component: TourObjectComponent, canActivate: [AuthGuard] },
   { path: 'tourExecutionMap', component: TourExecutionMap},
   
@@ -107,6 +106,7 @@ const routes: Routes = [
   { path: 'author-dashboard', component: AuthorDashboardComponent},
 
   { path: 'report-problem', component: ReportProblemComponent},
+  { path: 'problem-info/:id',component: ProblemInfoComponent},
 
   // ### Club
   { path: 'club', component: ClubComponent, canActivate: [AuthGuard] },

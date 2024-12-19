@@ -18,6 +18,7 @@ import { ItemInput } from '../../marketplace/model/shopping-carts/item-input';
 import { ProductType } from '../../marketplace/model/product-type';
 import { ShoppingCartService } from '../../marketplace/shopping-cart.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { WeatherCondition } from '../../tour-authoring/model/weatherCondition.model';
 
 @Component({
 	selector: 'xp-tour-view',
@@ -31,6 +32,11 @@ export class TourViewComponent implements OnInit {
 	allSales: Sales[] = [];
 	tourCheckpoints: Checkpoint[] = [];
 	newTour: Tour = this.initializeTour();
+	weatherRequirements: WeatherCondition = {
+		  minTemperature: 0,
+		  maxTemperature: 0,
+		  suitableConditions: []
+	};
 
 	tourSpecification: TourSpecification[] = [];
 	public TransportMode = TransportMode;
@@ -138,7 +144,12 @@ export class TourViewComponent implements OnInit {
 			taggs: [],
 			checkpoints: [],
 			transportDurations: [],
-			reviews: []
+			reviews: [],
+			weatherRequirements: this.weatherRequirements || { 
+				minTemperature: 0, 
+				maxTemperature: 0, 
+				suitableConditions: [] 
+			}
 		};
 	}
 	openModal(): void {
