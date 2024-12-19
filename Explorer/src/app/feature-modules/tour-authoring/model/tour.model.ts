@@ -3,6 +3,7 @@ import { Price } from "./price.model";
 import { Checkpoint } from "./tourCheckpoint.model";
 import { TourReview } from "./tourReview";
 import { TransportDuration } from "./transportDuration.model";
+import { WeatherCondition } from "./weatherCondition.model";
 
 export interface Tour {
     id: number;
@@ -16,6 +17,7 @@ export interface Tour {
     StatusChangeDate?:Date;
     lengthInKm: number;
     averageGrade: number;
+    weatherRequirements:WeatherCondition
     taggs: string[];
     checkpoints: Checkpoint[];
     transportDurations: TransportDuration[];

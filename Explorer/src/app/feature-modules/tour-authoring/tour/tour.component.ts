@@ -6,6 +6,7 @@ import { PagedResults } from 'src/app/shared/model/paged-results.model';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { User } from 'src/app/infrastructure/auth/model/user.model';
 import { Router } from '@angular/router';
+import { WeatherCondition } from '../model/weatherCondition.model';
 
 @Component({
   selector: 'xp-tour',
@@ -25,6 +26,11 @@ export class TourComponent implements OnInit {
   latitude: number | null = null;
   longitude: number | null = null;
   searchDistance: number | null = null;
+  weatherRequirements: WeatherCondition = {
+      minTemperature: 0,
+      maxTemperature: 0,
+      suitableConditions: []
+  };
 
   constructor(private service: TourService,private router:Router, private authService: AuthService){}
   
@@ -59,7 +65,12 @@ export class TourComponent implements OnInit {
       taggs: [],
       checkpoints: [],
       transportDurations: [],
-      reviews: []
+      reviews: [],
+      weatherRequirements: this.weatherRequirements || { 
+        minTemperature: 0, 
+        maxTemperature: 0, 
+        suitableConditions: [] 
+      }
     };
   }
 
