@@ -1,3 +1,7 @@
+.main-container {
+  max-height: 64vh;
+}
+
 .map-background {
   width: 66%;
   right: 0;
