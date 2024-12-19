@@ -9,7 +9,6 @@ import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { User } from 'src/app/infrastructure/auth/model/user.model';
 import { AdministrationService } from '../../administration/administration.service';
 import { Sales } from '../model/sales.model';
-import { Currency, Price } from '../../tour-authoring/model/price.model';
 import { Checkpoint } from '../../tour-authoring/model/tourCheckpoint.model';
 import { environment } from 'src/env/environment';
 import { AlertService } from '../../layout/alert.service';
@@ -18,6 +17,7 @@ import { ItemInput } from '../../marketplace/model/shopping-carts/item-input';
 import { ProductType } from '../../marketplace/model/product-type';
 import { ShoppingCartService } from '../../marketplace/shopping-cart.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { TourBundle } from '../../marketplace/model/tour-bundle.model';
 
 @Component({
 	selector: 'xp-tour-view',
@@ -31,6 +31,7 @@ export class TourViewComponent implements OnInit {
 	allSales: Sales[] = [];
 	tourCheckpoints: Checkpoint[] = [];
 	newTour: Tour = this.initializeTour();
+	bundles: TourBundle[];
 
 	tourSpecification: TourSpecification[] = [];
 	public TransportMode = TransportMode;
@@ -60,6 +61,10 @@ export class TourViewComponent implements OnInit {
 	currentView: string = 'published';
 	isModalOpen = false; // Praćenje stanja modala
 	currentImageIndex: number = 1; // Čuva trenutni indeks slike za svaku turu
+
+	REGULAR_PRODUCT = 'regular';
+	BUNDLE_PRODUCT = 'bundle';
+	productType = this.BUNDLE_PRODUCT;
 
 	constructor(
 		private service: TourExecutionService,
@@ -98,6 +103,8 @@ export class TourViewComponent implements OnInit {
 				console.log(err);
 			}
 		});
+
+		this.getPublishedBundles();
 	}
 
 	private subscribeUser() {
@@ -106,6 +113,21 @@ export class TourViewComponent implements OnInit {
 			this.user = user;
 		});
 	}
+
+	private getPublishedBundles = () => {
+		this.service.getPublishedBundles().subscribe({
+			next: (result: PagedResults<TourBundle>): void => {
+				this.bundles = [
+					...result.results.map(b => ({
+						...b,
+						tourIds: [...b.tourIds]
+					}))
+				];
+				console.log(this.bundles);
+			},
+			error: (error: HttpErrorResponse) => console.log(error.message)
+		});
+	};
 
 	onViewDetails(tour: Tour): void {
 		console.log('View Details clicked for tour:', tour.name);
@@ -559,5 +581,9 @@ export class TourViewComponent implements OnInit {
 		this.shoppingCartService.addToCart(item).subscribe({
 			error: (error: HttpErrorResponse) => console.log(error)
 		});
+	}
+
+	handleProductTypeChange() {
+		this.productType = this.productType === this.REGULAR_PRODUCT ? this.BUNDLE_PRODUCT : this.REGULAR_PRODUCT;
 	}
 }

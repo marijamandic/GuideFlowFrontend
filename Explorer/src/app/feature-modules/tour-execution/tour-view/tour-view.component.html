@@ -9,10 +9,10 @@
 		</div>
 
 		<div class="toggle-switch">
-			<input type="radio" id="regular" name="toggle" checked />
+			<input type="radio" id="regular" name="toggle" (change)="handleProductTypeChange()" [checked]="productType === REGULAR_PRODUCT" />
 			<label for="regular" class="toggle-option">Regular</label>
 
-			<input type="radio" id="bundles" name="toggle" />
+			<input type="radio" id="bundles" name="toggle" (change)="handleProductTypeChange()" [checked]="productType === BUNDLE_PRODUCT" />
 			<label for="bundles" class="toggle-option">Bundles</label>
 		</div>
 	</div>
@@ -107,54 +107,59 @@
 			<xp-tour-form *ngIf="isModalOpen" [tour]="newTour" [shouldEdit]="false" (closeModal)="closeModal()" (tourUpdated)="getAllTours()">
 			</xp-tour-form>
 
-			<div class="tour-card" *ngFor="let tour of allTours">
-				<div class="tour-card-image" *ngIf="currentView === 'draft'">
-					<img src="assets/images/tour9_draft.jpg" alt="{{ tour.name }}" />
-				</div>
-				<div class="tour-card-image" *ngIf="currentView !== 'draft'">
-					<img *ngIf="tour.checkpoints" [src]="getImagePath(tour.checkpoints[currentImageIndex].imageUrl)" alt="Checkpoint image" />
-				</div>
-				<div class="tour-card-content" (click)="goToDetails(tour)">
-					<div class="tour-card-header">
-						<h2>{{ tour.name }}</h2>
-						<!--button class="kebab-menu"><i class="fa-solid fa-ellipsis-vertical"></i></button-->
+			<ng-container *ngIf="productType === REGULAR_PRODUCT">
+				<div class="tour-card" *ngFor="let tour of allTours">
+					<div class="tour-card-image" *ngIf="currentView === 'draft'">
+						<img src="assets/images/tour9_draft.jpg" alt="{{ tour.name }}" />
 					</div>
-					<p>{{ tour.description }}</p>
-					<div class="tour-card-details">
-						<span><i class="fa-solid fa-dollar-sign"></i>{{ tour.price }} adventure coins</span>
-						<span><i class="fa-solid fa-fire"></i> {{ LevelMap[tour.level] }}</span>
-						<span><i class="fas fa-walking"></i> {{ tour.lengthInKm }} km</span>
-						<span><i class="fas fa-tag"></i>{{ tour.taggs }}</span>
+					<div class="tour-card-image" *ngIf="currentView !== 'draft'">
+						<img *ngIf="tour.checkpoints" [src]="getImagePath(tour.checkpoints[currentImageIndex].imageUrl)" alt="Checkpoint image" />
+					</div>
+					<div class="tour-card-content" (click)="goToDetails(tour)">
+						<div class="tour-card-header">
+							<h2>{{ tour.name }}</h2>
+							<!--button class="kebab-menu"><i class="fa-solid fa-ellipsis-vertical"></i></button-->
+						</div>
+						<p>{{ tour.description }}</p>
+						<div class="tour-card-details">
+							<span><i class="fa-solid fa-dollar-sign"></i>{{ tour.price }} adventure coins</span>
+							<span><i class="fa-solid fa-fire"></i> {{ LevelMap[tour.level] }}</span>
+							<span><i class="fas fa-walking"></i> {{ tour.lengthInKm }} km</span>
+							<span><i class="fas fa-tag"></i>{{ tour.taggs }}</span>
+						</div>
+					</div>
+					<div class="buttons">
+						<button class="kebab-menu"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+						<button *ngIf="user && user.role === 'tourist'" class="cta-button add-to-cart" (click)="addToCart(tour)">
+							<i class="fa-solid fa-cart-plus"></i> Add to Cart
+						</button>
+						<button
+							*ngIf="user && user.role === 'author' && currentView === 'draft'"
+							class="cta-button add-to-cart"
+							(click)="onPublish($event, tour)"
+						>
+							Publish
+						</button>
+						<button
+							*ngIf="user && user.role === 'author' && currentView === 'published'"
+							class="cta-button add-to-cart"
+							(click)="archiveTour($event, tour)"
+						>
+							Archive
+						</button>
+						<button
+							*ngIf="user && user.role === 'author' && currentView === 'archived'"
+							class="cta-button add-to-cart"
+							(click)="onPublish($event, tour)"
+						>
+							Activate
+						</button>
 					</div>
 				</div>
-				<div class="buttons">
-					<button class="kebab-menu"><i class="fa-solid fa-ellipsis-vertical"></i></button>
-					<button *ngIf="user && user.role === 'tourist'" class="cta-button add-to-cart" (click)="addToCart(tour)">
-						<i class="fa-solid fa-cart-plus"></i> Add to Cart
-					</button>
-					<button
-						*ngIf="user && user.role === 'author' && currentView === 'draft'"
-						class="cta-button add-to-cart"
-						(click)="onPublish($event, tour)"
-					>
-						Publish
-					</button>
-					<button
-						*ngIf="user && user.role === 'author' && currentView === 'published'"
-						class="cta-button add-to-cart"
-						(click)="archiveTour($event, tour)"
-					>
-						Archive
-					</button>
-					<button
-						*ngIf="user && user.role === 'author' && currentView === 'archived'"
-						class="cta-button add-to-cart"
-						(click)="onPublish($event, tour)"
-					>
-						Activate
-					</button>
-				</div>
-			</div>
+			</ng-container>
+			<ng-container *ngIf="productType === BUNDLE_PRODUCT">
+				<xp-bundles [bundles]="bundles" [user]="user"></xp-bundles>
+			</ng-container>
 		</div>
 	</div>
 

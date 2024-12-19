@@ -153,7 +153,7 @@ input[type='range']::-ms-thumb {
 	background-color: #fff;
 	border-radius: 15px;
 	box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 10px;
-	width: 100%;
+	/* width: 100%; */
 	margin-bottom: 20px;
 }
 
@@ -315,7 +315,7 @@ input[type='radio'] {
 }
 
 input[type='radio']:checked + label {
-	background-color: #a5e7dc; /* Svetlo zelena boja za aktivnu opciju */
+	background-color: var(--primary-color);
 	color: white;
 	z-index: 2; /* Aktivno dugme je iznad ostalih */
 	margin: 0; /* Resetujemo marginu za aktivno dugme */
