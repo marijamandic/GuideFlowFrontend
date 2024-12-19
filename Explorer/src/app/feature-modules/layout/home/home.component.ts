@@ -198,7 +198,7 @@ export class HomeComponent implements OnInit {
 			}
 		});
 	}
-
+	
 	loadClubs(): void {
 		this.layoutService.getTopClubs().subscribe({
 		next: (result: Club[]) => {
