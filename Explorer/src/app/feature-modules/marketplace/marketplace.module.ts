@@ -42,6 +42,6 @@ import { BundleComponent } from './bundle/bundle.component';
 		SharedModule,
 		MatDialogModule
 	],
-	exports: [TourPreviewComponent, ShoppingCartComponent, CouponComponent, ShoppingCartPreviewComponent, TourMoreDetailsComponent, BundlesComponent]
+	exports: [ShoppingCartComponent, CouponComponent, ShoppingCartPreviewComponent, TourMoreDetailsComponent, BundlesComponent]
 })
 export class MarketplaceModule {}

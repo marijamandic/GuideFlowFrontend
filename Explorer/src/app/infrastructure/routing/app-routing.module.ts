@@ -89,7 +89,7 @@ const routes: Routes = [
 	{ path: 'tour-execution/:id', component: TourExecutionDetailsComponent }, // blizanac, blizanac
 
 	// -- ne gde ovo uvezati u frontu
-	{ path: 'tour-preview/:id', component: TourPreviewComponent },
+	//{ path: 'tour-preview/:id', component: TourPreviewComponent },
 	{ path: 'tour-objects', component: TourObjectComponent, canActivate: [AuthGuard] },
 	{ path: 'tourExecutionMap', component: TourExecutionMap },
 
