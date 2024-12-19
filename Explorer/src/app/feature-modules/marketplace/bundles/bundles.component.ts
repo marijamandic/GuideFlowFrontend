@@ -48,7 +48,10 @@ export class BundlesComponent implements OnInit {
 
 		this.shoppingCartService.addToCart(item).subscribe({
 			next: () => this.cartPreviewService.open(),
-			error: (error: HttpErrorResponse) => console.log(error.message)
+			error: (error: HttpErrorResponse) => {
+				if (error.status === 400) alert('Item already in cart');
+				else console.log(error.message);
+			}
 		});
 	}
 }

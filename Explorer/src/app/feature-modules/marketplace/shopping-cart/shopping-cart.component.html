@@ -17,7 +17,7 @@
 		<ng-container *ngIf="cart$ && cart$.items.length > 0; else cartEmpty">
 			<ng-container *ngFor="let item of cart$.items">
 				<div *ngIf="item.type === 0 && item.product && isTour(item.product); else bundle" class="tour">
-					<img [src]="getImageUrl(item.imageUrl)" alt="..." />
+					<img [src]="getImageUrl(item.product.imageUrl)" alt="..." />
 					<div class="tour-details">
 						<div class="tour-header">
 							<div class="tour-info">

@@ -589,7 +589,10 @@ export class TourViewComponent implements OnInit {
 		} as ItemInput;
 		this.shoppingCartService.addToCart(item).subscribe({
 			next: () => this.cartPreviewService.open(),
-			error: (error: HttpErrorResponse) => console.log(error)
+			error: (error: HttpErrorResponse) => {
+				if (error.status) alert('Item already in cart');
+				else console.log(error.message);
+			}
 		});
 	}
 
