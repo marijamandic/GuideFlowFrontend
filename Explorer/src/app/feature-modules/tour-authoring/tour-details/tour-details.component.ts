@@ -4,6 +4,8 @@ import { TourService } from '../tour.service';
 import { Level, Tour, TourStatus } from '../model/tour.model';
 import { Currency } from '../model/price.model';
 import { environment } from 'src/env/environment';
+import { MatDialog } from '@angular/material/dialog';
+import { AddEncounterComponent } from '../add-encounter/add-encounter.component';
 
 @Component({
   selector: 'xp-tour-details',
@@ -33,7 +35,12 @@ export class TourDetailsComponent {
  
 
 
-  constructor(private route : ActivatedRoute, private router: Router, private tourService:TourService){}
+  constructor(
+    private route : ActivatedRoute, 
+    private router: Router, 
+    private tourService:TourService, 
+    private dialog: MatDialog,
+  ){}
 
   ngOnInit():void{
     this.tourId = Number(this.route.snapshot.paramMap.get('id'));
@@ -177,9 +184,26 @@ getFormattedCurrency(currency: Currency): string {
   };
   return currencySymbols[currency];
 }
-navigateToAddEncounter(id? : number){
-  this.router.navigate(['/author-add-encounter',id,this.tourId]);
+navigateToAddEncounter(id : number){
+  console.log('ID prosleđen u modal:', id);
+  this.openFormModal(id);
+  //this.router.navigate(['/author-add-encounter',id,this.tourId]);
 }
+
+ openFormModal(id: number): void {
+
+    const dialogRef = this.dialog.open(AddEncounterComponent, {
+      data: { checkpointId: id, tourId: this.tour.id}// prosledi podatke samo ako postoji id
+    });
+
+    // dialogRef.componentInstance.closeDialog = () => {
+    //   dialogRef.close(); // Close the dialog when called from the modal
+    // };
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Modal zatvoren', result);
+      window.location.reload();
+    });
+  }
 }
 
 

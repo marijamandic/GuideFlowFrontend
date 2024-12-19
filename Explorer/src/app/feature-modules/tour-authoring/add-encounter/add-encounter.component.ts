@@ -1,10 +1,12 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { EncounterExecutionService } from '../../encounter-execution/encounter-execution.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Encounter } from '../../encounter-execution/model/encounter.model';
 import { TourCheckpointService } from '../tour-checkpoint.service';
 import { Checkpoint } from '../model/tourCheckpoint.model';
 import { TourService } from '../tour.service';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { AlertService } from '../../layout/alert.service';
 
 export enum EncounterStatus {
   Active = 'Active',
@@ -24,13 +26,16 @@ export enum EncounterType {
   styleUrls: ['./add-encounter.component.css']
 })
 export class AddEncounterComponent implements OnInit {
-  checkpointId : number;
+ // @Input() checkpointId: number;
+  
+  //checkpointId : number;
   tourId : number;
   encounterTypes = Object.keys(EncounterType).filter((key) => isNaN(Number(key)));
   encounterStatuses = Object.keys(EncounterStatus).filter((key) => isNaN(Number(key)));
   selectedType: string | null = null;
   isEssential: boolean;
   checkpoint : Checkpoint;
+  selectedFile: File | null = null;
   encounter: Encounter = {
     $type: '',
     name: '',
@@ -41,18 +46,31 @@ export class AddEncounterComponent implements OnInit {
     encounterType: 0,
     isCreatedByAuthor: true,
   };
+    @Input() closeDialog: () => void;
+
 
   encounterCoordinates: { latitude: number; longitude: number }[] = [];
   @Output() encounterCoordinatesLoaded = new EventEmitter<{ latitude: number; longitude: number; }[]>();
 
-  constructor(private tourService: TourService,private checkpointService : TourCheckpointService,private encounterService : EncounterExecutionService,private router : Router , private route: ActivatedRoute){}
+  constructor(
+    private tourService: TourService,
+    private checkpointService : TourCheckpointService,
+    private encounterService : EncounterExecutionService,
+    private router : Router , 
+    private route: ActivatedRoute,
+    private alertService: AlertService,
+    private dialogRef: MatDialogRef<AddEncounterComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: { checkpointId: number, tourId: number } // Direktan pristup prosleđenim podacima
+    ) {}
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
-      this.checkpointId = params['id'];
-      this.tourId = params['tourId'];
-    });
-    this.checkpointService.getCheckpointById(this.checkpointId).subscribe({
+    // this.route.params.subscribe(params => {
+    //   this.checkpointId = params['id'];
+    //   this.tourId = params['tourId'];
+    // });
+    this.tourId = this.data.tourId;
+    console.log('checkpoint id:', this.data.checkpointId);
+    this.checkpointService.getCheckpointById(this.data.checkpointId).subscribe({
       next: (checkpoint: Checkpoint) => {
         this.checkpoint = checkpoint;
 
@@ -68,17 +86,37 @@ export class AddEncounterComponent implements OnInit {
     });
   }
   submitEncounter() {
+    if (this.encounter.encounterType == this.mapToType("Location") && !this.selectedFile) {
+      // Ako fajl nije selektovan, ručno oznaci input kao nevalidan
+      this.alertService.showAlert('File is required', "error", 5);
+      return;
+    }
+
+    if (!this.encounter.encounterLocation.latitude || !this.encounter.encounterLocation.longitude) {
+      this.alertService.showAlert('Encounter coordinates are required', "error", 5);
+      return;  // Prekida slanje forme ako koordinate nisu unete
+    }
+
+    if (this.encounter.encounterType == this.mapToType("Location") && (!this.encounter.imageLatitude || !this.encounter.imageLongitude)) {
+      this.alertService.showAlert('Image coordinates are required', "error", 5);
+      return;  // Prekida slanje forme ako image koordinate nisu unete
+    }
     console.log('Kreirani izazov:', this.encounter);
     this.encounter.encounterStatus = this.ConvertStatus(this.encounter.encounterStatus.toString());
     this.encounterService.authorAddEncounter(this.encounter).subscribe({
       next: (result) => {
         this.encounter = result;
+        console.log('result: ', result);
+        console.log('encounter', this.encounter);
         this.checkpoint.encounterId = this.encounter.id;
+        console.log('checkpoint encounter: ', this.checkpoint.encounterId);
         this.checkpoint.isEncounterEssential = this.isEssential;
         this.tourService.updateCheckpoint(this.tourId,this.checkpoint).subscribe({
           next: () => {
             console.log("uspesno izmenjen checkpoint");
-            this.router.navigate(["tour",this.tourId])
+            this.dialogRef.close('success');
+
+            //this.router.navigate(["tour",this.tourId])
           },
           error: (err) => console.error(err),
         })
@@ -92,10 +130,10 @@ export class AddEncounterComponent implements OnInit {
       console.log('Image Location updated:', { latitude: this.encounter.imageLatitude, longitude: this.encounter.imageLongitude });
   }
   onFileSelected(event: any) {
-    const file: File = event.target.files[0];
-    if (file) {
+    this.selectedFile = event.target.files[0];
+    if (this.selectedFile) {
       const reader = new FileReader();
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(this.selectedFile);
       reader.onload = () => {
         this.encounter.imageBase64 = reader.result as string;
       };
@@ -110,7 +148,7 @@ export class AddEncounterComponent implements OnInit {
       encounterRange: undefined,
       imageUrl: undefined,
       activationRange: undefined,
-      checkpointId: this.checkpointId,
+      checkpointId: this.data.checkpointId,
       actionDescription: undefined,
       imageLatitude: undefined,
       imageLongitude: undefined,
@@ -158,4 +196,7 @@ export class AddEncounterComponent implements OnInit {
         return 0; 
     }
   }
+  onCloseModal() {
+     this.dialogRef.close();
+   }
 }
