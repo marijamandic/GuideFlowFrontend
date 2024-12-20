@@ -19,6 +19,7 @@ import { ClubPostComponent } from './club/club-post/club-post.component';
 import { ClubInfoComponent } from './club/club-info/club-info.component';
 import { ClubDashboardComponent } from './club/club-dashboard/club-dashboard.component';
 import { AuthorDashboardComponent } from './author-dashboard/author-dashboard.component';
+import { NgChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { AuthorDashboardComponent } from './author-dashboard/author-dashboard.co
     MaterialModule,
     ReactiveFormsModule,
     LayoutModule,
-    FormsModule
+    FormsModule,
+    NgChartsModule
   ],
   exports: [
     EquipmentComponent,

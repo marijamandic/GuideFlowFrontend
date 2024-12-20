@@ -14,6 +14,9 @@ import { Message } from 'src/app/shared/model/message.model'; // Import poruka m
 import { CreateMessageInput } from '../../tour-authoring/model/create-message-input.model';
 import { AdministrationService } from '../administration.service';
 import { Tourist } from '../../tour-authoring/model/tourist';
+import { BaseChartDirective } from 'ng2-charts';
+import { ChartData, ChartOptions } from 'chart.js';
+
 
 @Component({
   selector: 'xp-author-dashboard',
@@ -32,6 +35,7 @@ export class AuthorDashboardComponent implements OnInit {
   Math = Math;
   user: User;
   @ViewChild('messagesContainer') private messagesContainer: ElementRef
+  @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
   // users: Account[] = []
   problems: Problem[] = [];
   tours: Tour[] = [];
@@ -43,6 +47,60 @@ export class AuthorDashboardComponent implements OnInit {
   newMessageContent: string = '';
   averageGrade: number = 0;
   reviewsPartition: { [key: number]: number } = {};
+  problemStatusData: ChartData<'bar'> = {
+    labels: ['Resolved', 'Unresolved', 'Overdue'],
+    datasets: [
+      {
+        label: 'Problem Status',
+        data: [0, 0, 0], // Ovi podaci će se dinamički ažurirati
+        backgroundColor: ['#28a745', '#ffc107', '#dc3545'], // Zelena, žuta, crvena
+      },
+    ],
+  };
+  
+  problemStatusOptions: ChartOptions<'bar'> = {
+    responsive: true,
+    plugins: {
+      legend: { display: true },
+      tooltip: { enabled: true },
+    },
+    scales: {
+      x: {
+        beginAtZero: true,
+        grid: {
+          display: false, // Isključuje linije na X osi
+        },
+      },
+      y: {
+        beginAtZero: true,
+        grid: {
+          display: false, // Isključuje linije na Y osi
+        },
+        ticks: {
+          display: false, // Isključuje oznake na Y osi
+        },
+      },
+    },
+  };
+  
+  problemSourceData: ChartData<'doughnut'> = {
+    labels: ['Transportation', 'Accommodation', 'Guide', 'Organization', 'Safety'],
+    datasets: [
+      {
+        label: 'Problem Source',
+        data: [0, 0, 0, 0, 0], // Podaci će se dinamički ažurirati
+        backgroundColor: ['#20c997', '#f06595', '#ffc107', '#ff6f61', '#339af0'], // Boje za kategorije
+      },
+    ],
+  };
+  
+  problemSourceOptions: ChartOptions<'doughnut'> = {
+    responsive: true,
+    plugins: {
+      legend: { position: 'right' },
+      tooltip: { enabled: true },
+    },
+  };
 
   ngOnInit(): void {
     this.loadProblems();
@@ -94,6 +152,8 @@ export class AuthorDashboardComponent implements OnInit {
       next: (result: PagedResults<Problem>) => {
         this.problems = result.results;
         this.fetchAllTours();
+        this.generateChartData();
+        this.generateSourceChartData();
       },
       error: (err: any) => {
         console.error('Error fetching problems:', err);
@@ -242,4 +302,39 @@ export class AuthorDashboardComponent implements OnInit {
   saveDeadline(): void {
     
   }
+  generateChartData(): void {
+    // Statusi problema
+    const resolved = this.problems.filter(p => this.getProblemStatus(p) === 'Resolved').length;
+    const unresolved = this.problems.filter(p => this.getProblemStatus(p) === 'Unresolved').length;
+    const overdue = this.problems.filter(p => this.getProblemStatus(p) === 'Overdue').length;
+
+    this.problemStatusData.datasets[0].data = [resolved, unresolved, overdue];
+
+    if (this.chart) {
+    this.chart.update(); // Osveži grafikon
+    }
+  }
+  generateSourceChartData(): void {
+    const categoryCounts: Record<string, number> = {
+      Transportation: 0,
+      Accommodation: 0,
+      Guides: 0, // Promenjeno da se slaže sa enumeracijom
+      Organization: 0,
+      Safety: 0,
+    };
+    
+    this.problems.forEach(problem => {
+      const categoryKey = Category[problem.details.category] as string; // Dobijanje ključa kao string
+      if (categoryCounts[categoryKey] !== undefined) {
+        categoryCounts[categoryKey]++;
+      }
+    });
+  
+    this.problemSourceData.datasets[0].data = Object.values(categoryCounts);
+  
+    if (this.chart) {
+      this.chart.update();
+    }
+  }
+  
 }

@@ -591,5 +591,14 @@ h1{
     font-weight: bold;
     color: #555;
   }
+  .dashboard-card canvas {
+    width: 100% !important; /* Prilagođava širinu kartice */
+    height: auto !important; /* Automatski podešava visinu */
+    max-height: 200px; /* Ograničava visinu kako grafikon ne bi izlazio */
+    display: block;
+  }
+  .dashboard-card {
+    overflow: hidden; /* Sprečava elemente da izlaze iz kartice */
+  }  
   
   
