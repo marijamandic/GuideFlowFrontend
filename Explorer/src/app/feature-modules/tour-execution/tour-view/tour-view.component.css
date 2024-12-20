@@ -7,7 +7,7 @@
 .search-container {
   position: relative;
   bottom: 77.5vh; /* Pozicija od vrha stranice */
-  left: 41%; /* Centriranje horizontalno */
+  left: 35.5%; /* Centriranje horizontalno */
   transform: translateX(-50%);
   z-index: 9;
   display: flex;
