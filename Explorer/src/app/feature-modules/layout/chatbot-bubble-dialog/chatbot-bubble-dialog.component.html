@@ -1,0 +1,24 @@
+<div class="chat-dialog" [ngStyle]="{
+  left: dialogPosition.left + 'px',
+  top: (dialogPosition.top + 60)+ 'px'
+}">
+  <div class="chat-header">
+    <span>Chat</span>
+    <button class="close-button" (click)="closeChat()">×</button>
+  </div>
+  <div class="chat-body" #chatbody>
+    <div *ngIf="user && user.username !== '' && chatLog && chatLog.messages">
+      <div *ngFor="let message of chatLog.messages" [ngClass]="{
+        'message': true,
+        'user': message.sender === Sender.User,
+        'bot': message.sender === Sender.Chatbot
+        }">
+        {{ message.content }}
+      </div>
+    </div>
+  </div>
+  <div class="input-area">
+    <input type="text" [(ngModel)]="newMessage" [disabled]="user && user.username === ''" placeholder="Ask away ..." (keydown.enter)="sendMessage()">
+    <button class="cta-button" (click)="sendMessage()" [disabled]="!newMessage">Send</button>
+  </div>
+</div>
