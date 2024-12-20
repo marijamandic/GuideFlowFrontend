@@ -16,7 +16,7 @@
     <section class="popular-tours">
         <h2>Our picks</h2>
         <div class="tour-cards-container no-scroll">
-            <a *ngFor="let tour of tours" class="tour-card" [routerLink]="['/tourPreview', tour.id]">
+            <a *ngFor="let tour of tours | slice:0:5" class="tour-card" [routerLink]="['/tourPreview', tour.id]">
                 <div class="tour-image" [style.backgroundImage]="'url(' + tour.imageUrl + ')'"></div>
                 <div class="tour-info">
                     <h3>{{ tour.name }}</h3>
@@ -25,6 +25,7 @@
             </a>
         </div>
     </section>
+    
 
     <!-- GUIDE CTA -->
     <section class="guide-signup">

@@ -2,12 +2,11 @@
   {{ message }}
 </h1>
 
-<section *ngIf="!message && purchasedTours.length > 0" class="purchased-tours">
+<!-- <section *ngIf="!message && purchasedTours.length > 0" class="purchased-tours">
   <h1>Purchased tours</h1>
   <div class="tour-cards-wrapper">
     <div class="cards">
       <div *ngFor="let tour of purchasedTours" class="card">
-        <!-- <img [src]="getImagePath(tour.checkpoints[0].imageUrl)" alt="Checkpoint Image" width="100" /> -->
         <div class="card-image" [style.backgroundImage]="getImagePath(tour.checkpoints[0].imageUrl)"></div>
         <div class="tour-info">
           <h3 class="title">{{ tour.name }}</h3>
@@ -21,5 +20,48 @@
       </div>
     </div>
   </div>
-</section>
+</section> -->
 
+
+<div *ngIf="!message && purchasedTours.length > 0" class="tour-container">
+  <h1>Purchased tours</h1>
+
+  <div [ngClass]="tour.isPremium ? 'tour-card premium' : 'tour-card'" *ngFor="let tour of purchasedTours">
+
+    <div class="tour-card-image">
+      <img *ngIf="tour.checkpoints[0].imageUrl" [src]="getImagePath(tour.checkpoints[0].imageUrl)" alt="Checkpoint image" />
+    </div>
+    <div class="tour-card-content">
+      <div class="tour-card-header">
+        <div style="display: flex; align-items: center; gap:3px">
+          <h2 style="margin: 0px;">{{ tour.name }}</h2>
+          <i *ngIf="tour.isPremium" class="fa fa-certificate" aria-hidden="true"></i>
+        </div>
+        <div>
+          <span class="tour-weather">
+            <img [ngClass]="tour.weatherIcon!=='01d' ? 'weather-icon' : 'weather-sunny'" *ngIf="tour.weatherIcon" [src]="mapToWeatherIcon(tour.weatherIcon) ?? 'assets/images/clear.png'" alt="nema weather ikkonic">
+            <p class="span-style" *ngIf="tour.temperature">{{ tour.weatherDescription}}, {{ mapToRoundNumber(tour.temperature)}}°C</p>
+          </span>
+        </div>
+        <!--button class="kebab-menu"><i class="fa-solid fa-ellipsis-vertical"></i></button-->
+      </div>
+      <div style="display: flex; justify-content:space-between">
+        <p>{{ tour.description }}</p>
+        <p [ngClass]="getRecommendClass(tour.weatherRecommend)">{{mapToRecommend(tour.weatherRecommend)}}</p>
+      </div>
+      <div class="tour-card-details">
+        <span><i class="fa-solid fa-dollar-sign"></i>{{ tour.price }} adventure coins</span>
+        <span><i class="fa-solid fa-fire"></i> {{ LevelMap[tour.level] }}</span>
+        <span><i class="fas fa-walking"></i> {{ tour.lengthInKm }} km</span>
+        <span><i class="fas fa-tag"></i>{{ tour.taggs }}</span>
+      </div>
+      <div class="buttons">
+        <button (click)="createSession(tour.id)" class="cta-button">{{ isActiveSession(tour.id) ? 'Enter Tour' : 'Start Tour' }}</button>
+
+      </div>
+      <!-- <button class="cta-button" (click)="addToCart(tour)">
+        <i class="fa-solid fa-cart-plus"></i> Add to Cart
+      </button> -->
+    </div>
+  </div>
+</div>

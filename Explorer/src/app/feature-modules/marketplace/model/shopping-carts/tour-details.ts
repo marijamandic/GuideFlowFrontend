@@ -4,6 +4,7 @@ export interface TourDetails {
 	id: number;
 	name: string;
 	description: string;
+	imageUrl: string;
 	level: Level;
 	tags: string[];
 }

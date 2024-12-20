@@ -9,10 +9,10 @@
 		</div>
 
 		<div class="toggle-switch">
-			<input type="radio" id="regular" name="toggle" checked />
+			<input type="radio" id="regular" name="toggle" (change)="handleProductTypeChange()" [checked]="productType === REGULAR_PRODUCT" />
 			<label for="regular" class="toggle-option">Regular</label>
 
-			<input type="radio" id="bundles" name="toggle" />
+			<input type="radio" id="bundles" name="toggle" (change)="handleProductTypeChange()" [checked]="productType === BUNDLE_PRODUCT" />
 			<label for="bundles" class="toggle-option">Bundles</label>
 		</div>
 	</div>
@@ -33,69 +33,67 @@
 		</div>
 	</div>
 
-  <!-- Main Content -->
-  <div class="content-container">
-    <!-- Filters Section -->
-    <div class="filter-container">
+	<!-- Main Content -->
+	<div class="content-container">
+		<!-- Filters Section -->
+		<div class="filter-container">
+			<!--sort-->
 
-        <!--sort-->
-        
-        
-        <h3 class="filter-header">Filter by:</h3>
-        
-        <div class="status-filter" *ngIf="user && user.role ==='author'">
-          <span>Status</span>
-          <div class="status-buttons">
-            <input type="radio" id="published" name="status" (change)="onStatusChange('published')" checked />
-            <label for="published" class="status-button">Published</label>
-            
-            <input type="radio" id="draft" name="status" (change)="onStatusChange('draft')" />
-            <label for="draft" class="status-button">Draft</label>
-            
-            <input type="radio" id="archive" name="status" (click) = "onStatusChange('archived')" />
-            <label for="archive" class="status-button">Archived</label>
-          </div>
-        </div>
-        <div class="sort-header">
-          <label>Sort by:</label>
-        </div>
-        <div class="dropdown-div">
-        <select id="sort-menu" (change)="onSortChange($event)" class="sort-dropdown">
-          <option value="price-asc">Price: Low to High</option>
-          <option value="price-desc">Price: High to Low</option>
-          <option value="sales">Sales</option>
-        </select>
-        </div>
-        
-      <div class="slider-container">
-        <label for="level">Level</label>
-        <input type="range" id="level" name="level" min="0" max="2" [(ngModel)]="ts.level" />
-      </div>
-      <div class="slider-container" *ngIf="ts.transportRatings.length > 2">
-        <label for="car">Car</label>
-        <input type="range" id="car" name="car" min="0" max="3" [(ngModel)]="ts.transportRatings[2].rating" />
-      </div>
-      <div class="slider-container">
-        <label for="boat">Boat</label>
-        <input type="range" id="boat" name="boat" min="0" max="3" [(ngModel)]="ts.transportRatings[3].rating" />
-      </div>
-      <div class="slider-container">
-        <label for="walk">Walk</label>
-        <input type="range" id="walk" name="walk" min="0" max="3" [(ngModel)]="ts.transportRatings[0].rating" />
-      </div>
-      <div class="slider-container">
-        <label for="bike">Bike</label>
-        <input type="range" id="bike" name="bike" min="0" max="3" [(ngModel)]="ts.transportRatings[1].rating" />
-      </div>
-      <div class="tags-container">
-        <label for="tagsInput">Tags</label>
-        <textarea [(ngModel)]="tagsInputValue" id="tagsInput" placeholder="Enter tags separated by commas"></textarea>
-      </div>
-      <div class="button-container">
-        <button id="reset" (click)="deleteTourSpecification()" class="cta-button">Reset</button>
-        <button id="apply" (click)="applyChanges()" class="cta-button">Apply</button>
-      </div>
-    </div>
+			<h3 class="filter-header">Filter by:</h3>
+
+			<div class="status-filter" *ngIf="user && user.role === 'author'">
+				<span>Status</span>
+				<div class="status-buttons">
+					<input type="radio" id="published" name="status" (change)="onStatusChange('published')" checked />
+					<label for="published" class="status-button">Published</label>
+
+					<input type="radio" id="draft" name="status" (change)="onStatusChange('draft')" />
+					<label for="draft" class="status-button">Draft</label>
+
+					<input type="radio" id="archive" name="status" (click)="onStatusChange('archived')" />
+					<label for="archive" class="status-button">Archived</label>
+				</div>
+			</div>
+			<div class="sort-header">
+				<label>Sort by:</label>
+			</div>
+			<div class="dropdown-div">
+				<select id="sort-menu" (change)="onSortChange($event)" class="sort-dropdown">
+					<option value="price-asc">Price: Low to High</option>
+					<option value="price-desc">Price: High to Low</option>
+					<option value="sales">Sales</option>
+				</select>
+			</div>
+
+			<div class="slider-container">
+				<label for="level">Level</label>
+				<input type="range" id="level" name="level" min="0" max="2" [(ngModel)]="ts.level" />
+			</div>
+			<div class="slider-container" *ngIf="ts.transportRatings.length > 2">
+				<label for="car">Car</label>
+				<input type="range" id="car" name="car" min="0" max="3" [(ngModel)]="ts.transportRatings[2].rating" />
+			</div>
+			<div class="slider-container">
+				<label for="boat">Boat</label>
+				<input type="range" id="boat" name="boat" min="0" max="3" [(ngModel)]="ts.transportRatings[3].rating" />
+			</div>
+			<div class="slider-container">
+				<label for="walk">Walk</label>
+				<input type="range" id="walk" name="walk" min="0" max="3" [(ngModel)]="ts.transportRatings[0].rating" />
+			</div>
+			<div class="slider-container">
+				<label for="bike">Bike</label>
+				<input type="range" id="bike" name="bike" min="0" max="3" [(ngModel)]="ts.transportRatings[1].rating" />
+			</div>
+			<div class="tags-container">
+				<label for="tagsInput">Tags</label>
+				<textarea [(ngModel)]="tagsInputValue" id="tagsInput" placeholder="Enter tags separated by commas"></textarea>
+			</div>
+			<div class="button-container">
+				<button id="reset" (click)="deleteTourSpecification()" class="cta-button filter-button">Reset</button>
+				<button id="apply" (click)="applyChanges()" class="cta-button filter-button">Apply</button>
+			</div>
+		</div>
 
 		<!-- Tour Cards Section -->
 		<div class="tour-container">
@@ -109,54 +107,128 @@
 			<xp-tour-form *ngIf="isModalOpen" [tour]="newTour" [shouldEdit]="false" (closeModal)="closeModal()" (tourUpdated)="getAllTours()">
 			</xp-tour-form>
 
-			<div class="tour-card" *ngFor="let tour of allTours">
-				<div class="tour-card-image" *ngIf="currentView === 'draft'">
-					<img src="assets/images/tour9_draft.jpg" alt="{{ tour.name }}" />
-				</div>
-				<div class="tour-card-image" *ngIf="currentView !== 'draft'">
-					<img *ngIf="tour.checkpoints" [src]="getImagePath(tour.checkpoints[currentImageIndex].imageUrl)" alt="Checkpoint image" />
-				</div>
-				<div class="tour-card-content" (click)="goToDetails(tour)">
-					<div class="tour-card-header">
-						<h2>{{ tour.name }}</h2>
-						<!--button class="kebab-menu"><i class="fa-solid fa-ellipsis-vertical"></i></button-->
+			<ng-container *ngIf="productType === REGULAR_PRODUCT">
+				<div (click)="goToDetails(tour)" [ngClass]="tour.isPremium ? 'tour-card premium' : 'tour-card'" *ngFor="let tour of allTours">
+					<img
+						*ngIf="tour.checkpoints && currentView !== 'draft'"
+						[src]="getImagePath(tour.checkpoints[currentImageIndex].imageUrl)"
+						alt="Checkpoint image"
+					/>
+					<img *ngIf="currentView === 'draft'" src="assets/images/tour9_draft.jpg" alt="{{ tour.name }}" />
+					<div class="tour-details">
+						<div class="tour-header">
+							<div class="tour-info">
+								<div style="display: flex; align-items: center; gap: 3px">
+									<h2 style="margin: 0">{{ tour.name }}</h2>
+									<i *ngIf="tour.isPremium" class="fa fa-certificate" aria-hidden="true"></i>
+								</div>
+								<div>{{ tour.description }}</div>
+							</div>
+							<i class="fa-solid fa-ellipsis-vertical"></i>
+						</div>
+						<div class="tour-footer">
+							<div class="tour-footer-info">
+								<div class="tour-footer-info-row">
+									<i class="fa-solid fa-fire"></i>
+									<span>{{ LevelMap[tour.level] }}</span>
+								</div>
+								<div class="tour-footer-info-row">
+									<i class="fas fa-walking"></i>
+									<span>{{ tour.lengthInKm }} km</span>
+								</div>
+								<div class="tour-footer-info-row">
+									<i class="fa-solid fa-square"></i>
+									<span *ngFor="let tag of tour.taggs; let i = index">
+										<ng-container *ngIf="i === tour.taggs.length - 1; else notLast">{{ tag }} </ng-container>
+										<ng-template #notLast>{{ tag }},&nbsp;</ng-template>
+									</span>
+								</div>
+								<div class="tour-footer-info-row">
+									<i class="fa-solid fa-money-bill"></i>
+									<span>AC {{ tour.price }}</span>
+								</div>
+							</div>
+							<button
+								*ngIf="user && user.role === 'tourist'"
+								class="cta-button add-to-cart"
+								(click)="addToCart(tour); $event.stopPropagation()"
+							>
+								<i class="fa-solid fa-cart-plus"></i> Add to Cart
+							</button>
+							<button
+								*ngIf="user && user.role === 'author' && currentView === 'draft'"
+								class="cta-button add-to-cart"
+								(click)="onPublish($event, tour)"
+							>
+								Publish
+							</button>
+							<button
+								*ngIf="user && user.role === 'author' && currentView === 'published'"
+								class="cta-button add-to-cart"
+								(click)="archiveTour($event, tour)"
+							>
+								Archive
+							</button>
+							<button
+								*ngIf="user && user.role === 'author' && currentView === 'archived'"
+								class="cta-button add-to-cart"
+								(click)="onPublish($event, tour)"
+							>
+								Activate
+							</button>
+						</div>
 					</div>
-					<p>{{ tour.description }}</p>
-					<div class="tour-card-details">
-						<span><i class="fa-solid fa-dollar-sign"></i>{{ tour.price }} adventure coins</span>
-						<span><i class="fa-solid fa-fire"></i> {{ LevelMap[tour.level] }}</span>
-						<span><i class="fas fa-walking"></i> {{ tour.lengthInKm }} km</span>
-						<span><i class="fas fa-tag"></i>{{ tour.taggs }}</span>
+					<!-- <div class="tour-card-image" *ngIf="currentView === 'draft'">
+						<img src="assets/images/tour9_draft.jpg" alt="{{ tour.name }}" />
 					</div>
+					<div class="tour-card-image" *ngIf="currentView !== 'draft'">
+						<img *ngIf="tour.checkpoints" [src]="getImagePath(tour.checkpoints[currentImageIndex].imageUrl)" alt="Checkpoint image" />
+					</div>
+					<div class="tour-card-content" (click)="goToDetails(tour)">
+						<div class="tour-card-header">
+							<h2>{{ tour.name }}</h2>
+							<button class="kebab-menu"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+						</div>
+						<p>{{ tour.description }}</p>
+						<div class="tour-card-details">
+							<span><i class="fa-solid fa-dollar-sign"></i>{{ tour.price }} adventure coins</span>
+							<span><i class="fa-solid fa-fire"></i> {{ LevelMap[tour.level] }}</span>
+							<span><i class="fas fa-walking"></i> {{ tour.lengthInKm }} km</span>
+							<span><i class="fas fa-tag"></i>{{ tour.taggs }}</span>
+						</div>
+					</div>
+					<div class="buttons">
+						<button class="kebab-menu"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+						<button *ngIf="user && user.role === 'tourist'" class="cta-button add-to-cart" (click)="addToCart(tour)">
+							<i class="fa-solid fa-cart-plus"></i> Add to Cart
+						</button>
+						<button
+							*ngIf="user && user.role === 'author' && currentView === 'draft'"
+							class="cta-button add-to-cart"
+							(click)="onPublish($event, tour)"
+						>
+							Publish
+						</button>
+						<button
+							*ngIf="user && user.role === 'author' && currentView === 'published'"
+							class="cta-button add-to-cart"
+							(click)="archiveTour($event, tour)"
+						>
+							Archive
+						</button>
+						<button
+							*ngIf="user && user.role === 'author' && currentView === 'archived'"
+							class="cta-button add-to-cart"
+							(click)="onPublish($event, tour)"
+						>
+							Activate
+						</button>
+					</div> -->
 				</div>
-				<div class="buttons">
-					<button class="kebab-menu"><i class="fa-solid fa-ellipsis-vertical"></i></button>
-					<button *ngIf="user && user.role === 'tourist'" class="cta-button add-to-cart" (click)="addToCart(tour)">
-						<i class="fa-solid fa-cart-plus"></i> Add to Cart
-					</button>
-					<button
-						*ngIf="user && user.role === 'author' && currentView === 'draft'"
-						class="cta-button add-to-cart"
-						(click)="onPublish($event, tour)"
-					>
-						Publish
-					</button>
-					<button
-						*ngIf="user && user.role === 'author' && currentView === 'published'"
-						class="cta-button add-to-cart"
-						(click)="archiveTour($event, tour)"
-					>
-						Archive
-					</button>
-					<button
-						*ngIf="user && user.role === 'author' && currentView === 'archived'"
-						class="cta-button add-to-cart"
-						(click)="onPublish($event, tour)"
-					>
-						Activate
-					</button>
-				</div>
-			</div>
+			</ng-container>
+			<ng-container *ngIf="productType === BUNDLE_PRODUCT">
+				<xp-bundles [bundles]="bundles" [user]="user"></xp-bundles>
+			</ng-container>
 		</div>
 	</div>
 

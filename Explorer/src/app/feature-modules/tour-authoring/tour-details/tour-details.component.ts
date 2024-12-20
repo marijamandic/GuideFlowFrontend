@@ -4,6 +4,9 @@ import { TourService } from '../tour.service';
 import { Level, Tour, TourStatus } from '../model/tour.model';
 import { Currency } from '../model/price.model';
 import { environment } from 'src/env/environment';
+import { MatDialog } from '@angular/material/dialog';
+import { AddEncounterComponent } from '../add-encounter/add-encounter.component';
+import { WeatherCondition } from '../model/weatherCondition.model';
 
 @Component({
   selector: 'xp-tour-details',
@@ -12,6 +15,11 @@ import { environment } from 'src/env/environment';
 })
 export class TourDetailsComponent {
   tourId!:number;
+  weatherRequirements: WeatherCondition = {
+      minTemperature: 0,
+      maxTemperature: 0,
+      suitableConditions: []
+  };
   tour:Tour={
     id: 0,
     authorId:-1,
@@ -25,15 +33,22 @@ export class TourDetailsComponent {
     taggs: [],
     checkpoints: [],
     transportDurations: [],
-    reviews: []
+    reviews: [],
+    weatherRequirements: this.weatherRequirements || { 
+      minTemperature: 0, 
+      maxTemperature: 0, 
+      suitableConditions: [] 
+    }
   }
   isForEdit:boolean = false;
   tags:string[] = [''];
  
- 
-
-
-  constructor(private route : ActivatedRoute, private router: Router, private tourService:TourService){}
+  constructor(
+    private route : ActivatedRoute, 
+    private router: Router, 
+    private tourService:TourService, 
+    private dialog: MatDialog,
+  ){}
 
   ngOnInit():void{
     this.tourId = Number(this.route.snapshot.paramMap.get('id'));
@@ -93,6 +108,11 @@ updateTour(): void {
     checkpoints: this.tour.checkpoints || [],
     transportDurations: this.tour.transportDurations || [],
     reviews: this.tour.reviews || [],
+    weatherRequirements: this.weatherRequirements || { 
+      minTemperature: 0, 
+      maxTemperature: 0, 
+      suitableConditions: [] 
+    }
     }
 
     tour.id = this.tour.id;
@@ -177,9 +197,26 @@ getFormattedCurrency(currency: Currency): string {
   };
   return currencySymbols[currency];
 }
-navigateToAddEncounter(id? : number){
-  this.router.navigate(['/author-add-encounter',id,this.tourId]);
+navigateToAddEncounter(id : number){
+  console.log('ID prosleđen u modal:', id);
+  this.openFormModal(id);
+  //this.router.navigate(['/author-add-encounter',id,this.tourId]);
 }
+
+ openFormModal(id: number): void {
+
+    const dialogRef = this.dialog.open(AddEncounterComponent, {
+      data: { checkpointId: id, tourId: this.tour.id}// prosledi podatke samo ako postoji id
+    });
+
+    // dialogRef.componentInstance.closeDialog = () => {
+    //   dialogRef.close(); // Close the dialog when called from the modal
+    // };
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Modal zatvoren', result);
+      window.location.reload();
+    });
+  }
 }
 
 

@@ -58,30 +58,38 @@
       </div>
   
       <!-- Problem Details -->
-      <table class="problem-details-table">
-        <tr>
-          <th>Tour Name:</th>
-          <td>{{ getTourName(selectedProblem.tourId) }}</td>
-        </tr>
-        <tr>
-          <th>Reported At:</th>
-          <td>{{ selectedProblem.resolution.reportedAt | date:'medium' }}</td>
-        </tr>
-        <tr>
-          <th>Deadline:</th>
-          <td>{{ selectedProblem.resolution.deadline | date:'medium' }}</td>
-        </tr>
-      </table>
+      <div class="problem-header">
+        <div class="username">@{{ currentTourist?.username }}</div>
+        <div class="problem-details-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Tour Name</th>
+                <th>Reported At</th>
+                <th>Deadline</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{ getTourName(selectedProblem.tourId) }}</td>
+                <td>{{ selectedProblem.resolution.reportedAt | date: 'medium' }}</td>
+                <td>{{ selectedProblem.resolution.deadline | date: 'medium' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
   
       <!-- Messages Section -->
       <div class="messages-wrapper">
-        <h2>Messages</h2>
-        <div class="modal-messages">
+        <div #messagesContainer class="modal-messages">
           <div 
             *ngFor="let message of selectedProblemMessages" class="modal-message"
-            [ngClass]="{'modal-message': true, 'me': user.id === message.userId, 'other': user.id !== message.userId}">
-            <b *ngIf="user.id === message.userId">Me:</b>
-            <b *ngIf="user.id !== message.userId">Tourist:</b> {{ message.content }}
+            [ngClass]="{'modal-message': true, 'me': user.id === message.userId, 'other': user.id !== message.userId,'description': message.id === 0}">
+             {{ message.content }}
+            <div class="posted-at">
+              {{ message.postedAt | date:'dd/MM/yyyy   HH:mm' }}
+            </div>
           </div>
         </div>
         <div class="add-comment">
@@ -89,6 +97,7 @@
             type="text"
             [(ngModel)]="newMessageContent"
             placeholder="Write a message..."
+            (keydown.enter)="handleSendMessageClick()"
           />
           <button class="cta-button" (click)="handleSendMessageClick()">Send</button>
         </div>
