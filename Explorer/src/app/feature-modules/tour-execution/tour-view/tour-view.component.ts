@@ -67,7 +67,7 @@ export class TourViewComponent implements OnInit {
 	openMap: boolean = false;
 	currentView: string = 'published';
 	isModalOpen = false; // Praćenje stanja modala
-	currentImageIndex: number = 1; // Čuva trenutni indeks slike za svaku turu
+	currentImageIndex: number = 0; // Čuva trenutni indeks slike za svaku turu
 
 	REGULAR_PRODUCT = 'regular';
 	BUNDLE_PRODUCT = 'bundle';

@@ -28,7 +28,7 @@ import { BundleComponent } from './bundle/bundle.component';
 		ShoppingCartPreviewComponent,
 		TourMoreDetailsComponent,
 		BundlesComponent,
-  BundleComponent
+		BundleComponent
 	],
 	imports: [
 		MatRadioModule,
