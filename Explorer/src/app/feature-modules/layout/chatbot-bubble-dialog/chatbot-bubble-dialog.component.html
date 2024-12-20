@@ -18,7 +18,7 @@
     </div>
   </div>
   <div class="input-area">
-    <input type="text" [(ngModel)]="newMessage" [disabled]="user && user.username === ''" placeholder="Ask away ..." (keydown.enter)="sendMessage()">
+    <input type="text" [(ngModel)]="newMessage" [disabled]="user && user.username === ''" [placeholder]="placeholder" (keydown.enter)="sendMessage()">
     <button class="cta-button" (click)="sendMessage()" [disabled]="!newMessage">Send</button>
   </div>
 </div>

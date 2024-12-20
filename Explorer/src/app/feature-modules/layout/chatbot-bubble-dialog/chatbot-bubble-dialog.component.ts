@@ -78,4 +78,8 @@ export class ChatbotBubbleDialogComponent implements OnInit {
     };
   };
   
+  get placeholder(): string {
+    return this.user && this.user.username !== '' ? 'Ask away ...' : 'Please login in order to use me';
+  }
+
 }
