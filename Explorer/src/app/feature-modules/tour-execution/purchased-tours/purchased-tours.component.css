@@ -60,6 +60,10 @@
   margin-bottom: 20px;
 }
 
+.tour-card.premium{
+  background-color: #ffe0b2;
+}
+
 .tour-card-header {
   display: flex; 
   justify-content: space-between; 

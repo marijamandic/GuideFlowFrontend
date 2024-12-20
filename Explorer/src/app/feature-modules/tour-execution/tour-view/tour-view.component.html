@@ -108,17 +108,20 @@
 			</xp-tour-form>
 
 			<ng-container *ngIf="productType === REGULAR_PRODUCT">
-				<div class="tour-card" *ngFor="let tour of allTours">
+				<div (click)="goToDetails(tour)" [ngClass]="tour.isPremium ? 'tour-card premium' : 'tour-card'" *ngFor="let tour of allTours">
 					<img
 						*ngIf="tour.checkpoints && currentView !== 'draft'"
 						[src]="getImagePath(tour.checkpoints[currentImageIndex].imageUrl)"
 						alt="Checkpoint image"
 					/>
 					<img *ngIf="currentView === 'draft'" src="assets/images/tour9_draft.jpg" alt="{{ tour.name }}" />
-					<div class="tour-details">
+					<div class="tour-details" >
 						<div class="tour-header">
 							<div class="tour-info">
-								<h2>{{ tour.name }}</h2>
+								<div style="display: flex; align-items: center; gap:3px">
+									<h2 style="margin: 0;">{{ tour.name }}</h2>
+									<i *ngIf="tour.isPremium" class="fa fa-certificate" aria-hidden="true"></i>
+								</div>
 								<div>{{ tour.description }}</div>
 							</div>
 							<i class="fa-solid fa-ellipsis-vertical"></i>
@@ -145,9 +148,30 @@
 									<span>AC {{ tour.price }}</span>
 								</div>
 							</div>
-							<button *ngIf="user && user.role === 'tourist'" class="cta-button add-to-cart" (click)="addToCart(tour)">
+							<button *ngIf="user && user.role === 'tourist'" class="cta-button add-to-cart" (click)="addToCart(tour); $event.stopPropagation()">
 								<i class="fa-solid fa-cart-plus"></i> Add to Cart
 							</button>
+							<button
+                                *ngIf="user && user.role === 'author' && currentView === 'draft'"
+                                class="cta-button add-to-cart"
+                                (click)="onPublish($event, tour)"
+                            >
+                                Publish
+                            </button>
+                            <button
+                                *ngIf="user && user.role === 'author' && currentView === 'published'"
+                                class="cta-button add-to-cart"
+                                (click)="archiveTour($event, tour)"
+                            >
+                                Archive
+                            </button>
+                            <button
+                                *ngIf="user && user.role === 'author' && currentView === 'archived'"
+                                class="cta-button add-to-cart"
+                                (click)="onPublish($event, tour)"
+                            >
+                                Activate
+                            </button>
 						</div>
 					</div>
 					<!-- <div class="tour-card-image" *ngIf="currentView === 'draft'">

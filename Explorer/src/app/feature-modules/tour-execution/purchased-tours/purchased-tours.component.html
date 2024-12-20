@@ -26,14 +26,17 @@
 <div *ngIf="!message && purchasedTours.length > 0" class="tour-container">
   <h1>Purchased tours</h1>
 
-  <div class="tour-card" *ngFor="let tour of purchasedTours">
+  <div [ngClass]="tour.isPremium ? 'tour-card premium' : 'tour-card'" *ngFor="let tour of purchasedTours">
 
     <div class="tour-card-image">
       <img *ngIf="tour.checkpoints[0].imageUrl" [src]="getImagePath(tour.checkpoints[0].imageUrl)" alt="Checkpoint image" />
     </div>
     <div class="tour-card-content">
       <div class="tour-card-header">
-        <h2>{{ tour.name }}</h2>
+        <div style="display: flex; align-items: center; gap:3px">
+          <h2 style="margin: 0px;">{{ tour.name }}</h2>
+          <i *ngIf="tour.isPremium" class="fa fa-certificate" aria-hidden="true"></i>
+        </div>
         <div>
           <span class="tour-weather">
             <img [ngClass]="tour.weatherIcon!=='01d' ? 'weather-icon' : 'weather-sunny'" *ngIf="tour.weatherIcon" [src]="mapToWeatherIcon(tour.weatherIcon) ?? 'assets/images/clear.png'" alt="nema weather ikkonic">
