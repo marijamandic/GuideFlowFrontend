@@ -147,10 +147,14 @@ input[type='range']::-ms-thumb {
 .tour-card {
 	display: flex;
 	padding: 20px;
+	max-height: 250px;
 	border-radius: 20px;
 	background-color: var(--secondary-color);
 	box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 10px;
 	margin-bottom: 20px;
+}
+.tour-card.premium{
+	background-color: #ffe0b2;
 }
 
 .tour-card i {

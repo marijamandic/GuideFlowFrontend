@@ -342,10 +342,10 @@ html, body {
 }
 
 .floating-add-button {
-  position: fixed;
-  bottom: 150px;
-  right: 20px;
-  background-color: #84dcc6;
+  position: relative;
+  margin-top: 10px;
+  bottom: auto;
+  right: auto;
   color: white;
   padding: 15px 30px;
   border-radius: 25px;
@@ -355,6 +355,11 @@ html, body {
   transition: background-color 0.3s, transform 0.3s;
   z-index: 1000;
   animation: pulseGlow 3s ease-in-out infinite; /* Apply pulsing animation */
+}
+
+.button-div{
+  display: flex;
+  justify-content: center;
 }
 
 .floating-add-button:hover {
