@@ -411,7 +411,7 @@ input[type='radio']:checked + .status-button {
 	background-color: #ffffff; /* Svetlo siva pozadina */
 	border-radius: 15px;
 	box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 10px;
-	width: 100%;
+	width: calc(100% - 40px);
 	height: 50px; /* Isto kao i ostale kartice */
 	cursor: pointer;
 	transition: all 0.3s ease;
