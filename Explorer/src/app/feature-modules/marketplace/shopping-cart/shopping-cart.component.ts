@@ -81,6 +81,7 @@ export class ShoppingCartComponent implements OnInit {
 	}
 
 	applyCoupon(): void {
+		console.log(this.couponCode);
 		this.marketplaceService.getCouponByCode(this.couponCode).subscribe({
 			next: (coupon: Coupon) => {
 				if (coupon.redeemed) return;
@@ -146,25 +147,16 @@ export class ShoppingCartComponent implements OnInit {
 
 		console.log('ItemInput after discount:', itemInput);
 
-		this.shoppingCartService.removeFromCart(item.id).subscribe({
+		this.shoppingCartService.updateCart(item.id, itemInput).subscribe({
 			next: () => {
-				console.log(`Item ${item.id} removed from cart.`);
-				this.shoppingCartService.addToCart(itemInput).subscribe({
-					next: () => {
-						this.loadShoppingCart();
-						console.log('Discount applied and item updated in cart:', this.cart$.items);
-						this.calculateAc(this.cart$.items);
-					},
-					error: (err: HttpErrorResponse) => {
-						console.error('Error adding updated item to cart:', err);
-					}
-				});
+				console.log('Updated cart')
+				this.calculateAc(this.cart$.items);
+				this.ngOnInit();
 			},
 			error: (err: HttpErrorResponse) => {
 				console.error('Error removing item from cart:', err);
 			}
 		});
-
 		if (!coupon.redeemed) {
 			this.marketplaceService.redeemCoupon(coupon.code).subscribe({
 				next: () => {

@@ -62,4 +62,14 @@ export class ShoppingCartService {
 			items: cart.items.map(i => ({ ...i }))
 		});
 	}
+
+	updateCart(itemId:number, item:ItemInput): Observable<Item>{
+		return  this.http.put<Item>(`${environment.apiHost}shopping-cart/items/${itemId}`, item, { headers: Headers }).pipe(
+			tap(() => {
+				let oldCart = this.cart$.getValue();
+				oldCart.items = [...oldCart.items.filter(i => i.id !== itemId)];
+				this.setCart(oldCart);
+			})
+		);
+	}
 }
