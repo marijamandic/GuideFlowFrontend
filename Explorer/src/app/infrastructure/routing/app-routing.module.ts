@@ -27,7 +27,6 @@ import { ProblemStatusComponent } from 'src/app/feature-modules/tour-execution/p
 import { AdminProblemComponent } from 'src/app/feature-modules/administration/admin-problem/admin-problem.component';
 import { PublicPointRequestsComponent } from 'src/app/feature-modules/tour-authoring/public-point-requests/public-point-requests.component';
 import { TourReviewComponent } from 'src/app/feature-modules/tour-execution/tour-review/tour-review.component';
-import { TourPreviewComponent } from 'src/app/feature-modules/marketplace/tour-preview/tour-preview.component';
 import { ShoppingCartComponent } from 'src/app/feature-modules/marketplace/shopping-cart/shopping-cart.component';
 import { PositionsimComponent } from 'src/app/feature-modules/tour-authoring/positionsim/positionsim.component';
 import { TourExecutionDetailsComponent } from 'src/app/feature-modules/tour-execution/tour-execution-details/tour-execution-details.component';
@@ -90,7 +89,7 @@ const routes: Routes = [
 	{ path: 'tour-execution/:id', component: TourExecutionDetailsComponent }, // blizanac, blizanac
 
 	// -- ne gde ovo uvezati u frontu
-	{ path: 'tour-preview/:id', component: TourPreviewComponent },
+	//{ path: 'tour-preview/:id', component: TourPreviewComponent },
 	{ path: 'tour-objects', component: TourObjectComponent, canActivate: [AuthGuard] },
 	{ path: 'tourExecutionMap', component: TourExecutionMap },
 

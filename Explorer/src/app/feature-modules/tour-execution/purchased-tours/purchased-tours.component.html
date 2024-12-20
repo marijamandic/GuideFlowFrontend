@@ -34,9 +34,18 @@
     <div class="tour-card-content">
       <div class="tour-card-header">
         <h2>{{ tour.name }}</h2>
+        <div>
+          <span class="tour-weather">
+            <img [ngClass]="tour.weatherIcon!=='01d' ? 'weather-icon' : 'weather-sunny'" *ngIf="tour.weatherIcon" [src]="mapToWeatherIcon(tour.weatherIcon) ?? 'assets/images/clear.png'" alt="nema weather ikkonic">
+            <p class="span-style" *ngIf="tour.temperature">{{ tour.weatherDescription}}, {{ mapToRoundNumber(tour.temperature)}}°C</p>
+          </span>
+        </div>
         <!--button class="kebab-menu"><i class="fa-solid fa-ellipsis-vertical"></i></button-->
       </div>
-      <p>{{ tour.description }}</p>
+      <div style="display: flex; justify-content:space-between">
+        <p>{{ tour.description }}</p>
+        <p [ngClass]="getRecommendClass(tour.weatherRecommend)">{{mapToRecommend(tour.weatherRecommend)}}</p>
+      </div>
       <div class="tour-card-details">
         <span><i class="fa-solid fa-dollar-sign"></i>{{ tour.price }} adventure coins</span>
         <span><i class="fa-solid fa-fire"></i> {{ LevelMap[tour.level] }}</span>
