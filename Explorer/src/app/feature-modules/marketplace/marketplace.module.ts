@@ -30,7 +30,7 @@ import { BundleComponent } from './bundle/bundle.component';
 		ShoppingCartPreviewComponent,
 		TourMoreDetailsComponent,
 		BundlesComponent,
-  BundleComponent
+		BundleComponent
 	],
 	imports: [
 		MatRadioModule,
@@ -44,6 +44,14 @@ import { BundleComponent } from './bundle/bundle.component';
 		SharedModule,
 		MatDialogModule
 	],
-	exports: [TourPreviewComponent, ShoppingCartComponent, CouponComponent, ShoppingCartPreviewComponent, TourMoreDetailsComponent, BundlesComponent]
+	exports: [
+		TourPreviewComponent,
+		ShoppingCartComponent,
+		CouponComponent,
+		ShoppingCartPreviewComponent,
+		TourMoreDetailsComponent,
+		BundlesComponent,
+		BundleComponent
+	]
 })
 export class MarketplaceModule {}

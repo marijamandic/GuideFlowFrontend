@@ -148,6 +148,27 @@
 							<button *ngIf="user && user.role === 'tourist'" class="cta-button add-to-cart" (click)="addToCart(tour)">
 								<i class="fa-solid fa-cart-plus"></i> Add to Cart
 							</button>
+							<button
+								*ngIf="user && user.role === 'author' && currentView === 'draft'"
+								class="cta-button add-to-cart"
+								(click)="onPublish($event, tour)"
+							>
+								Publish
+							</button>
+							<button
+								*ngIf="user && user.role === 'author' && currentView === 'published'"
+								class="cta-button add-to-cart"
+								(click)="archiveTour($event, tour)"
+							>
+								Archive
+							</button>
+							<button
+								*ngIf="user && user.role === 'author' && currentView === 'archived'"
+								class="cta-button add-to-cart"
+								(click)="onPublish($event, tour)"
+							>
+								Activate
+							</button>
 						</div>
 					</div>
 					<!-- <div class="tour-card-image" *ngIf="currentView === 'draft'">

@@ -1,4 +1,4 @@
-<div *ngFor="let bundle of bundles" class="bundle" (click)="handleBundleClick(bundle.id)">
+<div *ngFor="let bundle of bundles" class="bundle" (dblclick)="handleBundleDblClick(bundle.id)">
 	<img [src]="getImageUrl(bundle.imageUrl)" alt="bundle-image" />
 	<div class="bundle-details">
 		<div class="bundle-header">

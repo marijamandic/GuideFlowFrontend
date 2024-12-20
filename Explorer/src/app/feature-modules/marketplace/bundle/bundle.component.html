@@ -1,1 +1,56 @@
-<p>bundle works!</p>
+<div class="container">
+	<div class="bundle">
+		<div class="bundle-header">
+			<h1>{{ bundle.name }}</h1>
+			<i class="fa-solid fa-ellipsis-vertical"></i>
+		</div>
+		<div class="bundle-description">
+			{{ bundle.description }}
+		</div>
+		<div class="bundle-footer">
+			<div>
+				<i class="fa-solid fa-money-bill"></i>
+				<span>AC {{ bundle.price }} </span>
+			</div>
+			<button class="cta-button add-to-cart" (click)="addToCart()"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>
+		</div>
+	</div>
+	<div class="body">
+		<!-- WRAPPER ZA FILTERE -->
+
+		<div class="filters">
+			<h2>Filter by:</h2>
+		</div>
+
+		<!--  -->
+		<div class="tours" *ngIf="bundle.tours">
+			<div class="tour" *ngFor="let tour of bundle.tours">
+				<img [src]="getImageUrl(tour.imageUrl)" alt="Tour image" />
+				<div class="tour-body">
+					<div class="tour-header">
+						<div class="tour-title">
+							<h2>{{ tour.name }}</h2>
+							<i class="fa-solid fa-ellipsis-vertical"></i>
+						</div>
+						<div class="tour-description">
+							{{ tour.description }}
+						</div>
+					</div>
+					<div class="tour-footer">
+						<div>
+							<i class="fa-solid fa-fire"></i>
+							<span>{{ convertLevelEnumToString(tour.level, 'level') }}</span>
+						</div>
+						<div>
+							<i class="fa-solid fa-square"></i>
+							<span *ngFor="let tag of tour.tags; let i = index">
+								<ng-container *ngIf="i === tour.tags.length - 1; else notLast">{{ tag }} </ng-container>
+								<ng-template #notLast>{{ tag }},&nbsp;</ng-template>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

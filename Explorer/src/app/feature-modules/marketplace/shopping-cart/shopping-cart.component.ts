@@ -69,6 +69,7 @@ export class ShoppingCartComponent implements OnInit {
 				alert('You have successfully purchased ' + result.paymentItems.length + ' tours, and you have received a token for each one!');
 			},
 			error: (err: HttpErrorResponse): void => {
+				if (err.status === 400) alert('Not enough ACs'); // treba izmeniti logiku, za sad radi ovako
 				console.log(err.message);
 			}
 		});

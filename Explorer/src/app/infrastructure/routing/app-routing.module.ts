@@ -51,6 +51,7 @@ import { AuthorDashboardComponent } from 'src/app/feature-modules/administration
 import { TourAuthorDetailsComponent } from 'src/app/feature-modules/tour-authoring/tour-author-details/tour-author-details.component';
 import { SuggestedToursComponent } from 'src/app/feature-modules/tour-execution/suggested-tours/suggested-tours.component';
 import { ProblemInfoComponent } from 'src/app/feature-modules/tour-authoring/problem-info/problem-info.component';
+import { BundleComponent } from 'src/app/feature-modules/marketplace/bundle/bundle.component';
 
 const routes: Routes = [
 	// ### Account stuff
@@ -79,6 +80,7 @@ const routes: Routes = [
 	{ path: 'purchased', component: PurchasedToursComponent }, // ovo treba napraviti da izgleda kao tours samo sto se druge ucitavaju
 	{ path: 'tourBundlePreview/:id', component: TourBundlePreviewComponent }, // takođe treba spojiti u ono gore
 	{ path: 'tourBundleManagement', component: TourBundleComponent }, // isto u ovo gore
+	{ path: 'bundle', component: BundleComponent },
 
 	// --- tour/:id pregled pojedinacne ture, dodavanje checkpointa, reviews, equpimentm, redirect na edit ture?
 	{ path: 'tour/:id', component: TourDetailsComponent, children: [{ path: 'checkpoints/:tourId', component: CheckpointListComponent }] },
