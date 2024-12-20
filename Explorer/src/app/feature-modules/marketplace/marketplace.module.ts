@@ -5,7 +5,6 @@ import { MaterialModule } from 'src/app/infrastructure/material/material.module'
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
-import { TourPreviewComponent } from './tour-preview/tour-preview.component';
 import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
 import { TourBundleComponent } from './tour-bundle/tour-bundle.component';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -16,17 +15,20 @@ import { TourBundlePreviewComponent } from './tour-bundle-preview/tour-bundle-pr
 import { ShoppingCartPreviewComponent } from './shopping-cart-preview/shopping-cart-preview.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { TourMoreDetailsComponent } from './tour-more-details/tour-more-details.component';
+import { BundlesComponent } from './bundles/bundles.component';
+import { BundleComponent } from './bundle/bundle.component';
 
 @NgModule({
 	declarations: [
-		TourPreviewComponent,
 		ShoppingCartComponent,
 		TourBundleComponent,
 		TourBundleDialogComponent,
 		CouponComponent,
 		TourBundlePreviewComponent,
 		ShoppingCartPreviewComponent,
-    TourMoreDetailsComponent
+		TourMoreDetailsComponent,
+		BundlesComponent,
+		BundleComponent
 	],
 	imports: [
 		MatRadioModule,
@@ -37,9 +39,9 @@ import { TourMoreDetailsComponent } from './tour-more-details/tour-more-details.
 		ReactiveFormsModule,
 		MatTabsModule,
 		FormsModule,
-    SharedModule,
+		SharedModule,
 		MatDialogModule
 	],
-	exports: [TourPreviewComponent, ShoppingCartComponent, CouponComponent, ShoppingCartPreviewComponent,TourMoreDetailsComponent]
+	exports: [ShoppingCartComponent, CouponComponent, ShoppingCartPreviewComponent, TourMoreDetailsComponent, BundlesComponent]
 })
 export class MarketplaceModule {}

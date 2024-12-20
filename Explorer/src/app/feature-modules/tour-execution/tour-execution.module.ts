@@ -17,37 +17,34 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { TourExecutionMap } from './tour-execution-map/tour-execution-map.component';
 import { TourAuthoringModule } from '../tour-authoring/tour-authoring.module';
 import { SuggestedToursComponent } from './suggested-tours/suggested-tours.component';
+import { MarketplaceModule } from '../marketplace/marketplace.module';
 @NgModule({
-  providers:[DatePipe],
-  declarations: [
-    EquipmentManagementComponent,
-    EquipmentFormComponent,
-    ReportProblemComponent,
-	TourReviewComponent,
-	TourReviewFormComponent,
- TourExecutionDetailsComponent,
- PurchasedToursComponent,
- ProblemStatusComponent,
- TourViewComponent,
- TourExecutionMap,
- SuggestedToursComponent
-  ],
-  imports: [
-    CommonModule,
-    MatFormFieldModule,
-    SharedModule,
-    MatInputModule,
-    ReactiveFormsModule,
-    MatIconModule,
-    CommonModule,
-    FormsModule,
-    TourAuthoringModule
-  ],
-  exports:
-  [
-    EquipmentManagementComponent,
-    ReportProblemComponent,
-	TourReviewComponent
-  ],
+	providers: [DatePipe],
+	declarations: [
+		EquipmentManagementComponent,
+		EquipmentFormComponent,
+		ReportProblemComponent,
+		TourReviewComponent,
+		TourReviewFormComponent,
+		TourExecutionDetailsComponent,
+		PurchasedToursComponent,
+		ProblemStatusComponent,
+		TourViewComponent,
+		TourExecutionMap,
+		SuggestedToursComponent
+	],
+	imports: [
+		CommonModule,
+		MatFormFieldModule,
+		SharedModule,
+		MatInputModule,
+		ReactiveFormsModule,
+		MatIconModule,
+		CommonModule,
+		FormsModule,
+		TourAuthoringModule,
+		MarketplaceModule
+	],
+	exports: [EquipmentManagementComponent, ReportProblemComponent, TourReviewComponent]
 })
 export class TourExecutionModule {}

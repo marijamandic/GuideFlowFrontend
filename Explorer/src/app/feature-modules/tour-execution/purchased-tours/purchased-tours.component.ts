@@ -116,6 +116,50 @@ export class PurchasedToursComponent implements OnInit{
   getImagePath(imageUrl: string){
     return environment.webRootHost+imageUrl;
   }
+  mapToWeatherIcon(icon: string){
+    if(icon === '01d')
+      return null
+    return `https://openweathermap.org/img/wn/${icon}@2x.png`
+  }
+  mapToRoundNumber(number: number){
+    return Math.round(number)
+  }
+  mapToRecommend(recommend?: number) {
+    let message = "Neutral: No specific recommendation.";
+  
+    switch (recommend) {
+      case 0:
+        message = "Perfect conditions! Starting the tour is highly recommended.";
+        break;
+      case 1:
+        message = "Good conditions. Starting the tour is recommended.";
+        break;
+      case 2:
+        message = "Conditions are acceptable but not ideal.";
+        break;
+      case 3:
+        message = "Poor conditions. Consider postponing the tour.";
+        break;
+      default:
+        message = "Severe weather conditions! Starting the tour is highly discouraged.";
+    }
+    console.log(message)
+    return message;
+  }
+  getRecommendClass(recommend?: number): string {
+    switch (recommend) {
+      case 0:
+        return 'highly-recommended';
+      case 1:
+        return 'recommended';
+      case 2:
+        return 'neutral';
+      case 3:
+        return 'not-recommended';
+      default:
+        return 'highly-not-recommended';
+    }
+  }
 
 	LevelMap = {
 		0: 'Easy',

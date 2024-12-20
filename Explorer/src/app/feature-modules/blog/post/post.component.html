@@ -30,6 +30,12 @@
       </div>
     </div>
 
+    <div *ngIf="user && user.role === 'author'" class="post-container add-post-card" (click)="navigateToCreatePost()">
+      <div class="plus-icon">
+        <i class="fa-solid fa-plus"></i>
+      </div>
+    </div>
+
     <!-- Published Posts Section -->
     <div *ngFor="let p of publishedPostsToShow" class="post-container" (click)="navigateToPostDetails(p.id)">
       <div class="post-content">
@@ -56,10 +62,7 @@
       <img [src]="getImagePath(p.imageUrl)" alt="Post image" *ngIf="p.imageUrl" class="post-image" />
     </div>
     <!-- Create post button for authors at the bottom -->
-    <button class="cta-button floating-add-button " *ngIf="user?.role === 'author'" (click)="navigateToCreatePost()">
-      <i class="fa fa-plus" aria-hidden="true"></i>
-    </button>
-  </div>
+    
 </div>
 
 <div class="modal-overlay" *ngIf="showCreateModal">
@@ -79,4 +82,5 @@
     </xp-edit-blog>
   </div>
 </div>
+
 
