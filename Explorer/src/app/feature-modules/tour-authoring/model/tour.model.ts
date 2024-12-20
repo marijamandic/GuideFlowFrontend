@@ -15,6 +15,7 @@ export interface Tour {
     level: Level;
     status: TourStatus;
     StatusChangeDate?:Date;
+    isPremium?:boolean;
     lengthInKm: number;
     averageGrade: number;
     weatherRequirements:WeatherCondition
