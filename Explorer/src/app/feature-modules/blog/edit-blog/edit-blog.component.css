@@ -1,0 +1,52 @@
+/* Container for the form */
+.main-column {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: transparent;
+    border-radius: 10px;
+  }
+  
+  /* Table styling for the form elements */
+  .blog-form table {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  /* Label and input field alignment */
+  .blog-form label {
+    font-weight: bold;
+    margin-top: 10px;
+  }
+  
+  .blog-form input,
+  .blog-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+  }
+  
+  .blog-form input[type="file"] {
+    display: inline-block;
+    width: auto;
+    padding: 5px;
+  }
+  
+  /* Image container styling */
+  .blog-form img {
+    display: block;
+    margin: 20px auto;  /* This will center the image horizontally */
+    max-width: 250px;   /* Increase image size */
+    max-height: 250px;
+  }
+  
+  /* Optionally, to ensure the container is centered as well, apply flex to the form row */
+  .blog-form td {
+    text-align: center; /* This centers the content within the td */
+  }
+  
+  
+  

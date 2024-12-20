@@ -39,30 +39,43 @@ export class HomeComponent implements OnInit {
 		name: 'Fallback Tour 1',
 		description: 'Explore breathtaking mountains and serene landscapes.',
 		imageUrl: 'assets/images/tour1.jpg',
+		meanRating: 0,
+		numberOfRatings: 0
+
 		},
 		{
 		id: 2,
 		name: 'Fallback Tour 2',
 		description: 'Discover hidden waterfalls and lush forests.',
 		imageUrl: 'assets/images/tour2.jpg',
+		meanRating: 0,
+		numberOfRatings: 0
+
 		},
 		{
 		id: 3,
 		name: 'Fallback Tour 3',
 		description: 'Immerse yourself in historical wonders and ancient ruins.',
 		imageUrl: 'assets/images/tour3.jpg',
+		meanRating: 0,
+		numberOfRatings: 0
+
 		},
 		{
 		id: 4,
 		name: 'Fallback Tour 4',
 		description: 'Walk along pristine beaches and turquoise waters.',
 		imageUrl: 'assets/images/tour4.jpg',
+		meanRating: 0,
+		numberOfRatings: 0
 		},
 		{
 		id: 5,
 		name: 'Fallback Tour 5',
 		description: 'Witness the dazzling northern lights in the Arctic.',
 		imageUrl: 'assets/images/tour5.jpg',
+		meanRating: 0,
+		numberOfRatings: 0
 		}
 	];
 
@@ -119,25 +132,73 @@ export class HomeComponent implements OnInit {
 		this.user = user;
 		});
 		this.startImageRotation();
-		this.loadTours();
+		//this.loadTours();
 		this.loadClubs();
+		this.loadAllTours();
 	}
 
 	navigateToClub(clubId: number): void {
 		this.router.navigate(['/club-info', clubId]);
 	}
 
+	loadAllTours(): void {
+		this.layoutService.getAllTours().subscribe({
+			next: (pagedResult: { results: Tour[], totalCount: number }) => {
+				const { results } = pagedResult; // Extract the array of tours
+				console.log('Received Tours Result:', results);
+	
+				this.tours = [];
+	
+				for (const tour of results) {
+					// Extract ratings and calculate meanRating
+					const ratings = tour.reviews?.map(review => review.rating).filter((rating): rating is number => rating !== undefined && rating !== null) || [];
+					const meanRating = ratings.length > 0
+						? ratings.reduce((sum: number, rating: number) => sum + rating, 0) / ratings.length
+						: 0;
+	
+					// Get the number of reviews
+					const numberOfRatings = ratings.length;
+	
+					// Create a TourPreview object including meanRating and numberOfRatings
+					const tourPreview: TourPreview = {
+						id: tour.id || 0,
+						name: tour.name || 'Unnamed Tour',
+						description: tour.description || 'No description available.',
+						imageUrl: tour.checkpoints?.[0]?.imageUrl || 'assets/images/default-tour.jpg',
+						meanRating, // Add meanRating
+						numberOfRatings, // Add numberOfRatings
+					};
+					if(tourPreview.numberOfRatings >= 3)
+					{
+						this.tours.push(tourPreview);
+					}
+				}
+				
+				// Sort the tours by meanRating in descending order
+				this.tours.sort((a, b) => b.meanRating - a.meanRating);
+	
+				console.log("Mapped and Sorted Tour Previews with Ratings and Number of Ratings:", this.tours);
+			},
+			error: () => {
+				console.error("Error loading tours");
+				this.tours = this.fallbackTours; 
+			}
+		});
+	}
+	
 	loadTours(): void {
 		this.layoutService.getAllTourPreviews().subscribe({
 			next: (result: TourPreview[]) => {
 				this.tours = result.length ? result.slice(0, 5) : this.fallbackTours;
+				console.log("LOADED TOURS")
 			},
 			error: () => {
 				this.tours = this.fallbackTours;
+				console.log("ERROR LOADING TOURS")
 			}
 		});
 	}
-
+	
 	loadClubs(): void {
 		this.layoutService.getTopClubs().subscribe({
 		next: (result: Club[]) => {
@@ -149,7 +210,7 @@ export class HomeComponent implements OnInit {
 			...club,
 			imageUrl: this.layoutService.getImagePath(club.imageUrl), 
 			}));
-			console.log(clubsToDisplay);
+			//console.log(clubsToDisplay);
 		},
 		error: () => this.clubs = this.fallbackClubs, 
 		});

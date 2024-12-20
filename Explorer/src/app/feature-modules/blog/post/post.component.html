@@ -14,7 +14,7 @@
     </div>
   <div class="post-flex">
     <!-- Draft Post Section, only shown if draftsToShow has items -->
-    <div *ngFor="let p of draftsToShow" class="post-container draft-post" (click)="navigateToEditPost(p.id)">
+    <div *ngFor="let p of draftsToShow" class="post-container draft-post" (click)="navigateToEditPost(p)">
       <div class="post-content">
         <div class="post-header">
           <p class="user-details">{{ p.username }} • {{ p.publishDate | date:'medium' }}</p>
@@ -56,9 +56,11 @@
       <img [src]="getImagePath(p.imageUrl)" alt="Post image" *ngIf="p.imageUrl" class="post-image" />
     </div>
     <!-- Create post button for authors at the bottom -->
-    <button class="cta-button floating-add-button " *ngIf="user?.role === 'author'" (click)="navigateToCreatePost()">
-      <i class="fa fa-plus" aria-hidden="true"></i>
-    </button>
+    <div class="button-div">
+      <button class="cta-button floating-add-button " *ngIf="user?.role === 'author'" (click)="navigateToCreatePost()">
+        <i class="fa fa-plus" aria-hidden="true"></i>
+      </button>
+    </div>
   </div>
 </div>
 
@@ -68,3 +70,15 @@
     <xp-create-blog (postCreated)="closeCreateModal()"></xp-create-blog>
   </div>
 </div>
+
+<div class="modal-overlay" *ngIf="showEditModal">
+  <div class="modal-content">
+    <button class="close-button" (click)="closeEditModal()">×</button>
+    <xp-edit-blog
+      [postData]="selectedPost"
+      (close)="closeEditModal()"
+      (saved)="onPostSaved($event)">
+    </xp-edit-blog>
+  </div>
+</div>
+
