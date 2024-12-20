@@ -99,12 +99,26 @@
       <h2>Problems</h2>
     </div>
     <div class="problem-card-controls">
-      <input type="text" placeholder="Search" class="search-input">
-      <select class="sort-dropdown">
-        <option value="latest">Sort by: Latest</option>
-        <option value="oldest">Sort by: Oldest</option>
-      </select>
-    </div>  
+      <div class="controls-container">
+        <form (ngSubmit)="searchProblems($event)">
+          <input type="text" placeholder="Search" class="search-input">
+        </form>
+        <select class="sort-dropdown" (change)="sortProblemsByReportDate($event)">
+          <option value="latest">Latest</option>
+          <option value="oldest">Oldest</option>
+        </select>
+        <select class="sort-dropdown" (change)="sortProblemsByDeadlineDate($event)">
+          <option value="latest">Nearest</option>
+          <option value="oldest">Furthest</option>
+        </select>
+        <select class="sort-dropdown" (change)="filterByStatus($event)">
+          <option value="all">All statuses</option>
+          <option value="Resolved">Resolved</option>
+          <option value="Unresolved">Unresolved</option>
+          <option value="Overdue">Overdue</option>
+        </select>
+      </div>  
+    </div>
     <table class="problem-table">
       <thead>
         <tr>

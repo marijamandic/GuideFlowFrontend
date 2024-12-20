@@ -599,6 +599,14 @@ h1{
   }
   .dashboard-card {
     overflow: hidden; /* Sprečava elemente da izlaze iz kartice */
+  }
+  .controls-container {
+    display: flex;
+    justify-content: space-between; 
+    gap: 5px; 
+    flex-wrap: wrap; 
+    align-items: center; 
+    margin-bottom: 10px; 
   }  
   
   

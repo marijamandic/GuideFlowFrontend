@@ -38,6 +38,7 @@ export class AuthorDashboardComponent implements OnInit {
   @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
   // users: Account[] = []
   problems: Problem[] = [];
+  resultProblems: Problem[] = []
   tours: Tour[] = [];
   currentTourist : Tourist;
   problemTourMap: Map<number, boolean> = new Map<number, boolean>();
@@ -151,6 +152,7 @@ export class AuthorDashboardComponent implements OnInit {
     this.service.getProblemsByAuthorId().subscribe({
       next: (result: PagedResults<Problem>) => {
         this.problems = result.results;
+        this.resultProblems = result.results;
         this.fetchAllTours();
         this.generateChartData();
         this.generateSourceChartData();
@@ -335,6 +337,65 @@ export class AuthorDashboardComponent implements OnInit {
     if (this.chart) {
       this.chart.update();
     }
+  }
+  sortProblemsByReportDate(event: Event): void {
+    event.preventDefault()
+    const sortValue = (event.target as HTMLSelectElement).value 
+
+    if (sortValue === "latest") {
+      this.problems.sort((a, b) => {
+        return new Date(b.resolution.reportedAt).getTime() - new Date(a.resolution.reportedAt).getTime();
+      })
+    } else {
+      this.problems.sort((a, b) => {
+        return new Date(a.resolution.reportedAt).getTime() - new Date(b.resolution.reportedAt).getTime();
+      })
+    }
+  }
+  sortProblemsByDeadlineDate(event: Event): void {
+    event.preventDefault()
+    const sortValue = (event.target as HTMLSelectElement).value 
+
+    if (sortValue === "latest") {
+      this.problems.sort((a, b) => {
+        return new Date(b.resolution.deadline).getTime() - new Date(a.resolution.deadline).getTime();
+      })
+    } else {
+      this.problems.sort((a, b) => {
+        return new Date(a.resolution.deadline).getTime() - new Date(b.resolution.deadline).getTime();
+      })
+    }
+  }
+
+  filterByStatus(event: Event): void {
+    event.preventDefault()
+
+    const selectedValue = (event.target as HTMLSelectElement).value
+
+    if (selectedValue === "Resolved") 
+      this.problems = this.problems.filter(problem => this.getProblemStatus(problem) === 'Resolved')
+    else if (selectedValue === 'Unresolved')
+      this.problems = this.problems.filter(problem => this.getProblemStatus(problem) === 'Unresolved')
+    else if (selectedValue === 'Overdue')
+      this.problems = this.problems.filter(problem => this.getProblemStatus(problem) === 'Overdue')
+    else
+      this.problems = this.resultProblems
+  }
+  searchProblems(event: Event): void {
+    event.preventDefault()
+    const input = (event.target as HTMLFormElement).elements[0] as HTMLInputElement
+    const normalizedInput = input.value.toLowerCase()
+    if (!normalizedInput.length)
+      { 
+        this.problems = this.resultProblems
+        return
+      }
+
+
+    this.problems = this.problems.filter(
+      problem =>
+        this.getTourName(problem.tourId).toLowerCase().startsWith(normalizedInput)
+    )
   }
   
 }
