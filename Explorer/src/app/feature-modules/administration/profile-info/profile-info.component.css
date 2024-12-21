@@ -364,6 +364,7 @@ td {
   align-items: center; 
   margin-bottom: 10px; 
 }
+
 .add-comment input {
   width: 100%;
   padding: 15px;
@@ -606,15 +607,16 @@ td {
   align-items: center;
 }
 .search-input {
-  flex: 1; 
-  width: 100%;
-  max-width: 500px; 
-  margin-bottom: 20px;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 15px;
+  width: 200px;
 }
 
 .sort-dropdown {
-  margin-left: auto;
-  align-self: right;
+  padding: 8px;
+  border: 1px solid white;
+  border-radius: 15px;
 }
 /* -- PORBLEMS --*/
 .problem-list-card {
@@ -717,9 +719,6 @@ td {
 .table-btn {
   color: #222222;
 }
-.dashboard-card.full-width {
-  grid-column: span 12; /* Spans all columns */
-}
 .dashboard-container {
   display: grid;
   grid-template-columns: repeat(12, 1fr); /* 12-column grid for flexibility */
@@ -735,4 +734,28 @@ td {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 30px;
   color: #333;
+}
+h2 {
+  font-size: 28px;
+  font-weight: bold;
+  margin: 0px;
 }  
+.dashboard-card.full-width {
+  grid-column: span 12; /* Spans all columns */
+}
+.status-comment input {
+  width: 100%;
+  padding: 15px;
+  margin-top: 30px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.status-comment input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+

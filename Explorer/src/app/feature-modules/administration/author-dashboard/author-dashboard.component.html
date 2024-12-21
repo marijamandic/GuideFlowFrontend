@@ -103,21 +103,23 @@
         <form (ngSubmit)="searchProblems($event)">
           <input type="text" placeholder="Search" class="search-input">
         </form>
-        <select class="sort-dropdown" (change)="sortProblemsByReportDate($event)">
-          <option value="latest">Latest</option>
-          <option value="oldest">Oldest</option>
-        </select>
-        <select class="sort-dropdown" (change)="sortProblemsByDeadlineDate($event)">
-          <option value="latest">Nearest</option>
-          <option value="oldest">Furthest</option>
-        </select>
-        <select class="sort-dropdown" (change)="filterByStatus($event)">
-          <option value="all">All statuses</option>
-          <option value="Resolved">Resolved</option>
-          <option value="Unresolved">Unresolved</option>
-          <option value="Overdue">Overdue</option>
-        </select>
-      </div>  
+        <div class="dropdown-container">
+          <select class="sort-dropdown" (change)="sortProblemsByReportDate($event)">
+            <option value="latest">Latest</option>
+            <option value="oldest">Oldest</option>
+          </select>
+          <select class="sort-dropdown" (change)="sortProblemsByDeadlineDate($event)">
+            <option value="latest">Nearest</option>
+            <option value="oldest">Furthest</option>
+          </select>
+          <select class="sort-dropdown" (change)="filterByStatus($event)">
+            <option value="all">All statuses</option>
+            <option value="Resolved">Resolved</option>
+            <option value="Unresolved">Unresolved</option>
+            <option value="Overdue">Overdue</option>
+          </select>
+        </div>
+      </div> 
     </div>
     <table class="problem-table">
       <thead>
