@@ -60,7 +60,7 @@ ResultUsers: Account[] = []
      this.service.getAccounts().subscribe({
       next: (result: Array<Account>) => {
       this.users = result
-      this.ResultUsers = this.users
+      this.ResultUsers = this.users.filter(user=> user.role!==UserRole.Administrator);
       console.log(result);
       },
       error: (err: any) => {

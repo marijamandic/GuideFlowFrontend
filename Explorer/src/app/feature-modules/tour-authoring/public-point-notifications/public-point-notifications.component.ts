@@ -104,7 +104,7 @@ export class PublicPointNotificationsComponent implements OnInit {
     }
     
     navigate(notification: MessageNotification): void {
-        var url = `${notification.isBlog? "blog" : "tour-more-detail"}`
+        var url = `${notification.isBlog? "blog" : "tour-more-details"}`
         this.router.navigate([url, notification.objectId])
     }
 
