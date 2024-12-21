@@ -1,15 +1,17 @@
 <div class="tour-details-container" *ngIf="tour !== null && tour !== undefined">
-    <div style="display: flex; justify-content:center; align-items: center;gap: 20px;">
+    <div style="display:block; gap:20px">
      <div class="tour-card">
-      <div class="tour-card-left">
+      <!-- <div class="tour-card-left">
         <img 
           [src]="checkpoints[0]?.imageUrl ? getImagePath(checkpoints[0].imageUrl) : 'assets/images/tour2.jpg'" 
           alt="Tour Image" 
         />
-      </div>
+      </div> -->
       <div class="tour-card-right">
         <div class="tour-card-header">
-          <h2>{{ tour.name }}</h2>
+          <div class="tour-card-name">
+            <h2>{{ tour.name }}</h2>
+          </div>
           <div class="rating">
             <i *ngFor="let star of getStars()" 
                [class.fa-star]="star === 'full'" 
@@ -31,6 +33,9 @@
         </div>
       </div>
      </div>
+     <!-- <div class="checkpoint">
+
+     </div> -->
      <div class="tour-map">
       <xp-map [showSearchBar]="MapViewMode" [checkpoints]="checkpointCoordinates" (distanceCalculated)="onDistanceCalculated($event)"></xp-map>
      </div>
@@ -96,16 +101,18 @@
         <div *ngFor="let review of reviews" class="review-card">
           <div class="review-header">
             <p class="review-username">{{ review.username }}</p>
-            <div class="rating">
-              <i *ngFor="let star of getStarsFromRating(review.rating)" 
-                 [class.fa-star]="star === 'full'" 
-                 [class.fa-star-half-stroke]="star === 'half'" 
-                 [class.fa-star-o]="star === 'empty'" 
-                 class="fa-solid"></i>
-            </div>
+            <p class="review-percentage-completed">Completed {{ review.percentageCompleted }}% of the tour</p>
+          </div>
+          <div class="rating">
+            <i *ngFor="let star of getStarsFromRating(review.rating)" 
+            [class.fa-star]="star === 'full'" 
+            [class.fa-star-half-stroke]="star === 'half'" 
+            [class.fa-star-o]="star === 'empty'" 
+            class="fa-solid"
+            ></i>
           </div>
           <p class="review-comment">{{ review.comment || 'No comment provided.' }}</p>
-          <p class="review-date"><strong>Posted on:</strong> {{ review.creationDate | date:'medium' }}</p>
+          <p class="review-date"> {{ review.creationDate | date:'medium' }}</p>
         </div>
       </div>
     <ng-template #noReviews>
