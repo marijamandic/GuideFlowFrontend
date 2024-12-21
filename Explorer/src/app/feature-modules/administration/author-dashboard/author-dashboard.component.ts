@@ -47,6 +47,9 @@ export class AuthorDashboardComponent implements OnInit {
   selectedProblemMessages: Message[] = [];
   newMessageContent: string = '';
   averageGrade: number = 0;
+  publishedTours: number = 0;
+  purchasedTours:number = 0;
+  totalSales: number = 0;
   reviewsPartition: { [key: number]: number } = {};
   problemStatusData: ChartData<'bar'> = {
     labels: ['Resolved', 'Unresolved', 'Overdue'],
@@ -110,6 +113,9 @@ export class AuthorDashboardComponent implements OnInit {
     })
     this.loadAverageGrade(this.user.id); 
     this.loadReviewsPartition(this.user.id);
+    this.loadTotalPublishedTours(this.user.id);
+    this.loadTotalPurchasedTours(this.user.id);
+    this.loadTotalSales(this.user.id);
   }
 
   // ■■■■■ Reviews sections ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
@@ -146,6 +152,44 @@ export class AuthorDashboardComponent implements OnInit {
     if (total === 0) return 0;
     return Math.round((this.reviewsPartition[grade] || 0) / total * 100);
   }
+
+  loadTotalPublishedTours(authorId:number): void{
+    this.administrationService.getTotalPublishedTours(authorId).subscribe({
+      next: (result) => {
+        this.publishedTours = result;
+       console.log('***published tours',result);
+      },
+      error: (err) => {
+        console.error('Error geting published tours:', err);
+      },
+    });
+  }
+
+  loadTotalPurchasedTours(authorId:number): void{
+    this.administrationService.getTotalPurchasedTours(authorId).subscribe({
+      next: (result) => {
+        this.purchasedTours = result;
+       console.log('***purchased tours',result);
+      },
+      error: (err) => {
+        console.error('Error geting purchased tours:', err);
+      },
+    });
+  }
+
+  loadTotalSales(authorId:number): void{
+    this.administrationService.getTotalSales(authorId).subscribe({
+      next: (result) => {
+        this.totalSales= result;
+       console.log('***total sales:',result);
+      },
+      error: (err) => {
+        console.error('Error geting total sales:', err);
+      },
+    });
+  }
+
+
 
   // ■■■■■ Problems table ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
   loadProblems(): void {

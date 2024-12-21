@@ -242,5 +242,22 @@ export class AdministrationService {
 		`${environment.apiHost}manageauthor/dashboard/${authorId}/reviews-partition`
 		);
 	}
+
+	getTotalPublishedTours(authorId:number):Observable<number>{
+		return this.http.get<number>(
+			`${environment.apiHost}manageauthor/dashboard/total-publishes/${authorId}`
+		);
+	}
+
+	getTotalPurchasedTours(authorId:number):Observable<number>{
+		return this.http.get<number>(
+			`${environment.apiHost}manageauthor/dashboard/total-purchased/${authorId}`
+		);
+	}
+	getTotalSales(authorId:number):Observable<number>{
+		return this.http.get<number>(
+			`${environment.apiHost}manageauthor/dashboard/total-sales/${authorId}`
+		);
+	}
 	
 }
