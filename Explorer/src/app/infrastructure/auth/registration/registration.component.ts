@@ -28,7 +28,7 @@ export class RegistrationComponent {
   
   register(): void {
     const registration: Registration = {
-      $type:"autor",
+      $type:"admin",
       name: this.registrationForm.value.name || "",
       surname: this.registrationForm.value.surname || "",
       email: this.registrationForm.value.email || "",
@@ -47,6 +47,12 @@ export class RegistrationComponent {
         registration.wallet = 0;
         registration.$type  = "turista";
       }
+      else if(registration.role == UserRole.Author){
+        registration.wallet = 0;
+        registration.$type  = "autor";
+      }
+      console.log('registracija: ', registration)
+
       this.authService.register(registration).subscribe({
         next: () => {
           this.router.navigate(['home']);

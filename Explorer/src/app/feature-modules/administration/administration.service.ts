@@ -205,6 +205,13 @@ export class AdministrationService {
 		  amount
 		);
 	  }
+
+	updateAuthorMoney(authorId: number, amount: number): Observable<User> {
+	return this.http.put<User>(
+		`${environment.apiHost}user/updateAuthorMoney/${authorId}`,
+		amount
+	);
+	}
 	  
 	createTourist(userDto: TouristRegistraion): Observable<User> {
 	const headers = new HttpHeaders({
