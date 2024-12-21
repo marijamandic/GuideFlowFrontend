@@ -1,7 +1,7 @@
 <div class="main-container">
 	<!-- Full-width Search Bar -->
 
-	<div class="search-toggle-container">
+	<div id="search-bar" class="search-toggle-container">
 		<div class="search-bar">
 			<input type="text" placeholder="Search tours..." />
 			<i *ngIf="user && user.role === 'tourist' && !openMap" class="fa-solid fa-caret-down" (click)="changeOpenMap()"></i>
@@ -17,27 +17,33 @@
 		</div>
 	</div>
 
+	<div id="sales-bar" class="sales-bar-container" *ngIf="selectedTours.length > 0">
+		<div class="sales-bar">
+			<div class="sales-bar-info">
+				<i class="fa-solid fa-xmark" (click)="deselectAll()"></i>
+				<span> {{ selectedTours.length }} Selected </span>
+				<span class="sales-bar-info-select-all" (click)="handleSelectAll()"> Select all </span>
+			</div>
+			<div class="sales-bar-add">Add Sale</div>
+		</div>
+	</div>
+
 	<div *ngIf="user && user.role === 'tourist' && openMap" class="map-background">
 		<xp-tour-execution-map
-		  [allowMultipleMarkers]="false"
-		  [initialMarkers]="initialMarkers"
-		  (markerAdded)="onMarkerAdded($event)"
-		  (mapReset)="onMapReset()"
-		  (coordinatesSelected)="onCoordinatesSelected($event)"
-		  
+			[allowMultipleMarkers]="false"
+			[initialMarkers]="initialMarkers"
+			(markerAdded)="onMarkerAdded($event)"
+			(mapReset)="onMapReset()"
+			(coordinatesSelected)="onCoordinatesSelected($event)"
 		>
 		</xp-tour-execution-map>
-	  
+
 		<div class="search-container">
-		  <div class="input-wrapper">
-			<input
-			  type="text"
-			  [(ngModel)]="searchDistance"
-			  placeholder="Enter radius in km"
-			/>
-		  </div>
+			<div class="input-wrapper">
+				<input type="text" [(ngModel)]="searchDistance" placeholder="Enter radius in km" />
+			</div>
 		</div>
-	  </div>  
+	</div>
 
 	<!-- Main Content -->
 	<div class="content-container">
@@ -114,7 +120,12 @@
 			</xp-tour-form>
 
 			<ng-container *ngIf="productType === REGULAR_PRODUCT">
-				<div (click)="goToDetails(tour)" [ngClass]="tour.isPremium ? 'tour-card premium' : 'tour-card'" *ngFor="let tour of allTours">
+				<div
+					(click)="goToDetails(tour)"
+					class="tour-card"
+					[ngClass]="{ premium: tour.isPremium, selected: isTourSelected(tour.id) }"
+					*ngFor="let tour of allTours; let i = index"
+				>
 					<img
 						*ngIf="tour.checkpoints && currentView !== 'draft'"
 						[src]="getImagePath(tour.checkpoints[currentImageIndex].imageUrl)"
@@ -130,7 +141,18 @@
 								</div>
 								<div>{{ tour.description }}</div>
 							</div>
-							<i class="fa-solid fa-ellipsis-vertical"></i>
+							<div class="tour-header-ellipsis">
+								<i
+									class="fa-solid fa-ellipsis-vertical"
+									(click)="showTourDetailsModal[i] = !showTourDetailsModal[i]; $event.stopPropagation()"
+								></i>
+								<div *ngIf="showTourDetailsModal[i]" class="tour-header-modal">
+									<div class="tour-header-modal-element" (click)="handleSelectTourClick(tour.id, i); $event.stopPropagation()">
+										<ng-container *ngIf="isTourSelected(tour.id)">Deselect</ng-container>
+										<ng-container *ngIf="!isTourSelected(tour.id)">Select</ng-container>
+									</div>
+								</div>
+							</div>
 						</div>
 						<div class="tour-footer">
 							<div class="tour-footer-info">

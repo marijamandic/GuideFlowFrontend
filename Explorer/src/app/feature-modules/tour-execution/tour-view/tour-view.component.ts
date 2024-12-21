@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit, Renderer2 } from '@angular/core';
 import { TourExecutionService } from '../tour-execution.service';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
 import { Tour } from '../../tour-authoring/model/tour.model';
@@ -34,9 +34,9 @@ export class TourViewComponent implements OnInit {
 	tourCheckpoints: Checkpoint[] = [];
 	newTour: Tour = this.initializeTour();
 	weatherRequirements: WeatherCondition = {
-		  minTemperature: 0,
-		  maxTemperature: 0,
-		  suitableConditions: []
+		minTemperature: 0,
+		maxTemperature: 0,
+		suitableConditions: []
 	};
 	bundles: TourBundle[];
 
@@ -75,6 +75,9 @@ export class TourViewComponent implements OnInit {
 
 	isOpened$: boolean;
 
+	selectedTours: number[] = [];
+	showTourDetailsModal: boolean[];
+
 	constructor(
 		private service: TourExecutionService,
 		private authService: AuthService,
@@ -83,7 +86,8 @@ export class TourViewComponent implements OnInit {
 		private alertService: AlertService,
 		private router: Router,
 		private shoppingCartService: ShoppingCartService,
-		private cartPreviewService: CartPreviewService
+		private cartPreviewService: CartPreviewService,
+		private renderer: Renderer2
 	) {}
 
 	//constructor(private service: TourExecutionService, authService: AuthService, private cdr: ChangeDetectorRef, private adminService: AdministrationService) {
@@ -176,10 +180,10 @@ export class TourViewComponent implements OnInit {
 			checkpoints: [],
 			transportDurations: [],
 			reviews: [],
-			weatherRequirements: this.weatherRequirements || { 
-				minTemperature: 0, 
-				maxTemperature: 0, 
-				suitableConditions: [] 
+			weatherRequirements: this.weatherRequirements || {
+				minTemperature: 0,
+				maxTemperature: 0,
+				suitableConditions: []
 			}
 		};
 	}
@@ -209,8 +213,7 @@ export class TourViewComponent implements OnInit {
 					this.allTours = result.results.filter(tour => tour.status === TourStatus.Published);
 				}
 
-				console.log(this.allTours);
-				console.log(this.allTours[1].reviews);
+				this.showTourDetailsModal = new Array(result.totalCount).fill(false);
 			},
 			error: (err: any) => {
 				console.log(err);
@@ -601,7 +604,7 @@ export class TourViewComponent implements OnInit {
 		this.shoppingCartService.addToCart(item).subscribe({
 			next: () => this.cartPreviewService.open(),
 			error: (error: HttpErrorResponse) => {
-				if (error.status) alert('Item already in cart');
+				if (error.status === 400) alert('Item already in cart');
 				else console.log(error.message);
 			}
 		});
@@ -609,5 +612,24 @@ export class TourViewComponent implements OnInit {
 
 	handleProductTypeChange() {
 		this.productType = this.productType === this.REGULAR_PRODUCT ? this.BUNDLE_PRODUCT : this.REGULAR_PRODUCT;
+	}
+
+	handleSelectTourClick(id: number, idx: number) {
+		if (this.isTourSelected(id)) this.selectedTours = this.selectedTours.filter(t => t !== id);
+		else this.selectedTours = [...this.selectedTours, id];
+		this.showTourDetailsModal[idx] = !this.showTourDetailsModal;
+	}
+
+	isTourSelected(id: number) {
+		return this.selectedTours.includes(id);
+	}
+
+	handleSelectAll() {
+		this.selectedTours = this.allTours.map(t => t.id);
+	}
+
+	deselectAll() {
+		this.selectedTours = [];
+		console.log(this.selectedTours);
 	}
 }

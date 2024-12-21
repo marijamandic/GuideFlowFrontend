@@ -1,55 +1,55 @@
 .map-background {
-  position: relative;
-  width: 100%;
-  max-height: 550px;
+	position: relative;
+	width: 100%;
+	max-height: 550px;
 }
 
 .search-container {
-  position: relative;
-  bottom: 77.5vh; /* Pozicija od vrha stranice */
-  left: 35.5%; /* Centriranje horizontalno */
-  transform: translateX(-50%);
-  z-index: 9;
-  display: flex;
-  flex-direction: column; /* Postavljanje elemenata jedan ispod drugog */
-  gap: 10px; /* Razmak između elemenata */
-  align-items: center; /* Centriranje elemenata horizontalno */
-  pointer-events: none; /* Sprečava blokiranje klikova na elemente ispod */
+	position: relative;
+	bottom: 77.5vh; /* Pozicija od vrha stranice */
+	left: 35.5%; /* Centriranje horizontalno */
+	transform: translateX(-50%);
+	z-index: 9;
+	display: flex;
+	flex-direction: column; /* Postavljanje elemenata jedan ispod drugog */
+	gap: 10px; /* Razmak između elemenata */
+	align-items: center; /* Centriranje elemenata horizontalno */
+	pointer-events: none; /* Sprečava blokiranje klikova na elemente ispod */
 }
 
 .search-container * {
-  pointer-events: auto; /* Dozvoljava klik samo na unutar elemenata search-container */
+	pointer-events: auto; /* Dozvoljava klik samo na unutar elemenata search-container */
 }
 
 .input-wrapper {
-  position: relative;
-  width: 200px; /* Fiksna širina za input */
+	position: relative;
+	width: 200px; /* Fiksna širina za input */
 }
 
-input[type="text"] {
-  width: 100%;
-  padding: 8px 16px; /* Manji padding */
-  border-radius: 20px; /* Zaobljeni krajevi */
-  border: 1px solid #ccc;
-  font-size: 14px;
-  background-color: white; /* Pozadina bela */
-  color: black; /* Tekst crne boje */
-  outline: none; /* Bez outline-a */
-  transition: border 0.3s ease;
+input[type='text'] {
+	width: 100%;
+	padding: 8px 16px; /* Manji padding */
+	border-radius: 20px; /* Zaobljeni krajevi */
+	border: 1px solid #ccc;
+	font-size: 14px;
+	background-color: white; /* Pozadina bela */
+	color: black; /* Tekst crne boje */
+	outline: none; /* Bez outline-a */
+	transition: border 0.3s ease;
 }
 
-input[type="text"]:focus {
-  border: 1px solid #40E0D0; /* Tirkizna boja na fokus */
+input[type='text']:focus {
+	border: 1px solid #40e0d0; /* Tirkizna boja na fokus */
 }
 
 .main-container {
-  display: flex;
-  justify-content: space-between;
-  flex-direction: column;
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 20px;
-  gap: 20px; 
+	display: flex;
+	justify-content: space-between;
+	flex-direction: column;
+	max-width: 1000px;
+	margin: 0 auto;
+	padding: 20px;
+	gap: 20px;
 	display: flex;
 	justify-content: space-between;
 	flex-direction: column;
@@ -83,7 +83,7 @@ input[type="text"]:focus {
 	justify-content: right;
 }
 
-.filter-button{
+.filter-button {
 	margin-left: 10px;
 }
 .tags-container {
@@ -135,7 +135,7 @@ textarea {
 	align-items: center;
 	padding: 10px 20px;
 	background-color: #fff;
-	border-radius: 15px;
+	border-radius: 20px;
 	box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 10px;
 	width: 100%;
 }
@@ -152,6 +152,57 @@ textarea {
 	margin-left: 10px;
 	font-size: 16px;
 	color: #666;
+}
+
+.sales-bar-container {
+	height: 54px;
+	border-radius: 20px;
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 10px;
+	background-color: var(--secondary-color);
+}
+
+.sales-bar {
+	box-sizing: border-box;
+	display: flex;
+	justify-content: space-between;
+	height: inherit;
+	align-items: center;
+	margin: 0 20px;
+	font-size: 20px;
+}
+
+.sales-bar-info {
+	display: flex;
+	align-items: center;
+}
+
+.sales-bar-info i {
+	margin-top: 2px;
+	margin-right: 20px;
+	font-size: 20px;
+	cursor: pointer;
+}
+
+.sales-bar-info span {
+	margin-right: 20px;
+}
+
+.sales-bar-info-select-all {
+	cursor: pointer;
+}
+
+.sales-bar-info-select-all:active {
+	font-weight: bolder;
+}
+
+.sales-bar-add {
+	/* font-size: 20px; */
+	cursor: pointer;
+	transition: 0.6s ease;
+}
+
+.sales-bar-add:hover {
+	transform: scale(1.1);
 }
 
 input[type='range'] {
@@ -208,8 +259,13 @@ input[type='range']::-ms-thumb {
 	box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 10px;
 	margin-bottom: 20px;
 }
-.tour-card.premium{
+
+.tour-card.premium {
 	background-color: #ffe0b2;
+}
+
+.tour-card.selected {
+	background-color: #d9eafd;
 }
 
 .tour-card i {
@@ -247,6 +303,34 @@ input[type='range']::-ms-thumb {
 
 .tour-header > i {
 	flex-basis: auto;
+}
+
+.tour-header-ellipsis {
+	position: relative;
+}
+
+.tour-header-modal {
+	position: absolute;
+	z-index: 100;
+	left: -220px;
+	top: 20px;
+	width: 200px;
+	padding: 10px;
+	border-radius: 15px;
+	background-color: var(--secondary-color);
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 10px;
+}
+
+.tour-header-modal-element {
+	border-radius: 15px;
+	padding: 5px 5px 5px 15px;
+	place-items: center;
+	font-weight: bolder;
+	cursor: pointer;
+}
+
+.tour-header-modal-element:hover {
+	background-color: #f0f0f0;
 }
 
 .tour-footer {
