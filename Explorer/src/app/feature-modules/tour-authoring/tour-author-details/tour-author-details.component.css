@@ -122,7 +122,23 @@
   cursor: pointer;
   transition: background-color 0.3s;
 }
-
+.encounter{
+  background-color: var(--primary-color); /* Koristi drugu boju */
+  border: none;
+  width: 100px;
+  height: 30px;
+  border-radius: 5px;
+  padding: 8px 12px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.encounter:hover {
+  background-color: #00c3ff; /* Svetlija nijansa na hover */
+}
 .edit:hover {
   background-color: #00c3ff; /* Svetlija nijansa na hover */
 }

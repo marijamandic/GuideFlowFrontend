@@ -16,6 +16,9 @@ import { Tour } from '../../tour-authoring/model/tour.model';
 })
 export class PurchasedToursComponent implements OnInit{
   purchasedTours: Tour[] = [];
+  incompleteTours: Tour[] = [];
+  completedTours: Tour[] = [];
+  completedTourIds: number[] = [];
   message: string = '';
   selectedPurchasedTour: PurchasedTours;
   tourExecutionId : string | null=null;
@@ -26,6 +29,9 @@ export class PurchasedToursComponent implements OnInit{
     TourId : 0,
     UserId: 0
   };
+  INCOMPLETE_PRODUCT = 'incomplete';
+	COMPLETED_PRODUCT = 'completed';
+	productType = this.INCOMPLETE_PRODUCT;
 
   constructor(private tourExecutionService: TourExecutionService , private authService: AuthService, private router: Router){}
 
@@ -34,11 +40,11 @@ export class PurchasedToursComponent implements OnInit{
       this.user = user;
     }) 
     if(this.user){
-      this.getPurchasedByUser();
+      this.getCompletedTourIds();
       this.checkActiveSession();
     }
   }
-
+  
   getPurchasedByUser() : void{
     if(this.user?.id){
       this.tourExecutionService.getPurchased(this.user.id).subscribe({
@@ -48,6 +54,8 @@ export class PurchasedToursComponent implements OnInit{
             this.purchasedTours = [];
           } else{
             this.purchasedTours = result;
+            this.completedTours = result.filter((tour:any) => this.completedTourIds.includes(tour.id));
+          this.incompleteTours = result.filter((tour:any)=> !this.completedTourIds.includes(tour.id));
             this.message = this.purchasedTours.length === 0 ? "There is no purchased tours yet :(" : '';
           }
         },
@@ -64,6 +72,19 @@ export class PurchasedToursComponent implements OnInit{
           }
         }
       });
+    }
+  }
+  getCompletedTourIds() :void {
+    if(this.user?.id){
+      this.tourExecutionService.getCompletedToursByTourist(this.user.id).subscribe({
+        next: (result) => {
+          this.completedTourIds = result
+          this.getPurchasedByUser();
+        },
+        error: (err) => {
+          this.message = err;
+        }
+      })
     }
   }
 
@@ -166,5 +187,7 @@ export class PurchasedToursComponent implements OnInit{
 		1: 'Advanced',
 		2: 'Expert'
 	};
-
+  handleProductTypeChange() {
+		this.productType = this.productType === this.INCOMPLETE_PRODUCT ? this.COMPLETED_PRODUCT : this.INCOMPLETE_PRODUCT;
+	}
 }

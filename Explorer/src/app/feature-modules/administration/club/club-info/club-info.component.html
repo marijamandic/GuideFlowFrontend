@@ -70,7 +70,7 @@
       </div>
       <div class="post-actions">
         <!-- Update Button -->
-        <button class="action-button update" (click)="onUpdatePost(post)">Update</button>
+        <button *ngIf="post.memberId===ownerId" class="action-button update" (click)="onUpdatePost(post)">Update</button>
   
         <!-- Delete Button (only for club owner) -->
         <button

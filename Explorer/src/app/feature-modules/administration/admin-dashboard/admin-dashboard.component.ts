@@ -60,7 +60,7 @@ ResultUsers: Account[] = []
      this.service.getAccounts().subscribe({
       next: (result: Array<Account>) => {
       this.users = result
-      this.ResultUsers = this.users
+      this.ResultUsers = this.users.filter(user=> user.role!==UserRole.Administrator);
       console.log(result);
       },
       error: (err: any) => {
@@ -263,15 +263,29 @@ ResultUsers: Account[] = []
   
     console.log('Sending updateMoney request:', account.id, this.moneyInput);
   
-    this.service.updateMoney(account.id, this.moneyInput).subscribe({
-      next: () => {
-        alert(`Successfully added ${this.moneyInput} AC to ${account.username}`);
-        this.closeModal();
-      },
-      error: (err) => {
-        console.error('Error depositing money:', err);
-      },
-    });
+    if(account.role === UserRole.Tourist){
+      this.service.updateMoney(account.id, this.moneyInput).subscribe({
+        next: () => {
+          alert(`Successfully added ${this.moneyInput} AC to ${account.username}`);
+          this.closeModal();
+        },
+        error: (err) => {
+          console.error('Error depositing money:', err);
+        },
+      });
+    }
+    else if(account.role === UserRole.Author){
+      this.service.updateAuthorMoney(account.id, this.moneyInput).subscribe({
+        next: () => {
+          alert(`Successfully added ${this.moneyInput} AC to ${account.username}`);
+          this.closeModal();
+        },
+        error: (err) => {
+          console.error('Error depositing money:', err);
+        },
+      });
+    }
+    
   }  
 
   // PROBLEMS

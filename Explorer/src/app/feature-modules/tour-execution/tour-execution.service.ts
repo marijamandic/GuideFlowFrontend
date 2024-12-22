@@ -67,6 +67,9 @@ export class TourExecutionService {
 	getTourExecution(id: string) {
 		return this.http.get<TourExecution>(environment.apiHost + 'execution/tourExecution/' + id);
 	}
+	getCompletedToursByTourist(id:number) {
+		return this.http.get<number[]>(environment.apiHost + 'execution/tourExecution/completed/'+id)
+	}
 	updateTourExecution(updateTourExecutionDto: UpdateTourExecutionDto) {
 		return this.http.put<TourExecution>(environment.apiHost + 'execution/tourExecution', updateTourExecutionDto);
 	}
