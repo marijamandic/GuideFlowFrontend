@@ -17,6 +17,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { TourMoreDetailsComponent } from './tour-more-details/tour-more-details.component';
 import { BundlesComponent } from './bundles/bundles.component';
 import { BundleComponent } from './bundle/bundle.component';
+import { CreateSalesModalComponent } from './create-sales-modal/create-sales-modal.component';
 
 @NgModule({
 	declarations: [
@@ -28,7 +29,8 @@ import { BundleComponent } from './bundle/bundle.component';
 		ShoppingCartPreviewComponent,
 		TourMoreDetailsComponent,
 		BundlesComponent,
-		BundleComponent
+		BundleComponent,
+		CreateSalesModalComponent
 	],
 	imports: [
 		MatRadioModule,
@@ -42,6 +44,13 @@ import { BundleComponent } from './bundle/bundle.component';
 		SharedModule,
 		MatDialogModule
 	],
-	exports: [ShoppingCartComponent, CouponComponent, ShoppingCartPreviewComponent, TourMoreDetailsComponent, BundlesComponent]
+	exports: [
+		ShoppingCartComponent,
+		CouponComponent,
+		ShoppingCartPreviewComponent,
+		TourMoreDetailsComponent,
+		BundlesComponent,
+		CreateSalesModalComponent
+	]
 })
 export class MarketplaceModule {}

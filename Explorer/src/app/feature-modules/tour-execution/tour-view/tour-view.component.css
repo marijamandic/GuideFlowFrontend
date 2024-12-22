@@ -159,6 +159,19 @@ textarea {
 	border-radius: 20px;
 	box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 10px;
 	background-color: var(--secondary-color);
+
+	animation-name: animateopacity;
+	animation-duration: 0.4s;
+	animation-timing-function: linear;
+}
+
+@keyframes animateopacity {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
 }
 
 .sales-bar {
@@ -264,8 +277,36 @@ input[type='range']::-ms-thumb {
 	background-color: #ffe0b2;
 }
 
+.tour-card.selected-premium {
+	background-color: #d9eafd;
+	animation-name: premium-grad;
+	animation-duration: 0.3s;
+	animation-timing-function: linear;
+}
+
 .tour-card.selected {
 	background-color: #d9eafd;
+	animation-name: basic-grad;
+	animation-duration: 0.3s;
+	animation-timing-function: linear;
+}
+
+@keyframes basic-grad {
+	0% {
+		background-color: var(--secondary-color);
+	}
+	100% {
+		background-color: #d9eafd;
+	}
+}
+
+@keyframes premium-grad {
+	0% {
+		background-color: #ffe0b2;
+	}
+	100% {
+		background-color: #d9eafd;
+	}
 }
 
 .tour-card i {
@@ -680,4 +721,65 @@ h2 {
 	font-family: Arial, sans-serif;
 	font-weight: 600;
 	color: #777;
+}
+
+.add-sales-modal {
+	position: absolute;
+	z-index: 1000;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.8);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.sales-modal {
+	width: 50%;
+	height: 50%;
+	background-color: var(--secondary-color);
+	border-radius: 20px;
+	padding: 20px;
+}
+
+.sales-modal-close {
+	display: flex;
+	width: 100%;
+	justify-content: space-between;
+	align-items: flex-start;
+}
+
+.sales-modal i {
+	font-size: 30px;
+	cursor: pointer;
+}
+
+.sales-modal-selected {
+	height: 200px;
+}
+
+.sales-modal-details {
+	display: flex;
+}
+
+.sales-modal-details > div {
+	flex: 1;
+}
+
+.sales-modal-details > div input {
+	width: 100%;
+	outline: none;
+	border: none;
+	border-radius: 20px;
+	border: 1px solid black;
+	padding: 10px 0;
+}
+
+.sales-modal-details > div input[type='date'] {
+	margin-right: 20px;
+	place-content: center;
+}
+
+.sales-modal-details > div input[type='number'] {
+	margin-left: 20px;
 }

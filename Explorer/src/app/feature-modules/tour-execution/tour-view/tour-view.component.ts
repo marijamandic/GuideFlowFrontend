@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnInit, Renderer2 } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { TourExecutionService } from '../tour-execution.service';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
 import { Tour } from '../../tour-authoring/model/tour.model';
@@ -75,8 +75,10 @@ export class TourViewComponent implements OnInit {
 
 	isOpened$: boolean;
 
-	selectedTours: number[] = [];
+	selectedTourIds: number[] = [];
 	showTourDetailsModal: boolean[];
+
+	showAddSales = false;
 
 	constructor(
 		private service: TourExecutionService,
@@ -86,8 +88,7 @@ export class TourViewComponent implements OnInit {
 		private alertService: AlertService,
 		private router: Router,
 		private shoppingCartService: ShoppingCartService,
-		private cartPreviewService: CartPreviewService,
-		private renderer: Renderer2
+		private cartPreviewService: CartPreviewService
 	) {}
 
 	//constructor(private service: TourExecutionService, authService: AuthService, private cdr: ChangeDetectorRef, private adminService: AdministrationService) {
@@ -615,21 +616,31 @@ export class TourViewComponent implements OnInit {
 	}
 
 	handleSelectTourClick(id: number, idx: number) {
-		if (this.isTourSelected(id)) this.selectedTours = this.selectedTours.filter(t => t !== id);
-		else this.selectedTours = [...this.selectedTours, id];
+		if (this.isTourSelected(id)) this.selectedTourIds = this.selectedTourIds.filter(t => t !== id);
+		else this.selectedTourIds = [...this.selectedTourIds, id];
 		this.showTourDetailsModal[idx] = !this.showTourDetailsModal;
 	}
 
 	isTourSelected(id: number) {
-		return this.selectedTours.includes(id);
+		return this.selectedTourIds.includes(id);
 	}
 
 	handleSelectAll() {
-		this.selectedTours = this.allTours.map(t => t.id);
+		this.selectedTourIds = this.allTours.map(t => t.id);
 	}
 
 	deselectAll() {
-		this.selectedTours = [];
-		console.log(this.selectedTours);
+		this.selectedTourIds = [];
+		console.log(this.selectedTourIds);
+	}
+
+	getSelectedTours() {
+		return this.allTours.filter(t => this.isTourSelected(t.id));
+	}
+
+	handleSalesCreatedEvent() {
+		this.showAddSales = false;
+		this.selectedTourIds = [];
+		this.alertService.showAlert('Created', 'success', 1);
 	}
 }

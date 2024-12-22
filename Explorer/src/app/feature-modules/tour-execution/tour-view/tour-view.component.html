@@ -1,3 +1,31 @@
+<!-- <div class="add-sales-modal" *ngIf="showAddSales">
+	<div class="sales-modal">
+		<div class="sales-modal-close">
+			<h1>Sales</h1>
+			<i class="fa-solid fa-xmark"></i>
+		</div>
+		<div class="sales-modal-selected">
+			<div class="sales-modal-selected-tour" *ngFor="let tour of getSelectedTours()">
+				{{ tour.name }}
+			</div>
+		</div>
+		<hr />
+		<div class="sales-modal-details">
+			<div class="sales-modal-details-date">
+				<input type="date" />
+			</div>
+			<div class="sales-modal-details-discount">
+				<input type="number" />
+			</div>
+		</div>
+	</div>
+</div> -->
+<xp-create-sales-modal
+	*ngIf="showAddSales"
+	[tours]="getSelectedTours()"
+	(close)="showAddSales = false"
+	(created)="handleSalesCreatedEvent()"
+></xp-create-sales-modal>
 <div class="main-container">
 	<!-- Full-width Search Bar -->
 
@@ -17,14 +45,14 @@
 		</div>
 	</div>
 
-	<div id="sales-bar" class="sales-bar-container" *ngIf="selectedTours.length > 0">
+	<div id="sales-bar" class="sales-bar-container" *ngIf="selectedTourIds.length > 0">
 		<div class="sales-bar">
 			<div class="sales-bar-info">
 				<i class="fa-solid fa-xmark" (click)="deselectAll()"></i>
-				<span> {{ selectedTours.length }} Selected </span>
+				<span> {{ selectedTourIds.length }} Selected </span>
 				<span class="sales-bar-info-select-all" (click)="handleSelectAll()"> Select all </span>
 			</div>
-			<div class="sales-bar-add">Add Sale</div>
+			<div class="sales-bar-add" (click)="showAddSales = !showAddSales">Add Sale</div>
 		</div>
 	</div>
 
@@ -123,7 +151,11 @@
 				<div
 					(click)="goToDetails(tour)"
 					class="tour-card"
-					[ngClass]="{ premium: tour.isPremium, selected: isTourSelected(tour.id) }"
+					[ngClass]="{
+						premium: tour.isPremium,
+						selected: !tour.isPremium && isTourSelected(tour.id),
+						'selected-premium': tour.isPremium && isTourSelected(tour.id)
+					}"
 					*ngFor="let tour of allTours; let i = index"
 				>
 					<img
@@ -261,18 +293,18 @@
 	</div>
 
 	<!--sorting
-  <div class="sort-container">
-    <div class="sort-label">
+	<div class="sort-container">
+		<div class="sort-label">
       <h3>Sort By:</h3>
       <ul>
-        <li><button class="button" (click)="sortByPrice()">Price</button></li>
+		  <li><button class="button" (click)="sortByPrice()">Price</button></li>
         <li><button class="button" (click)="sortBySales()">Sales</button></li>
-      </ul>
+	</ul>
     </div>
-  
+	
     <div class="sort-buttons">
-      <button class="button" (click)="sortAscending()">Asc</button>
-      <button class="button" (click)="sortDescending()">Desc</button>
+		<button class="button" (click)="sortAscending()">Asc</button>
+		<button class="button" (click)="sortDescending()">Desc</button>
     </div>
-  </div>-->
+</div>-->
 </div>
