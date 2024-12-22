@@ -34,9 +34,9 @@ export class TourViewComponent implements OnInit {
 	tourCheckpoints: Checkpoint[] = [];
 	newTour: Tour = this.initializeTour();
 	weatherRequirements: WeatherCondition = {
-		  minTemperature: 0,
-		  maxTemperature: 0,
-		  suitableConditions: []
+		minTemperature: 0,
+		maxTemperature: 0,
+		suitableConditions: []
 	};
 	bundles: TourBundle[];
 
@@ -74,6 +74,11 @@ export class TourViewComponent implements OnInit {
 	productType = this.REGULAR_PRODUCT;
 
 	isOpened$: boolean;
+
+	selectedTourIds: number[] = [];
+	showTourDetailsModal: boolean[];
+
+	showAddSales = false;
 
 	constructor(
 		private service: TourExecutionService,
@@ -176,10 +181,10 @@ export class TourViewComponent implements OnInit {
 			checkpoints: [],
 			transportDurations: [],
 			reviews: [],
-			weatherRequirements: this.weatherRequirements || { 
-				minTemperature: 0, 
-				maxTemperature: 0, 
-				suitableConditions: [] 
+			weatherRequirements: this.weatherRequirements || {
+				minTemperature: 0,
+				maxTemperature: 0,
+				suitableConditions: []
 			}
 		};
 	}
@@ -209,8 +214,7 @@ export class TourViewComponent implements OnInit {
 					this.allTours = result.results.filter(tour => tour.status === TourStatus.Published);
 				}
 
-				console.log(this.allTours);
-				console.log(this.allTours[1].reviews);
+				this.showTourDetailsModal = new Array(result.totalCount).fill(false);
 			},
 			error: (err: any) => {
 				console.log(err);
@@ -601,7 +605,7 @@ export class TourViewComponent implements OnInit {
 		this.shoppingCartService.addToCart(item).subscribe({
 			next: () => this.cartPreviewService.open(),
 			error: (error: HttpErrorResponse) => {
-				if (error.status) alert('Item already in cart');
+				if (error.status === 400) alert('Item already in cart');
 				else console.log(error.message);
 			}
 		});
@@ -609,5 +613,34 @@ export class TourViewComponent implements OnInit {
 
 	handleProductTypeChange() {
 		this.productType = this.productType === this.REGULAR_PRODUCT ? this.BUNDLE_PRODUCT : this.REGULAR_PRODUCT;
+	}
+
+	handleSelectTourClick(id: number, idx: number) {
+		if (this.isTourSelected(id)) this.selectedTourIds = this.selectedTourIds.filter(t => t !== id);
+		else this.selectedTourIds = [...this.selectedTourIds, id];
+		this.showTourDetailsModal[idx] = !this.showTourDetailsModal;
+	}
+
+	isTourSelected(id: number) {
+		return this.selectedTourIds.includes(id);
+	}
+
+	handleSelectAll() {
+		this.selectedTourIds = this.allTours.map(t => t.id);
+	}
+
+	deselectAll() {
+		this.selectedTourIds = [];
+		console.log(this.selectedTourIds);
+	}
+
+	getSelectedTours() {
+		return this.allTours.filter(t => this.isTourSelected(t.id));
+	}
+
+	handleSalesCreatedEvent() {
+		this.showAddSales = false;
+		this.selectedTourIds = [];
+		this.alertService.showAlert('Created', 'success', 1);
 	}
 }

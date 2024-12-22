@@ -34,7 +34,7 @@ export class BundlesComponent implements OnInit {
 		return `${environment.webRootHost}${imageUrl}`;
 	}
 
-	handleBundleDblClick(id: number) {
+	handleBundleClick(id: number) {
 		this.router.navigate(['bundle'], { state: { bundleId: id } });
 	}
 
