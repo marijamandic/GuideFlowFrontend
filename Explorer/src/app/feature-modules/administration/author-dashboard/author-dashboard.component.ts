@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { User } from 'src/app/infrastructure/auth/model/user.model';
 import { Problem } from 'src/app/shared/model/problem.model';
@@ -23,7 +23,7 @@ import { ChartData, ChartOptions } from 'chart.js';
   templateUrl: './author-dashboard.component.html',
   styleUrls: ['./author-dashboard.component.css']
 })
-export class AuthorDashboardComponent implements OnInit {
+export class AuthorDashboardComponent implements OnInit, AfterViewInit  {
   @ViewChild(BaseChartDirective) chart?: BaseChartDirective; // Ovo možeš zadržati za Bar chart
   @ViewChild('doughnutChart') doughnutChart?: BaseChartDirective;
   @ViewChild('messagesContainer') private messagesContainer: ElementRef
@@ -50,6 +50,7 @@ export class AuthorDashboardComponent implements OnInit {
   newMessageContent: string = '';
   averageGrade: number = 0;
   reviewsPartition: { [key: number]: number } = {};
+  showDoughnut = false;
   
   problemStatusData: ChartData<'bar'> = {
     labels: ['Resolved', 'Unresolved', 'Overdue'],
@@ -117,13 +118,14 @@ export class AuthorDashboardComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
-  setTimeout(() => {
-    this.generateSourceChartData(); // Ažuriraj podatke
-    if (this.doughnutChart) {
-      this.doughnutChart.update(); // Osveži Doughnut chart
-    }
-  }, 0);
-}
+    setTimeout(() => {
+      this.generateSourceChartData(); // ažuriraj podatke
+      this.cdRef.detectChanges();      // osveži Angular-ov prikaz
+      if (this.doughnutChart) {
+        this.doughnutChart.update();   // osveži Doughnut chart
+      }
+    }, 0);
+  }
   
   // ■■■■■ Reviews sections ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
   loadAverageGrade(authorId: number): void {
@@ -169,6 +171,7 @@ export class AuthorDashboardComponent implements OnInit {
         this.fetchAllTours();
         this.generateChartData();
         this.generateSourceChartData();
+        this.showDoughnut = true;
       },
       error: (err: any) => {
         console.error('Error fetching problems:', err);
