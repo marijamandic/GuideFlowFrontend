@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { User } from 'src/app/infrastructure/auth/model/user.model';
 import { Problem } from 'src/app/shared/model/problem.model';
@@ -24,18 +24,20 @@ import { ChartData, ChartOptions } from 'chart.js';
   styleUrls: ['./author-dashboard.component.css']
 })
 export class AuthorDashboardComponent implements OnInit {
+  @ViewChild(BaseChartDirective) chart?: BaseChartDirective; // Ovo možeš zadržati za Bar chart
+  @ViewChild('doughnutChart') doughnutChart?: BaseChartDirective;
+  @ViewChild('messagesContainer') private messagesContainer: ElementRef
 
   constructor(
     private authService: AuthService,
     private service: TourAuthoringService,
     private tourService: TourService,
-    private administrationService: AdministrationService
+    private administrationService: AdministrationService,
+    private cdRef: ChangeDetectorRef
   ){}
 
   Math = Math;
   user: User;
-  @ViewChild('messagesContainer') private messagesContainer: ElementRef
-  @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
   // users: Account[] = []
   problems: Problem[] = [];
   resultProblems: Problem[] = []
@@ -48,13 +50,14 @@ export class AuthorDashboardComponent implements OnInit {
   newMessageContent: string = '';
   averageGrade: number = 0;
   reviewsPartition: { [key: number]: number } = {};
+  
   problemStatusData: ChartData<'bar'> = {
     labels: ['Resolved', 'Unresolved', 'Overdue'],
     datasets: [
       {
         label: 'Problem Status',
         data: [0, 0, 0], // Ovi podaci će se dinamički ažurirati
-        backgroundColor: ['#28a745', '#ffc107', '#dc3545'], // Zelena, žuta, crvena
+        backgroundColor: ['#95e1ce', '#f06595', '#ff6f61'], // Zelena, žuta, crvena
       },
     ],
   };
@@ -89,8 +92,8 @@ export class AuthorDashboardComponent implements OnInit {
     datasets: [
       {
         label: 'Problem Source',
-        data: [0, 0, 0, 0, 0], // Podaci će se dinamički ažurirati
-        backgroundColor: ['#20c997', '#f06595', '#ffc107', '#ff6f61', '#339af0'], // Boje za kategorije
+        data: [0, 0, 0, 0, 0], 
+        backgroundColor: ['#95e1ce', '#f06595', '#ffc107', '#ff6f61', '#339af0'], // Boje za kategorije
       },
     ],
   };
@@ -103,6 +106,7 @@ export class AuthorDashboardComponent implements OnInit {
     },
   };
 
+  // ■■■■■ Init mate ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
   ngOnInit(): void {
     this.loadProblems();
     this.authService.user$.subscribe((user)=>{
@@ -112,6 +116,15 @@ export class AuthorDashboardComponent implements OnInit {
     this.loadReviewsPartition(this.user.id);
   }
 
+  ngAfterViewInit(): void {
+  setTimeout(() => {
+    this.generateSourceChartData(); // Ažuriraj podatke
+    if (this.doughnutChart) {
+      this.doughnutChart.update(); // Osveži Doughnut chart
+    }
+  }, 0);
+}
+  
   // ■■■■■ Reviews sections ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
   loadAverageGrade(authorId: number): void {
     this.administrationService.getAverageGradeForAuthor(authorId).subscribe({
@@ -316,17 +329,18 @@ export class AuthorDashboardComponent implements OnInit {
     this.chart.update(); // Osveži grafikon
     }
   }
+
   generateSourceChartData(): void {
     const categoryCounts: Record<string, number> = {
       Transportation: 0,
       Accommodation: 0,
-      Guides: 0, // Promenjeno da se slaže sa enumeracijom
+      Guide: 0,
       Organization: 0,
       Safety: 0,
     };
-    
-    this.problems.forEach(problem => {
-      const categoryKey = Category[problem.details.category] as string; // Dobijanje ključa kao string
+  
+    this.problems.forEach((problem) => {
+      const categoryKey = Category[problem.details.category] as string;
       if (categoryCounts[categoryKey] !== undefined) {
         categoryCounts[categoryKey]++;
       }
@@ -334,10 +348,13 @@ export class AuthorDashboardComponent implements OnInit {
   
     this.problemSourceData.datasets[0].data = Object.values(categoryCounts);
   
-    if (this.chart) {
-      this.chart.update();
-    }
+    setTimeout(() => {
+      if (this.doughnutChart) {
+        this.doughnutChart.update(); // Osveži Doughnut chart
+      }
+    }, 0);
   }
+  
   sortProblemsByReportDate(event: Event): void {
     event.preventDefault()
     const sortValue = (event.target as HTMLSelectElement).value 

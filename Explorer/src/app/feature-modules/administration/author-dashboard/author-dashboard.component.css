@@ -54,17 +54,35 @@ h1{
   .dashboard-card.third-width {
     grid-column: span 4; /* Spans a third of the width */
   }
+  
+  .graph-card {
+    display: block;
+    height: 350px; 
+    overflow: hidden;
+    position: relative;
+}
 
-.chart-placeholder {
-  height: 200px;
-  background-color: #f9f9f9;
-  border-radius: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #888;
-}  
+.mrs-bre-grafik-glupavi {
+    height: calc(100% - 30px); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
+.graph-card canvas {
+    display: block;
+    width: 95%; 
+    height: 95%; 
+    max-height: 300px; 
+    object-fit: contain; 
+}
+
+.dashboard-card canvas {
+  width: 100% !important; /* Prilagođava širinu kartice */
+  height: auto !important; /* Automatski podešava visinu */
+  max-height: 250px; /* Ograničava visinu kako grafikon ne bi izlazio */
+  display: block;
+}
 
 /* ■■■■■■■■■■■■■■■ REVIEWS ■■■■■■■■■■■■■■■*/
 .reviews-card {
@@ -580,26 +598,22 @@ h1{
   .add-comment button:hover {
     transform: scale(1.05);
   }
+
   .posted-at {
     font-size: 12px;
     color: #888;
     margin-top: 5px;
     text-align: right;
   }
+
   .username {
     font-size: 18px;
     font-weight: bold;
     color: #555;
   }
-  .dashboard-card canvas {
-    width: 100% !important; /* Prilagođava širinu kartice */
-    height: auto !important; /* Automatski podešava visinu */
-    max-height: 200px; /* Ograničava visinu kako grafikon ne bi izlazio */
-    display: block;
-  }
-  .dashboard-card {
-    overflow: hidden; /* Sprečava elemente da izlaze iz kartice */
-  }
+
+ 
+
   .controls-container {
     display: flex;
     justify-content: space-between; 
