@@ -1,25 +1,3 @@
-<!-- <div class="add-sales-modal" *ngIf="showAddSales">
-	<div class="sales-modal">
-		<div class="sales-modal-close">
-			<h1>Sales</h1>
-			<i class="fa-solid fa-xmark"></i>
-		</div>
-		<div class="sales-modal-selected">
-			<div class="sales-modal-selected-tour" *ngFor="let tour of getSelectedTours()">
-				{{ tour.name }}
-			</div>
-		</div>
-		<hr />
-		<div class="sales-modal-details">
-			<div class="sales-modal-details-date">
-				<input type="date" />
-			</div>
-			<div class="sales-modal-details-discount">
-				<input type="number" />
-			</div>
-		</div>
-	</div>
-</div> -->
 <xp-create-sales-modal
 	*ngIf="showAddSales"
 	[tours]="getSelectedTours()"
