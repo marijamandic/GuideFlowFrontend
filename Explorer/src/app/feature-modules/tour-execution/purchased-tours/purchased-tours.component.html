@@ -48,7 +48,7 @@
             <i *ngIf="tour.isPremium" class="fa fa-certificate" aria-hidden="true"></i>
           </div>
           <div>
-            <span class="tour-weather">
+            <span class="tour-weather-incompleted">
               <img [ngClass]="tour.weatherIcon!=='01d' ? 'weather-icon' : 'weather-sunny'" *ngIf="tour.weatherIcon" [src]="mapToWeatherIcon(tour.weatherIcon) ?? 'assets/images/clear.png'" alt="nema weather ikkonic">
               <p class="span-style" *ngIf="tour.temperature">{{ tour.weatherDescription}}, {{ mapToRoundNumber(tour.temperature)}}°C</p>
             </span>
@@ -87,6 +87,18 @@
             <h2 style="margin: 0px;">{{ tour.name }}</h2>
             <i *ngIf="tour.isPremium" class="fa fa-certificate" aria-hidden="true"></i>
           </div>
+          <div class="tour-header-ellipsis">
+            <i
+              class="fa-solid fa-ellipsis-vertical"
+              (click)="showTourDetailsModal[tour.id] = !showTourDetailsModal[tour.id]; $event.stopPropagation()"
+            ></i>
+            <div *ngIf="showTourDetailsModal[tour.id]" class="tour-header-modal">
+              <div class="tour-header-modal-element" (click)="handleTourOption('Report', tour.id)">
+                <p class="fa fa-exclamation-triangle" aria-hidden="true">
+
+                </p> Report problem</div>
+            </div>
+          </div>        
           <div>
             <span class="tour-weather">
               <img [ngClass]="tour.weatherIcon!=='01d' ? 'weather-icon' : 'weather-sunny'" *ngIf="tour.weatherIcon" [src]="mapToWeatherIcon(tour.weatherIcon) ?? 'assets/images/clear.png'" alt="nema weather ikkonic">
@@ -105,6 +117,38 @@
           <span><i class="fas fa-tag"></i>{{ tour.taggs }}</span>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+<div class="problem-modal" *ngIf="isProblemModalOpen">
+  <div class="problem-modal-content">
+    <div class="modal-header">
+      <h2>Report Problem</h2>
+      <button class="close-btn" (click)="closeProblemModal()">×</button>
+    </div>
+
+    <div class="modal-body">
+      <label for="category">Category</label>
+      <select id="category" [(ngModel)]="problemDetails.category" class="dropdown">
+        <option *ngFor="let category of categories" [value]="category.value">{{ category.label }}</option>
+      </select>
+
+      <label for="priority">Priority</label>
+      <select id="priority" [(ngModel)]="problemDetails.priority" class="dropdown">
+        <option *ngFor="let priority of priorities" [value]="priority.value">{{ priority.label }}</option>
+      </select>
+
+      <label for="description">Description</label>
+      <textarea
+        id="description"
+        [(ngModel)]="problemDetails.description"
+        class="description-input"
+        placeholder="Describe the problem..."
+      ></textarea>
+    </div>
+
+    <div class="modal-footer">
+      <button class="cta-button" (click)="submitProblem()">Submit</button>
     </div>
   </div>
 </div>
