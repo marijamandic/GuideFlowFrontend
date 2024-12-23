@@ -74,12 +74,12 @@
 .message.user {
   background-color: var(--primary-color); 
   align-self: flex-end; 
-  text-align: right;
+  text-align: left;
   color: white;
 }
 
 .message.bot {
-  background-color: #e3f2fd; /* Light blue for bot */
+  background-color: #e0e0e0; /* Light blue for bot */
   align-self: flex-start; /* Left align */
   text-align: left;
 }
@@ -96,8 +96,8 @@ input[type="text"] {
 }
 
 input[type="text"]:focus {
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Glow on focus */
-  border-color: #0d6efd; /* Match primary color */
+  box-shadow: 0 0 5px var(--primary-color); 
+  border-color: var(--primary-color); 
 }
 
 button {
