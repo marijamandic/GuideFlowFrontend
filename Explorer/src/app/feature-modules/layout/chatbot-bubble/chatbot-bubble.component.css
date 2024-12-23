@@ -1,25 +1,32 @@
-/* chatbot-bubble.component.css */
 .chatbot-bubble {
     position: fixed;
-    width: 60px; /* Width of the bubble */
-    height: 60px; /* Height of the bubble */
-    background-color: burlywood; /* Bubble color */
-    border-radius: 50%; /* Make it circular */
-    cursor: pointer; /* Change cursor to indicate draggable */
-    z-index: 1000; /* Ensure it is on top of other content */
-    transition: transform 0.2s; /* Smooth transition */
+    width: 60px; 
+    height: 60px; 
+    background-color: var(--primary-color);
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 1000; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
 }
 
-/* Add hover effect */
-.chatbot-bubble p {
-    margin-top: 10px; /* Remove default margin */
-    font-size: 12px; /* Adjust font size to fit */
-    line-height: 1.2; /* Set line height to ensure proper spacing */
-    white-space: normal; /* Allow wrapping */
-    padding: 5px; /* Add some padding for better spacing */
-    text-align: center; /* Center the text horizontally */
-    max-width: 100%; /* Ensure the text does not overflow the bubble */
-    display: flex; /* Use flexbox for centering */
-    flex-direction: column; /* Stack lines vertically */
-    justify-content: center; /* Center text vertically within the flex container */
+i {
+    color: white;
+    font-size: 24px;
+}
+
+.glow-button{
+    animation: pulseGlow 3s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+    0%, 100% {
+        box-shadow: 0 0 10px rgba(132, 220, 198, 0.3), 0 0 20px rgba(132, 220, 198, 0.2);
+        transform: scale(1);
+    }
+    50% {
+        box-shadow: 0 0 30px rgba(132, 220, 198, 0.6), 0 0 60px rgba(132, 220, 198, 0.5);
+        transform: scale(1.1);
+    }
 }
