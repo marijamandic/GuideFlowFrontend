@@ -1,6 +1,6 @@
 
-<div class="chatbot-bubble" (mousedown)="startDragging($event)" (mouseup)="stopDragging()" (dblclick)="openChatDialog()">
-    <p>Chat With Me</p>
+<div class="chatbot-bubble glow-button" (mousedown)="startDragging($event)" (mouseup)="stopDragging()" (dblclick)="openChatDialog()">
+    <i class="fa fa-comments" aria-hidden="true"></i>
 </div>
 <app-chatbot-bubble-dialog *ngIf="isDialogOpen" [dialogPosition]="dialogPosition" [(isDialogOpen)]="isDialogOpen"></app-chatbot-bubble-dialog>
 

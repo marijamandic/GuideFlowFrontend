@@ -149,7 +149,10 @@
 									<h2 style="margin: 0">{{ tour.name }}</h2>
 									<i *ngIf="tour.isPremium" class="fa fa-certificate" aria-hidden="true"></i>
 								</div>
-								<div>{{ tour.description }}</div>
+								<div class="tour-description">
+									{{ tour.description }}
+								  </div>
+								  
 							</div>
 							<div class="tour-header-ellipsis">
 								<i
@@ -175,7 +178,7 @@
 									<span>{{ tour.lengthInKm }} km</span>
 								</div>
 								<div class="tour-footer-info-row">
-									<i class="fa-solid fa-square"></i>
+									<i class="fa fa-tags" aria-hidden="true"></i>
 									<span *ngFor="let tag of tour.taggs; let i = index">
 										<ng-container *ngIf="i === tour.taggs.length - 1; else notLast">{{ tag }} </ng-container>
 										<ng-template #notLast>{{ tag }},&nbsp;</ng-template>
