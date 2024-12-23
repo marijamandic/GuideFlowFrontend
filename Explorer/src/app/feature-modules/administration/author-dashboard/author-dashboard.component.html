@@ -69,29 +69,29 @@
   </div>
 
   <!-- Problem Status and Source Side-by-Side -->
-  <div class="dashboard-card half-width">
+  <div class="dashboard-card half-width graph-card">
     <h2>Problem Status</h2>
-    <div class="chart-placeholder">
+    <div class="mrs-bre-grafik-glupavi">
       <canvas
-      baseChart
-      [data]="problemStatusData"
-      [options]="problemStatusOptions"
-      [type]="'bar'">
-    </canvas>
+        baseChart
+        [data]="problemStatusData"
+        [options]="problemStatusOptions"
+        [type]="'bar'">
+      </canvas>
     </div>
   </div>
-
-  <div class="dashboard-card half-width">
+  
+  <div class="dashboard-card half-width graph-card" *ngIf="showDoughnut">
     <h2>Problem Source</h2>
-    <div class="chart-placeholder">
+    <div class="mrs-bre-grafik-glupavi">
       <canvas
-      baseChart
-      [data]="problemSourceData"
-      [options]="problemSourceOptions"
-      [type]="'doughnut'">
-    </canvas>
+        baseChart
+        [data]="problemSourceData"
+        [options]="problemSourceOptions"
+        [type]="'doughnut'">
+      </canvas>
     </div>
-  </div>
+  </div>  
 
   <!-- Problems Section -->
   <div class="dashboard-card full-width">
