@@ -32,6 +32,10 @@ export class ClubInfoComponent implements OnInit {
   isPending: boolean = false;
   ownerUsername: string | null = null;
 
+  isEditing: boolean = false;
+  editingPost: ClubPost | null = null;
+  openMenuId: number | null = null;
+
   constructor(
     private route: ActivatedRoute,
     private administrationService: AdministrationService,
@@ -154,8 +158,19 @@ export class ClubInfoComponent implements OnInit {
   loadClubPosts(): void {
     this.administrationService.getClubPosts().subscribe((posts) => {
       this.clubPosts = posts.filter(post => post.clubId === this.club.id);
+  
+      this.clubPosts.forEach(post => {
+        this.administrationService.getProfileInfoByUserId(post.memberId).subscribe({
+          next: (profile) => post.username = profile.firstName + ' ' + profile.lastName,
+          error: (err) => {
+            console.error('Error fetching username for memberId:', post.memberId, err);
+            post.username = 'Unknown User'; // Fallback
+          }
+        });
+      });
     });
   }
+  
 
   openInviteModal(): void {
     this.showModal = true;
@@ -270,6 +285,40 @@ export class ClubInfoComponent implements OnInit {
     }
   }
   
+  toggleMenu(postId: number): void {
+    this.openMenuId = this.openMenuId === postId ? null : postId;
+  }
+  startEditingPost(post: ClubPost): void {
+    this.isEditing = true;
+    this.editingPost = { ...post };
+    this.openMenuId = null; // Close the menu
+  }
+  saveEdit(): void {
+    if (this.editingPost) {
+      this.administrationService.updateClubPost(this.editingPost.id, this.editingPost).subscribe({
+        next: () => {
+          console.log('Post updated successfully.');
+          this.isEditing = false;
+          this.editingPost = null;
+          this.loadClubPosts();
+        },
+        error: (err) => console.error('Error saving edits:', err),
+      });
+    }
+  }
+  cancelEdit(): void {
+    this.isEditing = false;
+    this.editingPost = null;
+  }
+  deletePost(post: ClubPost): void {
+    this.administrationService.deleteClubPost(post.id).subscribe({
+      next: () => {
+        console.log('Post deleted successfully.');
+        this.loadClubPosts();
+      },
+      error: (err) => console.error('Error deleting post:', err),
+    });
+  }
 }
 
 function mapStatusToEnum(status: string): ClubRequestStatus {

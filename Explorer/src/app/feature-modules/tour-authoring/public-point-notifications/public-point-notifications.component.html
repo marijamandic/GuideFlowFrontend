@@ -2,6 +2,14 @@
     <div class="header">
         <h4>Notifications</h4>
         <span class="mark-read-text" (click)="markAllAsRead()">Mark all as read</span>
+        <div class="notification-menuh">
+            <button class="menu-button" (click)="toggleHeaderMenu($event)">
+                &#x22EE; <!-- Unicode za tri tačke -->
+            </button>
+            <div class="dropdown-menu" *ngIf="showHeaderMenu">
+                <button class="menu-item" (click)="deleteAllNotifications()">Delete All Notifications</button>
+            </div>
+        </div>
     </div>
 
     <div class="header" *ngIf="combinedNotifications.length === 0">
@@ -26,6 +34,15 @@
                         }">{{ loadPublicPoint(notification.data.publicPointId) }} has been {{ notification.data.isAccepted ? 'accepted' : 'rejected' }}
                         </strong>
                     </span>
+                    <div class="notification-menu">
+                        <button class="menu-button" (click)="toggleMenu($event, notification)">
+                            &#x22EE; <!-- Unicode za tri tačke -->
+                        </button>
+                        <div class="dropdown-menu" *ngIf="notification.showMenu">
+                            <button class="menu-item" (click)="deleteNotification(notification)">Delete Notification</button>
+                        </div>
+                    </div>
+                    
                     <div class="notification-comment">
                         {{ truncateComment(notification.data.comment || '', 100) }}
                     </div>
@@ -52,6 +69,15 @@
                         }">{{ notification.data.sender }}
                         </strong>
                     </span>
+                    <div class="notification-menu">
+                        <button class="menu-button" (click)="toggleMenu($event, notification)">
+                            &#x22EE; <!-- Unicode za tri tačke -->
+                        </button>
+                        <div class="dropdown-menu" *ngIf="notification.showMenu">
+                            <button class="menu-item" (click)="deleteNotification(notification)">Delete Notification</button>
+                        </div>
+                    </div>
+                    
                     <div class="notification-comment">
                         {{ truncateComment(notification.data.message || '', 100) }}
                     </div>
@@ -61,7 +87,7 @@
                 </div>
     
                 <!-- Type == 1   Money Exchange -->
-                <div *ngIf="notification.data.type == 1" class="notification-title" (click)="moneyButton(notification.data)">
+                <div *ngIf="notification.data.type == 1" class="notification-title" (click)="moneyButton(notification)">
                     <span>
                         <strong [ngClass]="{
                             'notification-point': !notification.isOpened,
@@ -69,6 +95,15 @@
                         }">{{ notification.data.sender }}
                         </strong>
                     </span>
+                    <div class="notification-menu">
+                        <button class="menu-button" (click)="toggleMenu($event, notification)">
+                            &#x22EE; <!-- Unicode za tri tačke -->
+                        </button>
+                        <div class="dropdown-menu" *ngIf="notification.showMenu">
+                            <button class="menu-item" (click)="deleteNotification(notification)">Delete Notification</button>
+                        </div>
+                    </div>
+                    
                     <div class="notification-comment">
                         {{ truncateComment(notification.data.message || '', 100) }}
                     </div>
@@ -78,7 +113,7 @@
                 </div>
     
                 <!-- Type == 2   ClubNotification -->
-                <div *ngIf="notification.data.type == 2" class="notification-title" (click)="clubButton(notification.data)">
+                <div *ngIf="notification.data.type == 2" class="notification-title" (click)="clubButton(notification)">
                     <span>
                         <strong [ngClass]="{
                             'notification-point': !notification.isOpened,
@@ -86,6 +121,15 @@
                         }">{{ notification.data.sender }}
                         </strong>
                     </span>
+                    <div class="notification-menu">
+                        <button class="menu-button" (click)="toggleMenu($event, notification)">
+                            &#x22EE; <!-- Unicode za tri tačke -->
+                        </button>
+                        <div class="dropdown-menu" *ngIf="notification.showMenu">
+                            <button class="menu-item" (click)="deleteNotification(notification)">Delete Notification</button>
+                        </div>
+                    </div>
+                    
                     <div class="notification-comment">
                         {{ truncateComment(notification.data.message || '', 100) }}
                     </div>
@@ -97,7 +141,7 @@
             <!-- Type == 3   Message Notification -->
              <div class="notification-row unread" *ngIf="isMessageNotification(notification)">
 
-            <div class="notification-title" (click)="messageButton(notification.data)">
+            <div class="notification-title" (click)="messageButton(notification)">
                 <span>
                     <strong [ngClass]="{
                         'notification-point': !notification.isOpened,
@@ -105,6 +149,15 @@
                     }">{{ notification.data.sender }} sent you a message
                     </strong>
                 </span>
+                <div class="notification-menu">
+                    <button class="menu-button" (click)="toggleMenu($event, notification)">
+                        &#x22EE; <!-- Unicode za tri tačke -->
+                    </button>
+                    <div class="dropdown-menu" *ngIf="notification.showMenu">
+                        <button class="menu-item" (click)="deleteNotification(notification)">Delete Notification</button>
+                    </div>
+                </div>
+                
                 <div class="notification-comment">
                     {{ truncateComment(notification.data.message || '', 100) }}
                 </div>
@@ -120,7 +173,7 @@
         </div>
         <!-- Type == 4 Club Request -->
         <div class="notification-row unread" *ngIf="isClubRequest(notification) && isPending(notification)">
-            <div class="notification-title">
+            <div class="notification-title" (click)="markAsRead(notification)">
                 <span>
                     <strong [ngClass]="{
                         'notification-point': !notification.isOpened,
@@ -128,7 +181,16 @@
                     }">
                         {{ notification.data.touristName }} <span style="font-weight: normal;">wants to join your club</span> {{ notification.data.clubName }}
                     </strong>                    
-                </span>              
+                </span>      
+                <div class="notification-menu">
+                    <button class="menu-button" (click)="toggleMenu($event, notification)">
+                        &#x22EE; <!-- Unicode za tri tačke -->
+                    </button>
+                    <div class="dropdown-menu" *ngIf="notification.showMenu">
+                        <button class="menu-item" (click)="deleteNotification(notification)">Delete Notification</button>
+                    </div>
+                </div>
+                       
                 <div class="notification-button">
                     <button class="cta-button button-decline" (click)="declineRequest(notification.data)">DECLINE</button>
                     <span class="vertical-line"></span>
@@ -141,7 +203,7 @@
         </div>
         <!-- Type == 5 Club Invitation -->
         <div class="notification-row unread" *ngIf="isClubInvitation(notification)">
-            <div class="notification-title">
+            <div class="notification-title" (click)="markAsRead(notification)">
                 <span>
                     <strong [ngClass]="{
                         'notification-point': !notification.isOpened,
@@ -151,7 +213,16 @@
                         <span style="font-weight: normal;">is inviting you to join the club</span> 
                         {{ notification.data.clubName }}
                     </strong>                    
-                </span>              
+                </span>     
+                <div class="notification-menu">
+                    <button class="menu-button" (click)="toggleMenu($event, notification)">
+                        &#x22EE; <!-- Unicode za tri tačke -->
+                    </button>
+                    <div class="dropdown-menu" *ngIf="notification.showMenu">
+                        <button class="menu-item" (click)="deleteNotification(notification)">Delete Notification</button>
+                    </div>
+                </div>
+                        
                 <div class="notification-button">
                     <button class="cta-button button-decline" (click)="declineInvitation(notification.data)">DECLINE</button>
                     <span class="vertical-line"></span>
