@@ -109,6 +109,49 @@ export class AuthorDashboardComponent implements OnInit, AfterViewInit  {
       tooltip: { enabled: true },
     },
   };
+   
+  
+  salesLabels: string[] = ['2024-12-01', '2024-12-02', '2024-12-03']; // Test datumi
+  salesData: number[] = [10, 15, 8]; // Test vrednosti
+
+  
+
+  salesChartData: ChartData<'line'> = {
+    labels: this.salesLabels, // Datumi sa backend-a
+    datasets: [
+      {
+        label: 'Sales Per Day',
+        data: this.salesData, // Broj prodaja po danima
+        borderColor: 'rgba(75, 192, 192, 1)', // Linija grafikona
+        backgroundColor: 'rgba(75, 192, 192, 0.2)', // Ispuna ispod linije
+        fill: true, // Omogućava ispunu
+        tension: 0.4, // Glađa linija
+      },
+    ],
+  };
+  
+  salesChartOptions: ChartOptions<'line'> = {
+    responsive: true,
+    plugins: {
+      legend: { display: true, position: 'top' },
+      tooltip: { enabled: true },
+    },
+    scales: {
+      x: {
+        title: { display: true, text: 'Date' }, // Naslov za x osu
+        grid: {
+          display: false, // Isključuje vertikalne linije na x-osi
+        },
+      },
+      y: {
+        title: { display: true, text: 'Number of Purchases' }, // Naslov za y osu
+        beginAtZero: true, // Počinje od nule
+        grid: {
+          display: false, // Isključuje vertikalne linije na x-osi
+        },
+      },
+    },
+  };
 
   // ■■■■■ Init mate ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
   ngOnInit(): void {
@@ -121,6 +164,7 @@ export class AuthorDashboardComponent implements OnInit, AfterViewInit  {
     this.loadTotalPublishedTours(this.user.id);
     this.loadTotalPurchasedTours(this.user.id);
     this.loadTotalSales(this.user.id);
+    this.loadSalesChartData(this.user.id);
   }
 
   ngAfterViewInit(): void {
@@ -168,42 +212,62 @@ export class AuthorDashboardComponent implements OnInit, AfterViewInit  {
     return Math.round((this.reviewsPartition[grade] || 0) / total * 100);
   }
 
-  loadTotalPublishedTours(authorId:number): void{
-    this.administrationService.getTotalPublishedTours(authorId).subscribe({
-      next: (result) => {
-        this.publishedTours = result;
-       console.log('***published tours',result);
-      },
-      error: (err) => {
-        console.error('Error geting published tours:', err);
-      },
-    });
-  }
+ 
 
-  loadTotalPurchasedTours(authorId:number): void{
-    this.administrationService.getTotalPurchasedTours(authorId).subscribe({
-      next: (result) => {
-        this.purchasedTours = result;
-       console.log('***purchased tours',result);
-      },
-      error: (err) => {
-        console.error('Error geting purchased tours:', err);
-      },
-    });
-  }
+  // ■■■■■ General numbers ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+    loadTotalPublishedTours(authorId:number): void{
+      this.administrationService.getTotalPublishedTours(authorId).subscribe({
+        next: (result) => {
+          this.publishedTours = result;
+         console.log('***published tours',result);
+        },
+        error: (err) => {
+          console.error('Error geting published tours:', err);
+        },
+      });
+    }
+  
+    loadTotalPurchasedTours(authorId:number): void{
+      this.administrationService.getTotalPurchasedTours(authorId).subscribe({
+        next: (result) => {
+          this.purchasedTours = result;
+         console.log('***purchased tours',result);
+        },
+        error: (err) => {
+          console.error('Error geting purchased tours:', err);
+        },
+      });
+    }
+  
+    loadTotalSales(authorId:number): void{
+      this.administrationService.getTotalSales(authorId).subscribe({
+        next: (result) => {
+          this.totalSales= result;
+         console.log('***total sales:',result);
+        },
+        error: (err) => {
+          console.error('Error geting total sales:', err);
+        },
+      });
+    }
 
-  loadTotalSales(authorId:number): void{
-    this.administrationService.getTotalSales(authorId).subscribe({
-      next: (result) => {
-        this.totalSales= result;
-       console.log('***total sales:',result);
-      },
-      error: (err) => {
-        console.error('Error geting total sales:', err);
-      },
-    });
-  }
-
+    loadSalesChartData(authorId: number) {
+      this.administrationService.getSalesData(authorId).subscribe((data: { [key: string]: number }) => {
+        this.salesLabels = Object.keys(data); // Datumi kao X-osa
+        this.salesData = Object.values(data); // Broj prodaja kao Y-osa
+        console.log('ovo su podaci', this.salesLabels)
+    
+        // Ažuriraj ChartData
+        this.salesChartData.labels = this.salesLabels;
+        this.salesChartData.datasets[0].data = this.salesData;
+    
+        // Osveži grafikon
+        if (this.chart) {
+          this.chart.update();
+        }
+      });
+    }
+    
 
 
   // ■■■■■ Problems table ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■

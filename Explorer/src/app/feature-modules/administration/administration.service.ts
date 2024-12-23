@@ -259,5 +259,10 @@ export class AdministrationService {
 			`${environment.apiHost}manageauthor/dashboard/total-sales/${authorId}`
 		);
 	}
+
+	getSalesData(authorId: number): Observable<{ [key: string]: number }> {
+		return this.http.get<{ [key: string]: number }>(`${environment.apiHost}manageauthor/dashboard/paymentsForYear/${authorId}`);
+	  }
+	  
 	
 }

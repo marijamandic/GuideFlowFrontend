@@ -23,6 +23,15 @@
     <h2>Sales</h2>
     <p>Number of sales for selected period</p>
     <div class="chart-placeholder">[Chart Placeholder]</div>
+    <div>
+      <h3>Sales Chart</h3>
+      <canvas baseChart
+              [data]="salesChartData"
+              [options]="salesChartOptions"
+              [type]="'line'">
+      </canvas>
+    </div>
+    
   </div>
 
   <!-- Reviews -->
