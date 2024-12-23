@@ -249,5 +249,5 @@ export class AdministrationService {
 		return this.http.put<void>(`${environment.apiHost}administration/profileInfo/follower/${followedId}`, body);
 	  }
 	  
-	  
+	
 }

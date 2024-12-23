@@ -3,7 +3,7 @@
      <div class="tour-card">
       <div class="tour-card-left">
         <img 
-          [src]="checkpoints[0].imageUrl ? getImagePath(checkpoints[0].imageUrl) : 'assets/images/tour2.jpg'" 
+          [src]="checkpoints[0]?.imageUrl ? getImagePath(checkpoints[0].imageUrl) : 'assets/images/tour2.jpg'" 
           alt="Tour Image" 
         />
       </div>

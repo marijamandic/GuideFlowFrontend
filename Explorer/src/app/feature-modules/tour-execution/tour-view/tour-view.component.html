@@ -20,6 +20,24 @@
 		</div>
 	</div>
 </div> -->
+
+<!-- Premium tour modal -->
+<div class="modal" *ngIf="isPremiumModalOpen">
+	<div class="modal-content" *ngIf="author.id">
+	  <div class="modal-header">
+		<h2>Set this tour as premium</h2>
+		<button class="close-btn" (click)="closePremiumModal()">&times;</button>
+	  </div>
+	  <div class="modal-body">
+		<p>Price you have to pay: <strong>159.99</strong></p>
+		<p>Your current state: <strong>{{author.wallet}}</strong></p>
+	  </div>
+	  <div class="modal-footer">
+		<button class="cta-button" (click)="depositMoney()">Confirm transaction</button>
+	  </div>
+	</div>
+</div>
+
 <xp-create-sales-modal
 	*ngIf="showAddSales"
 	[tours]="getSelectedTours()"
@@ -50,10 +68,14 @@
 			<div class="sales-bar-info">
 				<i class="fa-solid fa-xmark" (click)="deselectAll()"></i>
 				<span> {{ selectedTourIds.length }} Selected </span>
-				<span class="sales-bar-info-select-all" (click)="handleSelectAll()"> Select all </span>
+				<span class="sales-bar-info-select-all" >
+					<i *ngIf="!isAllSelected" class="fa fa-square" aria-hidden="true" (click)="handleSelectAll()"></i> <!-- Unchecked -->
+					<i *ngIf="isAllSelected" class="fa fa-check-square" aria-hidden="true" (click)="deselectAll()"></i>  <!-- Checked -->
+					Select all </span>
 			</div>
-			<div class="sales-bar-add" (click)="showAddSales = !showAddSales">Add Sale</div>
-		</div>
+			<div class="sales-bar-add" (click)="showAddSales = !showAddSales"><i class="fa fa-tag" aria-hidden="true"></i> Add Sale</div>
+			<div *ngIf="selectedTourIds.length === 1" class="sales-bar-add" (click)="showPremiumModal()"><i class="fa fa-certificate" aria-hidden="true"></i> Add Premium</div>
+		</div> 
 	</div>
 
 	<div *ngIf="user && user.role === 'tourist' && openMap" class="map-background">
