@@ -55,33 +55,41 @@
   <!-- Club Posts Section -->
   <div class="club-posts-section">
     <div *ngFor="let post of clubPosts" class="club-post">
-      <!-- Post Content (if available) -->
-      <p class="post-content" *ngIf="post?.content">{{ post.content }}</p>
-      
-      <!-- Display Resource Information as a Link (if available) -->
-      <div class="post-resource" *ngIf="post?.resourceId">
+      <!-- Username and Resource Link -->
+      <div class="post-header">
+        <span class="author-name">{{ post.username || 'User' }}</span>
+        <span>sent a</span>
         <a
           [href]="'http://localhost:4200/' + (post.resourceType === 0 ? 'blog' : 'tour-more-details') + '/' + post.resourceId"
           target="_blank"
           class="resource-link"
         >
-          Click to see the shared content
+          {{ post.resourceType === 0 ? 'post' : 'tour' }}
         </a>
+        <!-- Menu Actions -->
+        <button class="kebab-menu-button" (click)="toggleMenu(post.id)">⋮</button>
+        <div *ngIf="openMenuId === post.id" class="comment-menu">
+          <button *ngIf="club.ownerId === ownerId" (click)="deletePost(post)">Delete</button>
+          <button *ngIf="post.memberId === ownerId" (click)="startEditingPost(post)">Edit</button>
+        </div>
       </div>
-      <div class="post-actions">
-        <!-- Update Button -->
-        <button *ngIf="post.memberId===ownerId" class="action-button update" (click)="onUpdatePost(post)">Update</button>
   
-        <!-- Delete Button (only for club owner) -->
-        <button
-          class="action-button delete"
-          *ngIf="club?.ownerId === ownerId"
-          (click)="onDeletePost(post)"
-        >
-          Delete
-        </button>
+      <!-- Post Content -->
+      <div *ngIf="!isEditing || editingPost?.id !== post.id" class="post-content">
+        <p>{{ post.content }}</p>
+      </div>
+      <!-- Editable Post -->
+      <div *ngIf="isEditing && editingPost?.id === post.id" class="comment-edit-form">
+        <div *ngIf="editingPost">
+          <textarea [(ngModel)]="editingPost.content" class="edit-textarea"></textarea>
+          <div class="comment-actions">
+            <button class="cta-button-cancel" (click)="cancelEdit()">Cancel</button>
+            <button class="cta-button-save" (click)="saveEdit()">Save</button>
+          </div>
+        </div>        
       </div>
     </div>
   </div>
+  
 
 </div>
