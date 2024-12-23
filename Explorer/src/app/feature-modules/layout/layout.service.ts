@@ -11,6 +11,7 @@ import { Tour } from '../tour-authoring/model/tour.model';
 import { Club } from '../administration/model/club.model';
 import { TourPreview } from './model/TourPreview';
 import { MessageNotification } from './model/MessageNotification.model';
+import { ChatLog, ChatMessage } from './model/chatlog.model';
 
 @Injectable({
 	providedIn: 'root'
@@ -203,10 +204,10 @@ export class LayoutService {
 	  }
 
 
-	// Clubs & Tours for HomePage
-	getAllTours(): Observable<Tour[]> {
-		return this.http.get<Tour[]>(`${environment.apiHost}tours`);
+	getAllTours(): Observable<{ results: Tour[], totalCount: number }> {
+		return this.http.get<{ results: Tour[], totalCount: number }>(`${environment.apiHost}authoring/tour`);
 	}
+	
 
 	getAllClubs(): Observable<Club[]> {
 		return this.http.get<{ results: Club[]; totalCount: number }>(`${environment.apiHost}manageclub/club`).pipe(
@@ -226,15 +227,38 @@ export class LayoutService {
 	}
 	
 	getAllTourPreviews(): Observable<TourPreview[]> {
-		return this.http.get<Tour[]>(`${environment.apiHost}tours`).pipe(
-			map((tours: Tour[]) =>
-				tours.map((tour) => ({
-					id: tour.id || 0, 
-					name: tour.name || 'Unnamed Tour',
-					description: tour.description || 'No description available.',
-					imageUrl: tour.checkpoints?.[0]?.imageUrl || 'assets/images/default-tour.jpg', // Fallback image
-				}))
+		return this.http.get<Tour[]>(`${environment.apiHost}authoring/tour`).pipe(
+			map((tours: Tour[]) => 
+				tours.map((tour) => {
+					try {
+						return {
+							id: tour.id || 0,
+							name: tour.name || 'Unnamed Tour',
+							description: tour.description || 'No description available.',
+							imageUrl: tour.checkpoints?.[0]?.imageUrl || 'assets/images/default-tour.jpg',
+						};
+					} catch (error) {
+						console.error('Error mapping tour:', tour, error);
+						return null; // Return null if mapping fails
+					}
+				}).filter((tour): tour is TourPreview => tour !== null) // Remove null values
 			)
 		);
 	}	
+
+	GetUserChatLog(userId: number): Observable<ChatLog> {
+		return this.http.get<ChatLog>(environment.apiHost + `chatbot/chatLog/${userId}`);
+	}
+
+	CreateChatLog(userId: number): Observable<ChatLog> {
+		return this.http.post<ChatLog>(environment.apiHost + "chatbot/chatLog/create?userId=" + userId, null);
+	}
+
+	UpdateChatLog(chatlog: ChatLog): Observable<ChatLog> {
+		return this.http.patch<ChatLog>(environment.apiHost + "chatbot/chatLog/update", chatlog);
+	}
+
+	GenerateChatBotResponse(chatMessage: ChatMessage): Observable<ChatMessage> {
+		return this.http.post<ChatMessage>(environment.apiHost + "chatbot/prompt", chatMessage);
+	}
 }

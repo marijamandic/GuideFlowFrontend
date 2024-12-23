@@ -5,6 +5,7 @@ import { TourService } from '../tour.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
+import { WeatherCondition, WeatherConditionType } from '../model/weatherCondition.model';
 
 
 export enum TourStatus {
@@ -30,8 +31,13 @@ export class TourFormComponent implements OnChanges {
   @Output() closeModal = new EventEmitter<void>(); // Emiter za zatvaranje modala
   @Output() tourUpdated = new EventEmitter<void>(); // Emiter za obaveštavanje glavne komponente o promeni
 
+  weatherRequirements: WeatherCondition = {
+    minTemperature: 0,
+    maxTemperature: 0,
+    suitableConditions: []
+  };
+  weatherConditionTypes: string[] = ['Clear', 'Clouds', 'Rain', 'Snow', 'Mist'];
 
-  
   userId:number=-1;
   tags: string[] = [''];
 
@@ -43,6 +49,17 @@ export class TourFormComponent implements OnChanges {
     this.tags = ['']; // Resetuj tagove pri promeni
     if (this.shouldEdit) {
       this.tags = this.tour.taggs || ['']; // Učitaj postojeće tagove
+      this.weatherRequirements = this.tour.weatherRequirements || {
+        minTemperature: 0,
+        maxTemperature: 0,
+        suitableConditions: []
+      };
+    }else{
+      this.weatherRequirements = {
+        minTemperature: 0,
+        maxTemperature: 0,
+        suitableConditions: []
+      };
     }
     this.authService.user$.subscribe(user => {
       if(user){
@@ -50,11 +67,13 @@ export class TourFormComponent implements OnChanges {
       }
     });
   }
+  
+
+  
 
   trackByIndex(index: number, item: string): number {
     return index; 
   }
-  
 
   initializeTour(): Tour {
     return {
@@ -70,7 +89,12 @@ export class TourFormComponent implements OnChanges {
       taggs: [],
       checkpoints: [],
       transportDurations: [],
-      reviews: []
+      reviews: [],
+      weatherRequirements: {
+        minTemperature: 0,
+        maxTemperature: 0,
+        suitableConditions: []
+      }
     };
   }
 
@@ -79,13 +103,60 @@ export class TourFormComponent implements OnChanges {
   }
 
   addTag(): void {
-    this.tags.push(''); // Dodaj novo prazno polje za tag
+    //this.tags.push(''); // Dodaj novo prazno polje za tag
+    this.tags = ['', ...this.tags];
+    console.log(this.tags);
+  }
+
+  private stringToEnum(condition: string): WeatherConditionType | undefined {
+    switch (condition) {
+      case 'Clear':
+        return WeatherConditionType.CLEAR;
+      case 'Clouds':
+        return WeatherConditionType.CLOUDS;
+      case 'Rain':
+        return WeatherConditionType.RAIN;
+      case 'Snow':
+        return WeatherConditionType.SNOW;
+      case 'Mist':
+        return WeatherConditionType.MIST;
+      default:
+        return undefined; // Vraća undefined ako nije validan string
+    }
+  }
+
+  toggleWeatherCondition(condition: string): void {
+    console.log(condition);
+    if (this.isConditionSelected(condition)) {
+      this.removeWeatherCondition(condition);
+    } else {
+      this.addWeatherCondition(condition);
+    }
+  }
+
+  isConditionSelected(condition: string): boolean {
+    const conditionEnum = this.stringToEnum(condition);
+    console.log(conditionEnum);
+    return conditionEnum !== undefined && this.weatherRequirements.suitableConditions.includes(conditionEnum);
+  }
+
+  addWeatherCondition(condition: string): void {
+    const conditionEnum = this.stringToEnum(condition);
+    if (conditionEnum !== undefined) {
+      this.weatherRequirements.suitableConditions.push(conditionEnum);
+    }
+    console.log(this.weatherRequirements.suitableConditions);
+  }
+
+  removeWeatherCondition(condition: string): void {
+    const conditionEnum = this.stringToEnum(condition);
+    if (conditionEnum !== undefined) {
+      this.weatherRequirements.suitableConditions = this.weatherRequirements.suitableConditions.filter(c => c !== conditionEnum);
+    }
   }
 
   addTour(): void {
     console.log('add metoda')
-
-   
     const level = this.ConvertLevel();
 
     const newTour: Tour = {
@@ -102,6 +173,11 @@ export class TourFormComponent implements OnChanges {
       checkpoints: this.tour.checkpoints || [],
       transportDurations: this.tour.transportDurations || [],
       reviews: this.tour.reviews || [],
+      weatherRequirements: this.weatherRequirements || { 
+        minTemperature: 0, 
+        maxTemperature: 0, 
+        suitableConditions: [] 
+      }
     };
     this.service.addTour(newTour).subscribe({
       next: (result:Tour) => {
@@ -133,7 +209,12 @@ export class TourFormComponent implements OnChanges {
         checkpoints: this.tour.checkpoints || [],
         transportDurations: this.tour.transportDurations || [],
         reviews: this.tour.reviews || [],
+        weatherRequirements: this.weatherRequirements || { 
+          minTemperature: 0, 
+          maxTemperature: 0, 
+          suitableConditions: [] 
         }
+      }
 
         tour.id = this.tour.id;
         this.service.updateTour(tour).subscribe({

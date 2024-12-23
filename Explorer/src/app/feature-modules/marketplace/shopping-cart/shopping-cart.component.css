@@ -5,8 +5,7 @@
 }
 
 .container {
-	width: 100%;
-	max-width: 1200px;
+	width: 63%;
 }
 
 .checkout-bar {
@@ -29,7 +28,7 @@
 .checkout-bar p {
 	margin: 0;
 	padding: 0;
-	font-size: 25px;
+	font-size: 20px;
 }
 
 .price {
@@ -60,9 +59,8 @@
 
 .coupon-bar-input input {
 	padding: 5px 10px;
-	border: 2px solid var(--primary-color);
+	border: 2px solid #333;
 	border-radius: 15px;
-	background-color: transparent;
 	margin-right: 10px;
 	width: 200px;
 	text-align: center;
@@ -97,7 +95,7 @@
 
 .tour > img {
 	height: 200px;
-	width: 300px;
+	min-width: 300px;
 	border-radius: 20px;
 }
 
@@ -232,7 +230,7 @@ i {
 .bnd-tour img {
 	border-radius: 20px;
 	height: 150px;
-	width: 200px;
+	min-width: 200px;
 }
 
 .bnd-tour-info {

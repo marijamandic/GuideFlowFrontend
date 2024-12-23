@@ -3,9 +3,6 @@ import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { User } from 'src/app/infrastructure/auth/model/user.model';
 import { PublicPointService } from '../../tour-authoring/tour-public-point.service';
 import { PublicPointNotification } from '../../tour-authoring/model/publicPointNotification.model';
-import { ShoppingCart } from '../../marketplace/model/shopping-carts/shopping-cart';
-import { MarketplaceService } from '../../marketplace/marketplace.service';
-import { AlertService } from '../alert.service';
 import { LayoutService } from '../layout.service';
 import { AdministrationService } from '../../administration/administration.service';
 import { forkJoin, Observable, of } from 'rxjs';
@@ -13,6 +10,7 @@ import { ClubRequest, ClubRequestStatus } from '../../administration/model/club-
 import { Notification } from '../model/Notification.model';
 import { ClubInvitation } from '../../administration/model/club-invitation.model';
 import { MessageNotification } from '../model/MessageNotification.model';
+import { CartPreviewService } from '../cart-preview.service';
 
 @Component({
 	selector: 'xp-navbar',
@@ -24,12 +22,19 @@ export class NavbarComponent implements OnInit {
 	isDropdownOpen: boolean = false;
 	notificationCount: number = 0;
 	totalCount: number = 0;
+	shoppingCartCount: number = 0;
 	showNotifications: boolean = false;
-	showCart = false;
+	showCart$: boolean;
 	isMenuOpen: boolean = false;
 	username: string;
 
-  constructor(private authService: AuthService, private publiPointService: PublicPointService, private alertService: AlertService, private notificationService: LayoutService, private adminService: AdministrationService) {}
+	constructor(
+		private authService: AuthService,
+		private publiPointService: PublicPointService,
+		private notificationService: LayoutService,
+		private adminService: AdministrationService,
+		private cartPreviewService: CartPreviewService
+	) {}
 
 	ngOnInit(): void {
 		this.authService.user$.subscribe(user => {
@@ -41,6 +46,7 @@ export class NavbarComponent implements OnInit {
 			this.totalCount = count;
 		});
 		this.getUnread();
+		this.subscribeCartPreview();
 	}
 
 	getBadgeClass(): string {
@@ -110,6 +116,10 @@ export class NavbarComponent implements OnInit {
 		);
 	}	
 
+	private subscribeCartPreview() {
+		this.cartPreviewService.isOpened$.subscribe(isOpened => (this.showCart$ = isOpened));
+	}
+	
 	toggleDropdown(): void {
 		this.isDropdownOpen = !this.isDropdownOpen;
 		if (this.isDropdownOpen) {
@@ -138,7 +148,7 @@ export class NavbarComponent implements OnInit {
 		}
 	}
 
-	handleShoppingCartOpened() {
-		this.showCart = false;
+	toggleShowCart() {
+		this.cartPreviewService.toggle();
 	}
 }

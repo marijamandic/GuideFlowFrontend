@@ -14,6 +14,7 @@ import { ShoppingCartService } from '../shopping-cart.service';
 import { convertEnumToString } from 'src/app/shared/utils/enumToStringConverter';
 import { TourDetails } from '../model/shopping-carts/tour-details';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
+import { environment } from 'src/env/environment';
 
 @Component({
 	selector: 'xp-shopping-cart',
@@ -68,6 +69,7 @@ export class ShoppingCartComponent implements OnInit {
 				alert('You have successfully purchased ' + result.paymentItems.length + ' tours, and you have received a token for each one!');
 			},
 			error: (err: HttpErrorResponse): void => {
+				if (err.status === 400) alert('Not enough ACs'); // treba izmeniti logiku, za sad radi ovako
 				console.log(err.message);
 			}
 		});
@@ -80,6 +82,7 @@ export class ShoppingCartComponent implements OnInit {
 	}
 
 	applyCoupon(): void {
+		console.log(this.couponCode);
 		this.marketplaceService.getCouponByCode(this.couponCode).subscribe({
 			next: (coupon: Coupon) => {
 				if (coupon.redeemed) return;
@@ -145,25 +148,16 @@ export class ShoppingCartComponent implements OnInit {
 
 		console.log('ItemInput after discount:', itemInput);
 
-		this.shoppingCartService.removeFromCart(item.id).subscribe({
+		this.shoppingCartService.updateCart(item.id, itemInput).subscribe({
 			next: () => {
-				console.log(`Item ${item.id} removed from cart.`);
-				this.shoppingCartService.addToCart(itemInput).subscribe({
-					next: (result: PagedResults<Item>) => {
-						console.log('Discount applied and item updated in cart:', result.results);
-						this.loadShoppingCart();
-						this.calculateAc(this.cart$.items);
-					},
-					error: (err: HttpErrorResponse) => {
-						console.error('Error adding updated item to cart:', err);
-					}
-				});
+				console.log('Updated cart')
+				this.calculateAc(this.cart$.items);
+				this.ngOnInit();
 			},
 			error: (err: HttpErrorResponse) => {
 				console.error('Error removing item from cart:', err);
 			}
 		});
-
 		if (!coupon.redeemed) {
 			this.marketplaceService.redeemCoupon(coupon.code).subscribe({
 				next: () => {
@@ -229,5 +223,9 @@ export class ShoppingCartComponent implements OnInit {
 
 	isBundle(product: TourDetails | TourBundle): product is TourBundle {
 		return 'tourIds' in product;
+	}
+
+	getImageUrl(imageUrl: string): string {
+		return `${environment.webRootHost}${imageUrl}`;
 	}
 }

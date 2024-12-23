@@ -23,11 +23,12 @@ export class TourExecutionMap implements AfterViewInit,OnChanges {
   @Input() initialMarkers: L.LatLng[] = [];
   @Input() allowMultipleMarkers: boolean = true;
   @Input() checkpoints: { latitude: number; longitude: number }[] = [];
-  @Input() showSearchBar: boolean = true;
+  @Input() showUpdateButton: boolean;
   @Output() markerAdded = new EventEmitter<L.LatLng>();
   @Output() mapReset = new EventEmitter<void>();
   @Output() coordinatesSelected = new EventEmitter<{ latitude: number; longitude: number }>();
   @Output() distanceCalculated = new EventEmitter<{ transportType: string; time: number; distance: number }>();
+  @Output() locationChanged = new EventEmitter<{ latitude: number; longitude: number }>();
 
   constructor(private mapService: MapService, private tourService: TourService, private authService : AuthService, private publicPointService: PublicPointService) {}
   user : User;
@@ -139,26 +140,52 @@ export class TourExecutionMap implements AfterViewInit,OnChanges {
   }
 
   search(): void {
-
     this.mapService.search(this.searchAddress).subscribe({
       next: (result) => {
-        const marker = L.marker([result[0].lat, result[0].lon])
-          .addTo(this.map)
-          .bindPopup('Pozdrav iz ' + result[0].display_name + '.')
-          .openPopup();
-          
-        this.addMarker(marker);
+        // Koordinate iz rezultata pretrage
+        const lat = result[0].lat;
+        const lng = result[0].lon;
+  
+        // Uklanjamo prethodne markere
+        this.markers.forEach(marker => {
+          this.map.removeLayer(marker);
+        });
+        this.markers = [];
+  
+        // Čuvamo koordinate
+        this.latitude = lat;
+        this.longitude = lng;
+  
+        // Kreiramo isti custom icon kao kod klika
+        const customIcon = L.icon({
+          iconUrl: 'assets/images/pin.png',
+          iconSize: [41, 41],
+          iconAnchor: [15, 30],
+          popupAnchor: [0, -30],
+        });
+  
+        // Dodajemo marker sa custom ikonom
+        const marker = new L.Marker([lat, lng], { icon: customIcon }).addTo(this.map);
+        this.markers.push(marker);
+  
+        // Emitujemo događaj coordinatesSelected, isto kao kod klika na mapu
+        this.coordinatesSelected.emit({ latitude: lat, longitude: lng });
+        
+        // Opcionalno: Podesimo mapu da prikaže ovaj marker i otvorimo popup ako želite
+        marker.bindPopup('Rezultat pretrage: ' + this.searchAddress).openPopup();
+        this.map.setView([lat, lng], 15); 
       },
-      error: () => {},
+      error: () => {
+        console.error('Greška prilikom pretrage adrese.');
+      },
     });
-
   }
 
   registerOnClick(): void {
     this.map.on('click', (e: any) => {
-      if (!this.showSearchBar) {
+      /*if (!this.showUpdateButton) {
         return;
-      }
+      }*/
   
       this.markers.forEach(marker => {
         this.map.removeLayer(marker);
@@ -251,7 +278,8 @@ export class TourExecutionMap implements AfterViewInit,OnChanges {
         if (tourist) {
           tourist.location.longitude = this.longitude!;
           tourist.location.latitude = this.latitude!;
-          this.addUserMarker(tourist);  
+          this.addUserMarker(tourist);
+          this.locationChanged.emit({ latitude: tourist.location.latitude, longitude: tourist.location.longitude });
 
           this.tourService.updateTourist(tourist).subscribe(updatedTourist => {
             console.log('Updated User:', updatedTourist);

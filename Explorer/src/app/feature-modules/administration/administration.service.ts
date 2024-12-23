@@ -158,6 +158,9 @@ export class AdministrationService {
 		return this.http.delete<void>(`${environment.apiHost}members/clubMember/${clubId}/${userId}`);
 	}
 
+	getAllMembersByUserId(userId: number): Observable<ClubMemberList[]> {
+		return this.http.get<ClubMemberList[]>(`${environment.apiHost}members/clubMember/${userId}/allMembers`);
+	}
 	//  ##### Profile  ##### 
 	getAccounts(): Observable<Array<Account>> {
 		return this.http.get<Array<Account>>(environment.apiHost + 'administration/account');
@@ -187,7 +190,13 @@ export class AdministrationService {
 	getClubPosts(): Observable<ClubPost[]> {
 		return this.http.get<ClubPost[]>(environment.apiHost + 'administration/clubpost');
 	}
-
+	updateClubPost(postId: number, updatedPost: Partial<ClubPost>): Observable<void> {
+		return this.http.put<void>(`${environment.apiHost}administration/clubpost/${postId}`, updatedPost);
+	  }
+	
+	deleteClubPost(postId: number): Observable<void> {
+		return this.http.delete<void>(`${environment.apiHost}administration/clubpost/${postId}`);
+	}
 	getAllUsers(): Observable<User[]> {
 		return this.http.get<User[]>(`${environment.apiHost}user/all`);
 	}  
@@ -209,6 +218,13 @@ export class AdministrationService {
 		  amount
 		);
 	  }
+
+	updateAuthorMoney(authorId: number, amount: number): Observable<User> {
+	return this.http.put<User>(
+		`${environment.apiHost}user/updateAuthorMoney/${authorId}`,
+		amount
+	);
+	}
 	  
 	createTourist(userDto: TouristRegistraion): Observable<User> {
 	const headers = new HttpHeaders({

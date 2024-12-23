@@ -58,10 +58,30 @@
       <!-- Post Content (if available) -->
       <p class="post-content" *ngIf="post?.content">{{ post.content }}</p>
       
-      <!-- Display Resource Information (if available) -->
+      <!-- Display Resource Information as a Link (if available) -->
       <div class="post-resource" *ngIf="post?.resourceId">
-        <p>Resource ID: {{ post.resourceId }}</p>
+        <a
+          [href]="'http://localhost:4200/' + (post.resourceType === 0 ? 'blog' : 'tour-more-details') + '/' + post.resourceId"
+          target="_blank"
+          class="resource-link"
+        >
+          Click to see the shared content
+        </a>
+      </div>
+      <div class="post-actions">
+        <!-- Update Button -->
+        <button *ngIf="post.memberId===ownerId" class="action-button update" (click)="onUpdatePost(post)">Update</button>
+  
+        <!-- Delete Button (only for club owner) -->
+        <button
+          class="action-button delete"
+          *ngIf="club?.ownerId === ownerId"
+          (click)="onDeletePost(post)"
+        >
+          Delete
+        </button>
       </div>
     </div>
   </div>
+
 </div>

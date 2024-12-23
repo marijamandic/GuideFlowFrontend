@@ -24,3 +24,274 @@
     color: var(--accent-color);
   }
   
+  
+/* Tour Cards Section */
+/* .tour-container {
+  flex: 1; 
+  display: block;
+  flex-direction: column;
+  gap: 20px;
+  width: 80%;
+  justify-content: center;
+} */
+
+.tour-container {
+  display: flex; /* Omogućava flex raspored */
+  flex-direction: column; /* Postavlja elemente u kolonu */
+  gap: 20px; /* Razmak između elemenata */
+  width: 70%; /* Ograničava širinu kontejnera */
+  justify-content: center; /* Centriranje elemenata vertikalno */
+  align-items: center; /* Centriranje elemenata horizontalno */
+  margin: 0 auto; /* Centriranje unutar roditeljskog elementa */
+}
+
+
+/* Cards */
+.tour-card {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  min-width: 900px;
+  /*align-items: top;*/
+  padding: 15px;
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 10px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.tour-card.premium{
+  background-color: #ffe0b2;
+}
+
+.tour-card-header {
+  display: flex; 
+  justify-content: space-between; 
+  align-items: top;
+}
+
+/* Card image section */
+.tour-card img {
+  width: 300px;
+  height: 100%;
+  border-radius: 15px;
+  object-fit: cover;
+  align-self: center;
+  margin-bottom: -20px;
+}
+
+/* Card content section */
+.tour-card-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-left: 20px;
+}
+
+/* Card actions (e.g., Buy button and kebab menu) */
+.tour-card-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-end;
+}
+
+.tour-card-details {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 14px;
+  color: #666;
+}
+
+.tour-card-details span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.tour-card-empty:hover {
+  background-color: #636262; 
+}
+
+.add-to-cart {
+  align-items: end;
+  cursor: pointer;
+}
+
+.buttons {
+  display: flex;
+  justify-content: flex-end; /* Poravnava dugme uz desnu ivicu */
+  padding: 8px; /* Dodaje mali razmak oko dugmeta */
+}
+
+.cta-button {
+	background-color: var(--primary-color);
+	font-size: 16px;
+	font-weight: bold;
+	color: white;
+	padding: 12px 30px;
+	border-radius: 25px;
+	border: none;
+	cursor: pointer;
+	transition: background-color 0.3s, transform 0.3s ease;
+}
+
+.cta-button:hover {
+	background-color: var(--hover-color);
+	transform: scale(1.1);
+	transition: 0.5s ease;
+}
+.tour-card .weather-icon{
+  width: 40px;
+  height: 40px;
+  margin: 0;
+}
+.tour-card .weather-sunny{
+  width: 30px;
+  height: 30px;
+  padding: 5px;
+  margin: 0;
+}
+.tour-weather{
+  display: flex;
+  align-items: center;
+  justify-content: end;
+}
+.span-style{
+  font-size: 14px;
+  font-weight: 400;
+  color: #666;
+  margin: 0;
+}
+.highly-recommended {
+  color: #008000; /* Strong green */
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.recommended {
+  color: var(--primary-color); /* Light green */
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.neutral {
+  color: #ffd700; /* Yellow */
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.not-recommended {
+  color: #ffa500; /* Orange */
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.highly-not-recommended {
+  color: #ff0000; /* Red */
+  font-size: 14px;
+  font-weight: 400;
+}
+.search-toggle-container {
+  margin-top: 20px;
+	display: flex;
+	justify-content: end;
+  max-width: 1000px;
+	gap: 20px;
+	width: 100%;
+	/* height: 54px; */
+}
+.title{
+  width: 33%;
+  font-weight: 500;
+  font-size:xx-large;
+}
+.toggle-switch {
+	display: inline-flex;
+	align-items: center;
+	background-color: #ffffff; /* Bela boja pozadine */
+	border-radius: 25px;
+	position: relative;
+	width: 200px; /* Širina dugmeta */
+	overflow: hidden; /* Sakriva višak ako ima preklapanja */
+	border: 2px solid #e0e0e0; /* Lagani okvir */
+}
+.toggle-option {
+	flex: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	/* height: 100%; */
+	height: 30px;
+	font-family: Arial, sans-serif;
+	font-weight: 600;
+	color: #777;
+	cursor: pointer;
+	padding: 10px 0;
+	border-radius: 25px;
+	transition: all 0.3s ease;
+	margin: 0 -10px; /* Negativna margina za preklapanje */
+	z-index: 1;
+	background-color: #ffffff; /* Belo za neaktivno dugme */
+}
+
+.toggle-option:hover {
+	background-color: #f7f7f7; /* Svetlo siva kada se prelazi mišem */
+}
+input[type='radio'] {
+	display: none;
+}
+
+input[type='radio']:checked + label {
+	background-color: var(--primary-color);
+	color: white;
+	z-index: 2; /* Aktivno dugme je iznad ostalih */
+	margin: 0; /* Resetujemo marginu za aktivno dugme */
+	box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Mali efekat senke */
+}
+.status-filter {
+	display: flex;
+	flex-direction: column;
+	gap: 10px; /* Razmak između "Status" i dugmadi */
+	font-family: Arial, sans-serif;
+	font-weight: 600;
+	color: #777;
+	padding-bottom: 10px;
+	padding-top: 10px;
+}
+
+.status-buttons {
+	display: flex;
+	justify-content: space-between;
+	gap: 10px; /* Razmak između dugmadi */
+}
+
+.status-button {
+	padding: 10px 20px;
+	width: 100px;
+	border: none;
+	border-radius: 20px;
+	background-color: #f2f2f2; /* Siva za neaktivno dugme */
+	color: #666;
+	cursor: pointer;
+	text-align: center;
+	transition: all 0.3s ease;
+}
+
+input[type='radio'] {
+	display: none; /* Sakrij radio dugmad */
+}
+
+input[type='radio']:checked + .status-button {
+	background-color: #a5e7dc; /* Svetlo zelena za aktivno dugme */
+	color: white;
+}
+
+.status-button:hover {
+	background-color: #ddd; /* Svetlo siva na hover */
+}

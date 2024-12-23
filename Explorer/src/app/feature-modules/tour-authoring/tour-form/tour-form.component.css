@@ -4,14 +4,24 @@
     align-items: center;
     padding: 20px;
     background-color: #f2f2f2;
+    
 }
 
 .tour-form {
     background-color: #ffffff;
-    padding: 30px;
+    padding-top: 0px;
+    padding-right: 30px;
+    padding-left: 30px;
+    padding-bottom: 30px;
     border-radius: 15px;
     width: 100%;
     max-width: 830px; /* Moguće je proširiti širinu */
+    height: 570px;
+    overflow-y: auto;
+}
+
+.tour-form::-webkit-scrollbar {
+  display: none;
 }
 
 .tour-form h2 {
@@ -19,14 +29,38 @@
     color: #333;
 }
 
-.tour-form input,
-.tour-form textarea,
+.tour-form input {
+  width: 100%;
+  max-width: 808px;
+  padding: 10px;
+  margin-top: 10px; /* Razmak između elemenata */
+  border: 1px solid #cccccc;
+  border-radius: 20px;
+  font-size: 16px;
+}
+
+.tour-form textarea {
+  width: 100%;
+  max-width: 808px;
+  height: 120px;
+  padding: 10px;
+  margin-top: 10px; /* Razmak između elemenata */
+  border: 1px solid #cccccc;
+  border-radius: 20px;
+  font-size: 16px;
+}
+
+.tour-form textarea::placeholder {
+  font-family: 'Arial', sans-serif;
+  color: gray;
+}
+
 .tour-form select {
     width: 100%;
     padding: 10px;
     margin-top: 10px; /* Razmak između elemenata */
     border: 1px solid #cccccc;
-    border-radius: 4px;
+    border-radius: 20px;
     font-size: 16px;
 }
 
@@ -38,13 +72,20 @@
 }
 
 .add-tag-button {
-    margin-top: 15px;
-    background-color: #66c5af;
+    margin-top: 5px;
+    background-color: #2b4f46;
     border: none;
     padding: 10px 20px;
-    border-radius: 4px;
+    height: 40px;
+    width: 89.78px;
+    border-radius: 20px;
     color: white;
     cursor: pointer;
+}
+
+.tour-name-input{
+  width: 100%;
+  max-width: 830px;
 }
 
 .add-tag-button:hover {
@@ -52,18 +93,22 @@
 }
 
 .cta-button {
-    background-color: #2b4f46;
+    position: relative;
+    left: 730px;
+    max-width: 100px;
+    height: 50px;
+    border-radius: 25px;
+    background-color: #84dcc6;
     border: none;
     color: white;
     padding: 10px 20px;
-    border-radius: 4px;
     margin-top: 20px;
     cursor: pointer;
     width: 100%;
 }
 
 .cta-button:hover:not(:disabled) {
-    background-color: #66c5af;
+    background-color: #5ba99a;
 }
 
 .cta-button:disabled {
@@ -71,16 +116,28 @@
     cursor: not-allowed;
 }
 
+.tags-container-div{
+    display: flex; 
+    flex-wrap: wrap;
+    gap: 20px;
+    position: relative;
+    left: 0%;
+    height: 100px;
+    overflow-y: auto;
+}
+
 .tags-container {
-    margin-top: 15px;
+    justify-content: center;
+    align-items: center;
 }
 
 .tags-container input {
-    margin-top: 10px;
     border: 1px solid #cccccc;
     border-radius: 4px;
     padding: 10px;
-    width: calc(20% - 22px); /* Oduzimamo padding */
+    height: 18px;
+    border-radius: 20px;
+    width: 216px;
 }
 
 @media (max-width: 600px) {
@@ -89,11 +146,19 @@
         padding: 15px;
     }
 }
+
+.tour-form-label{
+  padding-top: 15px;
+}
+
+.description-label{
+  padding-top: 15px;
+}
+
 .tour-form label {
-    display: block; /* Podesi da se labela prikazuje kao blok */
-    margin-top: 15px; /* Razmak iznad labela */
-    font-weight: bold; /* Podebljaj tekst */
-    color: #333; /* Boja teksta */
+    display: block;
+    font-weight: bold;
+    color: #333;
 }
 
 .modal-backdrop {
@@ -101,7 +166,7 @@
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100vh;
+    height: 90vh;
     background-color: rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
@@ -121,28 +186,40 @@
   .modal-header {
     display: flex;
     justify-content: space-between;
+    font-size: 50px;
+    padding-top: 20px;
+    padding-right: 30px;
+    padding-left: 30px;
+    padding-bottom: 10px;
     align-items: center;
   }
   
   .modal-header h2 {
     margin: 0;
+    font-size: 30px;
   }
   
   .close-button {
     background: none;
     border: none;
-    font-size: 20px;
+    font-size: 40px;
     cursor: pointer;
   }
   
   .form-actions {
     display: flex;
-    justify-content: flex-end;
     gap: 10px;
   }
+
+  .form-div{
+    display: flex;
+    position: relative;
+  }
+
   .form-row {
     display: flex;
     gap: 20px; /* Razmak između polja */
+    padding-bottom: 20px;
     justify-content: space-between; /* Rasporedi elemente */
   }
   
@@ -152,11 +229,53 @@
     flex-direction: column; /* Labela iznad polja */
   }
   
-  .form-group select,
+  .form-group select {
+    padding: 8px;
+    height: 40px;
+    width: 238px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    font-size: 14px;
+  }
+
   .form-group input {
     padding: 8px;
+    max-height: 40px;
+    height: 100%;
+    width: 220px;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 20px;
     font-size: 14px;
+  }
+
+  .form-group input::placeholder {
+    font-family: 'Arial', sans-serif;
+    color: gray;
+  }
+  
+  .weather-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px; /* Razmak između opcija */
+  }
+  
+  .weather-option {
+    padding: 10px 15px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    background-color: #f9f9f9;
+    transition: all 0.3s ease;
+  }
+  
+  .weather-option:hover {
+    background-color: #e0e0e0; /* Promena boje na hover */
+  }
+  
+  .weather-option.selected {
+    border-color: #007bff;
+    background-color: #007bff;
+    color: #fff;
   }
   

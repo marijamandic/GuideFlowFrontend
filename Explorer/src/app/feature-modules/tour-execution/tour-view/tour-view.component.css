@@ -1,475 +1,785 @@
+.map-background {
+	position: relative;
+	width: 100%;
+	max-height: 550px;
+}
+
+.search-container {
+	position: relative;
+	bottom: 77.5vh; /* Pozicija od vrha stranice */
+	left: 35.5%; /* Centriranje horizontalno */
+	transform: translateX(-50%);
+	z-index: 9;
+	display: flex;
+	flex-direction: column; /* Postavljanje elemenata jedan ispod drugog */
+	gap: 10px; /* Razmak između elemenata */
+	align-items: center; /* Centriranje elemenata horizontalno */
+	pointer-events: none; /* Sprečava blokiranje klikova na elemente ispod */
+}
+
+.search-container * {
+	pointer-events: auto; /* Dozvoljava klik samo na unutar elemenata search-container */
+}
+
+.input-wrapper {
+	position: relative;
+	width: 200px; /* Fiksna širina za input */
+}
+
+input[type='text'] {
+	width: 100%;
+	padding: 8px 16px; /* Manji padding */
+	border-radius: 20px; /* Zaobljeni krajevi */
+	border: 1px solid #ccc;
+	font-size: 14px;
+	background-color: white; /* Pozadina bela */
+	color: black; /* Tekst crne boje */
+	outline: none; /* Bez outline-a */
+	transition: border 0.3s ease;
+}
+
+input[type='text']:focus {
+	border: 1px solid #40e0d0; /* Tirkizna boja na fokus */
+}
+
 .main-container {
-  display: flex;
-  justify-content: space-between;
-  flex-direction: column;
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 20px;
-  gap: 20px; 
+	display: flex;
+	justify-content: space-between;
+	flex-direction: column;
+	max-width: 1000px;
+	margin: 0 auto;
+	padding: 20px;
+	gap: 20px;
+	display: flex;
+	justify-content: space-between;
+	flex-direction: column;
+	max-width: 1400px;
+	margin: 0 auto;
+	padding: 20px;
+	gap: 20px;
 }
 
 .content-container {
-  display: flex;
-  flex-direction: row;
-  gap: 20px;
+	display: flex;
+	flex-direction: row;
+	gap: 20px;
 }
-
 
 /* Filters Section */
 .filter-container {
-  flex: 0 0 30%;
-  max-height: 700px;
-  max-width: 30%;
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 15px;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
+	flex: 0 0 30%;
+	max-height: 730px;
+	max-width: 30%;
+	padding: 20px;
+	background-color: #fff;
+	border-radius: 15px;
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
 }
 
 .slider-container {
-  margin-bottom: 20px;
+	margin-bottom: 20px;
+}
+.button-container {
+	justify-content: right;
+}
 
+.filter-button {
+	margin-left: 10px;
 }
-.button-container{
-  justify-content: space-between;
-}
-.tags-container{
-  margin-right: 15px;
+.tags-container {
+	margin-right: 15px;
+	padding-bottom: 20px;
 }
 
 .slider-container label,
 .tags-container label {
-  display: block;
-  margin-bottom: 8px;
-  font-size: 14px;
-  color: #666;
+	display: block;
+	margin-bottom: 8px;
+	font-size: 14px;
+	font-family: Arial, sans-serif;
+	font-weight: 600;
+	color: #777;
 }
 
-input[type="range"],
+input[type='range'],
 textarea {
-  width: 100%;
-  font-size: 14px;
-  border-radius: 15px;
+	width: 100%;
+	font-size: 14px;
+	border-radius: 15px;
 }
 
 textarea {
-  height: 60px;
-  padding: 8px;
-  border: 1px solid #ccc;
-  resize: none;
+	height: 60px;
+	padding: 8px;
+	border: 1px solid #ccc;
+	resize: none;
 }
 
 .button-container {
-  display: flex;
+	display: flex;
 }
 
 /* Full-width Search Bar */
 
 /* Glavni kontejner koji drži search bar i toggle dugme */
 .search-toggle-container {
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-  width: 100%;
+	display: flex;
+	justify-content: space-between;
+	gap: 20px;
+	width: 100%;
+	/* height: 54px; */
 }
 
-
 .search-bar {
-  display: flex;
-  align-items: center;
-  padding: 10px 20px;
-  background-color: #fff;
-  border-radius: 15px;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 10px;
-  width: 100%; 
+	display: flex;
+	align-items: center;
+	padding: 10px 20px;
+	background-color: #fff;
+	border-radius: 20px;
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 10px;
+	width: 100%;
 }
 
 .search-bar input {
-  flex: 1; 
-  padding: 8px;
-  border: 1px solid #f2f2f2;
-  border-radius: 4px;
-  font-size: 14px;
+	flex: 1;
+	padding: 8px;
+	border: 1px solid #f2f2f2;
+	border-radius: 4px;
+	font-size: 14px;
 }
 
 .search-bar i {
-  margin-left: 10px;
-  font-size: 16px;
-  color: #666;
+	margin-left: 10px;
+	font-size: 16px;
+	color: #666;
 }
 
-input[type="range"] {
-  width: 100%;
-  appearance: none; 
-  height: 6px;
-  border-radius: 15px;
-  background: #ccc; 
-  outline: none;
-  cursor: pointer;
+.sales-bar-container {
+	height: 54px;
+	border-radius: 20px;
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 10px;
+	background-color: var(--secondary-color);
+
+	animation-name: animateopacity;
+	animation-duration: 0.4s;
+	animation-timing-function: linear;
 }
 
-input[type="range"]::-webkit-slider-runnable-track {
-  background: #f2f2f2;
-  height: 6px;
-  border-radius: 15px;
+@keyframes animateopacity {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
 }
 
-input[type="range"]::-webkit-slider-thumb {
-  appearance: none; 
-  height: 16px;
-  width: 16px;
-  border-radius: 50%;
-  background: var(--primary-color);
-  border: 2px solid #fff;
-  margin-top: -5px; 
+.sales-bar {
+	box-sizing: border-box;
+	display: flex;
+	justify-content: space-between;
+	height: inherit;
+	align-items: center;
+	margin: 0 20px;
+	font-size: 20px;
 }
 
-input[type="range"]::-moz-range-thumb,
-input[type="range"]::-ms-thumb {
-  height: 16px;
-  width: 16px;
-  border-radius: 50%;
-  background: #4e8a7b; 
-  border: 2px solid #fff;
+.sales-bar-info {
+	display: flex;
+	align-items: center;
 }
 
+.sales-bar-info i {
+	margin-top: 2px;
+	margin-right: 20px;
+	font-size: 20px;
+	cursor: pointer;
+}
+
+.sales-bar-info span {
+	margin-right: 20px;
+}
+
+.sales-bar-info-select-all {
+	cursor: pointer;
+}
+
+.sales-bar-info-select-all:active {
+	font-weight: bolder;
+}
+
+.sales-bar-add {
+	/* font-size: 20px; */
+	cursor: pointer;
+	transition: 0.6s ease;
+}
+
+.sales-bar-add:hover {
+	transform: scale(1.1);
+}
+
+input[type='range'] {
+	width: 100%;
+	appearance: none;
+	height: 6px;
+	border-radius: 15px;
+	background: #ccc;
+	outline: none;
+	cursor: pointer;
+}
+
+input[type='range']::-webkit-slider-runnable-track {
+	background: #f2f2f2;
+	height: 6px;
+	border-radius: 15px;
+}
+
+input[type='range']::-webkit-slider-thumb {
+	appearance: none;
+	height: 16px;
+	width: 16px;
+	border-radius: 50%;
+	background: var(--primary-color);
+	border: 2px solid #fff;
+	margin-top: -5px;
+}
+
+input[type='range']::-moz-range-thumb,
+input[type='range']::-ms-thumb {
+	height: 16px;
+	width: 16px;
+	border-radius: 50%;
+	background: #4e8a7b;
+	border: 2px solid #fff;
+}
 
 /* Tour Cards Section */
 .tour-container {
-  flex: 1; 
-  display: block;
-  flex-direction: column;
-  gap: 20px;
-  width: 100%;
+	flex: 1;
+	display: block;
+	flex-direction: column;
+	gap: 20px;
+	width: 100%;
 }
 
 /* Cards */
 .tour-card {
-  position: relative;
-  display: flex;
-  flex-direction: row;
-  /*align-items: top;*/
-  padding: 15px;
-  background-color: #fff;
-  border-radius: 15px;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 10px;
-  width: 100%;
-  margin-bottom: 20px;
+	display: flex;
+	padding: 20px;
+	max-height: 250px;
+	border-radius: 20px;
+	background-color: var(--secondary-color);
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 10px;
+	margin-bottom: 20px;
 }
 
-.tour-card-header {
-  display: flex; 
-  justify-content: space-between; 
-  align-items: top;
+.tour-card.premium {
+	background-color: #ffe0b2;
+}
+
+.tour-card.selected-premium {
+	background-color: #d9eafd;
+	animation-name: premium-grad;
+	animation-duration: 0.3s;
+	animation-timing-function: linear;
+}
+
+.tour-card.selected {
+	background-color: #d9eafd;
+	animation-name: basic-grad;
+	animation-duration: 0.3s;
+	animation-timing-function: linear;
+}
+
+@keyframes basic-grad {
+	0% {
+		background-color: var(--secondary-color);
+	}
+	100% {
+		background-color: #d9eafd;
+	}
+}
+
+@keyframes premium-grad {
+	0% {
+		background-color: #ffe0b2;
+	}
+	100% {
+		background-color: #d9eafd;
+	}
+}
+
+.tour-card i {
+	font-size: 20px;
+	cursor: pointer;
+}
+
+/* Card content section */
+.tour-details {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	width: 100%;
+	margin-left: 20px;
+}
+
+.tour-header {
+	display: flex;
+	width: 100%;
+}
+
+.tour-info {
+	flex-grow: 1;
+}
+
+.tour-info > div {
+	height: 50px;
+	overflow: auto;
+	/* margin-bottom: 15px; */
+}
+
+.tour-info > div::-webkit-scrollbar {
+	display: none;
+}
+
+.tour-header > i {
+	flex-basis: auto;
+}
+
+.tour-header-ellipsis {
+	position: relative;
+}
+
+.tour-header-modal {
+	position: absolute;
+	z-index: 100;
+	left: -220px;
+	top: 20px;
+	width: 200px;
+	padding: 10px;
+	border-radius: 15px;
+	background-color: var(--secondary-color);
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 10px;
+}
+
+.tour-header-modal-element {
+	border-radius: 15px;
+	padding: 5px 5px 5px 15px;
+	place-items: center;
+	font-weight: bolder;
+	cursor: pointer;
+}
+
+.tour-header-modal-element:hover {
+	background-color: #f0f0f0;
+}
+
+.tour-footer {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-end;
+}
+
+.tour-footer-info-row {
+	font-size: 16px;
+	margin-top: 2px;
+}
+
+.tour-footer-info-row i {
+	cursor: auto;
+	font-size: 16px;
+	width: 30px;
 }
 
 /* Card image section */
 .tour-card img {
-  width: 300px;
-  height: 100%;
-  border-radius: 15px;
-  object-fit: cover;
-  align-self: center;
-  margin-bottom: -20px;
-}
-
-/* Card content section */
-.tour-card-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding-left: 20px;
+	min-width: 300px;
+	height: 200px;
+	border-radius: 20px;
+	object-fit: cover;
 }
 
 /* Card actions (e.g., Buy button and kebab menu) */
 .tour-card-actions {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  align-items: flex-end;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	align-items: flex-end;
 }
 
 .kebab-menu {
-  align-self: flex-end;
-  background: none;
-  border: none;
-  font-size: 20px;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  color: #666;
-  cursor: pointer;
+	align-self: flex-end;
+	background: none;
+	border: none;
+	font-size: 20px;
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+	color: #666;
+	cursor: pointer;
 }
 
 .add-to-cart {
-  align-items: baseline;
-  cursor: pointer;
+	cursor: pointer;
 }
 
 .buttons {
-  border: none;
-  display: flex;
-  flex-direction: column; /* Stack items vertically */
-  height: 200px; /* Set a height for the container */
-  justify-content: space-between; /* Push one item to the top and one to the bottom */
-  padding-left: 10px;
-  padding-right: 10px;
-  padding-top: 10px;
+	border: none;
+	display: flex;
+	flex-direction: column; /* Stack items vertically */
+	height: 200px; /* Set a height for the container */
+	justify-content: space-between; /* Push one item to the top and one to the bottom */
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 10px;
 }
 
 /* Card details (e.g., price, difficulty, tags) */
 .tour-card-details {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: column;
-  gap: 10px;
-  font-size: 14px;
-  color: #666;
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: column;
+	gap: 10px;
+	font-size: 14px;
+	color: #666;
 }
 
 .tour-card-details span {
-  display: flex;
-  align-items: center;
-  gap: 5px;
+	display: flex;
+	align-items: center;
+	gap: 5px;
 }
 
 .tour-card-empty:hover {
-  background-color: #636262; 
+	background-color: #636262;
 }
 
 .plus-icon i {
-  font-size: 60px; 
-  color: white; 
+	font-size: 60px;
+	color: white;
 }
 
 .sort-container {
-  flex: 0 0 30%; 
-  max-width: 30%;
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 15px;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
+	flex: 0 0 30%;
+	max-width: 30%;
+	padding: 20px;
+	background-color: #fff;
+	border-radius: 15px;
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
 }
 
 .sort-label {
-  text-align: left;
+	text-align: left;
 }
 
 .sort-label h3 {
-  margin: 0;
+	margin: 0;
 }
 
 .sort-label ul {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
 }
 
 .sort-label ul li {
-  margin-bottom: 0.5rem;
+	margin-bottom: 0.5rem;
 }
 
 .sort-buttons {
-  display: flex;
-  gap: 0.5rem;
+	display: flex;
+	gap: 0.5rem;
 }
 
 .toggle-switch {
-  display: inline-flex;
-  align-items: center;
-  background-color: #ffffff; /* Bela boja pozadine */
-  border-radius: 25px;
-  position: relative;
-  width: 200px; /* Širina dugmeta */
-  overflow: hidden; /* Sakriva višak ako ima preklapanja */
-  border: 2px solid #e0e0e0; /* Lagani okvir */
+	display: inline-flex;
+	align-items: center;
+	background-color: #ffffff; /* Bela boja pozadine */
+	border-radius: 25px;
+	position: relative;
+	width: 200px; /* Širina dugmeta */
+	overflow: hidden; /* Sakriva višak ako ima preklapanja */
+	border: 2px solid #e0e0e0; /* Lagani okvir */
 }
 
 .toggle-option {
-  flex: 1;
-  text-align: center;
-  color: #333;
-  cursor: pointer;
-  padding: 10px 0;
-  border-radius: 25px;
-  transition: all 0.3s ease;
-  margin: 0 -10px; /* Negativna margina za preklapanje */
-  z-index: 1;
-  background-color: #ffffff; /* Belo za neaktivno dugme */
+	flex: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	/* height: 100%; */
+	height: 30px;
+	font-family: Arial, sans-serif;
+	font-weight: 600;
+	color: #777;
+	cursor: pointer;
+	padding: 10px 0;
+	border-radius: 25px;
+	transition: all 0.3s ease;
+	margin: 0 -10px; /* Negativna margina za preklapanje */
+	z-index: 1;
+	background-color: #ffffff; /* Belo za neaktivno dugme */
 }
 
 .toggle-option:hover {
-  background-color: #f7f7f7; /* Svetlo siva kada se prelazi mišem */
+	background-color: #f7f7f7; /* Svetlo siva kada se prelazi mišem */
 }
 
-input[type="radio"] {
-  display: none;
+input[type='radio'] {
+	display: none;
 }
 
-input[type="radio"]:checked + label {
-  background-color: #a5e7dc; /* Svetlo zelena boja za aktivnu opciju */
-  color: white;
-  z-index: 2; /* Aktivno dugme je iznad ostalih */
-  margin: 0; /* Resetujemo marginu za aktivno dugme */
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Mali efekat senke */
+input[type='radio']:checked + label {
+	background-color: var(--primary-color);
+	color: white;
+	z-index: 2; /* Aktivno dugme je iznad ostalih */
+	margin: 0; /* Resetujemo marginu za aktivno dugme */
+	box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Mali efekat senke */
 }
 
 .status-filter {
-  display: flex;
-  flex-direction: column;
-  gap: 10px; /* Razmak između "Status" i dugmadi */
-  font-family: Arial, sans-serif;
-  color: #333;
+	display: flex;
+	flex-direction: column;
+	gap: 10px; /* Razmak između "Status" i dugmadi */
+	font-family: Arial, sans-serif;
+	font-weight: 600;
+	color: #777;
+	padding-bottom: 10px;
+	padding-top: 10px;
 }
 
 .status-buttons {
-  display: flex;
-  gap: 10px; /* Razmak između dugmadi */
+	display: flex;
+	justify-content: space-between;
+	gap: 10px; /* Razmak između dugmadi */
 }
 
 .status-button {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 20px;
-  background-color: #f2f2f2; /* Siva za neaktivno dugme */
-  color: #666;
-  cursor: pointer;
-  text-align: center;
-  transition: all 0.3s ease;
+	padding: 10px 20px;
+	width: 100px;
+	border: none;
+	border-radius: 20px;
+	background-color: #f2f2f2; /* Siva za neaktivno dugme */
+	color: #666;
+	cursor: pointer;
+	text-align: center;
+	transition: all 0.3s ease;
 }
 
-input[type="radio"] {
-  display: none; /* Sakrij radio dugmad */
+input[type='radio'] {
+	display: none; /* Sakrij radio dugmad */
 }
 
-input[type="radio"]:checked + .status-button {
-  background-color: #a5e7dc; /* Svetlo zelena za aktivno dugme */
-  color: white;
+input[type='radio']:checked + .status-button {
+	background-color: #a5e7dc; /* Svetlo zelena za aktivno dugme */
+	color: white;
 }
 
 .status-button:hover {
-  background-color: #ddd; /* Svetlo siva na hover */
+	background-color: #ddd; /* Svetlo siva na hover */
 }
 
 .add-tour-card {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #f2f2f2; /* Svetlo siva pozadina */
-  border-radius: 15px;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 10px;
-  width: 100%;
-  height: 50px; /* Isto kao i ostale kartice */
-  cursor: pointer;
-  transition: all 0.3s ease;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: #ffffff; /* Svetlo siva pozadina */
+	border-radius: 15px;
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 10px;
+	width: calc(100% - 40px);
+	height: 50px; /* Isto kao i ostale kartice */
+	cursor: pointer;
+	transition: all 0.3s ease;
 }
 
 .add-tour-card:hover {
-  background-color: #e0e0e0; /* Promena boje na hover */
+	background-color: #fafafa; /* Promena boje na hover */
 }
 
 .plus-icon i {
-  font-size: 60px;
-  color: #666;
+	font-size: 60px;
+	color: #666;
 }
 
 .plus-icon:hover i {
-  color: #333; /* Tamnija boja na hover */
+	color: #333; /* Tamnija boja na hover */
 }
 
 .modal-backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background-color: rgba(0, 0, 0, 0.5);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 1000;
 }
 
 .modal-content {
-  background-color: #fff;
-  border-radius: 15px;
-  padding: 20px;
-  width: 500px;
-  max-width: 90%;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
-  animation: fadeIn 0.3s ease-in-out;
+	background-color: #fff;
+	border-radius: 15px;
+	padding: 20px;
+	width: 500px;
+	max-width: 90%;
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
+	animation: fadeIn 0.3s ease-in-out;
 }
 
 h2 {
-  margin-top: 0;
-  font-size: 24px;
+	margin-top: 0;
+	font-size: 24px;
 }
 
 .form-group {
-  margin-bottom: 15px;
+	margin-bottom: 15px;
 }
 
 .form-group label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
+	display: block;
+	margin-bottom: 5px;
+	font-weight: bold;
 }
 
 .form-group input,
 .form-group textarea {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+	width: 100%;
+	padding: 8px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
 }
 
 .form-row {
-  display: flex;
-  gap: 10px;
+	display: flex;
+	gap: 10px;
 }
 
 .form-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
+	display: flex;
+	justify-content: flex-end;
+	gap: 10px;
 }
 
 .btn-cancel {
-  background-color: #ccc;
-  border: none;
-  border-radius: 5px;
-  padding: 8px 15px;
-  cursor: pointer;
-  transition: background-color 0.3s;
+	background-color: #ccc;
+	border: none;
+	border-radius: 5px;
+	padding: 8px 15px;
+	cursor: pointer;
+	transition: background-color 0.3s;
 }
 
 .btn-cancel:hover {
-  background-color: #aaa;
+	background-color: #aaa;
 }
 
 .btn-add {
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  padding: 8px 15px;
-  cursor: pointer;
-  transition: background-color 0.3s;
+	background-color: #4caf50;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	padding: 8px 15px;
+	cursor: pointer;
+	transition: background-color 0.3s;
 }
 
 .btn-add:hover {
-  background-color: #45a049;
+	background-color: #45a049;
 }
 .sort-label {
-  font-size: 16px;
+	font-size: 16px;
 }
 
-
 .sort-dropdown {
-  padding: 5px 10px;
-  font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  cursor: pointer;
+	padding: 5px 15px;
+	font-size: 14px;
+	border: 1px solid #ccc;
+	height: 40px;
+	border-radius: 20px;
+	cursor: pointer;
+	font-family: Arial, sans-serif;
+	font-weight: 600;
+	color: #777;
+}
+
+.dropdown-div {
+	padding-bottom: 10px;
+}
+
+.filter-header {
+	font-size: 30px;
+	font-weight: 500;
+	color: solid #666;
+}
+
+.sort-header {
+	font-size: 14px;
+	padding-bottom: 10px;
+	font-family: Arial, sans-serif;
+	font-weight: 600;
+	color: #777;
+}
+
+.add-sales-modal {
+	position: absolute;
+	z-index: 1000;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.8);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.sales-modal {
+	width: 50%;
+	height: 50%;
+	background-color: var(--secondary-color);
+	border-radius: 20px;
+	padding: 20px;
+}
+
+.sales-modal-close {
+	display: flex;
+	width: 100%;
+	justify-content: space-between;
+	align-items: flex-start;
+}
+
+.sales-modal i {
+	font-size: 30px;
+	cursor: pointer;
+}
+
+.sales-modal-selected {
+	height: 200px;
+}
+
+.sales-modal-details {
+	display: flex;
+}
+
+.sales-modal-details > div {
+	flex: 1;
+}
+
+.sales-modal-details > div input {
+	width: 100%;
+	outline: none;
+	border: none;
+	border-radius: 20px;
+	border: 1px solid black;
+	padding: 10px 0;
+}
+
+.sales-modal-details > div input[type='date'] {
+	margin-right: 20px;
+	place-content: center;
+}
+
+.sales-modal-details > div input[type='number'] {
+	margin-left: 20px;
 }

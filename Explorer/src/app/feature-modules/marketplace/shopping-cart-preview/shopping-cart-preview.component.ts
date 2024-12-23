@@ -4,6 +4,8 @@ import { ShoppingCartService } from '../shopping-cart.service';
 import { Item } from '../model/shopping-carts/item';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
+import { environment } from 'src/env/environment';
+import { CartPreviewService } from '../../layout/cart-preview.service';
 
 @Component({
 	selector: 'xp-shopping-cart-preview',
@@ -12,14 +14,18 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class ShoppingCartPreviewComponent implements OnInit {
 	cart$: ShoppingCart;
+	isOpened$: boolean;
 	totalAdventureCoins: number;
 
-	@Output() shoppingCartOpened = new EventEmitter<null>();
-
-	constructor(private shoppingCartService: ShoppingCartService, private router: Router) {}
+	constructor(private shoppingCartService: ShoppingCartService, private router: Router, private cartPreviewService: CartPreviewService) {}
 
 	ngOnInit(): void {
 		this.subscribeCart();
+		this.subscribeCartPreview();
+	}
+
+	private subscribeCartPreview() {
+		this.cartPreviewService.isOpened$.subscribe(isOpened => (this.isOpened$ = isOpened));
 	}
 
 	private subscribeCart() {
@@ -37,7 +43,7 @@ export class ShoppingCartPreviewComponent implements OnInit {
 	}
 
 	handleGoToCart(): void {
-		this.shoppingCartOpened.emit();
+		this.cartPreviewService.close();
 		this.router.navigate(['/shoppingCart']);
 	}
 
@@ -45,5 +51,9 @@ export class ShoppingCartPreviewComponent implements OnInit {
 		this.shoppingCartService.removeFromCart(itemId).subscribe({
 			error: (error: HttpErrorResponse) => console.log(error.message)
 		});
+	}
+
+	getImageUrl(imageUrl: string) {
+		return `${environment.webRootHost}${imageUrl}`;
 	}
 }
