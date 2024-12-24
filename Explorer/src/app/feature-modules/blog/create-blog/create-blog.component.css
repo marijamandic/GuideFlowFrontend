@@ -4,14 +4,16 @@
     align-items: center;
     padding: 20px;
     background-color: transparent; 
+    height: 600px;
+    margin-top: 100px;
   }
   
   .blog-form {
     background-color: #ffffff; 
     padding: 30px;
     border-radius: 15px;
-    width: 100%;
-    max-width: 500px; 
+    width: 900px;
+    align-items: center;
   }
   
   .blog-form table {
@@ -27,7 +29,7 @@
     padding: 10px;
     border: 1px solid #cccccc;
     font-family: var(--font-family);
-    border-radius: 4px;
+    border-radius: 15px;
     font-size: 16px;
     resize: vertical; 
     overflow-wrap: break-word; 
@@ -37,7 +39,7 @@
 }
 
 #description.form-control {
-    height: 600px; 
+    height: 400px; 
 }
 
   
@@ -75,4 +77,5 @@
   .cta-button{
     margin-top: 50px;
   }
+
   

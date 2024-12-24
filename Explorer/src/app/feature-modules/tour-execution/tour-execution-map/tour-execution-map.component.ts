@@ -23,7 +23,7 @@ export class TourExecutionMap implements AfterViewInit,OnChanges {
   @Input() initialMarkers: L.LatLng[] = [];
   @Input() allowMultipleMarkers: boolean = true;
   @Input() checkpoints: { latitude: number; longitude: number }[] = [];
-  @Input() showSearchBar: boolean = true;
+  @Input() showUpdateButton: boolean;
   @Output() markerAdded = new EventEmitter<L.LatLng>();
   @Output() mapReset = new EventEmitter<void>();
   @Output() coordinatesSelected = new EventEmitter<{ latitude: number; longitude: number }>();
@@ -183,9 +183,9 @@ export class TourExecutionMap implements AfterViewInit,OnChanges {
 
   registerOnClick(): void {
     this.map.on('click', (e: any) => {
-      if (!this.showSearchBar) {
+      /*if (!this.showUpdateButton) {
         return;
-      }
+      }*/
   
       this.markers.forEach(marker => {
         this.map.removeLayer(marker);

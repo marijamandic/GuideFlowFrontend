@@ -1,0 +1,34 @@
+<div class="modal">
+	<div class="modal-content">
+		<div class="header">
+			<h1>Create sale</h1>
+			<i class="fa-solid fa-xmark" (click)="handleCloseClick()"></i>
+		</div>
+		<div class="form">
+			<div class="form-tours">
+				<hr />
+				<div *ngFor="let tour of tours; let i = index" class="tour">
+					<input type="checkbox" class="checkbox" [checked]="selectedTours[i]" (click)="handleCheckboxClick(i)" />
+					<img [src]="getImageUrl(tour.checkpoints[0].imageUrl!)" alt="Image" />
+					<div>{{ tour.name }}</div>
+				</div>
+			</div>
+			<div class="form-details">
+				<hr />
+				<div class="inputs">
+					<div class="form-details-date">
+						<div style="font-weight: bolder">Ends at</div>
+						<input type="date" [min]="calculateMinEndsAt()" [max]="calculateMaxEndsAt()" [(ngModel)]="endsAt" />
+					</div>
+					<div class="form-details-discount">
+						<div style="font-weight: bolder">Discount %</div>
+						<input type="number" min="0" max="100" [(ngModel)]="discount" />
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="footer">
+			<button type="button" class="cta-button" (click)="handleCreateSale()">Create sale</button>
+		</div>
+	</div>
+</div>

@@ -23,11 +23,12 @@ import { ClubInvitation, ClubInvitationStatus } from '../../administration/model
 export class PublicPointNotificationsComponent implements OnInit {
     totalCount: number = 0;
     selectedNotification: PublicPointNotification | null = null;
-    combinedNotifications: { type: number; data: PublicPointNotification | Notification | ProblemNotification | MessageNotification | ClubRequest | ClubInvitation, creationTime: Date, isOpened: boolean }[] = [];
+    combinedNotifications: { type: number; data: PublicPointNotification | Notification | ProblemNotification | MessageNotification | ClubRequest | ClubInvitation, creationTime: Date, isOpened: boolean, showMenu: boolean }[] = [];
     selectedPoint: PublicPoint | null = null;
     public publicPoints: PublicPoint[] = [];
     showModal: boolean = false;
     private user: User | undefined;
+    showHeaderMenu: boolean = false;
 
     constructor(private publicPointService: PublicPointService, private authService: AuthService, private notificationService: LayoutService, private router: Router, private clubRequestService: AdministrationService) {}
 
@@ -43,6 +44,114 @@ export class PublicPointNotificationsComponent implements OnInit {
         this.loadAllNotifications();
     }
 
+    toggleMenu(event: MouseEvent, notification: any): void {
+        event.stopPropagation(); // Sprečava propagaciju događaja
+        notification.showMenu = !notification.showMenu;
+    }
+
+    deleteNotification(notification: any): void {
+        this.combinedNotifications = this.combinedNotifications.filter(n => n !== notification);
+        console.log("Notifikacija obrisana:", notification);
+
+        if(notification.type == 0) {
+            this.publicPointService.deleteNotification(notification.data.id).subscribe({
+                next: () => {
+                    console.log(`Notification with ID ${notification.id} successfully deleted.`);
+                },
+                error: (err) => {
+                    console.error(`Failed to delete notification with ID ${notification.id}:`, err);
+                },
+            });
+        }
+        
+        if(notification.type == 1 || 2) {
+            if(this.user?.role == 'tourist') {
+                this.notificationService.deleteNotification(notification.data.id).subscribe({
+                    next: () => {
+                        console.log(`Notification with ID ${notification.data.id} successfully deleted.`);
+                    },
+                    error: (err) => {
+                        console.error(`Failed to delete notification with ID ${notification.data.id}:`, err);
+                    },
+                });
+            } else if(this.user?.role == 'author') {
+                this.notificationService.deleteAuthorNotification(notification.data.id).subscribe({
+                    next: () => {
+                        console.log(`Notification with ID ${notification.data.id} successfully deleted.`);
+                    },
+                    error: (err) => {
+                        console.error(`Failed to delete notification with ID ${notification.data.id}:`, err);
+                    },
+                });
+            }
+        }
+
+        if(notification.type == 3) {
+            if(this.user?.role == 'tourist') {
+                this.notificationService.deleteMessageNotification(notification.data.id).subscribe({
+                    next: () => {
+                      console.log(`Message notification with ID ${notification.data.id} successfully deleted.`);
+                    },
+                    error: (err) => {
+                      console.error(`Failed to delete message notification with ID ${notification.data.id}:`, err);
+                    },
+                });
+            } else if(this.user?.role == 'author') {
+                this.notificationService.deleteAuthorMessageNotification(notification.data.id).subscribe({
+                    next: () => {
+                      console.log(`Message notification with ID ${notification.data.id} successfully deleted.`);
+                    },
+                    error: (err) => {
+                      console.error(`Failed to delete message notification with ID ${notification.data.id}:`, err);
+                    },
+                });
+            }
+            
+        }
+
+        if(notification.type == 4) {
+            this.clubRequestService.deleteClubRequest(notification.data.id).subscribe({
+                next: () => {
+                    console.log(`Request with ID ${notification.data.id} successfully deleted.`);
+                },
+                error: (err) => {
+                    console.error(`Failed to delete request with ID ${notification.data.id}:`, err);
+                },
+            });
+        }
+
+        if(notification.type == 5) {
+            this.clubRequestService.deleteClubInvitation(notification.data.id).subscribe({
+                next: () => {
+                  console.log(`Invitation with ID ${notification.data.id} successfully deleted.`);
+                },
+                error: (err) => {
+                  console.error(`Failed to delete invitation with ID ${notification.data.id}:`, err);
+                },
+              });
+        }
+    }
+
+    toggleHeaderMenu(event: MouseEvent): void {
+        event.stopPropagation();
+        this.showHeaderMenu = !this.showHeaderMenu;
+    }
+
+    closeHeaderMenu(): void {
+        this.showHeaderMenu = false;
+    }
+
+    deleteAllNotifications(): void {
+        const notificationsToDelete = [...this.combinedNotifications];
+    
+        notificationsToDelete.forEach(notification => {
+            this.deleteNotification(notification);
+        });
+    
+        this.combinedNotifications = [];
+        console.log("All notifications deleted.");
+        this.closeHeaderMenu();
+    }    
 
     loadPublicPoint(publicPointId: number): string {
         const publicPoint = this.publicPoints.find(point => point.id === publicPointId);
@@ -51,7 +160,7 @@ export class PublicPointNotificationsComponent implements OnInit {
 
     openNotificationDialog(notification: PublicPointNotification): void {
         this.selectedNotification = notification;
-        console.log("EEE");
+        console.log("EEE1");
         this.publicPointService.getPublicPointsByTour(notification.publicPointId).subscribe(
             (point) => {
                 console.log(point)
@@ -66,45 +175,115 @@ export class PublicPointNotificationsComponent implements OnInit {
         );
     }
 
-    markAsRead(notification: Notification): void {
-        this.notificationService.updateNotification(notification.id, {
-            ...notification,
-            isOpened: true
-        }).subscribe({
-            next: () => {
-                console.log('Notification marked as read');
-                // Nakon uspešnog ažuriranja, osvežite notifikacije
-                this.loadAllNotifications();
-            },
-            error: (err) => console.error('Error marking notification as read:', err)
-        });
+    markAsRead(notification: any): void {
+        console.log("Marking as read:", notification);
+    
+        // Type 0: Public Point Notification
+        if (notification.type === 0) {
+            this.publicPointService.updateNotification(notification.data.id, {
+                ...notification.data,
+                isRead: true,
+            }).subscribe({
+                next: () => {
+                    console.log(`Public Point Notification with ID ${notification.data.id} marked as read.`);
+                    this.loadAllNotifications();
+                },
+                error: (err) => console.error(`Error marking Public Point Notification with ID ${notification.data.id} as read:`, err),
+            });
+        }
+    
+        // Type 1 or 2: General Notifications
+        if (notification.type === 1 || notification.type === 2) {
+            if (this.user?.role === 'tourist') {
+                // Pozovi metodu za turiste
+                this.notificationService.updateNotification(notification.data.id, {
+                    ...notification.data,
+                    isOpened: true,
+                }).subscribe({
+                    next: () => {
+                        console.log(`Tourist Notification with ID ${notification.data.id} marked as read.`);
+                        this.loadAllNotifications();
+                    },
+                    error: (err) => console.error(`Error marking Tourist Notification with ID ${notification.data.id} as read:`, err),
+                });
+            } else if (this.user?.role === 'author') {
+                // Pozovi metodu za autore
+                this.notificationService.updateAuthorNotification(notification.data.id, {
+                    ...notification.data,
+                    isOpened: true,
+                }).subscribe({
+                    next: () => {
+                        console.log(`Author Notification with ID ${notification.data.id} marked as read.`);
+                        this.loadAllNotifications();
+                    },
+                    error: (err) => console.error(`Error marking Author Notification with ID ${notification.data.id} as read:`, err),
+                });
+            } else {
+                console.error('Unknown user role. Notification not updated.');
+            }
+        }
+
+    
+        // Type 3: Message Notifications
+        if (notification.type === 3) {
+            console.log("##", this.user?.role);
+            const updateMethod = this.user?.role === 'tourist' 
+                ? this.notificationService.updateMessageNotification 
+                : this.notificationService.updateAuthorMessageNotification;
+    
+            updateMethod.call(this.notificationService, notification.data.id, true).subscribe({
+                next: () => {
+                    console.log(`Message Notification with ID ${notification.data.id} marked as read.`);
+                    this.loadAllNotifications();
+                },
+                error: (err) => console.error(`Error marking Message Notification with ID ${notification.data.id} as read:`, err),
+            });
+        }
+    
+        /* Type 4: Club Requests
+        if (notification.type === 4) {
+            this.clubRequestService.cancelClubRequest(notification.data.id).subscribe({
+                next: () => {
+                    console.log(`Club Request with ID ${notification.data.id} marked as read.`);
+                    this.loadAllNotifications();
+                },
+                error: (err) => console.error(`Error marking Club Request with ID ${notification.data.id} as read:`, err),
+            });
+        }
+    
+        // Type 5: Club Invitations
+        if (notification.type === 5) {
+            notification.data.status = ClubInvitationStatus.CANCELLED;
+            this.clubRequestService.updateClubInvitation(notification.data).subscribe({
+                next: () => {
+                    console.log(`Club Invitation with ID ${notification.data.id} marked as read.`);
+                    this.loadAllNotifications();
+                },
+                error: (err) => console.error(`Error marking Club Invitation with ID ${notification.data.id} as read:`, err),
+            });
+        }*/
     }
     
-    problemButton(notification: Notification): void {  
-        notification.isOpened == false;
+    
+    problemButton(notification: any): void {  
+        notification.data.isOpened == false;
         this.markAsRead(notification);
     }
 
-    moneyButton(notification: Notification): void { 
+    moneyButton(notification: any): void { 
         this.markAsRead(notification); 
     }
 
-    clubButton(notification: Notification): void { 
+    clubButton(notification: any): void { 
         this.markAsRead(notification);
     }
 
-    messageButton(notification: MessageNotification): void {
-        this.notificationService.updateMessageNotification(notification.id, true).subscribe({
-            next: () => {
-                console.log('Notification marked as read'),
-                this.loadAllNotifications();
-            },
-            error: (err) => console.error('Error updating notification:', err),
-        });        
+    messageButton(notification: any): void {
+        this.markAsRead(notification);  
     }
     
     navigate(notification: MessageNotification): void {
-        var url = `${notification.isBlog? "blog" : "tour-more-detail"}`
+        var url = `${notification.isBlog? "blog" : "tour-more-details"}`
         this.router.navigate([url, notification.objectId])
     }
 
@@ -115,6 +294,7 @@ export class PublicPointNotificationsComponent implements OnInit {
     }
 
     readNotification(notification: PublicPointNotification): void {
+        console.log("EEE");
         this.publicPointService.updateNotification(notification.id, notification).subscribe(
             (point) => {
                 this.loadAllNotifications();
@@ -154,7 +334,8 @@ export class PublicPointNotificationsComponent implements OnInit {
                     type: 0, // PublicPointNotification
                     data: notification,
                     creationTime: notification.creationTime,
-                    isOpened: notification.isRead
+                    isOpened: notification.isRead,
+                    showMenu: false
                 }));
                 this.combinedNotifications = [...this.combinedNotifications, ...publicPointMapped];
             },
@@ -162,30 +343,51 @@ export class PublicPointNotificationsComponent implements OnInit {
                 console.error('Error loading public point notifications:', error);
             }
         );
+
+        if (this.user?.role == 'tourist') {
+            this.notificationService.getNotificationsByUserId(userId).subscribe(
+                (moneyExchangeNotifications) => {
+                    const moneyExchangeMapped = moneyExchangeNotifications.map(notification => ({
+                        type: 1, // Notification (Money and Club)
+                        data: notification,
+                        creationTime: notification.createdAt,
+                        isOpened: notification.isOpened,
+                        showMenu: false
+                    }));
+                    this.combinedNotifications = [...this.combinedNotifications, ...moneyExchangeMapped];
+                    this.sortNotifications();
+                },
+                (error) => {
+                    console.error('Error loading money exchange notifications:', error);
+                }
+            );
+		} else {
+            this.notificationService.getNotificationsByAuthorId(userId).subscribe(
+                (moneyExchangeNotifications) => {
+                    const moneyExchangeMapped = moneyExchangeNotifications.map(notification => ({
+                        type: 1, // Notification (Money and Club)
+                        data: notification,
+                        creationTime: notification.createdAt,
+                        isOpened: notification.isOpened,
+                        showMenu: false
+                    }));
+                    this.combinedNotifications = [...this.combinedNotifications, ...moneyExchangeMapped];
+                    this.sortNotifications();
+                },
+                (error) => {
+                    console.error('Error loading money exchange notifications:', error);
+                }
+            );
+		}
     
-        this.notificationService.getNotificationsByUserId(userId).subscribe(
-            (moneyExchangeNotifications) => {
-                const moneyExchangeMapped = moneyExchangeNotifications.map(notification => ({
-                    type: 1, // Notification (Money and Club)
-                    data: notification,
-                    creationTime: notification.createdAt,
-                    isOpened: notification.isOpened
-                }));
-                this.combinedNotifications = [...this.combinedNotifications, ...moneyExchangeMapped];
-                this.sortNotifications();
-            },
-            (error) => {
-                console.error('Error loading money exchange notifications:', error);
-            }
-        );
-        
         this.notificationService.getProblemNotificationsByUserId(this.user?.role || "tourist").subscribe(
             (problemNotifications: PagedResults<ProblemNotification>) => {
                 const problemNotificationMapped = problemNotifications.results.map(notification => ({
                     type: 2, // Problem
                     data: notification,
                     creationTime: notification.createdAt,
-                    isOpened: notification.isOpened
+                    isOpened: notification.isOpened,
+                    showMenu: true
                 }));
                 this.combinedNotifications = [...this.combinedNotifications, ...problemNotificationMapped];
                 console.log("PROBLEM", problemNotificationMapped);
@@ -196,21 +398,41 @@ export class PublicPointNotificationsComponent implements OnInit {
             }
         );  
 
-        this.notificationService.getNotificationMessagesByUserId(userId).subscribe(
-            (moneyExchangeNotifications) => {
-                const moneyExchangeMapped = moneyExchangeNotifications.map(notification => ({
-                    type: 3, // Message
-                    data: notification,
-                    creationTime: notification.createdAt,
-                    isOpened: notification.isOpened
-                }));
-                this.combinedNotifications = [...this.combinedNotifications, ...moneyExchangeMapped];
-                this.sortNotifications();
-            },
-            (error) => {
-                console.error('Error loading money exchange notifications:', error);
-            }
-        );   
+        if (this.user?.role == 'tourist') {
+            this.notificationService.getNotificationMessagesByUserId(userId).subscribe(
+                (moneyExchangeNotifications) => {
+                    const moneyExchangeMapped = moneyExchangeNotifications.map(notification => ({
+                        type: 3, // Message
+                        data: notification,
+                        creationTime: notification.createdAt,
+                        isOpened: notification.isOpened,
+                        showMenu: false,
+                    }));
+                    this.combinedNotifications = [...this.combinedNotifications, ...moneyExchangeMapped];
+                    this.sortNotifications();
+                },
+                (error) => {
+                    console.error('Error loading money exchange notifications:', error);
+                }
+            );   
+        } else {
+            this.notificationService.getAuthorNotificationMessagesByUserId(userId).subscribe(
+                (moneyExchangeNotifications) => {
+                    const moneyExchangeMapped = moneyExchangeNotifications.map(notification => ({
+                        type: 3, // Message
+                        data: notification,
+                        creationTime: notification.createdAt,
+                        isOpened: notification.isOpened,
+                        showMenu: false,
+                    }));
+                    this.combinedNotifications = [...this.combinedNotifications, ...moneyExchangeMapped];
+                    this.sortNotifications();
+                },
+                (error) => {
+                    console.error('Error loading money exchange notifications:', error);
+                }
+            );   
+        }
 
         this.clubRequestService.getClubRequestByOwner(userId).subscribe(
             (clubRequests) => {
@@ -220,7 +442,8 @@ export class PublicPointNotificationsComponent implements OnInit {
                         type: 4, // ClubRequest
                         data: notification,
                         creationTime: notification.createdAt,
-                        isOpened: notification.isOpened
+                        isOpened: notification.isOpened,
+                        showMenu: false,
                     }));
                 this.combinedNotifications = [...this.combinedNotifications, ...publicPointMapped];
             },
@@ -237,7 +460,8 @@ export class PublicPointNotificationsComponent implements OnInit {
                         type: 5,
                         data: notification,
                         creationTime: notification.createdAt,
-                        isOpened: notification.isOpened
+                        isOpened: notification.isOpened,
+                        showMenu: false,
                     }));
                     console.log("EvoE: ", clubInvitationMapped)
                 this.combinedNotifications = [...this.combinedNotifications, ...clubInvitationMapped];
@@ -253,7 +477,21 @@ export class PublicPointNotificationsComponent implements OnInit {
         this.combinedNotifications = this.combinedNotifications.sort(
             (a, b) => new Date(b.creationTime).getTime() - new Date(a.creationTime).getTime()
         );
+
+        this.totalCount = 0;
+
+        this.combinedNotifications.forEach(notification => {
+            if (!notification.isOpened) {
+                this.totalCount++;
+            }
+        });
+
+        // Emitujte novi totalCount
+        this.publicPointService.updateTotalCount(this.totalCount);
+
+        console.log("Total opened notifications count: ", this.totalCount);
         console.log("Sorted: ", this.combinedNotifications);
+        console.log("Total opened notifications count: ", this.totalCount);
     }
     
     isPublicPointNotification(notification: { type: number; data: any }): notification is { type: 0; data: PublicPointNotification } {
@@ -287,6 +525,10 @@ export class PublicPointNotificationsComponent implements OnInit {
         });
     
         this.combinedNotifications.forEach(notification => {
+            this.markAsRead(notification);
+        });
+        
+        this.combinedNotifications.forEach(notification => {
             if (this.isPublicPointNotification(notification)) {
                 const publicPointNotification = notification.data as PublicPointNotification;
                 this.publicPointService.updateNotification(publicPointNotification.id, {
@@ -303,6 +545,15 @@ export class PublicPointNotificationsComponent implements OnInit {
                 }).subscribe({
                     error: err => console.error('Error marking notification as read:', err)
                 });
+            } else if (this.isMessageNotification(notification)) {
+                this.notificationService.updateMessageNotification(notification.data.id, true).subscribe({
+                    next: () => {
+                      console.log('Notification updated successfully');
+                    },
+                    error: (err) => {
+                      console.error('Error updating notification:', err);
+                    },
+                  });                  
             }
         });
     

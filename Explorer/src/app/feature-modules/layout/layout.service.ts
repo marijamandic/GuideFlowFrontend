@@ -11,6 +11,7 @@ import { Tour } from '../tour-authoring/model/tour.model';
 import { Club } from '../administration/model/club.model';
 import { TourPreview } from './model/TourPreview';
 import { MessageNotification } from './model/MessageNotification.model';
+import { ChatLog, ChatMessage } from './model/chatlog.model';
 
 @Injectable({
 	providedIn: 'root'
@@ -44,6 +45,79 @@ export class LayoutService {
 		return this.http.get<Notification[]>(`${environment.apiHost}notifications/tourist/problem/by-user/${userId}`, { headers });
 	}
 
+	getNotificationsByAuthorId(userId: number): Observable<Notification[]> {
+		const headers = new HttpHeaders({
+			Authorization: `Bearer ${localStorage.getItem('access-token')}`,
+			'Content-Type': 'application/json'
+		});
+		return this.http.get<Notification[]>(`${environment.apiHost}notifications/author/problem/by-user/${userId}`, { headers });
+	}
+	
+	createAuthorMessageNotification(messageNotification: MessageNotification): Observable<MessageNotification> {
+		const headers = new HttpHeaders({
+			Authorization: `Bearer ${localStorage.getItem('access-token')}`,
+			'Content-Type': 'application/json'
+		});
+		return this.http.post<MessageNotification>(
+			`${environment.apiHost}notifications/author/problem/message`,
+			messageNotification,
+			{ headers }
+		);
+	}
+		
+	getAuthorNotificationMessagesByUserId(userId: number): Observable<MessageNotification[]> {
+		const headers = new HttpHeaders({
+			Authorization: `Bearer ${localStorage.getItem('access-token')}`,
+			'Content-Type': 'application/json'
+		});
+		return this.http.get<MessageNotification[]>(
+			`${environment.apiHost}notifications/author/problem/message/${userId}`,
+			{ headers }
+		);
+	}
+
+	updateAuthorMessageNotification(id: number, isOpened: boolean): Observable<void> {
+		const headers = new HttpHeaders({
+		  Authorization: `Bearer ${localStorage.getItem('access-token')}`,
+		  'Content-Type': 'application/json'
+		});
+		return this.http.put<void>(
+		  `${environment.apiHost}notifications/author/problem/message/${id}`,
+		  isOpened,
+		  { headers }
+		);
+	}
+
+	deleteAuthorNotification(id: number): Observable<void> {
+		const headers = new HttpHeaders({
+		  Authorization: `Bearer ${localStorage.getItem('access-token')}`,
+		  'Content-Type': 'application/json'
+		});
+		return this.http.delete<void>(
+		  `${environment.apiHost}notifications/author/problem/${id}`,
+		  { headers }
+		);
+	}
+
+	deleteAuthorMessageNotification(id: number): Observable<void> {
+		const headers = new HttpHeaders({
+		  Authorization: `Bearer ${localStorage.getItem('access-token')}`,
+		  'Content-Type': 'application/json'
+		});
+		return this.http.delete<void>(
+		  `${environment.apiHost}notifications/author/problem/message/${id}`,
+		  { headers }
+		);
+	}
+
+	updateAuthorNotification(id: number, updatedNotification: Notification): Observable<void> {
+		const headers = new HttpHeaders({
+			Authorization: `Bearer ${localStorage.getItem('access-token')}`,
+			'Content-Type': 'application/json'
+		});
+		return this.http.patch<void>(`${environment.apiHost}notifications/author/problem/${id}`, updatedNotification, { headers });
+	}
+	  	  
 	updateNotification(id: number, updatedNotification: Notification): Observable<void> {
 		const headers = new HttpHeaders({
 			Authorization: `Bearer ${localStorage.getItem('access-token')}`,
@@ -109,6 +183,26 @@ export class LayoutService {
 		return this.http.patch<ProblemNotification>(`${environment.apiHost}notifications/author/problem?id=${id}&isOpened=${true}`, { headers });
 	}
 
+	deleteNotification(id: number): Observable<void> {
+		const headers = new HttpHeaders({
+			Authorization: `Bearer ${localStorage.getItem('access-token')}`,
+			'Content-Type': 'application/json',
+		});
+		return this.http.delete<void>(`${environment.apiHost}notifications/tourist/problem/${id}`, { headers });
+	}
+	
+	deleteMessageNotification(id: number): Observable<void> {
+		const headers = new HttpHeaders({
+		  Authorization: `Bearer ${localStorage.getItem('access-token')}`,
+		  'Content-Type': 'application/json',
+		});
+	
+		return this.http.delete<void>(
+		  `${environment.apiHost}notifications/tourist/problem/message/${id}`,
+		  { headers }
+		);
+	  }
+
 
 	getAllTours(): Observable<{ results: Tour[], totalCount: number }> {
 		return this.http.get<{ results: Tour[], totalCount: number }>(`${environment.apiHost}authoring/tour`);
@@ -150,7 +244,21 @@ export class LayoutService {
 				}).filter((tour): tour is TourPreview => tour !== null) // Remove null values
 			)
 		);
+	}	
+
+	GetUserChatLog(userId: number): Observable<ChatLog> {
+		return this.http.get<ChatLog>(environment.apiHost + `chatbot/chatLog/${userId}`);
 	}
-	
-		
+
+	CreateChatLog(userId: number): Observable<ChatLog> {
+		return this.http.post<ChatLog>(environment.apiHost + "chatbot/chatLog/create?userId=" + userId, null);
+	}
+
+	UpdateChatLog(chatlog: ChatLog): Observable<ChatLog> {
+		return this.http.patch<ChatLog>(environment.apiHost + "chatbot/chatLog/update", chatlog);
+	}
+
+	GenerateChatBotResponse(chatMessage: ChatMessage): Observable<ChatMessage> {
+		return this.http.post<ChatMessage>(environment.apiHost + "chatbot/prompt", chatMessage);
+	}
 }

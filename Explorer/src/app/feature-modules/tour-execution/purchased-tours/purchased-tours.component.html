@@ -24,44 +24,131 @@
 
 
 <div *ngIf="!message && purchasedTours.length > 0" class="tour-container">
-  <h1>Purchased tours</h1>
+  <div class="search-toggle-container">
+    <div style="width: 33%;"></div>
+    <h1 class="title">My tours</h1>
+    <div class="toggle-switch">
+			<input type="radio" id="completed" name="toggle" (change)="handleProductTypeChange()" [checked]="productType === INCOMPLETE_PRODUCT" />
+			<label for="completed" class="toggle-option">Incomplete</label>
 
-  <div [ngClass]="tour.isPremium ? 'tour-card premium' : 'tour-card'" *ngFor="let tour of purchasedTours">
+			<input type="radio" id="incomplete" name="toggle" (change)="handleProductTypeChange()" [checked]="productType === COMPLETED_PRODUCT" />
+			<label for="incomplete" class="toggle-option">Completed</label>
+		</div>
+  </div>
+  <div *ngIf="productType === INCOMPLETE_PRODUCT">
+    <div [ngClass]="tour.isPremium ? 'tour-card premium' : 'tour-card'" *ngFor="let tour of incompleteTours">
 
-    <div class="tour-card-image">
-      <img *ngIf="tour.checkpoints[0].imageUrl" [src]="getImagePath(tour.checkpoints[0].imageUrl)" alt="Checkpoint image" />
+      <div class="tour-card-image">
+        <img *ngIf="tour.checkpoints[0].imageUrl" [src]="getImagePath(tour.checkpoints[0].imageUrl)" alt="Checkpoint image" />
+      </div>
+      <div class="tour-card-content">
+        <div class="tour-card-header">
+          <div style="display: flex; align-items: center; gap:3px">
+            <h2 style="margin: 0px;">{{ tour.name }}</h2>
+            <i *ngIf="tour.isPremium" class="fa fa-certificate" aria-hidden="true"></i>
+          </div>
+          <div>
+            <span class="tour-weather-incompleted">
+              <img [ngClass]="tour.weatherIcon!=='01d' ? 'weather-icon' : 'weather-sunny'" *ngIf="tour.weatherIcon" [src]="mapToWeatherIcon(tour.weatherIcon) ?? 'assets/images/clear.png'" alt="nema weather ikkonic">
+              <p class="span-style" *ngIf="tour.temperature">{{ tour.weatherDescription}}, {{ mapToRoundNumber(tour.temperature)}}°C</p>
+            </span>
+          </div>
+          <!--button class="kebab-menu"><i class="fa-solid fa-ellipsis-vertical"></i></button-->
+        </div>
+        <div style="display: flex; justify-content:space-between">
+          <p>{{ tour.description }}</p>
+          <p [ngClass]="getRecommendClass(tour.weatherRecommend)">{{mapToRecommend(tour.weatherRecommend)}}</p>
+        </div>
+        <div class="tour-card-details">
+          <span><i class="fa-solid fa-dollar-sign"></i>{{ tour.price }} adventure coins</span>
+          <span><i class="fa-solid fa-fire"></i> {{ LevelMap[tour.level] }}</span>
+          <span><i class="fas fa-walking"></i> {{ tour.lengthInKm }} km</span>
+          <span><i class="fas fa-tag"></i>{{ tour.taggs }}</span>
+        </div>
+        <div class="buttons">
+          <button (click)="createSession(tour.id)" class="cta-button">{{ isActiveSession(tour.id) ? 'Enter Tour' : 'Start Tour' }}</button>
+  
+        </div>
+        <!-- <button class="cta-button" (click)="addToCart(tour)">
+          <i class="fa-solid fa-cart-plus"></i> Add to Cart
+        </button> -->
+      </div>
     </div>
-    <div class="tour-card-content">
-      <div class="tour-card-header">
-        <div style="display: flex; align-items: center; gap:3px">
-          <h2 style="margin: 0px;">{{ tour.name }}</h2>
-          <i *ngIf="tour.isPremium" class="fa fa-certificate" aria-hidden="true"></i>
-        </div>
-        <div>
-          <span class="tour-weather">
-            <img [ngClass]="tour.weatherIcon!=='01d' ? 'weather-icon' : 'weather-sunny'" *ngIf="tour.weatherIcon" [src]="mapToWeatherIcon(tour.weatherIcon) ?? 'assets/images/clear.png'" alt="nema weather ikkonic">
-            <p class="span-style" *ngIf="tour.temperature">{{ tour.weatherDescription}}, {{ mapToRoundNumber(tour.temperature)}}°C</p>
-          </span>
-        </div>
-        <!--button class="kebab-menu"><i class="fa-solid fa-ellipsis-vertical"></i></button-->
-      </div>
-      <div style="display: flex; justify-content:space-between">
-        <p>{{ tour.description }}</p>
-        <p [ngClass]="getRecommendClass(tour.weatherRecommend)">{{mapToRecommend(tour.weatherRecommend)}}</p>
-      </div>
-      <div class="tour-card-details">
-        <span><i class="fa-solid fa-dollar-sign"></i>{{ tour.price }} adventure coins</span>
-        <span><i class="fa-solid fa-fire"></i> {{ LevelMap[tour.level] }}</span>
-        <span><i class="fas fa-walking"></i> {{ tour.lengthInKm }} km</span>
-        <span><i class="fas fa-tag"></i>{{ tour.taggs }}</span>
-      </div>
-      <div class="buttons">
-        <button (click)="createSession(tour.id)" class="cta-button">{{ isActiveSession(tour.id) ? 'Enter Tour' : 'Start Tour' }}</button>
+  </div>
+  <div *ngIf="productType === COMPLETED_PRODUCT">
+    <div [ngClass]="tour.isPremium ? 'tour-card premium' : 'tour-card'" *ngFor="let tour of completedTours">
 
+      <div class="tour-card-image">
+        <img *ngIf="tour.checkpoints[0].imageUrl" [src]="getImagePath(tour.checkpoints[0].imageUrl)" alt="Checkpoint image" />
       </div>
-      <!-- <button class="cta-button" (click)="addToCart(tour)">
-        <i class="fa-solid fa-cart-plus"></i> Add to Cart
-      </button> -->
+      <div class="tour-card-content">
+        <div class="tour-card-header">
+          <div style="display: flex; align-items: center; gap:3px">
+            <h2 style="margin: 0px;">{{ tour.name }}</h2>
+            <i *ngIf="tour.isPremium" class="fa fa-certificate" aria-hidden="true"></i>
+          </div>
+          <div class="tour-header-ellipsis">
+            <i
+              class="fa-solid fa-ellipsis-vertical"
+              (click)="showTourDetailsModal[tour.id] = !showTourDetailsModal[tour.id]; $event.stopPropagation()"
+            ></i>
+            <div *ngIf="showTourDetailsModal[tour.id]" class="tour-header-modal">
+              <div class="tour-header-modal-element" (click)="handleTourOption('Report', tour.id)">
+                <p class="fa fa-exclamation-triangle" aria-hidden="true">
+
+                </p> Report problem</div>
+            </div>
+          </div>        
+          <div>
+            <span class="tour-weather">
+              <img [ngClass]="tour.weatherIcon!=='01d' ? 'weather-icon' : 'weather-sunny'" *ngIf="tour.weatherIcon" [src]="mapToWeatherIcon(tour.weatherIcon) ?? 'assets/images/clear.png'" alt="nema weather ikkonic">
+              <p class="span-style" *ngIf="tour.temperature">{{ tour.weatherDescription}}, {{ mapToRoundNumber(tour.temperature)}}°C</p>
+            </span>
+          </div>
+        </div>
+        <div style="display: flex; justify-content:space-between">
+          <p>{{ tour.description }}</p>
+          <p [ngClass]="getRecommendClass(tour.weatherRecommend)">{{mapToRecommend(tour.weatherRecommend)}}</p>
+        </div>
+        <div class="tour-card-details">
+          <span><i class="fa-solid fa-dollar-sign"></i>{{ tour.price }} adventure coins</span>
+          <span><i class="fa-solid fa-fire"></i> {{ LevelMap[tour.level] }}</span>
+          <span><i class="fas fa-walking"></i> {{ tour.lengthInKm }} km</span>
+          <span><i class="fas fa-tag"></i>{{ tour.taggs }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="problem-modal" *ngIf="isProblemModalOpen">
+  <div class="problem-modal-content">
+    <div class="modal-header">
+      <h2>Report Problem</h2>
+      <button class="close-btn" (click)="closeProblemModal()">×</button>
+    </div>
+
+    <div class="modal-body">
+      <label for="category">Category</label>
+      <select id="category" [(ngModel)]="problemDetails.category" class="dropdown">
+        <option *ngFor="let category of categories" [value]="category.value">{{ category.label }}</option>
+      </select>
+
+      <label for="priority">Priority</label>
+      <select id="priority" [(ngModel)]="problemDetails.priority" class="dropdown">
+        <option *ngFor="let priority of priorities" [value]="priority.value">{{ priority.label }}</option>
+      </select>
+
+      <label for="description">Description</label>
+      <textarea
+        id="description"
+        [(ngModel)]="problemDetails.description"
+        class="description-input"
+        placeholder="Describe the problem..."
+      ></textarea>
+    </div>
+
+    <div class="modal-footer">
+      <button class="cta-button" (click)="submitProblem()">Submit</button>
     </div>
   </div>
 </div>

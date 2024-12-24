@@ -8,6 +8,9 @@ import { TourExecution } from '../model/tour-execution.model';
 import { CreateTourExecutionDto } from '../model/create-tour-execution.dto';
 import { environment } from 'src/env/environment';
 import { Tour } from '../../tour-authoring/model/tour.model';
+import { Category, Priority, categoryToStringArray, priorityToStringArray, Details } from 'src/app/shared/model/details.model';
+import { CreateProblemInput } from '../model/create-problem-input.model';
+import { Problem } from 'src/app/shared/model/problem.model';
 
 @Component({
   selector: 'xp-purchased-tours',
@@ -16,6 +19,9 @@ import { Tour } from '../../tour-authoring/model/tour.model';
 })
 export class PurchasedToursComponent implements OnInit{
   purchasedTours: Tour[] = [];
+  incompleteTours: Tour[] = [];
+  completedTours: Tour[] = [];
+  completedTourIds: number[] = [];
   message: string = '';
   selectedPurchasedTour: PurchasedTours;
   tourExecutionId : string | null=null;
@@ -26,6 +32,28 @@ export class PurchasedToursComponent implements OnInit{
     TourId : 0,
     UserId: 0
   };
+  INCOMPLETE_PRODUCT = 'incomplete';
+	COMPLETED_PRODUCT = 'completed';
+	productType = this.INCOMPLETE_PRODUCT;
+  showTourDetailsModal: { [key: number]: boolean } = {};
+  isProblemModalOpen = false;
+  categories = Object.keys(Category)
+    .filter(key => !isNaN(Number(Category[key as keyof typeof Category]))).map(key => ({
+    value: Category[key as keyof typeof Category],
+    label: key
+  }));
+
+  priorities = Object.keys(Priority)
+    .filter(key => !isNaN(Number(Priority[key as keyof typeof Priority]))).map(key => ({
+    value: Priority[key as keyof typeof Priority],
+    label: key
+  }));
+  problemDetails: Details = {
+    category: Category.Accommodation,
+    priority: Priority.Medium,
+    description: '',
+  };
+  currentTourId: number | null = null;
 
   constructor(private tourExecutionService: TourExecutionService , private authService: AuthService, private router: Router){}
 
@@ -34,11 +62,11 @@ export class PurchasedToursComponent implements OnInit{
       this.user = user;
     }) 
     if(this.user){
-      this.getPurchasedByUser();
+      this.getCompletedTourIds();
       this.checkActiveSession();
     }
   }
-
+  
   getPurchasedByUser() : void{
     if(this.user?.id){
       this.tourExecutionService.getPurchased(this.user.id).subscribe({
@@ -48,6 +76,8 @@ export class PurchasedToursComponent implements OnInit{
             this.purchasedTours = [];
           } else{
             this.purchasedTours = result;
+            this.completedTours = result.filter((tour:any) => this.completedTourIds.includes(tour.id));
+          this.incompleteTours = result.filter((tour:any)=> !this.completedTourIds.includes(tour.id));
             this.message = this.purchasedTours.length === 0 ? "There is no purchased tours yet :(" : '';
           }
         },
@@ -64,6 +94,22 @@ export class PurchasedToursComponent implements OnInit{
           }
         }
       });
+    }
+  }
+  getCompletedTourIds() :void {
+    if(this.user?.id){
+      this.tourExecutionService.getCompletedToursByTourist(this.user.id).subscribe({
+        next: (result) => {
+          this.completedTourIds = result
+          this.getPurchasedByUser();
+          this.completedTourIds.forEach(tour => {
+            this.showTourDetailsModal[tour] = false;
+          });
+        },
+        error: (err) => {
+          this.message = err;
+        }
+      })
     }
   }
 
@@ -166,5 +212,69 @@ export class PurchasedToursComponent implements OnInit{
 		1: 'Advanced',
 		2: 'Expert'
 	};
+  handleProductTypeChange() {
+		this.productType = this.productType === this.INCOMPLETE_PRODUCT ? this.COMPLETED_PRODUCT : this.INCOMPLETE_PRODUCT;
+	}
+  handleTourOption(option: string, tourId: number): void {
+    console.log(`Selected option ${option} for tour ${tourId}`);
+    // Dodaj if za svoju opciju
+    if(option === 'Report'){
+      this.currentTourId = tourId;
+      this.openProblemModal();
+    }
+    this.showTourDetailsModal[tourId] = false; // Zatvori modal nakon akcije
+  }
+  openProblemModal(): void {
+    
+    this.isProblemModalOpen = true;
+  }
 
+  closeProblemModal(): void {
+    this.currentTourId = null;
+    this.isProblemModalOpen = false;
+    this.resetProblemDetails();
+  }
+
+  resetProblemDetails(): void {
+    this.problemDetails = {
+      category: Category.Accommodation,
+      priority: Priority.Medium,
+      description: '',
+    };
+  }
+
+  submitProblem(): void {
+    if (
+      this.problemDetails.category === null ||
+      this.problemDetails.priority === null ||
+      this.problemDetails.description.trim() === ''
+    ) {
+      alert('All fields must be filled to submit the problem.');
+      return;
+    }
+
+    if (!this.currentTourId) {
+      console.error('No tour selected for reporting a problem.');
+      return;
+    }
+    if(this.user !== undefined){
+      const problem: CreateProblemInput = {
+        userId: this.user.id,
+        tourId: this.currentTourId, 
+        category: +this.problemDetails.category as Category,
+        priority: +this.problemDetails.priority as Priority,
+        description: this.problemDetails.description || ''
+      };
+      this.tourExecutionService.createProblem(problem).subscribe({
+        next: (createdProblem: Problem) => {
+          console.log('Problem created:', createdProblem);
+          this.closeProblemModal();
+        },
+        error: (err) => {
+          console.error('Error creating problem:', err);
+        }
+      });
+    }
+    this.closeProblemModal();
+  }
 }

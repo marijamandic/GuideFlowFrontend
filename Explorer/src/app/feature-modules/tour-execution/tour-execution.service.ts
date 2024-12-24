@@ -17,6 +17,7 @@ import { CreateTourExecutionDto } from './model/create-tour-execution.dto';
 import { TourSpecification } from './model/tour-specification.model';
 import { Sales } from './model/sales.model';
 import { TourBundle } from '../marketplace/model/tour-bundle.model';
+import { Author } from './model/author.model';
 
 @Injectable({
 	providedIn: 'root'
@@ -66,6 +67,9 @@ export class TourExecutionService {
 	}
 	getTourExecution(id: string) {
 		return this.http.get<TourExecution>(environment.apiHost + 'execution/tourExecution/' + id);
+	}
+	getCompletedToursByTourist(id:number) {
+		return this.http.get<number[]>(environment.apiHost + 'execution/tourExecution/completed/'+id)
 	}
 	updateTourExecution(updateTourExecutionDto: UpdateTourExecutionDto) {
 		return this.http.put<TourExecution>(environment.apiHost + 'execution/tourExecution', updateTourExecutionDto);
@@ -128,5 +132,13 @@ export class TourExecutionService {
 
 	getPublishedBundles(): Observable<PagedResults<TourBundle>> {
 		return this.http.get<PagedResults<TourBundle>>(`${environment.apiHost}bundles`);
+	}
+
+	updatePremiumTour(tourId: number): Observable<Tour>{
+		return this.http.put<Tour>(environment.apiHost + 'authoring/tour/setPremium/' + tourId, null);
+	}
+
+	getAuthor(id: number): Observable<Author>{
+		return this.http.get<Author>(environment.apiHost + 'user/getAuthor/' + id);
 	}
 }
