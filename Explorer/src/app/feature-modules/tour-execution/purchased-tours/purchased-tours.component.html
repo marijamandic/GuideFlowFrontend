@@ -22,20 +22,40 @@
   </div>
 </section> -->
 
-
 <div *ngIf="!message && purchasedTours.length > 0" class="tour-container">
   <div class="search-toggle-container">
     <div style="width: 33%;"></div>
     <h1 class="title">My tours</h1>
     <div class="toggle-switch">
-			<input type="radio" id="completed" name="toggle" (change)="handleProductTypeChange()" [checked]="productType === INCOMPLETE_PRODUCT" />
-			<label for="completed" class="toggle-option">Incomplete</label>
+      <!-- Toggle za izbor pretrage između INCOMPLETE i COMPLETED tura -->
+      <input type="radio" id="incomplete" name="toggle" (change)="handleProductTypeChange()" [checked]="productType === INCOMPLETE_PRODUCT" />
+      <label for="incomplete" class="toggle-option">Incomplete</label>
 
-			<input type="radio" id="incomplete" name="toggle" (change)="handleProductTypeChange()" [checked]="productType === COMPLETED_PRODUCT" />
-			<label for="incomplete" class="toggle-option">Completed</label>
-		</div>
+      <input type="radio" id="completed" name="toggle" (change)="handleProductTypeChange()" [checked]="productType === COMPLETED_PRODUCT" />
+      <label for="completed" class="toggle-option">Completed</label>
+    </div>
   </div>
   <div *ngIf="productType === INCOMPLETE_PRODUCT">
+    <div class="toggle-switch">
+      <input type="radio" id="allTours" name="toggle" (change)="onSearchModeChange('all')" [checked]="searchMode === 'all'" />
+      <label for="allTours" class="toggle-option">All Tours</label>
+  
+      <input type="radio" id="bestTour" name="toggle" (change)="onSearchModeChange('best')" [checked]="searchMode === 'best'" />
+      <label for="bestTour" class="toggle-option">Best Tour</label>
+    </div>
+
+    <div class="datepicker-container">
+      <label for="tourDate">Select a date (up to 5 days from today):</label>
+      <input 
+        type="date" 
+        id="tourDate" 
+        [(ngModel)]="selectedDate" 
+        (change)="onDateChange()" 
+        min="{{ minDate }}" 
+        max="{{ maxDate }}" 
+      />
+    </div>
+
     <div [ngClass]="tour.isPremium ? 'tour-card premium' : 'tour-card'" *ngFor="let tour of incompleteTours">
 
       <div class="tour-card-image">

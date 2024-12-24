@@ -295,3 +295,39 @@ input[type='radio']:checked + .status-button {
 .status-button:hover {
 	background-color: #ddd; /* Svetlo siva na hover */
 }
+
+/* Stilizacija za DatePicker */
+.datepicker-container {
+  margin: 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.datepicker-container label {
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.datepicker-container input[type="date"] {
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 200px;
+}
+
+.datepicker-container button {
+  padding: 8px 12px;
+  font-size: 14px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.datepicker-container button:hover {
+  background-color: #0056b3;
+}

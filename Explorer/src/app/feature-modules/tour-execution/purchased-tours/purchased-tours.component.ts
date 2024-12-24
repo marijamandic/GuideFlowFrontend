@@ -15,6 +15,7 @@ import { Tour } from '../../tour-authoring/model/tour.model';
   styleUrls: ['./purchased-tours.component.css']
 })
 export class PurchasedToursComponent implements OnInit{
+  searchMode: string = 'all';
   purchasedTours: Tour[] = [];
   incompleteTours: Tour[] = [];
   completedTours: Tour[] = [];
@@ -32,6 +33,9 @@ export class PurchasedToursComponent implements OnInit{
   INCOMPLETE_PRODUCT = 'incomplete';
 	COMPLETED_PRODUCT = 'completed';
 	productType = this.INCOMPLETE_PRODUCT;
+  minDate: string = '';
+  maxDate: string = '';
+  selectedDate: string | null = null;
 
   constructor(private tourExecutionService: TourExecutionService , private authService: AuthService, private router: Router){}
 
@@ -40,6 +44,13 @@ export class PurchasedToursComponent implements OnInit{
       this.user = user;
     }) 
     if(this.user){
+      const today = new Date();
+      const minDate = new Date();
+      const maxDate = new Date();
+      minDate.setDate(today.getDate() + 1);
+      maxDate.setDate(today.getDate() + 5);
+      this.minDate = minDate.toISOString().split('T')[0];
+      this.maxDate = maxDate.toISOString().split('T')[0];
       this.getCompletedTourIds();
       this.checkActiveSession();
     }
@@ -74,6 +85,7 @@ export class PurchasedToursComponent implements OnInit{
       });
     }
   }
+
   getCompletedTourIds() :void {
     if(this.user?.id){
       this.tourExecutionService.getCompletedToursByTourist(this.user.id).subscribe({
@@ -87,6 +99,88 @@ export class PurchasedToursComponent implements OnInit{
       })
     }
   }
+
+  onSearchModeChange(mode: string): void {
+    this.searchMode = mode;
+    if (mode === 'all') {
+      this.selectedDate = null;
+      this.getPurchasedByUser();
+    }else{
+      if(this.selectedDate){
+        this.getBestPurchasedForDate();
+      }
+    }
+  }
+
+  onDateChange(): void {
+    if (this.selectedDate) {
+      if (this.searchMode === 'all') {
+        this.getPurchasedForDate();
+      } else {
+        this.getBestPurchasedForDate();
+      }
+    }
+  }
+
+  getPurchasedForDate() {
+      if(this.user?.id && this.selectedDate){
+        this.tourExecutionService.getPurchasedForDate(this.selectedDate).subscribe({
+          next: (result: any) => {
+            if (result.message) {
+              this.message = result.message;
+              this.purchasedTours = [];
+            } else{
+              this.purchasedTours = result;
+              this.completedTours = result.filter((tour:any) => this.completedTourIds.includes(tour.id));
+            this.incompleteTours = result.filter((tour:any)=> !this.completedTourIds.includes(tour.id));
+              this.message = this.purchasedTours.length === 0 ? "There is no purchased tours yet :(" : '';
+            }
+          },
+          error: (err: any) => {
+            if (err.status === 404) {
+              // Postavljanje poruke za 404 grešku
+              this.message = "No purchased tours found for this user.";
+              this.purchasedTours = [];
+              this.message = "There is no purchased tours yet :(";
+            } else {
+              // Za ostale greške
+              console.log("Error fetching purchased tours: ", err);
+              this.message = "An unexpected error occurred. Please try again later.";
+            }
+          }
+        });
+      }
+    }
+
+    getBestPurchasedForDate() {
+      if(this.user?.id && this.selectedDate){
+        this.tourExecutionService.getBestPurchasedForDate(this.selectedDate).subscribe({
+          next: (result: any) => {
+            if (result.message) {
+              this.message = result.message;
+              this.purchasedTours = [];
+            } else{
+              this.purchasedTours = result;
+              this.completedTours = result.filter((tour:any) => this.completedTourIds.includes(tour.id));
+            this.incompleteTours = result.filter((tour:any)=> !this.completedTourIds.includes(tour.id));
+              this.message = this.purchasedTours.length === 0 ? "There is no purchased tours yet :(" : '';
+            }
+          },
+          error: (err: any) => {
+            if (err.status === 404) {
+              // Postavljanje poruke za 404 grešku
+              this.message = "No purchased tours found for this user.";
+              this.purchasedTours = [];
+              this.message = "There is no purchased tours yet :(";
+            } else {
+              // Za ostale greške
+              console.log("Error fetching purchased tours: ", err);
+              this.message = "An unexpected error occurred. Please try again later.";
+            }
+          }
+        });
+      }
+    }
 
   createSession(tourId: number): void{
     if(this.user){
@@ -188,6 +282,11 @@ export class PurchasedToursComponent implements OnInit{
 		2: 'Expert'
 	};
   handleProductTypeChange() {
-		this.productType = this.productType === this.INCOMPLETE_PRODUCT ? this.COMPLETED_PRODUCT : this.INCOMPLETE_PRODUCT;
-	}
+    if (this.productType === this.INCOMPLETE_PRODUCT) {
+      this.productType = this.COMPLETED_PRODUCT;
+    } else {
+      this.productType = this.INCOMPLETE_PRODUCT;
+    }
+  }
+
 }
