@@ -18,13 +18,15 @@
               *ngIf="imageBase64" 
               [src]="imageBase64" 
               alt="Preview image" 
-              class="profile-image preview-image" 
+              class="preview-image" 
             />
             <input 
               type="file" 
               (change)="onFileSelected($event)" 
               class="upload-input"
+              id="file-upload"
             />
+            <label for="file-upload" class="upload-label">Browse</label>
           </ng-container>
         </div>
       </div>

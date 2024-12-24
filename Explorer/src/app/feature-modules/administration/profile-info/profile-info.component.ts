@@ -478,14 +478,18 @@ export class ProfileInfoComponent implements OnInit, OnDestroy {
 
   calculateProgress(): void {
     if (this.tourist) {
-      const level = this.tourist.level || 1;
-      const xp = this.tourist.xp || 0;
-
-      this.minXp = (level-1) * 20;
-      this.maxXp = level * 20;
-      this.currentXp = this.minXp + xp;
-
-      this.progressPercent = (xp / 20) * 100;
+      const level = this.tourist.level || 1; 
+      const xp = this.tourist.xp || 0; 
+      this.minXp = 0;
+      for (let i = 1; i < level; i++) {
+        this.minXp += i * 20;
+      }
+  
+      this.maxXp = this.minXp + level * 20;
+  
+      this.currentXp = xp+this.minXp;
+  
+      this.progressPercent = ((xp) / (this.maxXp - this.minXp)) * 100;
     }
   }
 
