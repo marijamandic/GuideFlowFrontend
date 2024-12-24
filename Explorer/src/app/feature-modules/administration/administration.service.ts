@@ -260,9 +260,18 @@ export class AdministrationService {
 		);
 	}
 
-	getSalesData(authorId: number): Observable<{ [key: string]: number }> {
-		return this.http.get<{ [key: string]: number }>(`${environment.apiHost}manageauthor/dashboard/paymentsForYear/${authorId}`);
-	  }
-	  
+	getSalesData1y(authorId: number): Observable<{ [key: string]: number }> {
+        return this.http.get<{ [key: string]: number }>(`${environment.apiHost}manageauthor/dashboard/paymentsForYear/${authorId}`);
+    }
+
+    getSalesData1m(authorId: number): Observable<{ [key: string]: number }> {
+        return this.http.get<{ [key: string]: number }>(`${environment.apiHost}manageauthor/dashboard/paymentsForOneMonth/${authorId}`);
+    }
+    getSalesData3m(authorId: number): Observable<{ [key: string]: number }> {
+        return this.http.get<{ [key: string]: number }>(`${environment.apiHost}manageauthor/dashboard/paymentsForThreeMonth/${authorId}`);
+    }
+    getSalesData6m(authorId: number): Observable<{ [key: string]: number }> {
+        return this.http.get<{ [key: string]: number }>(`${environment.apiHost}manageauthor/dashboard/paymentsForSixMonth/${authorId}`);
+    }
 	
 }

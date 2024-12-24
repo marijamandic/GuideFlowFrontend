@@ -55,6 +55,7 @@ export class AuthorDashboardComponent implements OnInit, AfterViewInit  {
   reviewsPartition: { [key: number]: number } = {};
   showDoughnut = false;
   
+  
   problemStatusData: ChartData<'bar'> = {
     labels: ['Resolved', 'Unresolved', 'Overdue'],
     datasets: [
@@ -111,24 +112,29 @@ export class AuthorDashboardComponent implements OnInit, AfterViewInit  {
   };
    
   
-  salesLabels: string[] = ['2024-12-01', '2024-12-02', '2024-12-03']; // Test datumi
-  salesData: number[] = [10, 15, 8]; // Test vrednosti
-
+  salesLabels: string[] = []; // Test datumi
+  salesData: number[] = []; // Test vrednosti
+  selectedTimePeriod: string = '1m';
   
 
-  salesChartData: ChartData<'line'> = {
+  /*salesChartData: ChartData<'line'> = {
     labels: this.salesLabels, // Datumi sa backend-a
     datasets: [
       {
         label: 'Sales Per Day',
         data: this.salesData, // Broj prodaja po danima
-        borderColor: 'rgba(75, 192, 192, 1)', // Linija grafikona
+        borderColor: 'rgb(24, 32, 32)', // Linija grafikona
         backgroundColor: 'rgba(75, 192, 192, 0.2)', // Ispuna ispod linije
         fill: true, // Omogućava ispunu
         tension: 0.4, // Glađa linija
       },
     ],
   };
+
+  selectTimePeriod(period: string): void {
+    this.selectedTimePeriod = period;
+    this.loadSalesChartData(this.user.id);
+  }
   
   salesChartOptions: ChartOptions<'line'> = {
     responsive: true,
@@ -151,7 +157,51 @@ export class AuthorDashboardComponent implements OnInit, AfterViewInit  {
         },
       },
     },
+  };*/
+
+  selectTimePeriod(period: string): void {
+    this.selectedTimePeriod = period;
+    this.loadSalesChartData(this.user.id);
+  }
+
+  salesChartData: ChartData<'line'> = {
+    labels: this.salesLabels,
+    datasets: [
+      {
+        label: 'Sales Per Day',
+        data: this.salesData,
+        borderColor: 'rgb(24, 32, 32)',
+        backgroundColor: 'rgba(132, 220, 198, 0.2)',
+        fill: true,
+        tension: 0.4
+      },
+    ],
   };
+
+  // Definisanje opcija za grafikon
+  salesChartOptions: ChartOptions<'line'> = {
+    responsive: true,
+    plugins: {
+      legend: { display: false, position: 'top' },
+      tooltip: { enabled: true },
+    },
+    scales: {
+      x: {
+        title: { display: true, text: 'Date' },
+        grid: { display: false },
+        ticks: {
+          autoSkip: true,
+          maxRotation: 0
+        },
+      },
+      y: {
+        title: { display: true, text: 'Number of Purchases' },
+        beginAtZero: true,
+        grid: { display: false },
+      },
+    },
+  };
+
 
   // ■■■■■ Init mate ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
   ngOnInit(): void {
@@ -251,22 +301,51 @@ export class AuthorDashboardComponent implements OnInit, AfterViewInit  {
       });
     }
 
-    loadSalesChartData(authorId: number) {
-      this.administrationService.getSalesData(authorId).subscribe((data: { [key: string]: number }) => {
-        this.salesLabels = Object.keys(data); // Datumi kao X-osa
-        this.salesData = Object.values(data); // Broj prodaja kao Y-osa
-        console.log('ovo su podaci', this.salesLabels)
+      loadSalesChartData(authorId: number) { 
+        let dataObservable;
     
-        // Ažuriraj ChartData
-        this.salesChartData.labels = this.salesLabels;
-        this.salesChartData.datasets[0].data = this.salesData;
-    
-        // Osveži grafikon
-        if (this.chart) {
-          this.chart.update();
+        switch (this.selectedTimePeriod) {
+            case '1m':
+                dataObservable = this.administrationService.getSalesData1m(authorId);
+                break;
+            case '3m':
+                dataObservable = this.administrationService.getSalesData3m(authorId);
+                break;
+            case '6m':
+                dataObservable = this.administrationService.getSalesData6m(authorId);
+                break;
+            case '1y':
+                dataObservable = this.administrationService.getSalesData1y(authorId);
+                break;
         }
-      });
+    
+        if (dataObservable) {
+            dataObservable.subscribe((data: { [key: string]: number }) => {
+                // Sortiraj podatke po datumu
+                const sortedData = Object.entries(data).sort((a, b) => new Date(a[0]).getTime() - new Date(b[0]).getTime());
+    
+                // Podeli ključeve (datume) i vrednosti (broj prodaja)
+                const sortedLabels = sortedData.map(entry => {
+                    return new Date(entry[0]).toLocaleDateString('default', { month: 'short', day: 'numeric' });
+                });
+                const sortedValues = sortedData.map(entry => entry[1]);
+    
+                // Ažuriraj Chart.js podatke
+                this.salesLabels = sortedLabels; // Hronološki poredjani datumi
+                this.salesData = sortedValues; // Broj prodaja
+    
+                this.salesChartData.labels = this.salesLabels;
+                this.salesChartData.datasets[0].data = this.salesData;
+    
+                // Osveži grafikon
+                if (this.chart) {
+                    this.chart.update();
+                }
+            });
+        }
     }
+    
+    
     
 
 

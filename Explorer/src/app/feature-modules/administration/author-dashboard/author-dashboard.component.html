@@ -1,38 +1,63 @@
 <div class="dashboard-container">
   <!-- Full-Width Summary Card -->
   <div class="dashboard-card full-width">
-    <div>
-      <h2>Tours</h2>
-      <p>Number of published tours</p>
-      <h3>{{publishedTours}}</h3>
-    </div>
-    <div>
-      <h2>Purchases</h2>
-      <p>Number of total purchases</p>
-      <h3>{{purchasedTours}}</h3>
-    </div>
-    <div>
-      <h2>Sales</h2>
-      <p>Total volume in our sales</p>
-      <h3>{{totalSales}}</h3>
+    <div class="general-container">
+      <div class="info-item">
+        <div class="info-text">
+          <h2>Tours</h2>
+          <p>Number of published tours</p>
+        </div>
+        <span class="number">{{publishedTours}}</span>
+      </div>
+      <div class="info-item">
+        <div class="info-text">
+          <h2>Purchases</h2>
+          <p>Number of total purchases</p>
+        </div>
+        <span class="number">{{purchasedTours}}</span>
+      </div>
+      <div class="info-item">
+        <div class="info-text">
+          <h2>Sales</h2>
+          <p>Total volume in our sales</p>
+        </div>
+        <span class="number">{{totalSales}}</span>
+      </div>
     </div>
   </div>
 
   <!-- Sales and Reviews Side-by-Side -->
-  <div class="dashboard-card half-width" >
+  <div class="dashboard-card half-width" style="position: relative;">
     <h2>Sales</h2>
     <p>Number of sales for selected period</p>
-    <div class="chart-placeholder">[Chart Placeholder]</div>
+    <div class="buttons-container" style="position: absolute; top: 10px; right: 50px;">
+      <button 
+        class="time-button"
+        [class.active]="selectedTimePeriod === '1m'" 
+        (click)="selectTimePeriod('1m')">1m</button>
+      <button 
+        class="time-button" 
+        [class.active]="selectedTimePeriod === '3m'" 
+        (click)="selectTimePeriod('3m')">3m</button>
+      <button 
+        class="time-button" 
+        [class.active]="selectedTimePeriod === '6m'" 
+        (click)="selectTimePeriod('6m')">6m</button>
+      <button 
+        class="time-button" 
+        [class.active]="selectedTimePeriod === '1y'" 
+        (click)="selectTimePeriod('1y')">1y</button>
+    </div>
     <div>
-      <h3>Sales Chart</h3>
       <canvas baseChart
               [data]="salesChartData"
               [options]="salesChartOptions"
               [type]="'line'">
       </canvas>
     </div>
-    
   </div>
+  
+  
 
   <!-- Reviews -->
   <div class="dashboard-card half-width reviews-card">
