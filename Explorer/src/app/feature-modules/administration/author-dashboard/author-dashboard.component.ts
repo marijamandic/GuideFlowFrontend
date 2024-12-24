@@ -49,8 +49,12 @@ export class AuthorDashboardComponent implements OnInit, AfterViewInit  {
   selectedProblemMessages: Message[] = [];
   newMessageContent: string = '';
   averageGrade: number = 0;
+  publishedTours: number = 0;
+  purchasedTours:number = 0;
+  totalSales: number = 0;
   reviewsPartition: { [key: number]: number } = {};
   showDoughnut = false;
+  
   
   problemStatusData: ChartData<'bar'> = {
     labels: ['Resolved', 'Unresolved', 'Overdue'],
@@ -106,6 +110,98 @@ export class AuthorDashboardComponent implements OnInit, AfterViewInit  {
       tooltip: { enabled: true },
     },
   };
+   
+  
+  salesLabels: string[] = []; // Test datumi
+  salesData: number[] = []; // Test vrednosti
+  selectedTimePeriod: string = '1m';
+  
+
+  /*salesChartData: ChartData<'line'> = {
+    labels: this.salesLabels, // Datumi sa backend-a
+    datasets: [
+      {
+        label: 'Sales Per Day',
+        data: this.salesData, // Broj prodaja po danima
+        borderColor: 'rgb(24, 32, 32)', // Linija grafikona
+        backgroundColor: 'rgba(75, 192, 192, 0.2)', // Ispuna ispod linije
+        fill: true, // Omogućava ispunu
+        tension: 0.4, // Glađa linija
+      },
+    ],
+  };
+
+  selectTimePeriod(period: string): void {
+    this.selectedTimePeriod = period;
+    this.loadSalesChartData(this.user.id);
+  }
+  
+  salesChartOptions: ChartOptions<'line'> = {
+    responsive: true,
+    plugins: {
+      legend: { display: true, position: 'top' },
+      tooltip: { enabled: true },
+    },
+    scales: {
+      x: {
+        title: { display: true, text: 'Date' }, // Naslov za x osu
+        grid: {
+          display: false, // Isključuje vertikalne linije na x-osi
+        },
+      },
+      y: {
+        title: { display: true, text: 'Number of Purchases' }, // Naslov za y osu
+        beginAtZero: true, // Počinje od nule
+        grid: {
+          display: false, // Isključuje vertikalne linije na x-osi
+        },
+      },
+    },
+  };*/
+
+  selectTimePeriod(period: string): void {
+    this.selectedTimePeriod = period;
+    this.loadSalesChartData(this.user.id);
+  }
+
+  salesChartData: ChartData<'line'> = {
+    labels: this.salesLabels,
+    datasets: [
+      {
+        label: 'Sales Per Day',
+        data: this.salesData,
+        borderColor: 'rgb(24, 32, 32)',
+        backgroundColor: 'rgba(132, 220, 198, 0.2)',
+        fill: true,
+        tension: 0.4
+      },
+    ],
+  };
+
+  // Definisanje opcija za grafikon
+  salesChartOptions: ChartOptions<'line'> = {
+    responsive: true,
+    plugins: {
+      legend: { display: false, position: 'top' },
+      tooltip: { enabled: true },
+    },
+    scales: {
+      x: {
+        title: { display: true, text: 'Date' },
+        grid: { display: false },
+        ticks: {
+          autoSkip: true,
+          maxRotation: 0
+        },
+      },
+      y: {
+        title: { display: true, text: 'Number of Purchases' },
+        beginAtZero: true,
+        grid: { display: false },
+      },
+    },
+  };
+
 
   // ■■■■■ Init mate ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
   ngOnInit(): void {
@@ -115,6 +211,10 @@ export class AuthorDashboardComponent implements OnInit, AfterViewInit  {
     })
     this.loadAverageGrade(this.user.id); 
     this.loadReviewsPartition(this.user.id);
+    this.loadTotalPublishedTours(this.user.id);
+    this.loadTotalPurchasedTours(this.user.id);
+    this.loadTotalSales(this.user.id);
+    this.loadSalesChartData(this.user.id);
   }
 
   ngAfterViewInit(): void {
@@ -161,6 +261,93 @@ export class AuthorDashboardComponent implements OnInit, AfterViewInit  {
     if (total === 0) return 0;
     return Math.round((this.reviewsPartition[grade] || 0) / total * 100);
   }
+
+ 
+
+  // ■■■■■ General numbers ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+    loadTotalPublishedTours(authorId:number): void{
+      this.administrationService.getTotalPublishedTours(authorId).subscribe({
+        next: (result) => {
+          this.publishedTours = result;
+         console.log('***published tours',result);
+        },
+        error: (err) => {
+          console.error('Error geting published tours:', err);
+        },
+      });
+    }
+  
+    loadTotalPurchasedTours(authorId:number): void{
+      this.administrationService.getTotalPurchasedTours(authorId).subscribe({
+        next: (result) => {
+          this.purchasedTours = result;
+         console.log('***purchased tours',result);
+        },
+        error: (err) => {
+          console.error('Error geting purchased tours:', err);
+        },
+      });
+    }
+  
+    loadTotalSales(authorId:number): void{
+      this.administrationService.getTotalSales(authorId).subscribe({
+        next: (result) => {
+          this.totalSales= result;
+         console.log('***total sales:',result);
+        },
+        error: (err) => {
+          console.error('Error geting total sales:', err);
+        },
+      });
+    }
+
+      loadSalesChartData(authorId: number) { 
+        let dataObservable;
+    
+        switch (this.selectedTimePeriod) {
+            case '1m':
+                dataObservable = this.administrationService.getSalesData1m(authorId);
+                break;
+            case '3m':
+                dataObservable = this.administrationService.getSalesData3m(authorId);
+                break;
+            case '6m':
+                dataObservable = this.administrationService.getSalesData6m(authorId);
+                break;
+            case '1y':
+                dataObservable = this.administrationService.getSalesData1y(authorId);
+                break;
+        }
+    
+        if (dataObservable) {
+            dataObservable.subscribe((data: { [key: string]: number }) => {
+                // Sortiraj podatke po datumu
+                const sortedData = Object.entries(data).sort((a, b) => new Date(a[0]).getTime() - new Date(b[0]).getTime());
+    
+                // Podeli ključeve (datume) i vrednosti (broj prodaja)
+                const sortedLabels = sortedData.map(entry => {
+                    return new Date(entry[0]).toLocaleDateString('default', { month: 'short', day: 'numeric' });
+                });
+                const sortedValues = sortedData.map(entry => entry[1]);
+    
+                // Ažuriraj Chart.js podatke
+                this.salesLabels = sortedLabels; // Hronološki poredjani datumi
+                this.salesData = sortedValues; // Broj prodaja
+    
+                this.salesChartData.labels = this.salesLabels;
+                this.salesChartData.datasets[0].data = this.salesData;
+    
+                // Osveži grafikon
+                if (this.chart) {
+                    this.chart.update();
+                }
+            });
+        }
+    }
+    
+    
+    
+
 
   // ■■■■■ Problems table ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
   loadProblems(): void {

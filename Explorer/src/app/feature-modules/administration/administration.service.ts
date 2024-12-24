@@ -242,5 +242,36 @@ export class AdministrationService {
 		`${environment.apiHost}manageauthor/dashboard/${authorId}/reviews-partition`
 		);
 	}
+
+	getTotalPublishedTours(authorId:number):Observable<number>{
+		return this.http.get<number>(
+			`${environment.apiHost}manageauthor/dashboard/total-publishes/${authorId}`
+		);
+	}
+
+	getTotalPurchasedTours(authorId:number):Observable<number>{
+		return this.http.get<number>(
+			`${environment.apiHost}manageauthor/dashboard/total-purchased/${authorId}`
+		);
+	}
+	getTotalSales(authorId:number):Observable<number>{
+		return this.http.get<number>(
+			`${environment.apiHost}manageauthor/dashboard/total-sales/${authorId}`
+		);
+	}
+
+	getSalesData1y(authorId: number): Observable<{ [key: string]: number }> {
+        return this.http.get<{ [key: string]: number }>(`${environment.apiHost}manageauthor/dashboard/paymentsForYear/${authorId}`);
+    }
+
+    getSalesData1m(authorId: number): Observable<{ [key: string]: number }> {
+        return this.http.get<{ [key: string]: number }>(`${environment.apiHost}manageauthor/dashboard/paymentsForOneMonth/${authorId}`);
+    }
+    getSalesData3m(authorId: number): Observable<{ [key: string]: number }> {
+        return this.http.get<{ [key: string]: number }>(`${environment.apiHost}manageauthor/dashboard/paymentsForThreeMonth/${authorId}`);
+    }
+    getSalesData6m(authorId: number): Observable<{ [key: string]: number }> {
+        return this.http.get<{ [key: string]: number }>(`${environment.apiHost}manageauthor/dashboard/paymentsForSixMonth/${authorId}`);
+    }
 	
 }
