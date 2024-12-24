@@ -759,3 +759,32 @@ h2 {
   box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
+.preview-image {
+  width: 250px; /* Maksimalna širina slike */
+  height: auto; /* Automatski prilagođavanje visine */
+  object-fit: cover; /* Izbegavanje deformacije slike */
+  margin-bottom: 10px; /* Razmak između slike i dugmeta */
+  border-radius: 10%;
+}
+
+/* Stil za dugme Browse */
+.upload-input {
+  display: none; /* Sakriva originalni input za fajl */
+}
+
+.upload-label {
+  display: inline-block;
+  background-color: #4ad0a7;
+  color: white;
+  padding: 10px 20px;
+  font-size: 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  text-align: center;
+  margin: 10px;
+}
+
+.upload-label:hover {
+  background-color: #3cb090; /* Svetlija nijansa zelene prilikom prelaska mišem */
+}
