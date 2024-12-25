@@ -17,7 +17,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { PositionsimComponent } from './positionsim/positionsim.component';
-import { ProblemComponent } from './problem/problem.component';
 import { ProblemViewComponent } from './problem-view/problem-view.component';
 import { TourDetailsComponent } from './tour-details/tour-details.component';
 import { AddEncounterComponent } from './add-encounter/add-encounter.component';
@@ -38,7 +37,6 @@ import { ProblemInfoComponent } from './problem-info/problem-info.component';
     TourEquipmentComponent,
     PublicPointRequestsComponent,
     PositionsimComponent,
-    ProblemComponent,
     ProblemViewComponent,
     TourDetailsComponent,
     AddEncounterComponent,
@@ -67,7 +65,6 @@ import { ProblemInfoComponent } from './problem-info/problem-info.component';
     PublicPointRequestsComponent,
     TourEquipmentComponent,
     PositionsimComponent,
-    ProblemComponent,
     TourAuthorDetailsComponent
   ]
 })

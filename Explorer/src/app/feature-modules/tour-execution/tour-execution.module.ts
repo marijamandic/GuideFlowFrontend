@@ -6,11 +6,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
-import { ReportProblemComponent } from './report-problem/report-problem.component';
 import { TourReviewComponent } from './tour-review/tour-review.component';
 import { TourReviewFormComponent } from './tour-review-form/tour-review-form.component';
 import { TourViewComponent } from './tour-view/tour-view.component';
-import { ProblemStatusComponent } from './problem-status/problem-status.component';
 import { TourExecutionDetailsComponent } from './tour-execution-details/tour-execution-details.component';
 import { PurchasedToursComponent } from './purchased-tours/purchased-tours.component';
 import { SharedModule } from 'src/app/shared/shared.module';
@@ -23,12 +21,10 @@ import { MarketplaceModule } from '../marketplace/marketplace.module';
 	declarations: [
 		EquipmentManagementComponent,
 		EquipmentFormComponent,
-		ReportProblemComponent,
 		TourReviewComponent,
 		TourReviewFormComponent,
 		TourExecutionDetailsComponent,
 		PurchasedToursComponent,
-		ProblemStatusComponent,
 		TourViewComponent,
 		TourExecutionMap,
 		SuggestedToursComponent
@@ -45,6 +41,6 @@ import { MarketplaceModule } from '../marketplace/marketplace.module';
 		TourAuthoringModule,
 		MarketplaceModule
 	],
-	exports: [EquipmentManagementComponent, ReportProblemComponent, TourReviewComponent]
+	exports: [EquipmentManagementComponent, TourReviewComponent]
 })
 export class TourExecutionModule {}

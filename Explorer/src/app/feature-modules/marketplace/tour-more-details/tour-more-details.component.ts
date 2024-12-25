@@ -36,7 +36,7 @@ export class TourMoreDetailsComponent implements OnInit{
   MapViewMode:boolean = false;
   isPurchased:boolean = false;
   isShareModalOpen: boolean = false;
-  clubPost: { clubId: number; memberId: number; content: string; resourceId: any; resourceType: ResourceType; };
+  clubPost: { id: number, clubId: number; memberId: number; content: string; resourceId: any; resourceType: ResourceType; };
   
   constructor(private authService: AuthService,private route: ActivatedRoute,private tourService:TourService,private marketService: MarketplaceService,private shoppingCartService:ShoppingCartService,private router: Router,private messageService: MessageNotificationService, private adminService: AdministrationService){}
 
@@ -210,6 +210,7 @@ export class TourMoreDetailsComponent implements OnInit{
             const parseclubId = parseInt(clubMatch[2], 10);
             if(this.user && this.tourId){
               this.clubPost = {
+                id: 0,
                 clubId: parseclubId,
                 memberId: this.user?.id,
                 content: parsedDescription,

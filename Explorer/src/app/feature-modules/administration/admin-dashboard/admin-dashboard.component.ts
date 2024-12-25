@@ -265,15 +265,28 @@ ResultUsers: Account[] = []
   
     console.log('Sending updateMoney request:', account.id, this.moneyInput);
   
-    this.service.updateMoney(account.id, this.moneyInput).subscribe({
-      next: () => {
-        alert(`Successfully added ${this.moneyInput} AC to ${account.username}`);
-        this.closeModal();
-      },
-      error: (err) => {
-        console.error('Error depositing money:', err);
-      },
-    });
+    if(account.role === UserRole.Tourist){
+      this.service.updateMoney(account.id, this.moneyInput).subscribe({
+        next: () => {
+          alert(`Successfully added ${this.moneyInput} AC to ${account.username}`);
+          this.closeModal();
+        },
+        error: (err) => {
+          console.error('Error depositing money:', err);
+        },
+      });
+    }
+    else if(account.role === UserRole.Author){
+      this.service.updateAuthorMoney(account.id, this.moneyInput).subscribe({
+        next: () => {
+          alert(`Successfully added ${this.moneyInput} AC to ${account.username}`);
+          this.closeModal();
+        },
+        error: (err) => {
+          console.error('Error depositing money:', err);
+        },
+      });
+    }
 
     const newNotification: Notification = {
       id: 0,

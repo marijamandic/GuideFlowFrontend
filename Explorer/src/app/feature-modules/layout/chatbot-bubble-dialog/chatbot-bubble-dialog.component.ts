@@ -10,16 +10,21 @@ import { User } from 'src/app/infrastructure/auth/model/user.model';
   styleUrls: ['./chatbot-bubble-dialog.component.css']
 })
 export class ChatbotBubbleDialogComponent implements OnInit {
-  user: User
-  chatLog: ChatLog
-  newMessage: string = '';
-  Sender = Sender
   @ViewChild('chatbody')chatbody!: ElementRef
   @Input() dialogPosition: { left: number; top: number } = { left: 0, top: 0 };
   @Input() isDialogOpen = false;
   @Output() isDialogOpenChange = new EventEmitter<boolean>();
+
+  constructor(
+    private authService: AuthService, 
+    private layoutService: LayoutService
+  ){}
+
+  user: User
+  chatLog: ChatLog
+  newMessage: string = '';
+  Sender = Sender
   debouncedChatLogUpdate: () => void;
-  constructor(private authService: AuthService, private layoutService: LayoutService){}
   
   ngOnInit(): void {
     this.debouncedChatLogUpdate = this.debounce(this.updateChatLog.bind(this), 500);
@@ -47,6 +52,7 @@ export class ChatbotBubbleDialogComponent implements OnInit {
     this.newMessage = ''; 
     this.layoutService.GenerateChatBotResponse(newchatMessage).subscribe({
       next: (result: ChatMessage) => {
+        console.log(result);
         this.chatLog.messages.push(result)
         setTimeout(() => this.scrollToBottom(), 0); // before and after?
         this.debouncedChatLogUpdate()
@@ -69,7 +75,6 @@ export class ChatbotBubbleDialogComponent implements OnInit {
     chatBodyElement.scrollTop = chatBodyElement.scrollHeight;
   }
 
-
   debounce = (func: (...args: any[]) => void, wait: number) => {
     let timeout: ReturnType<typeof setTimeout>;
     return (...args: any[]) => {
@@ -82,4 +87,29 @@ export class ChatbotBubbleDialogComponent implements OnInit {
     return this.user && this.user.username !== '' ? 'Ask away ...' : 'Please login in order to use me';
   }
 
+  isTourLink(content: string): boolean {
+    // Proverava da li poruka sadrži format "(NazivTure,ID)"
+    const tourLinkPattern = /\((.+?),(\d+)\)/;
+    return tourLinkPattern.test(content);
+  }
+  
+  getTourLink(content: string): string {
+    // Generiše URL za turu na osnovu ID-a
+    const tourLinkPattern = /\((.+?),(\d+)\)/;
+    const match = content.match(tourLinkPattern);
+    return match ? `/tour/${match[2]}` : '';
+  }
+  
+  getTourName(content: string): string {
+    // Ekstrahuje naziv ture
+    const tourLinkPattern = /\((.+?),(\d+)\)/;
+    const match = content.match(tourLinkPattern);
+    return match ? match[1] : content;
+  }
+  
+  getRemainingMessage(content: string): string {
+    // Vraća deo poruke koji nije u formatu ture
+    const tourLinkPattern = /\((.+?),(\d+)\)/;
+    return content.replace(tourLinkPattern, '').trim();
+  }
 }
