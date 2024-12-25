@@ -1,128 +1,121 @@
 <div class="tour-details-container" *ngIf="tour !== null && tour !== undefined">
-	<div style="display: flex; justify-content: center; align-items: center; gap: 20px">
-		<div class="tour-card">
-			<div class="tour-card-left">
-				<img
-					[src]="checkpoints[0] && checkpoints[0].imageUrl ? getImagePath(checkpoints[0].imageUrl) : 'assets/images/tour2.jpg'"
-					alt="Tour Image"
-				/>
-			</div>
-			<div class="tour-card-right">
-				<div class="tour-card-header">
-					<h2>{{ tour.name }}</h2>
-					<div class="rating">
-						<i
-							*ngFor="let star of getStars()"
-							[class.fa-star]="star === 'full'"
-							[class.fa-star-half-stroke]="star === 'half'"
-							[class.fa-star-o]="star === 'empty'"
-							class="fa-solid"
-						></i>
-					</div>
-				</div>
-				<p class="description">{{ tour.description }}</p>
-				<div class="tour-card-details">
-					<span><i class="fa-solid fa-dollar-sign"></i> {{ tour.price }}</span>
-					<span><i class="fa-solid fa-fire"></i> {{ getLevel(tour.level) }}</span>
-					<span><i class="fas fa-walking"></i> {{ tour.lengthInKm }} km</span>
-				</div>
-				<div class="edit-tour-card">
-					<button class="cta-button edit-tour" (click)="openTourModal()" *ngIf="status !== 'Published'">
-						<i class="fa-solid fa-pen"></i> Edit
-					</button>
-				</div>
-			</div>
-		</div>
-		<div class="tour-map">
-			<xp-map
-				*ngIf="!isEncounterModalOpen"
-				[showSearchBar]="MapViewMode"
-				[checkpoints]="checkpointCoordinates"
-				(distanceCalculated)="onDistanceCalculated($event)"
-			></xp-map>
-		</div>
-		<div *ngIf="isTourModalOpen" class="modal-overlay" (click)="closeTourModal()">
-			<div class="modal-dialog" (click)="$event.stopPropagation()">
-				<xp-tour-form [tour]="tour" [shouldEdit]="true" (tourUpdated)="onTourUpdated()" (closeModal)="closeTourModal()"> </xp-tour-form>
-			</div>
-		</div>
-	</div>
-	<div class="checkpoints-grid">
-		<div class="checkpoint-card" *ngFor="let checkpoint of checkpoints">
-			<div class="checkpoint-card-image">
-				<img
-					[src]="checkpoint.imageUrl ? getImagePath(checkpoint.imageUrl) : '/assets/default-image.png'"
-					alt="Checkpoint Image"
-					class="checkpoint-image"
-				/>
-			</div>
-			<div class="checkpoint-card-content">
-				<h3>{{ checkpoint.name }}</h3>
-				<div class="checkpoint-card-details">
-					<p>{{ checkpoint.description }}</p>
-				</div>
-				<div class="buttons" *ngIf="tour.status !== 1">
-					<button class="cta-button edit" (click)="editCheckpoint(checkpoint)"><i class="fa-solid fa-pen"></i> Edit</button>
-					<button
-						class="cta-button encounter"
-						*ngIf="!checkpoint.encounterId && checkpoint.id"
-						(click)="navigateToAddEncounter(checkpoint.id)"
-					>
-						<i class="fa-solid fa-location"></i> Add encounter
-					</button>
-					<button class="cta-button delete" (click)="deleteCheckpoint(checkpoint)"><i class="fa-solid fa-trash"></i> Delete</button>
-				</div>
-			</div>
-		</div>
-		<div class="checkpoint-card add-checkpoint-card" (click)="openModal()" *ngIf="tour.status !== 1">
-			<div class="checkpoint-card-image">
-				<div class="add-checkpoint-icon">
-					<i class="fa-solid fa-plus"></i>
-				</div>
-			</div>
-			<div class="checkpoint-card-content">
-				<h3>Add Checkpoint</h3>
-			</div>
-		</div>
-	</div>
-	<div *ngIf="isModalOpen" class="modal-overlay" (click)="closeModal()">
-		<div class="modal-dialog" (click)="$event.stopPropagation()">
-			<xp-tour-checkpoint-form
-				*ngIf="tourId !== null"
-				[checkpoint]="selectedCheckpoint"
-				[tourId]="tourId"
-				[shouldEdit]="shouldEdit"
-				(updatedCheckpoint)="onCheckpointUpdated()"
-			></xp-tour-checkpoint-form>
-		</div>
-	</div>
-	<div class="reviews-section" *ngIf="tour.status !== 0">
-		<div *ngIf="reviews.length > 0; else noReviews">
-			<div *ngFor="let review of reviews" class="review-card">
-				<div class="review-header">
-					<p class="review-username">{{ review.username }}</p>
-					<div class="rating">
-						<i
-							*ngFor="let star of getStarsFromRating(review.rating)"
-							[class.fa-star]="star === 'full'"
-							[class.fa-star-half-stroke]="star === 'half'"
-							[class.fa-star-o]="star === 'empty'"
-							class="fa-solid"
-						></i>
-					</div>
-				</div>
-				<p class="review-comment">{{ review.comment || 'No comment provided.' }}</p>
-				<p class="review-date"><strong>Posted on:</strong> {{ review.creationDate | date : 'medium' }}</p>
-			</div>
-		</div>
-		<ng-template #noReviews>
-			<p class="no-reviews-message">There are no reviews for this tour.</p>
-		</ng-template>
-	</div>
-	<div class="one-button">
-		<button class="cta-button close" (click)="goToAllTours()"><i class="fa-solid"></i> Close</button>
-		<button class="cta-button submit" (click)="finishCheckpointsAdding()" *ngIf="status !== 'Published'">
-			<i class="fa-solid fa-pen"></i> Submit
-		</button>
-	</div>
+  <div class="tour-container">
+    <div class="tour-card">
+      <div class="tour-card-right">
+        <div class="tour-card-header">
+          <div class="tour-card-name">
+            <h2>{{ tour.name }}</h2>
+          </div>
+          <div class="rating">
+            <i *ngFor="let star of getStars()" 
+               [class.fa-star]="star === 'full'" 
+               [class.fa-star-half-stroke]="star === 'half'" 
+               [class.fa-star-o]="star === 'empty'" 
+               class="fa-solid"></i>
+          </div>
+        </div>
+        <p class="description">{{ tour.description }}</p>
+        <div class="tour-card-details">
+          <span><i class="fa-solid fa-dollar-sign"></i> {{ tour.price }}</span>
+          <span><i class="fa-solid fa-fire"></i> {{ getLevel(tour.level) }}</span>
+          <span><i class="fas fa-walking"></i> {{ tour.lengthInKm }} km</span>
+        </div>
+        <div class="edit-tour-card">
+          <button class="cta-button edit-tour" (click)="openTourModal()" *ngIf="status !== 'Published'">
+            <i class="fa-solid fa-pen"></i> Edit
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="checkpoints-grid">
+      <div class="checkpoint-card" *ngFor="let checkpoint of checkpoints">
+        <div class="checkpoint-card-image">
+          <img
+            [src]="checkpoint.imageUrl ? getImagePath(checkpoint.imageUrl) : '/assets/default-image.png'"
+            alt="Checkpoint Image"
+            class="checkpoint-image"
+          />
+        </div>
+        <div class="checkpoint-card-gradient"></div>
+        <div class="checkpoint-card-content">
+          <h3>{{ checkpoint.name }}</h3>
+          <div class="checkpoint-card-details">
+            <p>{{ checkpoint.description }}</p>
+          </div>
+          <div class="buttons" *ngIf="tour.status !== 1">
+            <button class="cta-button edit" (click)="editCheckpoint(checkpoint)">
+              <i class="fa-solid fa-pen"></i> Edit
+            </button>
+            <button class="cta-button delete" (click)="deleteCheckpoint(checkpoint)">
+              <i class="fa-solid fa-trash"></i> Delete
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="checkpoint-card add-checkpoint-card" (click)="openModal()" *ngIf="tour.status !== 1">
+        <div class="checkpoint-card-image">
+          <div class="add-checkpoint-icon">
+            <i class="fa-solid fa-plus"></i>
+          </div>
+        </div>
+        <div class="checkpoint-card-content">
+          <h3>Add Checkpoint</h3>
+      </div>
+    </div>
+     <div *ngIf="isTourModalOpen" class="modal-overlay" (click)="closeTourModal()">
+      <div class="modal-dialog" (click)="$event.stopPropagation()">
+        <xp-tour-form
+          [tour]="tour"
+          [shouldEdit]="true"
+          (tourUpdated)="onTourUpdated()"
+          (closeModal)="closeTourModal()">
+        </xp-tour-form>
+      </div>
+    </div>
+    </div>
+    <div class="tour-map">
+      <xp-map [showSearchBar]="MapViewMode" [checkpoints]="checkpointCoordinates" (distanceCalculated)="onDistanceCalculated($event)"></xp-map>
+    </div>
+    <div *ngIf="isModalOpen" class="modal-overlay" (click)="closeModal()">
+      <div class="modal-dialog" (click)="$event.stopPropagation()">
+        <xp-tour-checkpoint-form
+          *ngIf="tourId !== null"
+          [checkpoint]="selectedCheckpoint"
+          [tourId]="tourId"
+          [shouldEdit]="shouldEdit"
+          (updatedCheckpoint)="onCheckpointUpdated()"
+        ></xp-tour-checkpoint-form>
+      </div>
+    </div>
+    <div class="reviews-section" *ngIf="tour.status !== 0">
+      <div *ngIf="reviews.length > 0; else noReviews">
+        <div *ngFor="let review of reviews" class="review-card">
+          <div class="review-header">
+            <p class="review-username">{{ review.username }}</p>
+            <p class="review-percentage-completed">Completed {{ review.percentageCompleted }}% of the tour</p>
+          </div>
+          <div class="rating">
+            <i *ngFor="let star of getStarsFromRating(review.rating)" 
+            [class.fa-star]="star === 'full'" 
+            [class.fa-star-half-stroke]="star === 'half'" 
+            [class.fa-star-o]="star === 'empty'" 
+            class="fa-solid"
+            ></i>
+          </div>
+          <p class="review-comment">{{ review.comment || 'No comment provided.' }}</p>
+          <p class="review-date"> {{ review.creationDate | date:'medium' }}</p>
+        </div>
+      </div>
+    <ng-template #noReviews>
+        <p class="no-reviews-message">There are no reviews for this tour.</p>
+    </ng-template>
+  </div>
+  <div class="one-button">
+    <button class="cta-button close" (click)="goToAllTours()">
+      <i class="fa-solid"></i> Close
+    </button>
+    <button class="cta-button submit" (click)="finishCheckpointsAdding()" *ngIf="status !== 'Published'"> 
+      <i class="fa-solid fa-pen"></i> Submit
+    </button>
+  </div>
 </div>
