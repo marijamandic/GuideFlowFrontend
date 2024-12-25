@@ -11,6 +11,7 @@ import { Tour } from '../../tour-authoring/model/tour.model';
 import { Category, Priority, categoryToStringArray, priorityToStringArray, Details } from 'src/app/shared/model/details.model';
 import { CreateProblemInput } from '../model/create-problem-input.model';
 import { Problem } from 'src/app/shared/model/problem.model';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'xp-purchased-tours',
@@ -18,6 +19,7 @@ import { Problem } from 'src/app/shared/model/problem.model';
   styleUrls: ['./purchased-tours.component.css']
 })
 export class PurchasedToursComponent implements OnInit{
+  searchMode: string = 'all';
   purchasedTours: Tour[] = [];
   incompleteTours: Tour[] = [];
   completedTours: Tour[] = [];
@@ -35,6 +37,9 @@ export class PurchasedToursComponent implements OnInit{
   INCOMPLETE_PRODUCT = 'incomplete';
 	COMPLETED_PRODUCT = 'completed';
 	productType = this.INCOMPLETE_PRODUCT;
+  minDate: string = '';
+  maxDate: string = '';
+  selectedDate: string;
   showTourDetailsModal: { [key: number]: boolean } = {};
   isProblemModalOpen = false;
   categories = Object.keys(Category)
@@ -62,33 +67,44 @@ export class PurchasedToursComponent implements OnInit{
       this.user = user;
     }) 
     if(this.user){
+      const today = new Date();
+      const maxDate = new Date();
+      maxDate.setDate(today.getDate() + 5);
+      this.minDate = today.toISOString().split('T')[0];
+      this.maxDate = maxDate.toISOString().split('T')[0];
+      this.selectedDate = this.minDate;
       this.getCompletedTourIds();
       this.checkActiveSession();
     }
   }
   
-  getPurchasedByUser() : void{
-    if(this.user?.id){
-      this.tourExecutionService.getPurchased(this.user.id).subscribe({
+  getPurchasedTours(apiMethod: string, date?: string): void {
+    if (this.user?.id) {
+      const finalDate = date ?? this.minDate;
+      const methodMap: { [key: string]: Observable<any> } = {
+        'getPurchased': this.tourExecutionService.getPurchased(this.user.id),
+        'getPurchasedForDate': this.tourExecutionService.getPurchasedForDate(finalDate),
+        'getBestPurchasedForDate': this.tourExecutionService.getBestPurchasedForDate(finalDate)
+      };
+  
+      methodMap[apiMethod]?.subscribe({
         next: (result: any) => {
           if (result.message) {
             this.message = result.message;
             this.purchasedTours = [];
-          } else{
+          } else {
             this.purchasedTours = result;
-            this.completedTours = result.filter((tour:any) => this.completedTourIds.includes(tour.id));
-          this.incompleteTours = result.filter((tour:any)=> !this.completedTourIds.includes(tour.id));
+            this.completedTours = result.filter((tour: any) => this.completedTourIds.includes(tour.id));
+            this.incompleteTours = result.filter((tour: any) => !this.completedTourIds.includes(tour.id));
             this.message = this.purchasedTours.length === 0 ? "There is no purchased tours yet :(" : '';
           }
         },
         error: (err: any) => {
           if (err.status === 404) {
-            // Postavljanje poruke za 404 grešku
             this.message = "No purchased tours found for this user.";
             this.purchasedTours = [];
             this.message = "There is no purchased tours yet :(";
           } else {
-            // Za ostale greške
             console.log("Error fetching purchased tours: ", err);
             this.message = "An unexpected error occurred. Please try again later.";
           }
@@ -96,12 +112,25 @@ export class PurchasedToursComponent implements OnInit{
       });
     }
   }
+
+  getPurchased() {
+    this.getPurchasedTours('getPurchased');
+  }
+
+  getPurchasedForDate() {
+    this.getPurchasedTours('getPurchasedForDate', this.selectedDate);
+  }
+
+  getBestPurchasedForDate() {
+    this.getPurchasedTours('getBestPurchasedForDate', this.selectedDate);
+  }
+
   getCompletedTourIds() :void {
     if(this.user?.id){
       this.tourExecutionService.getCompletedToursByTourist(this.user.id).subscribe({
         next: (result) => {
           this.completedTourIds = result
-          this.getPurchasedByUser();
+          this.getPurchased();
           this.completedTourIds.forEach(tour => {
             this.showTourDetailsModal[tour] = false;
           });
@@ -110,6 +139,35 @@ export class PurchasedToursComponent implements OnInit{
           this.message = err;
         }
       })
+    }
+  }
+
+  onSearchModeChange(mode: string): void {
+    this.searchMode = mode;
+    if (mode === 'all') {
+      this.selectedDate = this.minDate;
+      this.getPurchased();
+    }else{
+      if(this.selectedDate === this.minDate){
+        this.getPurchased();
+      }
+      if(this.selectedDate !== this.minDate){
+        this.getBestPurchasedForDate();
+      }
+    }
+  }
+
+  onDateChange(): void {
+    if (this.selectedDate) {
+      if(this.selectedDate === this.minDate){
+        this.getPurchased();
+        return;
+      } 
+      if (this.searchMode === 'all') {
+          this.getPurchasedForDate();
+      } else {
+          this.getBestPurchasedForDate();
+      }
     }
   }
 
@@ -213,8 +271,13 @@ export class PurchasedToursComponent implements OnInit{
 		2: 'Expert'
 	};
   handleProductTypeChange() {
-		this.productType = this.productType === this.INCOMPLETE_PRODUCT ? this.COMPLETED_PRODUCT : this.INCOMPLETE_PRODUCT;
-	}
+    if (this.productType === this.INCOMPLETE_PRODUCT) {
+      this.productType = this.COMPLETED_PRODUCT;
+    } else {
+      this.productType = this.INCOMPLETE_PRODUCT;
+    }
+  }
+
   handleTourOption(option: string, tourId: number): void {
     console.log(`Selected option ${option} for tour ${tourId}`);
     // Dodaj if za svoju opciju

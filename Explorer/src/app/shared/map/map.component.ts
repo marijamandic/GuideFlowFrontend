@@ -134,18 +134,18 @@ export class MapComponent implements AfterViewInit {
     }
   }
 
-  // ngOnChanges(): void {
-  //   console.log(this.map)
-  //   if (this.map) {
-  //     setTimeout(() => this.map.invalidateSize(), 0); // Osvežavanje dimenzija mape
-  //   }
-  //   if (this.map) {
-  //     this.updateCheckpointMarkers();
-  //     this.addUserMarker();
-  //   } else {
-  //     this.map.invalidateSize();
-  //   }
-  // }
+  ngOnChanges(): void {
+     console.log(this.map)
+     //if (this.map) {
+     //  setTimeout(() => this.map.invalidateSize(), 0); // Osvežavanje dimenzija mape
+     //}
+     if (this.map) {
+       this.updateCheckpointMarkers();
+       this.addUserMarker();
+     } //else {
+       //this.map.invalidateSize();
+       //}
+  }
 
   private updateCheckpointMarkers(): void {
     this.resetMap(); 

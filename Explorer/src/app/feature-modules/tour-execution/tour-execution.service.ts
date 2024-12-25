@@ -78,6 +78,14 @@ export class TourExecutionService {
 		return this.http.get<PurchasedTours[]>(environment.apiHost + 'execution/tourExecution/purchased/' + id);
 	}
 
+	getPurchasedForDate(date:string) {
+		return this.http.get<PurchasedTours[]>(environment.apiHost + 'execution/tourExecution/purchased/' + date);
+	}
+
+	getBestPurchasedForDate(date:string) {
+		return this.http.get<PurchasedTours[]>(environment.apiHost + 'execution/tourExecution/recommendTours/' + date);
+	}
+
 	createSession(createTourExecutionDto: CreateTourExecutionDto) {
 		return this.http.post<TourExecution>(environment.apiHost + 'execution/tourExecution', createTourExecutionDto);
 	}
