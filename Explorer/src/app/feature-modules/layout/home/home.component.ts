@@ -18,7 +18,7 @@ import { Router } from '@angular/router';
 	styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-	images: string[] = ['assets/images/tour3.jpg', 'assets/images/tour6.jpg', 'assets/images/tour8.jpg'];
+	images: string[] = ['assets/images/tour3.jpg', 'assets/images/ScreenshotFromReljasVlog1.jpg', 'assets/images/tour4.jpg'];
 	currentImageIndex: number = 0;
 	isTransitioning = false;
 	user: User | undefined;
