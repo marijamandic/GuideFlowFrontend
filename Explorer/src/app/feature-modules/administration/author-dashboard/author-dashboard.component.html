@@ -171,7 +171,7 @@
       <tbody>
         <tr *ngFor="let problem of problems" >
           <td>{{ problem.id }}</td>
-          <td>{{ getTouristName(problem.userId) }}</td>
+          <td>{{ getTouristName(problem.userId)  | async }}</td>
           <td>{{ getTourName(problem.tourId) }}</td>
           <td>{{ getCategoryName(problem.details.category) }}</td>
           <td>{{ problem.resolution.reportedAt | date:'medium' }}</td>

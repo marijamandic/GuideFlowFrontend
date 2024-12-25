@@ -8,7 +8,6 @@ import { environment } from 'src/env/environment';
 import { Problem } from 'src/app/shared/model/problem.model';
 import { Tour } from '../tour-authoring/model/tour.model';
 import { CreateProblemInput } from './model/create-problem-input.model';
-import { ProblemStatusComponent } from './problem-status/problem-status.component';
 import { ProblemStatus } from './model/problem-status.model';
 import { TourExecution } from './model/tour-execution.model';
 import { UpdateTourExecutionDto } from './model/update-tour-execution.dto';

@@ -16,6 +16,7 @@ import { AdministrationService } from '../administration.service';
 import { Tourist } from '../../tour-authoring/model/tourist';
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartData, ChartOptions } from 'chart.js';
+import { catchError, map, Observable, of } from 'rxjs';
 
 
 @Component({
@@ -54,6 +55,8 @@ export class AuthorDashboardComponent implements OnInit, AfterViewInit  {
   totalSales: number = 0;
   reviewsPartition: { [key: number]: number } = {};
   showDoughnut = false;
+  touristsProblem: User;
+  touristCache: { [userId: number]: string } = {};
   
   
   problemStatusData: ChartData<'bar'> = {
@@ -387,9 +390,20 @@ export class AuthorDashboardComponent implements OnInit, AfterViewInit  {
     });
   }
 
-  getTouristName(userId: number): string {
-    //const user = this.users.find((u) => u.userId === userId); // Match with `id` from `Account`
-    return this.user.username;
+  getTouristName(userId: number): Observable<string> {
+    if (this.touristCache[userId]) {
+      return of(this.touristCache[userId]);
+    }
+    return this.tourService.getUserById(userId).pipe(
+      map((result: User) => {
+        this.touristCache[userId] = result.username;
+        return result.username;
+      }),
+      catchError((err) => {
+        console.error('Error fetching tourist username:', err);
+        return of('Error');
+      })
+    );
   }
 
   getTourName(tourId: number): string {
