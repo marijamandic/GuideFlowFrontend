@@ -1,0 +1,26 @@
+<div *ngFor="let bundle of bundles" class="bundle" (click)="handleBundleClick(bundle.id)">
+	<img [src]="getImageUrl(bundle.imageUrl)" alt="bundle-image" />
+	<div class="bundle-details">
+		<div class="bundle-header">
+			<div class="bundle-info">
+				<h2>{{ bundle.name }}</h2>
+				<p>{{ bundle.description }}</p>
+			</div>
+			<i class="fa-solid fa-ellipsis-vertical"></i>
+		</div>
+		<div class="bundle-footer">
+			<div class="bundle-price">
+				<i class="fa-solid fa-money-bill"></i>
+				<div>AC {{ bundle.price }}</div>
+			</div>
+			<button
+				*ngIf="user && user.role === 'tourist'"
+				type="button"
+				class="cta-button"
+				(click)="handleAddToCart(bundle); $event.stopPropagation()"
+			>
+				<i class="fa-solid fa-cart-plus"></i> Add to Cart
+			</button>
+		</div>
+	</div>
+</div>

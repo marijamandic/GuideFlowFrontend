@@ -15,6 +15,7 @@ export class ClubFormComponent implements OnInit, OnChanges {
   //@Output() clubUpdated = new EventEmitter<null>();
   @Input() club: Club;
   @Input() shouldEdit: boolean;
+  @Output() clubCreated = new EventEmitter<void>();
   ownerId: number = 0;
   imageBase64: string;
 
@@ -78,6 +79,7 @@ export class ClubFormComponent implements OnInit, OnChanges {
       next: () => {
         this.router.navigate(['club']);
         this.shouldEdit = false;
+        this.clubCreated.emit();
       },
       error: (err) => { console.log(err); } 
     });

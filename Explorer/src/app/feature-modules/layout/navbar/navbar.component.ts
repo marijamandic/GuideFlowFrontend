@@ -5,6 +5,12 @@ import { PublicPointService } from '../../tour-authoring/tour-public-point.servi
 import { PublicPointNotification } from '../../tour-authoring/model/publicPointNotification.model';
 import { LayoutService } from '../layout.service';
 import { AdministrationService } from '../../administration/administration.service';
+import { forkJoin, Observable, of } from 'rxjs';
+import { ClubRequest, ClubRequestStatus } from '../../administration/model/club-request.model';
+import { Notification } from '../model/Notification.model';
+import { ClubInvitation } from '../../administration/model/club-invitation.model';
+import { MessageNotification } from '../model/MessageNotification.model';
+import { CartPreviewService } from '../cart-preview.service';
 
 @Component({
 	selector: 'xp-navbar',
@@ -15,9 +21,10 @@ export class NavbarComponent implements OnInit {
 	user: User | undefined;
 	isDropdownOpen: boolean = false;
 	notificationCount: number = 0;
+	totalCount: number = 0;
 	shoppingCartCount: number = 0;
 	showNotifications: boolean = false;
-	showCart = false;
+	showCart$: boolean;
 	isMenuOpen: boolean = false;
 	username: string;
 
@@ -25,7 +32,8 @@ export class NavbarComponent implements OnInit {
 		private authService: AuthService,
 		private publiPointService: PublicPointService,
 		private notificationService: LayoutService,
-		private adminService: AdministrationService
+		private adminService: AdministrationService,
+		private cartPreviewService: CartPreviewService
 	) {}
 
 	ngOnInit(): void {
@@ -34,50 +42,84 @@ export class NavbarComponent implements OnInit {
 			this.username = user.username;
 			console.log(user);
 		});
+		this.publiPointService.totalCount$.subscribe(count => {
+			this.totalCount = count;
+		});
 		this.getUnread();
+		this.subscribeCartPreview();
+	}
+
+	getBadgeClass(): string {
+		if (!this.user) return '';
+		switch (this.user.role) {
+			case `administrator`:
+				return 'notification-badgea';
+			case `author`:
+				return 'notification-badgeu';
+			case `tourist`:
+				return 'notification-badget';
+			default:
+				return '';
+		}
 	}
 
 	getUnread(): void {
-		this.publiPointService.getUnreadNotificationsByAuthor(this.user?.id || 0).subscribe(
-			(notifications: PublicPointNotification[]) => {
-				this.notificationCount = notifications.length;
+		this.totalCount = 0;
+		let moneyExchangeNotifications$: Observable<Notification[]>;
+		let clubRequests$: Observable<ClubRequest[]>;
+		let clubInvitations$: Observable<ClubInvitation[]>;
+		let messageNotifications$: Observable<MessageNotification[]>;
+		const unreadNotifications$ = this.publiPointService.getUnreadNotificationsByAuthor(this.user?.id || 0);
+	
+		if (this.user?.role === 'tourist') {
+			console.log("Tourist role detected");
+			moneyExchangeNotifications$ = this.notificationService.getNotificationsByUserId(this.user?.id || 0);
+			clubRequests$ = this.adminService.getClubRequestByOwner(this.user?.id || 0);
+			clubInvitations$ = this.adminService.getClubInvitationsByOwner(this.user?.id || 0);
+			messageNotifications$ = this.notificationService.getNotificationMessagesByUserId(this.user?.id || 0);
+		} else if(this.user?.role === 'author') {
+			console.log("Author role detected");
+			moneyExchangeNotifications$ = this.notificationService.getNotificationsByAuthorId(this.user?.id || 0);
+			clubRequests$ = of([]); 
+			clubInvitations$ = of([]); 
+			messageNotifications$ = this.notificationService.getAuthorNotificationMessagesByUserId(this.user?.id || 0);
+		} else {
+			console.log("Admin role detected");
+			moneyExchangeNotifications$ = of([]);
+			clubRequests$ = of([]);
+			clubInvitations$ = of([]);
+			messageNotifications$ = of([]);
+		}
+	
+		forkJoin([
+			unreadNotifications$,
+			moneyExchangeNotifications$,
+			messageNotifications$,
+			clubRequests$,
+			clubInvitations$
+		]).subscribe(
+			([unreadNotifications, moneyExchangeNotifications, messageNotifications, clubRequests, clubInvitations]) => {
+				this.totalCount += unreadNotifications.length;
+				this.totalCount += moneyExchangeNotifications.filter(notification => !notification.isOpened).length;
+				this.totalCount += messageNotifications.filter(notification => !notification.isOpened).length;
+				this.totalCount += clubRequests.filter(request => request.status === 0).length;
+				this.totalCount += clubInvitations.filter(request => request.status === 0).length;
+	
+				console.log("Total count:", this.totalCount);
+	
+				// Ažuriraj ukupni broj nepročitanih notifikacija
+				this.publiPointService.updateTotalCount(this.totalCount);
 			},
 			error => {
 				console.error('Error fetching notifications:', error);
 			}
 		);
-		this.notificationService.getNotificationsByUserId(this.user?.id || 0).subscribe(
-			moneyExchangeNotifications => {
-				const unopenedCount = moneyExchangeNotifications.filter(notification => !notification.isOpened).length;
-				console.log(`Number of unopened notifications: ${unopenedCount}`);
-				this.notificationCount += unopenedCount;
-			},
-			error => {
-				console.error('Error loading money exchange notifications:', error);
-			}
-		);
-		this.notificationService.getNotificationMessagesByUserId(this.user?.id || 0).subscribe(
-			messageNotifications => {
-				const unopenedCount = messageNotifications.filter(notification => !notification.isOpened).length;
-				console.log(`Number of unopened notifications: ${unopenedCount}`);
-				this.notificationCount += unopenedCount;
-			},
-			error => {
-				console.error('Error loading money exchange notifications:', error);
-			}
-		);
-		this.adminService.getClubRequestByOwner(this.user?.id || 0).subscribe(
-			messageNotifications => {
-				const unopenedCount = messageNotifications.filter(notification => !notification.isOpened).length;
-				console.log(`Number of unopened notifications: ${unopenedCount}`);
-				this.notificationCount += unopenedCount;
-			},
-			error => {
-				console.error('Error loading money exchange notifications:', error);
-			}
-		);
-	}
+	}	
 
+	private subscribeCartPreview() {
+		this.cartPreviewService.isOpened$.subscribe(isOpened => (this.showCart$ = isOpened));
+	}
+	
 	toggleDropdown(): void {
 		this.isDropdownOpen = !this.isDropdownOpen;
 		if (this.isDropdownOpen) {
@@ -106,7 +148,7 @@ export class NavbarComponent implements OnInit {
 		}
 	}
 
-	handleShoppingCartOpened() {
-		this.showCart = false;
+	toggleShowCart() {
+		this.cartPreviewService.toggle();
 	}
 }

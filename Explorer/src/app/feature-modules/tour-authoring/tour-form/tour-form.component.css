@@ -72,7 +72,7 @@
 }
 
 .add-tag-button {
-    margin-top: 15px;
+    margin-top: 5px;
     background-color: #2b4f46;
     border: none;
     padding: 10px 20px;
@@ -166,7 +166,7 @@
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100vh;
+    height: 90vh;
     background-color: rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
@@ -253,4 +253,29 @@
     color: gray;
   }
   
+  .weather-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px; /* Razmak između opcija */
+  }
+  
+  .weather-option {
+    padding: 10px 15px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    background-color: #f9f9f9;
+    transition: all 0.3s ease;
+  }
+  
+  .weather-option:hover {
+    background-color: #e0e0e0; /* Promena boje na hover */
+  }
+  
+  .weather-option.selected {
+    border-color: #007bff;
+    background-color: #007bff;
+    color: #fff;
+  }
   

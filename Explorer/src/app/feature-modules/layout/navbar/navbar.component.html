@@ -22,11 +22,9 @@
 		</div>
 		<div class="profile-menu">
 			<mat-icon *ngIf="user && user.username !== ''" [routerLink]="['/encounters']" (click)="toggleDropdown()">location_on</mat-icon>
-			<mat-icon *ngIf="user && user.role === 'tourist'" class="shopping-cart-icon" (click)="showCart = !showCart">shopping_cart</mat-icon>
+			<mat-icon *ngIf="user && user.role === 'tourist'" class="shopping-cart-icon" (click)="toggleShowCart()">shopping_cart</mat-icon>
+            <span *ngIf="user && user.username !== '' && totalCount > 0" [class]="getBadgeClass()" (click)="toggleNotifications()">{{ totalCount }}</span>   
 			<mat-icon *ngIf="user && user.username !== ''" class="notification-icon" (click)="toggleNotifications()">notifications</mat-icon>
-			<span *ngIf="user && user.username !== '' && notificationCount > 0" class="notification-badge" (click)="toggleNotifications()">{{
-				notificationCount
-			}}</span>
 			<mat-icon class="profile-icon" (click)="toggleDropdown()">account_circle</mat-icon>
 
 			<div class="dropdown-content" *ngIf="isDropdownOpen">
@@ -35,9 +33,6 @@
 				>
 				<a *ngIf="user && user.role === 'tourist'" [routerLink]="['/purchased']" (click)="toggleDropdown()"
 					><i class="fa fa-shopping-bag" aria-hidden="true"></i>My Tours</a
-				>
-				<a *ngIf="user && user.role === 'tourist'" [routerLink]="['/tourist-problems']" (click)="toggleDropdown()"
-					><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>My Problems</a
 				>
 				<a
 					*ngIf="user && user.role === 'administrator'"
@@ -62,6 +57,6 @@
 	</div>
 </mat-toolbar>
 
-<div class="shopping-cart-container" *ngIf="showCart">
-	<xp-shopping-cart-preview (shoppingCartOpened)="handleShoppingCartOpened()"></xp-shopping-cart-preview>
+<div class="shopping-cart-container" *ngIf="showCart$">
+	<xp-shopping-cart-preview></xp-shopping-cart-preview>
 </div>

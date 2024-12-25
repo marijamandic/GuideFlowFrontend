@@ -92,7 +92,7 @@ export class AdministrationService {
 	}
 
 	updateClubInvitation(invitation: ClubInvitation): Observable<ClubInvitation> {
-		return this.http.put<ClubInvitation>(`${environment.apiHost}/api/invitation/clubInvitation/${invitation.id}/update`, invitation);
+		return this.http.put<ClubInvitation>(`${environment.apiHost}invitation/clubInvitation/${invitation.id}/update`, invitation);
 	}
 
 	getClubInvitationsByClubId(clubId: number): Observable<ClubInvitation[]> {
@@ -102,6 +102,12 @@ export class AdministrationService {
 	getClubInvitationsByOwner(ownerId: number): Observable<ClubInvitation[]> {
 		return this.http.get<ClubInvitation[]>(`${environment.apiHost}invitation/clubInvitation/owner/${ownerId}`);
 	}
+
+	deleteClubInvitation(id: number): Observable<void> {
+		return this.http.delete<void>(
+			`${environment.apiHost}invitation/clubInvitation/${id}`
+		);
+	}	
 
 	// ##### Club request ##### 
 	addRequest(clubRequest: ClubRequest): Observable<ClubRequest> {
@@ -135,6 +141,13 @@ export class AdministrationService {
 	getClubRequestsByClubId(clubId: number): Observable<ClubRequest[]> {
 		return this.http.get<ClubRequest[]>(environment.apiHost + `request/clubRequest/club/${clubId}`);
 	  }	  
+
+	deleteClubRequest(id: number): Observable<void> {
+		return this.http.delete<void>(
+			`${environment.apiHost}request/clubRequest/${id}`
+		);
+	}
+
 
 	// ##### Club membership ##### 
 	getAllClubMembers(clubId: number): Observable<ClubMemberList[]> {
@@ -205,6 +218,13 @@ export class AdministrationService {
 		  amount
 		);
 	  }
+
+	updateAuthorMoney(authorId: number, amount: number): Observable<User> {
+	return this.http.put<User>(
+		`${environment.apiHost}user/updateAuthorMoney/${authorId}`,
+		amount
+	);
+	}
 	  
 	createTourist(userDto: TouristRegistraion): Observable<User> {
 	const headers = new HttpHeaders({
@@ -229,5 +249,49 @@ export class AdministrationService {
 		return this.http.put<void>(`${environment.apiHost}administration/profileInfo/follower/${followedId}`, body);
 	  }
 	  
-	  
+
+	// ##### Author Dashboard #####
+	getAverageGradeForAuthor(authorId: number): Observable<number> {
+		return this.http.get<number>(
+		`${environment.apiHost}manageauthor/dashboard/${authorId}/average-grade`
+		);
+	}
+	
+	getReviewsPartitionedByGrade(authorId: number): Observable<{ [key: number]: number }> {
+		return this.http.get<{ [key: number]: number }>(
+		`${environment.apiHost}manageauthor/dashboard/${authorId}/reviews-partition`
+		);
+	}
+
+	getTotalPublishedTours(authorId:number):Observable<number>{
+		return this.http.get<number>(
+			`${environment.apiHost}manageauthor/dashboard/total-publishes/${authorId}`
+		);
+	}
+
+	getTotalPurchasedTours(authorId:number):Observable<number>{
+		return this.http.get<number>(
+			`${environment.apiHost}manageauthor/dashboard/total-purchased/${authorId}`
+		);
+	}
+	getTotalSales(authorId:number):Observable<number>{
+		return this.http.get<number>(
+			`${environment.apiHost}manageauthor/dashboard/total-sales/${authorId}`
+		);
+	}
+
+	getSalesData1y(authorId: number): Observable<{ [key: string]: number }> {
+        return this.http.get<{ [key: string]: number }>(`${environment.apiHost}manageauthor/dashboard/paymentsForYear/${authorId}`);
+    }
+
+    getSalesData1m(authorId: number): Observable<{ [key: string]: number }> {
+        return this.http.get<{ [key: string]: number }>(`${environment.apiHost}manageauthor/dashboard/paymentsForOneMonth/${authorId}`);
+    }
+    getSalesData3m(authorId: number): Observable<{ [key: string]: number }> {
+        return this.http.get<{ [key: string]: number }>(`${environment.apiHost}manageauthor/dashboard/paymentsForThreeMonth/${authorId}`);
+    }
+    getSalesData6m(authorId: number): Observable<{ [key: string]: number }> {
+        return this.http.get<{ [key: string]: number }>(`${environment.apiHost}manageauthor/dashboard/paymentsForSixMonth/${authorId}`);
+    }
+	
 }

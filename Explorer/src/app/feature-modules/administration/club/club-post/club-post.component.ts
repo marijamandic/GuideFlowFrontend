@@ -68,6 +68,7 @@ export class ClubPostComponent implements OnInit {
                          parsedLink?.resourceType.toUpperCase() === "TOUR" ? 1 : 0;
 
     const clubPost: ClubPost = {
+      id: 0,
       clubId: 1,
       memberId: this.userId,
       content: this.clubPostForm.value.content || "",

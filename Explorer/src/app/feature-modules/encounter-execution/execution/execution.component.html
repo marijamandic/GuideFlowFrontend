@@ -54,7 +54,7 @@
       </p>
     </div>
 
-    <div *ngIf="encounter?.encounterType === EncounterType.Location && encounter.imageUrl" class="location-encounter card">
+    <div *ngIf="encounter?.encounterType === EncounterType.Location" class="location-encounter card">
       <img [src]="getImagePath(encounter.imageUrl)" alt="Encounter Image" class="card-image" />
       
     </div>
