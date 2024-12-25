@@ -4,17 +4,29 @@
     display: flex;
     flex-direction: column;
     gap: 30px;
-    padding: 20px;
     background-color: #f8f9fa;
     border-radius: 10px;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 10px;
+    /* box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 10px; */
     display: flex; /* Aktivira Flexbox */
     align-items: center;
+  }
+
+  /* .tour-details-container::-webkit-scrollbar {
+    display: none;
+  } */
+
+  .tour-container{
+    display:column;
+    padding-top: 2vh;
+    padding-bottom: 5vh;
+    align-items: center; 
+    gap:20px;
     height: 100vh;
+    width: 70vw;
     overflow-y: auto;
   }
 
-  .tour-details-container::-webkit-scrollbar {
+  .tour-container::-webkit-scrollbar {
     display: none;
   }
   
@@ -25,10 +37,15 @@
     background-color: #fff;
     border-radius: 15px;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 10px;
+    margin-left: 10vw;
     padding: 15px;
     gap: 15px; /* Razmak između slike i sadržaja */
     transition: transform 0.3s;
-    position: relative;
+    position: top;
+    width: 50vw;
+  }
+
+  .tour-map{
     width: 50vw;
   }
 
@@ -179,8 +196,13 @@
   /* Checkpoints Section */
   .checkpoints-grid {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    width: 50vw;
+    margin-left: 10vw;
+    overflow-x: auto;
     margin: 0 auto; /* Centriranje */
+    padding-top: 15px;
+    padding-bottom: 15px;
     gap: 15px; /* Smanjen razmak između kartica */
   }
   
@@ -190,9 +212,11 @@
     background-color: #fff;
     border-radius: 15px;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 10px;
-    padding: 15px;
-    width: 250px; /* Manja širina kartice */
+    width: 10vw; 
+    height: 15vw;
     transition: transform 0.3s;
+    position: relative;
+    overflow: hidden;
   }
   
   .checkpoint-card:hover {
@@ -200,21 +224,41 @@
   }
   
   .checkpoint-card-image img {
-    width: 100%;
-    height: 150px; /* Manja visina slike */
+    height: 15vw; /* Manja visina slike */
+    width: 250%;
     border-radius: 10px;
+    position: absolute;
+    right: 0px;
+    top: 0px;
     object-fit: cover;
+    object-position: center;
+    z-index: 1;
   }
   
   .checkpoint-card-content {
+    /* background: linear-gradient(to bottom, transparent 70%, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 100%); */
     margin-top: 10px;
+    position: absolute;
+    bottom: 1vh;
+    left: 10px;
+    z-index: 3;
+  }
+
+  .checkpoint-card-gradient {
+    background: linear-gradient(to bottom, transparent 70%, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 100%);
+    margin-top: 10px;
+    width: 10vw;
+    height: 23vw;
+    position: absolute;
+    bottom: 0%;
+    z-index: 2;
   }
   
   .checkpoint-card-content h3 {
     margin: 0;
     font-size: 16px; /* Manji font */
     font-weight: bold;
-    color: #333;
+    color: #fff;
   }
   
   .checkpoint-card-details {
@@ -222,7 +266,7 @@
     flex-wrap: wrap;
     gap: 8px; /* Manji razmak */
     font-size: 12px; /* Manji font */
-    color: #666;
+    color: #fff;
   }
   
   .checkpoint-card-details span {
@@ -234,9 +278,12 @@
   /* Reviews Section */
   .reviews-section {
     background-color: #f9f9f9;
+    margin-top: 20px;
     padding: 20px;
     border-radius: 15px;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 10px;
+    width: 50vw;
+    margin-left: 10vw;
   }
   
   .review-card {
