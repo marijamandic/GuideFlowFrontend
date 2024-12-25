@@ -173,7 +173,7 @@
         </div>
         <!-- Type == 4 Club Request -->
         <div class="notification-row unread" *ngIf="isClubRequest(notification) && isPending(notification)">
-            <div class="notification-title" (click)="markAsRead(notification)">
+            <div class="notification-title" (click)="markAsRead(notification, false)">
                 <span>
                     <strong [ngClass]="{
                         'notification-point': !notification.isOpened,
@@ -203,7 +203,7 @@
         </div>
         <!-- Type == 5 Club Invitation -->
         <div class="notification-row unread" *ngIf="isClubInvitation(notification)">
-            <div class="notification-title" (click)="markAsRead(notification)">
+            <div class="notification-title" (click)="markAsRead(notification, false)">
                 <span>
                     <strong [ngClass]="{
                         'notification-point': !notification.isOpened,
