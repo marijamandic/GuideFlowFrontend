@@ -151,6 +151,7 @@ export class PublicPointNotificationsComponent implements OnInit {
         this.combinedNotifications = [];
         console.log("All notifications deleted.");
         this.closeHeaderMenu();
+        this.publicPointService.updateTotalCount(0);
     }    
 
     loadPublicPoint(publicPointId: number): string {
@@ -175,7 +176,7 @@ export class PublicPointNotificationsComponent implements OnInit {
         );
     }
 
-    markAsRead(notification: any): void {
+    markAsRead(notification: any, isAll: boolean): void {
         console.log("Marking as read:", notification);
     
         // Type 0: Public Point Notification
@@ -186,7 +187,6 @@ export class PublicPointNotificationsComponent implements OnInit {
             }).subscribe({
                 next: () => {
                     console.log(`Public Point Notification with ID ${notification.data.id} marked as read.`);
-                    this.loadAllNotifications();
                 },
                 error: (err) => console.error(`Error marking Public Point Notification with ID ${notification.data.id} as read:`, err),
             });
@@ -202,7 +202,6 @@ export class PublicPointNotificationsComponent implements OnInit {
                 }).subscribe({
                     next: () => {
                         console.log(`Tourist Notification with ID ${notification.data.id} marked as read.`);
-                        this.loadAllNotifications();
                     },
                     error: (err) => console.error(`Error marking Tourist Notification with ID ${notification.data.id} as read:`, err),
                 });
@@ -214,7 +213,6 @@ export class PublicPointNotificationsComponent implements OnInit {
                 }).subscribe({
                     next: () => {
                         console.log(`Author Notification with ID ${notification.data.id} marked as read.`);
-                        this.loadAllNotifications();
                     },
                     error: (err) => console.error(`Error marking Author Notification with ID ${notification.data.id} as read:`, err),
                 });
@@ -234,18 +232,16 @@ export class PublicPointNotificationsComponent implements OnInit {
             updateMethod.call(this.notificationService, notification.data.id, true).subscribe({
                 next: () => {
                     console.log(`Message Notification with ID ${notification.data.id} marked as read.`);
-                    this.loadAllNotifications();
                 },
                 error: (err) => console.error(`Error marking Message Notification with ID ${notification.data.id} as read:`, err),
             });
         }
     
-        /* Type 4: Club Requests
+        // Type 4: Club Requests
         if (notification.type === 4) {
             this.clubRequestService.cancelClubRequest(notification.data.id).subscribe({
                 next: () => {
                     console.log(`Club Request with ID ${notification.data.id} marked as read.`);
-                    this.loadAllNotifications();
                 },
                 error: (err) => console.error(`Error marking Club Request with ID ${notification.data.id} as read:`, err),
             });
@@ -257,29 +253,32 @@ export class PublicPointNotificationsComponent implements OnInit {
             this.clubRequestService.updateClubInvitation(notification.data).subscribe({
                 next: () => {
                     console.log(`Club Invitation with ID ${notification.data.id} marked as read.`);
-                    this.loadAllNotifications();
                 },
                 error: (err) => console.error(`Error marking Club Invitation with ID ${notification.data.id} as read:`, err),
             });
-        }*/
+        }
+        if(!isAll) {
+            console.log("Nije sve");
+            this.loadAllNotifications();
+        }
     }
     
     
     problemButton(notification: any): void {  
         notification.data.isOpened == false;
-        this.markAsRead(notification);
+        this.markAsRead(notification, false);
     }
 
     moneyButton(notification: any): void { 
-        this.markAsRead(notification); 
+        this.markAsRead(notification, false); 
     }
 
     clubButton(notification: any): void { 
-        this.markAsRead(notification);
+        this.markAsRead(notification, false);
     }
 
     messageButton(notification: any): void {
-        this.markAsRead(notification);  
+        this.markAsRead(notification, false);  
     }
     
     navigate(notification: MessageNotification): void {
@@ -524,39 +523,13 @@ export class PublicPointNotificationsComponent implements OnInit {
             notification.isOpened = true;
         });
     
-        this.combinedNotifications.forEach(notification => {
-            this.markAsRead(notification);
-        });
+        const markAsReadPromises = this.combinedNotifications.map(notification =>
+            this.markAsRead(notification, true)
+        );
         
-        this.combinedNotifications.forEach(notification => {
-            if (this.isPublicPointNotification(notification)) {
-                const publicPointNotification = notification.data as PublicPointNotification;
-                this.publicPointService.updateNotification(publicPointNotification.id, {
-                    ...publicPointNotification,
-                    isRead: true
-                }).subscribe({
-                    error: err => console.error('Error marking notification as read:', err)
-                });
-            } else if (this.isNotification(notification)) {
-                const normalNotification = notification.data as Notification;
-                this.notificationService.updateNotification(normalNotification.id, {
-                    ...normalNotification,
-                    isOpened: true
-                }).subscribe({
-                    error: err => console.error('Error marking notification as read:', err)
-                });
-            } else if (this.isMessageNotification(notification)) {
-                this.notificationService.updateMessageNotification(notification.data.id, true).subscribe({
-                    next: () => {
-                      console.log('Notification updated successfully');
-                    },
-                    error: (err) => {
-                      console.error('Error updating notification:', err);
-                    },
-                  });                  
-            }
-        });
-    
+        Promise.all(markAsReadPromises).then(() => {
+            this.loadAllNotifications();
+        });        
         console.log("All notifications marked as read.");
     }
 

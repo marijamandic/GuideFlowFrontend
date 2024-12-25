@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output, OnDestroy } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { ProfileInfo } from '../model/profile-info.model';
 import { AdministrationService } from '../administration.service';
 import { environment } from 'src/env/environment';
@@ -9,6 +9,15 @@ import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { User } from 'src/app/infrastructure/auth/model/user.model';
 import { Subscription } from 'rxjs';
+import { Problem } from 'src/app/shared/model/problem.model';
+import { Tour } from '../../tour-authoring/model/tour.model';
+import { TourExecutionService } from '../../tour-execution/tour-execution.service';
+import { PagedResults } from 'src/app/shared/model/paged-results.model';
+import { Category } from 'src/app/shared/model/details.model';
+import { Message } from 'src/app/shared/model/message.model';
+import { TourAuthoringService } from '../../tour-authoring/tour-authoring.service';
+import { CreateMessageInput } from '../../tour-authoring/model/create-message-input.model';
+import { ProblemStatus } from '../../tour-execution/model/problem-status.model';
 
 @Component({
   selector: 'xp-profile-info',
@@ -17,7 +26,7 @@ import { Subscription } from 'rxjs';
 })
 export class ProfileInfoComponent implements OnInit, OnDestroy {
   @Output() profileInfoUpdated = new EventEmitter<null>();
-
+  @ViewChild('messagesContainer') private messagesContainer: ElementRef
   progressPercent: number = 0;
   minXp: number = 0;
   maxXp: number = 0;
@@ -41,13 +50,32 @@ export class ProfileInfoComponent implements OnInit, OnDestroy {
   routeSubscription: Subscription;
   viewedUser: User | null = null;
   viewedUserAuthor: boolean = false;
+  problems: Problem[] = [];
+  resultProblems: Problem[] = []
+  tours: Tour[] = [];
+  problemTourMap: Map<number, boolean> = new Map<number, boolean>();
+  selectedProblem: Problem | null = null;
+  selectedDate: string = '';
+  selectedProblemMessages: Message[] = [];
+  newMessageContent: string = '';
+  currentTourist : Tourist;
+  opositeUser : User;
+  isStatusModalOpen: boolean = false;
+  statusProblem: Problem | null = null;
+  statusUpdate = {
+  isResolved: null as boolean | null,
+  comment: ''
+  };
+
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private service: AdministrationService,
     private tourService: TourService,
-    private authService: AuthService
+    private authService: AuthService,
+    private executionService: TourExecutionService,
+    private authoringService: TourAuthoringService
   ) {}
 
   ngOnInit(): void {
@@ -99,7 +127,273 @@ export class ProfileInfoComponent implements OnInit, OnDestroy {
 
     if (this.isUserLoggedIn) {
       this.loadData(this.userId);
+      this.loadProblems(this.userId);
     }
+  }
+  loadProblems(idOfUser : number): void {
+    this.executionService.getUserProblems(idOfUser).subscribe({
+      next: (result: PagedResults<Problem>) => {
+        this.problems = result.results;
+        this.resultProblems = result.results;
+        this.fetchAllTours()
+      },
+      error: (err: any) => {
+        console.log(err)
+      }
+      })
+  }
+  fetchAllTours(): void {
+    this.tourService.getTour().subscribe({
+      next: (result: PagedResults<Tour>) => {
+        this.tours = result.results;
+        this.validateProblems();
+      },
+      error: (err: any) => {
+        console.error('Error fetching tours:', err);
+      },
+    });
+  }
+  validateProblems(): void {
+    this.problems.forEach((problem) => {
+      if (problem.id !== undefined) {
+        const exists = this.tours.some((tour) => tour.id === problem.tourId);
+        this.problemTourMap.set(problem.id, exists);
+      }
+    });
+  }
+  getTouristName(userId: number): string {
+    //const user = this.users.find((u) => u.userId === userId); // Match with `id` from `Account`
+    return this.loggedInUser.username;
+  }
+  
+  getTourName(tourId: number): string {
+      const tour = this.tours.find((t) => t.id === tourId);
+      return tour ? tour.name : 'Unknown Tour';
+  }
+  
+  getCategoryName(category: Category): string {
+      return Category[category] || 'Unknown';
+  }
+  
+  getProblemStatus(problem: Problem): string {
+    const currentDate = new Date();
+    const dueDate = new Date(problem.resolution.deadline);
+    
+    if (problem.resolution.isResolved) {
+      return 'Resolved';
+    } else if (currentDate > dueDate) {
+      return 'Overdue';
+    } else {
+      return 'Unresolved';
+    }
+  }
+  toggleProblemModal(problem: Problem): void {
+    this.selectedProblem = problem;
+    this.loadOpositeUser(this.selectedProblem);
+    const problemDescriptionMessage: Message = {
+      id: 0,
+      problemId: problem.id!,
+      userId: problem.userId,
+      content: problem.details.description,
+      postedAt: problem.resolution?.reportedAt || new Date()
+    };
+  
+    this.selectedProblemMessages = [problemDescriptionMessage, ...(problem.messages || [])];
+    this.loadCurrentTourist(problem.userId);
+  }
+  loadCurrentTourist(touristId : number){
+    this.tourService.getTouristById(touristId).subscribe({
+      next: (result: Tourist) => {
+        this.currentTourist = result;
+      },
+      error: (err) => {
+        console.error('Error fetching tourist username:', err);
+      }
+      });
+  }
+  closeProblemModal(): void {
+    this.selectedProblem = null;
+  }
+  
+  updateSelectedDate(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    this.selectedDate = inputElement.value;
+  }
+  
+  handleSendMessageClick(): void {
+    if (!this.newMessageContent.trim()) {
+      return;
+    }
+    if (!this.selectedProblem) return;
+    
+    const message: CreateMessageInput = {
+      problemId: this.selectedProblem.id!,
+      content: this.newMessageContent
+    };
+    
+    this.authoringService.createMessage(message, this.loggedInUser.role).subscribe({
+      next: (result: PagedResults<Message>) => {
+        //Deskripcija
+        const problemDescriptionMessage: Message = {
+          id: 0,
+          problemId: this.selectedProblem!.id!,
+          userId: this.selectedProblem!.userId,
+          content: this.selectedProblem!.details.description,
+          postedAt: new Date(this.selectedProblem!.resolution.reportedAt)
+        };
+  
+        // Kombinovanje opisa i novih poruka
+        this.selectedProblemMessages = [
+          problemDescriptionMessage,
+          ...result.results
+        ];
+  
+        // Azuriranje poruka problema
+        this.selectedProblem!.messages = [
+            problemDescriptionMessage,
+            ...result.results
+        ];
+  
+        this.newMessageContent = '';
+        this.scrollToBottom();
+      },
+      error: (err: any) => {
+        console.error('Error sending message:', err);
+      }
+    });
+  }
+
+  scrollToBottom(): void {
+    try {
+      setTimeout(() => {
+        this.messagesContainer.nativeElement.scrollTop = this.messagesContainer.nativeElement.scrollHeight;
+      }, 0);
+    } catch (err) {
+      console.error('Error scrolling to bottom:', err);
+    }
+  }
+  loadOpositeUser(selectedProblem : Problem): void {
+    const tour = this.tours.find((t) => t.id === selectedProblem.tourId);
+    
+    if (tour !== undefined) {     
+      this.tourService.getUserById(tour.authorId).subscribe({
+        next: (result: User) => {
+          this.opositeUser = result;
+        },
+        error: (err) => {
+          console.error('Error fetching author username:', err);
+        }
+      });
+    }
+  }
+  isDeadlineValid(deadline: Date): boolean {
+    const today = new Date();
+    const deadlineDate = new Date(deadline);
+    // Proverava da li je rok u budućnosti ili danas
+    return deadlineDate >= today;
+  }
+// Otvori modal za status
+  openStatusModal(problem: any): void {
+    this.statusProblem = problem;
+    this.statusUpdate = {
+      isResolved: null,
+      comment: ''
+    };
+    this.isStatusModalOpen = true;
+  }
+
+// Zatvori modal za status
+  closeStatusModal(): void {
+    this.isStatusModalOpen = false;
+    this.statusUpdate = {
+      isResolved: null,
+      comment: ''
+    };
+  }
+
+// Podnesi ažuriranje statusa
+  submitStatusUpdate(): void {
+    if (this.statusUpdate.isResolved === null || this.statusUpdate.comment.trim() === '') {
+      alert('Please select a status and add comment.');
+      return;
+    }
+    const problemStatus : ProblemStatus = {
+      isSolved : this.statusUpdate.isResolved as boolean,
+      touristMessage : this.statusUpdate.comment
+    }
+    if(this.statusProblem !== null && this.statusProblem.id !== undefined){
+      this.executionService.changeProblemStatus(this.statusProblem.id,problemStatus).subscribe({
+        next: (result : Problem) => {
+            const index = this.problems.findIndex(p => p.id === this.statusProblem?.id);
+            if (index !== -1) {
+            this.problems[index] = result;
+        }
+        },
+        error: (err : any) => {
+            console.log(err);
+        }
+      })
+    }
+    this.closeStatusModal();
+  }
+  sortProblemsByReportDate(event: Event): void {
+    event.preventDefault()
+    const sortValue = (event.target as HTMLSelectElement).value 
+
+    if (sortValue === "latest") {
+      this.problems.sort((a, b) => {
+        return new Date(b.resolution.reportedAt).getTime() - new Date(a.resolution.reportedAt).getTime();
+      })
+    } else {
+      this.problems.sort((a, b) => {
+        return new Date(a.resolution.reportedAt).getTime() - new Date(b.resolution.reportedAt).getTime();
+      })
+    }
+  }
+  sortProblemsByDeadlineDate(event: Event): void {
+    event.preventDefault()
+    const sortValue = (event.target as HTMLSelectElement).value 
+
+    if (sortValue === "latest") {
+      this.problems.sort((a, b) => {
+        return new Date(b.resolution.deadline).getTime() - new Date(a.resolution.deadline).getTime();
+      })
+    } else {
+      this.problems.sort((a, b) => {
+        return new Date(a.resolution.deadline).getTime() - new Date(b.resolution.deadline).getTime();
+      })
+    }
+  }
+
+  filterByStatus(event: Event): void {
+    event.preventDefault()
+
+    const selectedValue = (event.target as HTMLSelectElement).value
+
+    if (selectedValue === "Resolved") 
+      this.problems = this.problems.filter(problem => this.getProblemStatus(problem) === 'Resolved')
+    else if (selectedValue === 'Unresolved')
+      this.problems = this.problems.filter(problem => this.getProblemStatus(problem) === 'Unresolved')
+    else if (selectedValue === 'Overdue')
+      this.problems = this.problems.filter(problem => this.getProblemStatus(problem) === 'Overdue')
+    else
+      this.problems = this.resultProblems
+  }
+  searchProblems(event: Event): void {
+    event.preventDefault()
+    const input = (event.target as HTMLFormElement).elements[0] as HTMLInputElement
+    const normalizedInput = input.value.toLowerCase()
+    if (!normalizedInput.length)
+      { 
+        this.problems = this.resultProblems
+        return
+      }
+
+
+    this.problems = this.problems.filter(
+      problem =>
+        this.getTourName(problem.tourId).toLowerCase().startsWith(normalizedInput)
+    )
   }
 
   private reloadComponent(): void {
@@ -184,14 +478,18 @@ export class ProfileInfoComponent implements OnInit, OnDestroy {
 
   calculateProgress(): void {
     if (this.tourist) {
-      const level = this.tourist.level || 1;
-      const xp = this.tourist.xp || 0;
-
-      this.minXp = (level-1) * 20;
-      this.maxXp = level * 20;
-      this.currentXp = this.minXp + xp;
-
-      this.progressPercent = (xp / 20) * 100;
+      const level = this.tourist.level || 1; 
+      const xp = this.tourist.xp || 0; 
+      this.minXp = 0;
+      for (let i = 1; i < level; i++) {
+        this.minXp += i * 20;
+      }
+  
+      this.maxXp = this.minXp + level * 20;
+  
+      this.currentXp = xp+this.minXp;
+  
+      this.progressPercent = ((xp) / (this.maxXp - this.minXp)) * 100;
     }
   }
 

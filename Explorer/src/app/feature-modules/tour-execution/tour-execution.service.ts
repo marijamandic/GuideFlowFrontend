@@ -8,7 +8,6 @@ import { environment } from 'src/env/environment';
 import { Problem } from 'src/app/shared/model/problem.model';
 import { Tour } from '../tour-authoring/model/tour.model';
 import { CreateProblemInput } from './model/create-problem-input.model';
-import { ProblemStatusComponent } from './problem-status/problem-status.component';
 import { ProblemStatus } from './model/problem-status.model';
 import { TourExecution } from './model/tour-execution.model';
 import { UpdateTourExecutionDto } from './model/update-tour-execution.dto';
@@ -17,6 +16,7 @@ import { CreateTourExecutionDto } from './model/create-tour-execution.dto';
 import { TourSpecification } from './model/tour-specification.model';
 import { Sales } from './model/sales.model';
 import { TourBundle } from '../marketplace/model/tour-bundle.model';
+import { Author } from './model/author.model';
 
 @Injectable({
 	providedIn: 'root'
@@ -139,5 +139,13 @@ export class TourExecutionService {
 
 	getPublishedBundles(): Observable<PagedResults<TourBundle>> {
 		return this.http.get<PagedResults<TourBundle>>(`${environment.apiHost}bundles`);
+	}
+
+	updatePremiumTour(tourId: number): Observable<Tour>{
+		return this.http.put<Tour>(environment.apiHost + 'authoring/tour/setPremium/' + tourId, null);
+	}
+
+	getAuthor(id: number): Observable<Author>{
+		return this.http.get<Author>(environment.apiHost + 'user/getAuthor/' + id);
 	}
 }

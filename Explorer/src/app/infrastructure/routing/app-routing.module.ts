@@ -7,7 +7,6 @@ import { AuthGuard } from '../auth/auth.guard';
 import { RegistrationComponent } from '../auth/registration/registration.component';
 import { ProfileInfoComponent } from 'src/app/feature-modules/administration/profile-info/profile-info.component';
 import { EquipmentManagementComponent } from 'src/app/feature-modules/tour-execution/equipment-management/equipment-management.component';
-import { ReportProblemComponent } from 'src/app/feature-modules/tour-execution/report-problem/report-problem.component';
 import { TourObjectComponent } from 'src/app/feature-modules/tour-authoring/tour-object/tour-object.component';
 import { CheckpointListComponent } from 'src/app/feature-modules/tour-authoring/tour-checkpoint/tour-checkpoint.component';
 import { TourComponent } from 'src/app/feature-modules/tour-authoring/tour/tour.component';
@@ -21,10 +20,7 @@ import { RatingTheAppComponent } from 'src/app/feature-modules/layout/rating-the
 import { AllAppRatingsComponent } from 'src/app/feature-modules/administration/all-app-ratings/all-app-ratings.component';
 import { ClubFormComponent } from 'src/app/feature-modules/administration/club/club-form/club-form.component';
 import { ClubInfoComponent } from 'src/app/feature-modules/administration/club/club-info/club-info.component';
-import { ProblemComponent } from 'src/app/feature-modules/tour-authoring/problem/problem.component';
 import { NotificationsComponent } from 'src/app/feature-modules/layout/notifications/notifications.component';
-import { ProblemStatusComponent } from 'src/app/feature-modules/tour-execution/problem-status/problem-status.component';
-import { AdminProblemComponent } from 'src/app/feature-modules/administration/admin-problem/admin-problem.component';
 import { PublicPointRequestsComponent } from 'src/app/feature-modules/tour-authoring/public-point-requests/public-point-requests.component';
 import { TourReviewComponent } from 'src/app/feature-modules/tour-execution/tour-review/tour-review.component';
 import { ShoppingCartComponent } from 'src/app/feature-modules/marketplace/shopping-cart/shopping-cart.component';
@@ -101,13 +97,7 @@ const routes: Routes = [
 	{ path: 'equipment-management', component: EquipmentManagementComponent },
 
 	// --- report
-	{ path: 'report-problem', component: ReportProblemComponent },
-	{ path: 'author-problems', component: ProblemComponent },
-	{ path: 'tourist-problems', component: ProblemStatusComponent },
-	{ path: 'admin-problems', component: AdminProblemComponent },
 	{ path: 'author-dashboard', component: AuthorDashboardComponent },
-
-	{ path: 'report-problem', component: ReportProblemComponent },
 	{ path: 'problem-info/:id', component: ProblemInfoComponent },
 
 	// ### Club

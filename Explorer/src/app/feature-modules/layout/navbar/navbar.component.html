@@ -34,9 +34,6 @@
 				<a *ngIf="user && user.role === 'tourist'" [routerLink]="['/purchased']" (click)="toggleDropdown()"
 					><i class="fa fa-shopping-bag" aria-hidden="true"></i>My Tours</a
 				>
-				<a *ngIf="user && user.role === 'tourist'" [routerLink]="['/tourist-problems']" (click)="toggleDropdown()"
-					><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>My Problems</a
-				>
 				<a
 					*ngIf="user && user.role === 'administrator'"
 					color="primary"
