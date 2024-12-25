@@ -97,7 +97,7 @@ export class ChatbotBubbleDialogComponent implements OnInit {
     // Generiše URL za turu na osnovu ID-a
     const tourLinkPattern = /\((.+?),(\d+)\)/;
     const match = content.match(tourLinkPattern);
-    return match ? `/tour/${match[2]}` : '';
+    return match ? `/tour-more-details/${match[2]}` : '';
   }
   
   getTourName(content: string): string {

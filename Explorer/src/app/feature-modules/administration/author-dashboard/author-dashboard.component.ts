@@ -54,6 +54,7 @@ export class AuthorDashboardComponent implements OnInit, AfterViewInit  {
   purchasedTours:number = 0;
   totalSales: number = 0;
   reviewsPartition: { [key: number]: number } = {};
+  showBar = false;
   showDoughnut = false;
   touristsProblem: User;
   touristCache: { [userId: number]: string } = {};
@@ -222,13 +223,20 @@ export class AuthorDashboardComponent implements OnInit, AfterViewInit  {
 
   ngAfterViewInit(): void {
     setTimeout(() => {
-      this.generateSourceChartData(); // ažuriraj podatke
-      this.cdRef.detectChanges();      // osveži Angular-ov prikaz
+      this.generateSourceChartData(); // Update Problem Source Chart
+      this.generateChartData();      // Update Problem Status Chart
+      this.cdRef.detectChanges();    // Refresh Angular view
+  
       if (this.doughnutChart) {
-        this.doughnutChart.update();   // osveži Doughnut chart
+        this.doughnutChart.update(); // Refresh Doughnut Chart
+      }
+  
+      if (this.chart) {
+        this.chart.update();         // Refresh Bar Chart
       }
     }, 0);
   }
+  
   
   // ■■■■■ Reviews sections ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
   loadAverageGrade(authorId: number): void {
@@ -347,10 +355,6 @@ export class AuthorDashboardComponent implements OnInit, AfterViewInit  {
             });
         }
     }
-    
-    
-    
-
 
   // ■■■■■ Problems table ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
   loadProblems(): void {
@@ -359,8 +363,9 @@ export class AuthorDashboardComponent implements OnInit, AfterViewInit  {
         this.problems = result.results;
         this.resultProblems = result.results;
         this.fetchAllTours();
-        this.generateChartData();
         this.generateSourceChartData();
+        this.generateChartData();
+        this.showBar = true;
         this.showDoughnut = true;
       },
       error: (err: any) => {
@@ -522,16 +527,22 @@ export class AuthorDashboardComponent implements OnInit, AfterViewInit  {
     
   }
   generateChartData(): void {
-    // Statusi problema
-    const resolved = this.problems.filter(p => this.getProblemStatus(p) === 'Resolved').length;
-    const unresolved = this.problems.filter(p => this.getProblemStatus(p) === 'Unresolved').length;
-    const overdue = this.problems.filter(p => this.getProblemStatus(p) === 'Overdue').length;
-
+    const resolved = this.problems.filter((p) => this.getProblemStatus(p) === 'Resolved').length;
+    const unresolved = this.problems.filter((p) => this.getProblemStatus(p) === 'Unresolved').length;
+    const overdue = this.problems.filter((p) => this.getProblemStatus(p) === 'Overdue').length;
+  
+    // Update chart data
     this.problemStatusData.datasets[0].data = [resolved, unresolved, overdue];
-
-    if (this.chart) {
-    this.chart.update(); // Osveži grafikon
-    }
+  
+    // Force chart refresh
+    setTimeout(() => {
+      if (this.chart) {
+        this.chart.update();
+      } else {
+        console.error('Problem Status Chart not found or not initialized.');
+      }
+      this.cdRef.detectChanges(); // Force Angular view refresh
+    }, 0);
   }
 
   generateSourceChartData(): void {

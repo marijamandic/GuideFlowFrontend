@@ -14,7 +14,7 @@
         'bot': message.sender === Sender.Chatbot
       }">
         <ng-container *ngIf="isTourLink(message.content); else normalMessage">
-          <a [routerLink]="getTourLink(message.content)">{{getTourName(message.content)}}</a>
+          <a [routerLink]="getTourLink(message.content)">{{getTourName(message.content) }}</a>
           <span>{{ getRemainingMessage(message.content) }}</span>
         </ng-container>
         <ng-template #normalMessage>
