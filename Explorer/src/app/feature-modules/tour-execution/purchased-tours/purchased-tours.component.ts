@@ -8,6 +8,7 @@ import { TourExecution } from '../model/tour-execution.model';
 import { CreateTourExecutionDto } from '../model/create-tour-execution.dto';
 import { environment } from 'src/env/environment';
 import { Tour } from '../../tour-authoring/model/tour.model';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'xp-purchased-tours',
@@ -35,7 +36,7 @@ export class PurchasedToursComponent implements OnInit{
 	productType = this.INCOMPLETE_PRODUCT;
   minDate: string = '';
   maxDate: string = '';
-  selectedDate: string | null = null;
+  selectedDate: string;
 
   constructor(private tourExecutionService: TourExecutionService , private authService: AuthService, private router: Router){}
 
@@ -45,39 +46,43 @@ export class PurchasedToursComponent implements OnInit{
     }) 
     if(this.user){
       const today = new Date();
-      const minDate = new Date();
       const maxDate = new Date();
-      minDate.setDate(today.getDate() + 1);
       maxDate.setDate(today.getDate() + 5);
-      this.minDate = minDate.toISOString().split('T')[0];
+      this.minDate = today.toISOString().split('T')[0];
       this.maxDate = maxDate.toISOString().split('T')[0];
+      this.selectedDate = this.minDate;
       this.getCompletedTourIds();
       this.checkActiveSession();
     }
   }
   
-  getPurchasedByUser() : void{
-    if(this.user?.id){
-      this.tourExecutionService.getPurchased(this.user.id).subscribe({
+  getPurchasedTours(apiMethod: string, date?: string): void {
+    if (this.user?.id) {
+      const finalDate = date ?? this.minDate;
+      const methodMap: { [key: string]: Observable<any> } = {
+        'getPurchased': this.tourExecutionService.getPurchased(this.user.id),
+        'getPurchasedForDate': this.tourExecutionService.getPurchasedForDate(finalDate),
+        'getBestPurchasedForDate': this.tourExecutionService.getBestPurchasedForDate(finalDate)
+      };
+  
+      methodMap[apiMethod]?.subscribe({
         next: (result: any) => {
           if (result.message) {
             this.message = result.message;
             this.purchasedTours = [];
-          } else{
+          } else {
             this.purchasedTours = result;
-            this.completedTours = result.filter((tour:any) => this.completedTourIds.includes(tour.id));
-          this.incompleteTours = result.filter((tour:any)=> !this.completedTourIds.includes(tour.id));
+            this.completedTours = result.filter((tour: any) => this.completedTourIds.includes(tour.id));
+            this.incompleteTours = result.filter((tour: any) => !this.completedTourIds.includes(tour.id));
             this.message = this.purchasedTours.length === 0 ? "There is no purchased tours yet :(" : '';
           }
         },
         error: (err: any) => {
           if (err.status === 404) {
-            // Postavljanje poruke za 404 grešku
             this.message = "No purchased tours found for this user.";
             this.purchasedTours = [];
             this.message = "There is no purchased tours yet :(";
           } else {
-            // Za ostale greške
             console.log("Error fetching purchased tours: ", err);
             this.message = "An unexpected error occurred. Please try again later.";
           }
@@ -86,12 +91,24 @@ export class PurchasedToursComponent implements OnInit{
     }
   }
 
+  getPurchased() {
+    this.getPurchasedTours('getPurchased');
+  }
+
+  getPurchasedForDate() {
+    this.getPurchasedTours('getPurchasedForDate', this.selectedDate);
+  }
+
+  getBestPurchasedForDate() {
+    this.getPurchasedTours('getBestPurchasedForDate', this.selectedDate);
+  }
+
   getCompletedTourIds() :void {
     if(this.user?.id){
       this.tourExecutionService.getCompletedToursByTourist(this.user.id).subscribe({
         next: (result) => {
           this.completedTourIds = result
-          this.getPurchasedByUser();
+          this.getPurchased();
         },
         error: (err) => {
           this.message = err;
@@ -103,10 +120,13 @@ export class PurchasedToursComponent implements OnInit{
   onSearchModeChange(mode: string): void {
     this.searchMode = mode;
     if (mode === 'all') {
-      this.selectedDate = null;
-      this.getPurchasedByUser();
+      this.selectedDate = this.minDate;
+      this.getPurchased();
     }else{
-      if(this.selectedDate){
+      if(this.selectedDate === this.minDate){
+        this.getPurchased();
+      }
+      if(this.selectedDate !== this.minDate){
         this.getBestPurchasedForDate();
       }
     }
@@ -114,73 +134,17 @@ export class PurchasedToursComponent implements OnInit{
 
   onDateChange(): void {
     if (this.selectedDate) {
+      if(this.selectedDate === this.minDate){
+        this.getPurchased();
+        return;
+      } 
       if (this.searchMode === 'all') {
-        this.getPurchasedForDate();
+          this.getPurchasedForDate();
       } else {
-        this.getBestPurchasedForDate();
+          this.getBestPurchasedForDate();
       }
     }
   }
-
-  getPurchasedForDate() {
-      if(this.user?.id && this.selectedDate){
-        this.tourExecutionService.getPurchasedForDate(this.selectedDate).subscribe({
-          next: (result: any) => {
-            if (result.message) {
-              this.message = result.message;
-              this.purchasedTours = [];
-            } else{
-              this.purchasedTours = result;
-              this.completedTours = result.filter((tour:any) => this.completedTourIds.includes(tour.id));
-            this.incompleteTours = result.filter((tour:any)=> !this.completedTourIds.includes(tour.id));
-              this.message = this.purchasedTours.length === 0 ? "There is no purchased tours yet :(" : '';
-            }
-          },
-          error: (err: any) => {
-            if (err.status === 404) {
-              // Postavljanje poruke za 404 grešku
-              this.message = "No purchased tours found for this user.";
-              this.purchasedTours = [];
-              this.message = "There is no purchased tours yet :(";
-            } else {
-              // Za ostale greške
-              console.log("Error fetching purchased tours: ", err);
-              this.message = "An unexpected error occurred. Please try again later.";
-            }
-          }
-        });
-      }
-    }
-
-    getBestPurchasedForDate() {
-      if(this.user?.id && this.selectedDate){
-        this.tourExecutionService.getBestPurchasedForDate(this.selectedDate).subscribe({
-          next: (result: any) => {
-            if (result.message) {
-              this.message = result.message;
-              this.purchasedTours = [];
-            } else{
-              this.purchasedTours = result;
-              this.completedTours = result.filter((tour:any) => this.completedTourIds.includes(tour.id));
-            this.incompleteTours = result.filter((tour:any)=> !this.completedTourIds.includes(tour.id));
-              this.message = this.purchasedTours.length === 0 ? "There is no purchased tours yet :(" : '';
-            }
-          },
-          error: (err: any) => {
-            if (err.status === 404) {
-              // Postavljanje poruke za 404 grešku
-              this.message = "No purchased tours found for this user.";
-              this.purchasedTours = [];
-              this.message = "There is no purchased tours yet :(";
-            } else {
-              // Za ostale greške
-              console.log("Error fetching purchased tours: ", err);
-              this.message = "An unexpected error occurred. Please try again later.";
-            }
-          }
-        });
-      }
-    }
 
   createSession(tourId: number): void{
     if(this.user){
