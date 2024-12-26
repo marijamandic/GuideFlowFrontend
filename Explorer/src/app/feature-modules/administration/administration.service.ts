@@ -15,6 +15,7 @@ import { ClubPost } from './model/club-post.model';
 import { User } from 'src/app/infrastructure/auth/model/user.model';
 import { Tourist } from '../tour-authoring/model/tourist';
 import { TouristRegistraion } from 'src/app/infrastructure/auth/model/touristRegister.model';
+import { Tour } from '../tour-authoring/model/tour.model';
 
 @Injectable({
 	providedIn: 'root'
@@ -294,4 +295,16 @@ export class AdministrationService {
         return this.http.get<{ [key: string]: number }>(`${environment.apiHost}manageauthor/dashboard/paymentsForSixMonth/${authorId}`);
     }
 	
+
+	getBestSellingTour(authorId: number): Observable<Tour> {
+		return this.http.get<Tour>(`${environment.apiHost}manageauthor/dashboard/best-selling-tour/${authorId}`);
+	  }
+
+	  getLeastSellingTour(authorId: number): Observable<Tour> {
+		return this.http.get<Tour>(`${environment.apiHost}manageauthor/dashboard/least-selling-tour/${authorId}`);
+	  }
+
+	  getLowestRatedTour(authorId: number): Observable<Tour> {
+		return this.http.get<Tour>(`${environment.apiHost}manageauthor/dashboard/lowest-rated-tour/${authorId}`);
+	  }
 }

@@ -17,6 +17,7 @@ import { Tourist } from '../../tour-authoring/model/tourist';
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartData, ChartOptions } from 'chart.js';
 import { catchError, map, Observable, of } from 'rxjs';
+import { environment } from 'src/env/environment';
 
 
 @Component({
@@ -58,6 +59,9 @@ export class AuthorDashboardComponent implements OnInit, AfterViewInit  {
   showDoughnut = false;
   touristsProblem: User;
   touristCache: { [userId: number]: string } = {};
+  bestSellingTour: Tour | null = null;
+  leastSellingTour: Tour | null = null;
+  bestRatedTour: Tour | null = null;
   
   
   problemStatusData: ChartData<'bar'> = {
@@ -219,6 +223,9 @@ export class AuthorDashboardComponent implements OnInit, AfterViewInit  {
     this.loadTotalPurchasedTours(this.user.id);
     this.loadTotalSales(this.user.id);
     this.loadSalesChartData(this.user.id);
+    this.loadBestSellingTour(this.user.id);
+    this.loadLeastSellingTour(this.user.id);
+    this.loadBestRatedTour(this.user.id);
   }
 
   ngAfterViewInit(): void {
@@ -237,6 +244,76 @@ export class AuthorDashboardComponent implements OnInit, AfterViewInit  {
     }, 0);
   }
   
+
+    // ■■■■■ Highlighted tours sections ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+
+  private loadBestSellingTour(authorId: number): void {
+    this.administrationService.getBestSellingTour(authorId).subscribe({
+      next: (tour: Tour) => {
+        this.bestSellingTour = tour;
+        console.log('Best Selling Tour:', this.bestSellingTour);
+      },
+      error: (err: any) => {
+        console.error('Error fetching best selling tour:', err);
+        this.bestSellingTour = null; // Postavite na null u slučaju greške
+      },
+    });
+  }
+
+  private loadLeastSellingTour(authorId: number): void {
+    this.administrationService.getLeastSellingTour(authorId).subscribe({
+      next: (tour: Tour) => {
+        this.leastSellingTour = tour;
+        console.log('Least Selling Tour:', this.leastSellingTour);
+      },
+      error: (err: any) => {
+        console.error('Error fetching least selling tour:', err);
+        this.leastSellingTour = null; // Postavite na null u slučaju greške
+      },
+    });
+  }
+
+  private loadBestRatedTour(authorId: number): void {
+    this.administrationService.getLowestRatedTour(authorId).subscribe({
+      next: (tour: Tour) => {
+        this.bestRatedTour = tour;
+        console.log('Best Rated Tour:', this.bestRatedTour);
+      },
+      error: (err: any) => {
+        console.error('Error fetching best rated tour:', err);
+        this.bestRatedTour = null; // Postavite na null u slučaju greške
+      },
+    });
+  }
+
+  getReviewCount(count: number | undefined): string {
+    if (!count || count === 0) {
+      return 'No reviews yet';
+    }
+    return `${count} review${count > 1 ? 's' : ''}`;
+  }
+
+  isImageAvailableForTour(tour: Tour | null): boolean {
+    return !!(tour?.checkpoints?.length && tour.checkpoints[0]?.imageUrl);
+  }
+
+  getTourImageUrl(tour: Tour): string {
+    return tour?.checkpoints?.[0]?.imageUrl || '';
+  }
+
+  getImagePath(imageUrl: string){
+    return environment.webRootHost+imageUrl;
+  }  
+
+  tooltipVisible: string | null = null;
+
+  showTooltip(type: string): void {
+    this.tooltipVisible = type;
+  }
+
+  hideTooltip(): void {
+    this.tooltipVisible = null;
+  }
   
   // ■■■■■ Reviews sections ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
   loadAverageGrade(authorId: number): void {
