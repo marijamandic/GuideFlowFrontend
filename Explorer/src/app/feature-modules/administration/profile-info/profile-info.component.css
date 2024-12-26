@@ -788,3 +788,43 @@ h2 {
 .upload-label:hover {
   background-color: #3cb090; /* Svetlija nijansa zelene prilikom prelaska mišem */
 }
+
+/* Dugme Follow */
+.follow-button {
+  background-color: #4ad0a7;
+  color: #fff;
+  border: none;
+  padding: 10px 15px; /* Bolje pozicioniranje */
+  border-radius: 5px;
+  font-size: 12px;
+  cursor: pointer;
+  text-align: center; /* Centriranje teksta */
+  display: flex; /* Dodato za fleksibilno centriranje */
+  justify-content: center; /* Horizontalno centriranje */
+  align-items: center; /* Vertikalno centriranje */
+  width: 90px; /* Fiksna širina */
+}
+
+.follow-button:hover {
+  background-color: #3cb090;
+}
+
+/* Dugme Unfollow */
+.unfollow-button {
+  background-color: #e74c3c;
+  color: #fff;
+  border: none;
+  padding: 10px 15px; /* Bolje pozicioniranje */
+  border-radius: 5px;
+  font-size: 12px;
+  cursor: pointer;
+  text-align: center; /* Centriranje teksta */
+  display: flex; /* Dodato za fleksibilno centriranje */
+  justify-content: center; /* Horizontalno centriranje */
+  align-items: center; /* Vertikalno centriranje */
+  width: 90px; /* Fiksna širina */
+}
+
+.unfollow-button:hover {
+  background-color: #c0392b;
+}

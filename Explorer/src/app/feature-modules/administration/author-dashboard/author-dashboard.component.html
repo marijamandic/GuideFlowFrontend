@@ -89,18 +89,69 @@
   
 
   <!-- Highlights in a Row -->
-  <div class="dashboard-card third-width">
-    <h2>Best Selling</h2>
-    <p>Tour with most sales</p>
-  </div>
-  <div class="dashboard-card third-width">
-    <h2>Best Rated</h2>
-    <p>Tour with the best average rating</p>
-  </div>
-  <div class="dashboard-card third-width">
-    <h2>Least Sold</h2>
-    <p>Tour with the least sales</p>
-  </div>
+    <!-- Highlights in a Row -->
+    <div class="dashboard-card third-width">
+      <div class="card-header">
+        <h2>Best Selling</h2>
+        <button class="action-btn" (click)="showTooltip('bestSelling')" (mouseleave)="hideTooltip()">i</button>
+      </div>
+      <p>Tour with most sales</p>
+      <div *ngIf="bestSellingTour">
+        <div class="image-container">
+          <img *ngIf="bestSellingTour.checkpoints[0].imageUrl" [src]="getImagePath(bestSellingTour.checkpoints[0].imageUrl)" alt="Checkpoint image" />
+        </div>
+        <h3>{{ bestSellingTour.name }}</h3>
+        <p>{{ bestSellingTour.description }}</p>
+        <div class="tour-info">
+          <span class="grade-badge">{{ bestSellingTour.averageGrade?.toFixed(1) }}</span>
+          <span>{{ bestSellingTour.reviews?.length || 0 }} reviews</span>
+        </div>
+      </div>
+      <p *ngIf="!bestSellingTour">No data available</p>
+      <div class="tooltip" *ngIf="tooltipVisible === 'bestSelling'">Consider increasing the price for this tour to maximize profit.</div>
+    </div>
+  
+    <div class="dashboard-card third-width">
+      <div class="card-header">
+        <h2>Least Selling</h2>
+        <button class="action-btn" (click)="showTooltip('leastSelling')" (mouseleave)="hideTooltip()">i</button>
+      </div>
+      <p>Tour with the least sales</p>
+      <div *ngIf="leastSellingTour">
+        <div class="image-container">
+          <img *ngIf="leastSellingTour.checkpoints[0].imageUrl" [src]="getImagePath(leastSellingTour.checkpoints[0].imageUrl)" alt="Checkpoint image" />
+        </div>
+        <h3>{{ leastSellingTour.name }}</h3>
+        <p>{{ leastSellingTour.description }}</p>
+        <div class="tour-info">
+          <span class="grade-badge">{{ leastSellingTour.averageGrade?.toFixed(1) }}</span>
+          <span>{{ leastSellingTour.reviews?.length || 0 }} reviews</span>
+        </div>
+      </div>
+      <p *ngIf="!leastSellingTour">No data available</p>
+      <div class="tooltip" *ngIf="tooltipVisible === 'leastSelling'">Consider lowering the price for this tour to attract more customers.</div>
+    </div>
+  
+    <div class="dashboard-card third-width">
+      <div class="card-header">
+        <h2>Best Rated</h2>
+        <button class="action-btn" (click)="showTooltip('bestRated')" (mouseleave)="hideTooltip()">i</button>
+      </div>
+      <p>Tour with the best average rating</p>
+      <div *ngIf="bestRatedTour">
+        <div class="image-container">
+          <img *ngIf="bestRatedTour.checkpoints[0].imageUrl" [src]="getImagePath(bestRatedTour.checkpoints[0].imageUrl)" alt="Checkpoint image" />
+        </div>
+        <h3>{{ bestRatedTour.name }}</h3>
+        <p>{{ bestRatedTour.description }}</p>
+        <div class="tour-info">
+          <span class="grade-badge">{{ bestRatedTour.averageGrade?.toFixed(1) }}</span>
+          <span>{{ bestRatedTour.reviews?.length || 0 }} reviews</span>
+        </div>
+      </div>
+      <p *ngIf="!bestRatedTour">No data available</p>
+      <div class="tooltip" *ngIf="tooltipVisible === 'bestRated'">Consider increasing the price for this tour to reflect its quality.</div>
+    </div>
 
   <!-- Problem Status and Source Side-by-Side -->
   <div class="dashboard-card half-width graph-card" *ngIf="showBar">
