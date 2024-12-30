@@ -357,7 +357,7 @@ export class AuthorDashboardComponent implements OnInit, AfterViewInit  {
       this.administrationService.getTotalPublishedTours(authorId).subscribe({
         next: (result) => {
           this.publishedTours = result;
-         console.log('***published tours',result);
+         // console.log('***published tours',result);
         },
         error: (err) => {
           console.error('Error geting published tours:', err);
@@ -369,7 +369,7 @@ export class AuthorDashboardComponent implements OnInit, AfterViewInit  {
       this.administrationService.getTotalPurchasedTours(authorId).subscribe({
         next: (result) => {
           this.purchasedTours = result;
-         console.log('***purchased tours',result);
+         // console.log('***purchased tours',result);
         },
         error: (err) => {
           console.error('Error geting purchased tours:', err);
@@ -381,7 +381,7 @@ export class AuthorDashboardComponent implements OnInit, AfterViewInit  {
       this.administrationService.getTotalSales(authorId).subscribe({
         next: (result) => {
           this.totalSales= result;
-         console.log('***total sales:',result);
+         //console.log('***total sales:',result);
         },
         error: (err) => {
           console.error('Error geting total sales:', err);
