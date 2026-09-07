@@ -326,3 +326,51 @@ p {
     color: #333; /* Red color on hover */
 }
 
+.notification-menu {
+  position: relative;
+  display: inline-block;
+  float: right;
+  margin-left: -47%;
+}
+
+.notification-menuh {
+  position: relative;
+  display: inline-block;
+  float: right;
+  margin-left: -43%;
+  margin-right: -2.5%;
+}
+
+.menu-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: #555;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 20px;
+  right: 5px;
+  background: white;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  min-width: 170px;
+}
+
+.menu-item {
+  width: auto;
+  background: none;
+  border: none;
+  padding: 10px;
+  text-align: left;
+  cursor: pointer;
+  color: #555;
+}
+
+.menu-item:hover {
+  background-color: #f5f5f5;
+  color: #000;
+}

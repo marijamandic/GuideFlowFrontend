@@ -5,9 +5,11 @@ export enum ResourceType {
   
 
 export interface ClubPost{
+    id:number,
     clubId: number,
     memberId: number,
     content: string, 
     resourceId: number,
-    resourceType: ResourceType
+    resourceType: ResourceType,
+    username?: string
 }

@@ -54,7 +54,7 @@
         <td class="actions">
           <button class="action-btn table-btn"><i class="fa-solid fa-user"></i></button>
           <button class="action-btn table-btn" (click)="ToggleAcountActivty(user)"><i class="fa-solid fa-ban"></i></button>
-          <button *ngIf="user.role === UserRole.Tourist" class="action-btn table-btn" (click)="toggleMoneyInput(user)">
+          <button *ngIf="user.role === UserRole.Tourist || user.role == UserRole.Author" class="action-btn table-btn" (click)="toggleMoneyInput(user)">
             <i class="fa-solid fa-wallet"></i>
           </button>
         </td>

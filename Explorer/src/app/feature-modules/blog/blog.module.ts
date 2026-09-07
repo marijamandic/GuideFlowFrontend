@@ -10,6 +10,7 @@ import { CreateBlogComponent } from './create-blog/create-blog.component';
 import { MarkdownModule } from 'ngx-markdown';
 import { PostInfoComponent } from './post-info/post-info.component';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { EditBlogComponent } from './edit-blog/edit-blog.component';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
     PostComponent,
     CreateBlogComponent,
     CommentFormComponent,
-    PostInfoComponent
+    PostInfoComponent,
+    EditBlogComponent
   ],
   imports: [
     CommonModule,

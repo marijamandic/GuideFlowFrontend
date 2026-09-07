@@ -1,0 +1,136 @@
+.chat-dialog {
+  position: fixed;
+  width: 380px;
+  height: 520px; 
+  background-color: #ffffff;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  z-index: 1001;
+  border-radius: 12px; 
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; 
+}
+
+.chat-header {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 15px;
+  font-size: 20px; /* Larger font for better readability */
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.close-button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+
+.close-button:hover {
+  transform: scale(1.2);
+}
+
+.chat-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  overflow: auto;
+}
+
+.input-area {
+  display: flex;
+  padding: 10px;
+  border-top: 1px solid #e3e3e3;
+  background-color: #ffffff; /* Clean white background */
+  height: 50px; /* Fixed height for the input area */
+}
+.chat-body > div {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.message {
+  padding: 12px 16px;
+  border-radius: 20px;
+  max-width: 75%;
+  font-size: 14px;
+  line-height: 1.5;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.3s ease-in-out;
+  word-break: break-word;
+  white-space: pre-wrap;
+  margin-bottom: 8px;
+  width: fit-content;
+}
+
+.message.user {
+  background-color: var(--primary-color); 
+  align-self: flex-end; 
+  text-align: left;
+  color: white;
+}
+
+.message.bot {
+  background-color: #e0e0e0; /* Light blue for bot */
+  align-self: flex-start; /* Left align */
+  text-align: left;
+}
+
+
+input[type="text"] {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid #e3e3e3;
+  border-radius: 20px;
+  font-size: 14px;
+  outline: none;
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+input[type="text"]:focus {
+  box-shadow: 0 0 5px var(--primary-color); 
+  border-color: var(--primary-color); 
+}
+
+button {
+  padding: 10px 20px;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: bold;
+  margin-left: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
+}
+
+button:hover {
+  background-color: #5cd1b4; /* Darker shade */
+  transform: scale(1.05); /* Slightly larger on hover */
+}
+
+/* Smooth fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+a {
+  font-weight: semi-bold;
+  color: black;
+}

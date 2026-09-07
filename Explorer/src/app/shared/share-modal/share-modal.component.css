@@ -98,3 +98,12 @@ label {
 .submit-button:focus {
   outline: none;
 }
+
+label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 16px;
+  margin-bottom: 15px;
+}

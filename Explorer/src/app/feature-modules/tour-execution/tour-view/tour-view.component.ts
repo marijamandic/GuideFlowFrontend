@@ -9,7 +9,6 @@ import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { User } from 'src/app/infrastructure/auth/model/user.model';
 import { AdministrationService } from '../../administration/administration.service';
 import { Sales } from '../model/sales.model';
-import { Currency, Price } from '../../tour-authoring/model/price.model';
 import { Checkpoint } from '../../tour-authoring/model/tourCheckpoint.model';
 import { environment } from 'src/env/environment';
 import { AlertService } from '../../layout/alert.service';
@@ -18,6 +17,10 @@ import { ItemInput } from '../../marketplace/model/shopping-carts/item-input';
 import { ProductType } from '../../marketplace/model/product-type';
 import { ShoppingCartService } from '../../marketplace/shopping-cart.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { WeatherCondition } from '../../tour-authoring/model/weatherCondition.model';
+import { TourBundle } from '../../marketplace/model/tour-bundle.model';
+import { CartPreviewService } from '../../layout/cart-preview.service';
+import { Author } from '../model/author.model';
 
 @Component({
 	selector: 'xp-tour-view',
@@ -31,11 +34,18 @@ export class TourViewComponent implements OnInit {
 	allSales: Sales[] = [];
 	tourCheckpoints: Checkpoint[] = [];
 	newTour: Tour = this.initializeTour();
+	weatherRequirements: WeatherCondition = {
+		minTemperature: 0,
+		maxTemperature: 0,
+		suitableConditions: []
+	};
+	bundles: TourBundle[];
 
 	tourSpecification: TourSpecification[] = [];
 	public TransportMode = TransportMode;
 	public userId: number;
 	user: User;
+	author: Author;
 
 	ts = {
 		id: 0,
@@ -59,7 +69,23 @@ export class TourViewComponent implements OnInit {
 	openMap: boolean = false;
 	currentView: string = 'published';
 	isModalOpen = false; // Praćenje stanja modala
-	currentImageIndex: number = 1; // Čuva trenutni indeks slike za svaku turu
+	currentImageIndex: number = 0; // Čuva trenutni indeks slike za svaku turu
+
+	REGULAR_PRODUCT = 'regular';
+	BUNDLE_PRODUCT = 'bundle';
+	productType = this.REGULAR_PRODUCT;
+
+
+	isOpened$: boolean;
+
+	selectedTourIds: number[] = [];
+	showTourDetailsModal: boolean[];
+
+	showAddSales = false;
+	isPremiumModalOpen: boolean = false;
+	selectedTour: Tour;
+	authorHaveMoney: boolean = true;
+	isAllSelected: boolean = false;
 
 	constructor(
 		private service: TourExecutionService,
@@ -68,7 +94,8 @@ export class TourViewComponent implements OnInit {
 		private adminService: AdministrationService,
 		private alertService: AlertService,
 		private router: Router,
-		private shoppingCartService: ShoppingCartService
+		private shoppingCartService: ShoppingCartService,
+		private cartPreviewService: CartPreviewService
 	) {}
 
 	//constructor(private service: TourExecutionService, authService: AuthService, private cdr: ChangeDetectorRef, private adminService: AdministrationService) {
@@ -79,6 +106,7 @@ export class TourViewComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.subscribeUser();
+		this.subscribeCartPreview();
 		this.getTourSpecificationPromise();
 		this.getAllTours();
 		this.service.getAllSales().subscribe({
@@ -98,14 +126,44 @@ export class TourViewComponent implements OnInit {
 				console.log(err);
 			}
 		});
+
+		this.getPublishedBundles();
+	}
+
+	private subscribeCartPreview() {
+		this.cartPreviewService.isOpened$.subscribe(isOpened => (this.isOpened$ = isOpened));
 	}
 
 	private subscribeUser() {
 		this.authService.user$.subscribe((user: User) => {
 			this.userId = user.id;
 			this.user = user;
+
+			this.service.getAuthor(this.userId).subscribe({
+				next: (author) => {
+					this.author = author;
+				},
+				error: (err) => {
+					console.error('Error fetching author:', err);
+				}
+			});
 		});
 	}
+
+	private getPublishedBundles = () => {
+		this.service.getPublishedBundles().subscribe({
+			next: (result: PagedResults<TourBundle>): void => {
+				this.bundles = [
+					...result.results.map(b => ({
+						...b,
+						tourIds: [...b.tourIds]
+					}))
+				];
+				console.log(this.bundles);
+			},
+			error: (error: HttpErrorResponse) => console.log(error.message)
+		});
+	};
 
 	onViewDetails(tour: Tour): void {
 		console.log('View Details clicked for tour:', tour.name);
@@ -138,7 +196,12 @@ export class TourViewComponent implements OnInit {
 			taggs: [],
 			checkpoints: [],
 			transportDurations: [],
-			reviews: []
+			reviews: [],
+			weatherRequirements: this.weatherRequirements || {
+				minTemperature: 0,
+				maxTemperature: 0,
+				suitableConditions: []
+			}
 		};
 	}
 	openModal(): void {
@@ -160,15 +223,14 @@ export class TourViewComponent implements OnInit {
 		this.service.getAllTours().subscribe({
 			next: (result: PagedResults<Tour>) => {
 				if (this.user.role == 'author') {
-					this.tours = result.results.filter(tour => tour.authorId === this.user.id);
+					this.tours = result.results.filter(tour => tour.authorId === this.user.id).sort((a, b) => Number(b.isPremium) - Number(a.isPremium));
 					this.onCurrentViewChanged();
 				}
 				if (this.user.role == 'tourist') {
-					this.allTours = result.results.filter(tour => tour.status === TourStatus.Published);
+					this.allTours = result.results.filter(tour => tour.status === TourStatus.Published).sort((a, b) => Number(b.isPremium) - Number(a.isPremium));
 				}
 
-				console.log(this.allTours);
-				console.log(this.allTours[1].reviews);
+				this.showTourDetailsModal = new Array(result.totalCount).fill(false);
 			},
 			error: (err: any) => {
 				console.log(err);
@@ -557,7 +619,77 @@ export class TourViewComponent implements OnInit {
 			adventureCoin: tour.price
 		} as ItemInput;
 		this.shoppingCartService.addToCart(item).subscribe({
-			error: (error: HttpErrorResponse) => console.log(error)
+			next: () => this.cartPreviewService.open(),
+			error: (error: HttpErrorResponse) => {
+				if (error.status === 400) alert('Item already in cart');
+				else console.log(error.message);
+			}
 		});
+	}
+
+	handleProductTypeChange() {
+		this.productType = this.productType === this.REGULAR_PRODUCT ? this.BUNDLE_PRODUCT : this.REGULAR_PRODUCT;
+	}
+
+	handleSelectTourClick(id: number, idx: number) {
+		if (this.isTourSelected(id)) this.selectedTourIds = this.selectedTourIds.filter(t => t !== id);
+		else this.selectedTourIds = [...this.selectedTourIds, id];
+		this.showTourDetailsModal[idx] = !this.showTourDetailsModal;
+	}
+
+	isTourSelected(id: number) {
+		return this.selectedTourIds.includes(id);
+	}
+
+	handleSelectAll() {
+		this.selectedTourIds = this.allTours.map(t => t.id);
+		this.isAllSelected = true;
+	}
+
+	deselectAll() {
+		this.selectedTourIds = [];
+		console.log(this.selectedTourIds);
+		this.isAllSelected = false;
+	}
+
+	getSelectedTours() {
+		return this.allTours.filter(t => this.isTourSelected(t.id));
+	}
+
+	handleSalesCreatedEvent() {
+		this.showAddSales = false;
+		this.selectedTourIds = [];
+		this.alertService.showAlert('Created', 'success', 1);
+	}
+	closePremiumModal(): void {
+		this.isPremiumModalOpen = false;	 
+	}
+	  
+	depositMoney(): void{
+		if(this.author.wallet - 159.99 >= 0){
+			this.authorHaveMoney = true;
+			this.service.updatePremiumTour(this.selectedTourIds[0]).subscribe({
+				next: () => {
+					alert("Successful transaction!");
+					window.location.reload();
+				},
+				error: (error: HttpErrorResponse) => {
+					if(error.status == 500){
+						alert("This tour is already premium");
+					}
+					else
+						alert("Failed transaction");
+					console.log(error);
+				}
+			})
+		}
+		else{
+			this.authorHaveMoney = false;
+			alert("nemas dovoljno sredstava");
+		}
+	}
+
+	showPremiumModal(): void{
+		this.isPremiumModalOpen = true;
 	}
 }

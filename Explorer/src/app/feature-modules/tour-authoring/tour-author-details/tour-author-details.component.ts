@@ -10,6 +10,8 @@ import { environment } from 'src/env/environment';
 import { Currency, Price } from '../../tour-authoring/model/price.model';
 import { HttpErrorResponse } from '@angular/common/http';
 import { TransportDuration, TransportType } from '../model/transportDuration.model';
+import { AddEncounterComponent } from '../add-encounter/add-encounter.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'xp-tour-author-details',
@@ -33,14 +35,16 @@ export class TourAuthorDetailsComponent {
   transportDurations: TransportDuration[] = [];
   isModalOpen: boolean = false;
   isTourModalOpen:boolean = false;
+  isEncounterModalOpen:boolean = false;
 
-  constructor(private authService: AuthService, private router:Router, private route: ActivatedRoute, private tourService:TourService){}
+  constructor(private authService: AuthService, private router:Router, private route: ActivatedRoute, private tourService:TourService,private dialog: MatDialog,){}
 
   ngOnInit(): void {
     this.authService.user$.subscribe(user => {
       this.user = user;
     });
     this.tourId = Number(this.route.snapshot.paramMap.get('id'));
+    this.isEncounterModalOpen = false;
     this.loadTour();
   }
 
@@ -281,4 +285,25 @@ export class TourAuthorDetailsComponent {
   goToAllTours(){
     this.router.navigate(['/all-tours']);
   }
+  navigateToAddEncounter(id : number){
+    console.log('ID prosleđen u modal:', id);
+    this.isEncounterModalOpen = true;
+    this.openFormModal(id);
+    //this.router.navigate(['/author-add-encounter',id,this.tourId]);
+  }
+  
+   openFormModal(id: number): void {
+  
+      const dialogRef = this.dialog.open(AddEncounterComponent, {
+        data: { checkpointId: id, tourId: this.tour.id}// prosledi podatke samo ako postoji id
+      });
+  
+      // dialogRef.componentInstance.closeDialog = () => {
+      //   dialogRef.close(); // Close the dialog when called from the modal
+      // };
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('Modal zatvoren', result);
+        window.location.reload();
+      });
+    }
 }

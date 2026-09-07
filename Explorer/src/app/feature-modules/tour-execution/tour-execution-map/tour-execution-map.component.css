@@ -1,53 +1,81 @@
 .map-frame {
     position: relative;
     width: 100%;
-    height: 91vh;
+    height: 74.5vh;
+    z-index: 8;
 }
 
 #map {
-    width: 98%;
+    width: 100%;
     height: 96%;
     border: none;
     border-radius: 20px;
-    box-shadow: 0 10px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 10;
 }
 
 .search-container {
-    position: absolute;
-    top: 10px;
-    left: 100%;
-    margin-left: 210px;
+    position: relative;
+    bottom: 73vh; /* Pozicija od vrha stranice */
+    left: 21%; /* Centriranje horizontalno */
     transform: translateX(-50%);
-    z-index: 1000;
+    z-index: 9;
     display: flex;
-    flex-direction: column; /* Stack the input and Add button vertically */
-    align-items: flex-start; /* Align them to the left */
+    flex-direction: column; /* Postavljanje elemenata jedan ispod drugog */
+    gap: 10px; /* Razmak između elemenata */
+    align-items: center; /* Centriranje elemenata horizontalno */
+    pointer-events: none; /* Sprečava blokiranje klikova na elemente ispod */
 }
 
-.search-icon {
-    width: 13px;
-    height: 13px;
+.search-container * {
+    pointer-events: auto; /* Dozvoljava klik samo na unutar elemenata search-container */
 }
 
 .input-wrapper {
     position: relative;
-    width: 300px;
-    margin-bottom: 10px; /* Razmak između input polja i dugmeta */
+    width: 300px; /* Fiksna širina za input */
 }
 
 input[type="text"] {
-    width: 100%;
-    padding: 10px 40px 10px 10px; /* Rezervisan prostor za ikonu sa desne strane */
-    border-radius: 8px;
+    width: 70%;
+    padding: 8px 16px; /* Manji padding */
+    border-radius: 20px; /* Zaobljeni krajevi */
     border: 1px solid #ccc;
-    font-size: 16px;
+    font-size: 14px;
+    background-color: white; /* Pozadina bela */
+    color: black; /* Tekst crne boje */
+    outline: none; /* Bez outline-a */
+    transition: border 0.3s ease;
 }
+
+input[type="text"]:focus {
+    border: 1px solid #40E0D0; /* Tirkizna boja na fokus */
+}
+
+.update-button {
+    width: 24%; /* Ista širina kao input */
+    padding: 8px 16px; /* Manji padding */
+    background-color: var(--primary-color); /* Tirkizna boja */
+    color: white;
+    border: none;
+    border-radius: 20px; /* Zaobljeni krajevi */
+    cursor: pointer;
+    font-size: 14px;
+    text-align: center; /* Centriranje teksta */
+    transition: background-color 0.3s ease;
+    margin-right: 5%; /* Pomeranje dugmeta udesno da se poravna sa input poljem */
+}
+
+.update-button:hover {
+    background-color: #36c4b7; /* Tamnija nijansa tirkizne */
+}
+
 
 /* Stil za ikonu pretrage */
 .search-icon {
     position: absolute;
     top: 50%;
-    right: -39px;
+    right: 70px;
     transform: translateY(-50%);
     width: 22px;
     height: 22px;
@@ -58,41 +86,4 @@ input[type="text"] {
 .search-icon:hover {
     transform: translateY(-50%) scale(1.2); /* Povećanje ikone na hover */
     opacity: 0.8; /* Blago smanjenje vidljivosti na hover */
-}
-
-.add-button {
-    width: 116%;
-    padding: 10px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 16px;
-    margin-top: 10px; /* Razmak između Add dugmeta i pretrage */
-}
-
-.add-button:hover {
-    background-color: #218838;
-}
-
-
-.search-button:hover {
-    background-color: #0056b3;
-}
-
-.add-button {
-    width: 116%;
-    padding: 10px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 16px;
-    margin-top: 10px; /* Space between the Add button and the Search button */
-}
-
-.add-button:hover {
-    background-color: #218838;
 }

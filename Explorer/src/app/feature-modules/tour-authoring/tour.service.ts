@@ -7,6 +7,7 @@ import { environment } from 'src/env/environment';
 import { Tourist } from './model/tourist';
 import { Checkpoint } from './model/tourCheckpoint.model';
 import { TransportDuration } from './model/transportDuration.model';
+import { User } from 'src/app/infrastructure/auth/model/user.model';
 
 
 @Injectable({
@@ -64,6 +65,9 @@ export class TourService {
 
   getTouristById(id: number): Observable<Tourist> {
     return this.http.get<Tourist>(`https://localhost:44333/api/tourists/${id}`);
+  }
+  getUserById(id:number) : Observable<User>{
+    return this.http.get<User>(`https://localhost:44333/api/tourists/${id}`);
   }
 
   updateTourist(tourist: Tourist): Observable<Tourist> {

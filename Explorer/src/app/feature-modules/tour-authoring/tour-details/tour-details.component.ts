@@ -6,6 +6,7 @@ import { Currency } from '../model/price.model';
 import { environment } from 'src/env/environment';
 import { MatDialog } from '@angular/material/dialog';
 import { AddEncounterComponent } from '../add-encounter/add-encounter.component';
+import { WeatherCondition } from '../model/weatherCondition.model';
 
 @Component({
   selector: 'xp-tour-details',
@@ -14,6 +15,11 @@ import { AddEncounterComponent } from '../add-encounter/add-encounter.component'
 })
 export class TourDetailsComponent {
   tourId!:number;
+  weatherRequirements: WeatherCondition = {
+      minTemperature: 0,
+      maxTemperature: 0,
+      suitableConditions: []
+  };
   tour:Tour={
     id: 0,
     authorId:-1,
@@ -27,14 +33,16 @@ export class TourDetailsComponent {
     taggs: [],
     checkpoints: [],
     transportDurations: [],
-    reviews: []
+    reviews: [],
+    weatherRequirements: this.weatherRequirements || { 
+      minTemperature: 0, 
+      maxTemperature: 0, 
+      suitableConditions: [] 
+    }
   }
   isForEdit:boolean = false;
   tags:string[] = [''];
  
- 
-
-
   constructor(
     private route : ActivatedRoute, 
     private router: Router, 
@@ -100,6 +108,11 @@ updateTour(): void {
     checkpoints: this.tour.checkpoints || [],
     transportDurations: this.tour.transportDurations || [],
     reviews: this.tour.reviews || [],
+    weatherRequirements: this.weatherRequirements || { 
+      minTemperature: 0, 
+      maxTemperature: 0, 
+      suitableConditions: [] 
+    }
     }
 
     tour.id = this.tour.id;

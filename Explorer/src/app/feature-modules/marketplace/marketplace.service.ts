@@ -16,6 +16,7 @@ import { Tour } from '../tour-authoring/model/tour.model';
 import { Payment } from './model/payments/payment';
 import { TourBundle } from './model/tour-bundle.model';
 import { Coupon } from './model/coupon.model';
+import { SalesInput } from './model/sales-input';
 
 @Injectable({
 	providedIn: 'root'
@@ -48,7 +49,7 @@ export class MarketplaceService {
 		return this.http.get<Tour>(environment.apiHost + 'execution/tourExecution/purchased/' + userId + '/' + tourId);
 	}
 
-	checkIfPurchased(tourId:number): Observable<TourPurchaseToken> {
+	checkIfPurchased(tourId: number): Observable<TourPurchaseToken> {
 		return this.http.get<TourPurchaseToken>(environment.apiHost + 'shopping/tourPurchaseToken/tour/' + tourId);
 	}
 
@@ -105,6 +106,10 @@ export class MarketplaceService {
 	}
 
 	getBundleById(id: number): Observable<TourBundle> {
-		return this.http.get<TourBundle>(environment.apiHost + 'shopping/tourBundle/' + id);
+		return this.http.get<TourBundle>(`${environment.apiHost}bundles/${id}`);
+	}
+
+	createSales(sales: SalesInput): Observable<null> {
+		return this.http.post<null>(`${environment.apiHost}sales`, sales);
 	}
 }

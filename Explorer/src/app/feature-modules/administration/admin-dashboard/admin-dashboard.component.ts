@@ -9,6 +9,7 @@ import { Tour, TourStatus } from '../../tour-authoring/model/tour.model';
 import { TourService } from '../../tour-authoring/tour.service';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
 import { Category } from 'src/app/shared/model/details.model';
+import { Notification } from '../../layout/model/Notification.model';
 
 @Component({
   selector: 'xp-account',
@@ -60,7 +61,7 @@ ResultUsers: Account[] = []
      this.service.getAccounts().subscribe({
       next: (result: Array<Account>) => {
       this.users = result
-      this.ResultUsers = this.users
+      this.ResultUsers = this.users.filter(user=> user.role!==UserRole.Administrator);
       console.log(result);
       },
       error: (err: any) => {
@@ -242,6 +243,7 @@ ResultUsers: Account[] = []
       this.moneyInput = 0;
     }
     console.log('Updated selectedAccountId:', this.selectedAccountId);
+
   }
   
   closeModal(): void {
@@ -263,14 +265,45 @@ ResultUsers: Account[] = []
   
     console.log('Sending updateMoney request:', account.id, this.moneyInput);
   
-    this.service.updateMoney(account.id, this.moneyInput).subscribe({
+    if(account.role === UserRole.Tourist){
+      this.service.updateMoney(account.id, this.moneyInput).subscribe({
+        next: () => {
+          alert(`Successfully added ${this.moneyInput} AC to ${account.username}`);
+          this.closeModal();
+        },
+        error: (err) => {
+          console.error('Error depositing money:', err);
+        },
+      });
+    }
+    else if(account.role === UserRole.Author){
+      this.service.updateAuthorMoney(account.id, this.moneyInput).subscribe({
+        next: () => {
+          alert(`Successfully added ${this.moneyInput} AC to ${account.username}`);
+          this.closeModal();
+        },
+        error: (err) => {
+          console.error('Error depositing money:', err);
+        },
+      });
+    }
+
+    const newNotification: Notification = {
+      id: 0,
+      userId: account.id,
+      sender: this.user.username,
+      message: `Your account has been credited with ${this.moneyInput}.`,
+      createdAt: new Date(),
+      isOpened: false,
+      type: 1,
+    };
+    this.notificationService.createNotification(newNotification).subscribe({
       next: () => {
-        alert(`Successfully added ${this.moneyInput} AC to ${account.username}`);
-        this.closeModal();
+        console.log('Notification created successfully.');
       },
-      error: (err) => {
-        console.error('Error depositing money:', err);
-      },
+      error: (error) => {
+        console.error('Error creating notification:', error);
+      }
     });
   }  
 

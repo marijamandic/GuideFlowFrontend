@@ -1,15 +1,11 @@
 <div class="tour-details-container" *ngIf="tour !== null && tour !== undefined">
-    <div style="display: flex; justify-content:center; align-items: center;gap: 20px;">
-     <div class="tour-card">
-      <div class="tour-card-left">
-        <img 
-          [src]="checkpoints[0]?.imageUrl ? getImagePath(checkpoints[0].imageUrl) : 'assets/images/tour2.jpg'" 
-          alt="Tour Image" 
-        />
-      </div>
+  <div class="tour-container">
+    <div class="tour-card">
       <div class="tour-card-right">
         <div class="tour-card-header">
-          <h2>{{ tour.name }}</h2>
+          <div class="tour-card-name">
+            <h2>{{ tour.name }}</h2>
+          </div>
           <div class="rating">
             <i *ngFor="let star of getStars()" 
                [class.fa-star]="star === 'full'" 
@@ -30,21 +26,7 @@
           </button>
         </div>
       </div>
-     </div>
-     <div class="tour-map">
-      <xp-map [showSearchBar]="MapViewMode" [checkpoints]="checkpointCoordinates" (distanceCalculated)="onDistanceCalculated($event)"></xp-map>
-     </div>
-     <div *ngIf="isTourModalOpen" class="modal-overlay" (click)="closeTourModal()">
-      <div class="modal-dialog" (click)="$event.stopPropagation()">
-        <xp-tour-form
-          [tour]="tour"
-          [shouldEdit]="true"
-          (tourUpdated)="onTourUpdated()"
-          (closeModal)="closeTourModal()">
-        </xp-tour-form>
-      </div>
     </div>
-    </div>  
     <div class="checkpoints-grid">
       <div class="checkpoint-card" *ngFor="let checkpoint of checkpoints">
         <div class="checkpoint-card-image">
@@ -54,6 +36,7 @@
             class="checkpoint-image"
           />
         </div>
+        <div class="checkpoint-card-gradient"></div>
         <div class="checkpoint-card-content">
           <h3>{{ checkpoint.name }}</h3>
           <div class="checkpoint-card-details">
@@ -78,7 +61,20 @@
         <div class="checkpoint-card-content">
           <h3>Add Checkpoint</h3>
       </div>
-  </div>
+    </div>
+     <div *ngIf="isTourModalOpen" class="modal-overlay" (click)="closeTourModal()">
+      <div class="modal-dialog" (click)="$event.stopPropagation()">
+        <xp-tour-form
+          [tour]="tour"
+          [shouldEdit]="true"
+          (tourUpdated)="onTourUpdated()"
+          (closeModal)="closeTourModal()">
+        </xp-tour-form>
+      </div>
+    </div>
+    </div>
+    <div class="tour-map">
+      <xp-map [showSearchBar]="MapViewMode" [checkpoints]="checkpointCoordinates" (distanceCalculated)="onDistanceCalculated($event)"></xp-map>
     </div>
     <div *ngIf="isModalOpen" class="modal-overlay" (click)="closeModal()">
       <div class="modal-dialog" (click)="$event.stopPropagation()">
@@ -96,16 +92,18 @@
         <div *ngFor="let review of reviews" class="review-card">
           <div class="review-header">
             <p class="review-username">{{ review.username }}</p>
-            <div class="rating">
-              <i *ngFor="let star of getStarsFromRating(review.rating)" 
-                 [class.fa-star]="star === 'full'" 
-                 [class.fa-star-half-stroke]="star === 'half'" 
-                 [class.fa-star-o]="star === 'empty'" 
-                 class="fa-solid"></i>
-            </div>
+            <p class="review-percentage-completed">Completed {{ review.percentageCompleted }}% of the tour</p>
+          </div>
+          <div class="rating">
+            <i *ngFor="let star of getStarsFromRating(review.rating)" 
+            [class.fa-star]="star === 'full'" 
+            [class.fa-star-half-stroke]="star === 'half'" 
+            [class.fa-star-o]="star === 'empty'" 
+            class="fa-solid"
+            ></i>
           </div>
           <p class="review-comment">{{ review.comment || 'No comment provided.' }}</p>
-          <p class="review-date"><strong>Posted on:</strong> {{ review.creationDate | date:'medium' }}</p>
+          <p class="review-date"> {{ review.creationDate | date:'medium' }}</p>
         </div>
       </div>
     <ng-template #noReviews>
@@ -121,4 +119,3 @@
     </button>
   </div>
 </div>
-  

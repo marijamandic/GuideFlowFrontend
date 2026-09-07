@@ -30,6 +30,8 @@ export class PostComponent implements OnInit {
   selectedEngagementStatus: number | '' = '';
 
   showCreateModal: boolean = false;
+  showEditModal: boolean = false;
+  selectedPost: Post | null = null;
 
   constructor(
     private postService: PostService,
@@ -174,8 +176,10 @@ export class PostComponent implements OnInit {
     this.router.navigate(['/blog', postId]);
   }
 
-  navigateToEditPost(postId: number){
-    this.router.navigate(['/edit-post', postId]);
+  navigateToEditPost(post: Post){
+    if (post) {
+      this.openEditModal(post);
+    }
   }
 
   navigateToCreatePost() {
@@ -298,5 +302,25 @@ export class PostComponent implements OnInit {
     }
   }
   
+  openEditModal(post: Post) {
+    this.selectedPost = post;
+    this.showEditModal = true;
+  }
+  
+  closeEditModal() {
+    this.selectedPost = null;
+    this.showEditModal = false;
+  }
+  
+  onPostSaved(updatedPost: Post) {
+    this.postService.updatePost(updatedPost, updatedPost.id).subscribe({
+      next: () => {
+        console.log('Post updated successfully');
+        this.closeEditModal();
+        this.ngOnInit();
+      },
+      error: (err) => console.error('Error updating post:', err)
+    });
+  }
   
 }

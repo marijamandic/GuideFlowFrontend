@@ -9,7 +9,6 @@ import { MaterialModule } from 'src/app/infrastructure/material/material.module'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProfileInfoFormComponent } from './profile-info-form/profile-info-form.component';
 import { ProblemComponent } from './problem/problem.component';
-import { AdminProblemComponent } from './admin-problem/admin-problem.component';
 import { ClubFormComponent } from './club/club-form/club-form.component';
 import { ClubComponent } from './club/club-overview/club.component';  
 import { AllAppRatingsComponent } from './all-app-ratings/all-app-ratings.component';
@@ -19,6 +18,7 @@ import { ClubPostComponent } from './club/club-post/club-post.component';
 import { ClubInfoComponent } from './club/club-info/club-info.component';
 import { ClubDashboardComponent } from './club/club-dashboard/club-dashboard.component';
 import { AuthorDashboardComponent } from './author-dashboard/author-dashboard.component';
+import { NgChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -31,7 +31,6 @@ import { AuthorDashboardComponent } from './author-dashboard/author-dashboard.co
     ProblemComponent,
     AllAppRatingsComponent,
     ProblemComponent,
-    AdminProblemComponent,
     AdminDashboardComponenet,
     ClubPostComponent,
     ClubInfoComponent,
@@ -44,7 +43,8 @@ import { AuthorDashboardComponent } from './author-dashboard/author-dashboard.co
     MaterialModule,
     ReactiveFormsModule,
     LayoutModule,
-    FormsModule
+    FormsModule,
+    NgChartsModule
   ],
   exports: [
     EquipmentComponent,
@@ -54,7 +54,6 @@ import { AuthorDashboardComponent } from './author-dashboard/author-dashboard.co
     ClubComponent,
     ProblemComponent,
     AllAppRatingsComponent,
-    AdminProblemComponent,
     AdminDashboardComponenet,
     ClubPostComponent
   ]

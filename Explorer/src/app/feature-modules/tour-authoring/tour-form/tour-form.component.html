@@ -5,7 +5,6 @@
       <h2 *ngIf="shouldEdit">Edit Tour</h2>
       <button class="close-button" (click)="close()">×</button>
     </div>
-
     <div>
       <form #tourForm="ngForm" class="tour-form">
         <label class="tour-form-label" for="name">Tour Name</label>
@@ -36,7 +35,31 @@
             <input id="tag{{i}}" [(ngModel)]="tags[i]" name="tag{{i}}" placeholder="Tag">
           </div>
         </div>
-        <button type="button" class="add-tag-button" (click)="addTag()">Add Tag</button>
+        <button type="button" class="cta-button" (click)="addTag()">Add</button>
+        <div class="form-div">
+          <div class="form-row">
+          <div class="form-group">
+            <label for="minTemperature">Min Temperature</label>
+            <input id="minTemperature" [(ngModel)]="weatherRequirements.minTemperature" name="minTemperature" required placeholder="Min Temperature" type="number">
+          </div>
+          <div class="form-group">
+            <label for="maxTemperature">Max Temperature</label>
+            <input id="maxTemperature" [(ngModel)]="weatherRequirements.maxTemperature" name="maxTemperature" required placeholder="Max Temperature" type="number">
+          </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Suitable Weather Conditions</label>
+          <div class="weather-options">
+            <div 
+              *ngFor="let condition of weatherConditionTypes" 
+              [class.selected]="isConditionSelected(condition)" 
+              class="weather-option"
+              (click)="toggleWeatherCondition(condition)">
+              {{ condition }}
+            </div>
+          </div>
+        </div>
         <div class="form-actions">
           <button class="cta-button" *ngIf="!shouldEdit" type="submit" (click)="addTour()">Done</button>
           <button class="cta-button" *ngIf="shouldEdit" type="submit" (click)="updateTour()">Done</button>

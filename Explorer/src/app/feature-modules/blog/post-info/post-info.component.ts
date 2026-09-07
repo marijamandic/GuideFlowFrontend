@@ -414,6 +414,7 @@ export class PostInfoComponent implements OnInit {
       const parseclubId = parseInt(clubMatch[2], 10);
       if(this.user && this.post){
         this.clubPost = {
+          id: 0,
           clubId: parseclubId,
           memberId: this.user?.id,
           content: parsedDescription,

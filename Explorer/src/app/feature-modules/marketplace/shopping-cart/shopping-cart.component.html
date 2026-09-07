@@ -10,14 +10,14 @@
 		<div class="coupon-bar">
 			<h2>Enter coupon code</h2>
 			<div class="coupon-bar-input">
-				<input type="text" placeholder="Enter coupon code" />
+				<input type="text" placeholder="Enter coupon code" [(ngModel)]="couponCode"/>
 				<button type="button" class="header-buttons" (click)="applyCoupon()">Apply</button>
 			</div>
 		</div>
 		<ng-container *ngIf="cart$ && cart$.items.length > 0; else cartEmpty">
 			<ng-container *ngFor="let item of cart$.items">
 				<div *ngIf="item.type === 0 && item.product && isTour(item.product); else bundle" class="tour">
-					<img [src]="getImageUrl(item.imageUrl)" alt="..." />
+					<img [src]="getImageUrl(item.product.imageUrl)" alt="..." />
 					<div class="tour-details">
 						<div class="tour-header">
 							<div class="tour-info">
@@ -67,7 +67,7 @@
 						<ng-container *ngIf="showTours && item.product && isBundle(item.product)">
 							<ng-container *ngFor="let tour of item.product.tours">
 								<div class="bnd-tour">
-									<img [src]="getImageUrl(item.imageUrl)" alt="..." />
+									<img [src]="getImageUrl(tour.imageUrl)" alt="..." />
 									<div class="bnd-tour-info">
 										<div class="bnd-tour-header-info">
 											<h2>{{ tour.name }}</h2>
@@ -81,7 +81,7 @@
 											<div class="bnd-tour-body-info-row">
 												<i class="fa-solid fa-square"></i>
 												<div *ngFor="let tag of tour.tags; let i = index">
-													<ng-container *ngIf="i === tour.tags.length - 1; else notLast"> {{ tag }} </ng-container>
+													<ng-container *ngIf="i === tour.tags.length - 1; else notLast">{{ tag }}</ng-container>
 													<ng-template #notLast>{{ tag }},&nbsp;</ng-template>
 												</div>
 											</div>
@@ -127,7 +127,7 @@
 			
 		</div> -->
 		<ng-template #cartEmpty>
-			<h3>Shopping cart empty</h3>
+			<h1 style="place-self: center">Shopping cart empty</h1>
 		</ng-template>
 	</div>
 </div>
